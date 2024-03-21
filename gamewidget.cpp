@@ -6,6 +6,7 @@ GameWidget::GameWidget(QWidget *parent) :
     ui(new Ui::GameWidget)
 {
     ui->setupUi(this);
+    InitAllCards();
 }
 
 GameWidget::~GameWidget()
@@ -13,19 +14,19 @@ GameWidget::~GameWidget()
     delete ui;
 }
 
-void InitAllCards(WidgetCard AllCards[54],int CardStyle)
+void GameWidget::InitAllCards()
 {
     AllCards[0].Point = 17; AllCards[0].Type = 5;
-    AllCards[0].ImagePath = ":/image/image/Cards_"+QString::number(CardStyle)+"/"+QString::number(AllCards[0].Point)+"_"+QString::number(AllCards[0].Type)+".png";
+    AllCards[0].ImagePath = ":/image/image/Cards_"+QString::number(CardStyle)+"/red_joker.png";
     AllCards[1].Point = 16; AllCards[0].Type = 5;
-    AllCards[1].ImagePath = ":/image/image/Cards_"+QString::number(CardStyle)+"/"+QString::number(AllCards[1].Point)+"_"+QString::number(AllCards[1].Type)+".png";
+    AllCards[1].ImagePath = ":/image/image/Cards_"+QString::number(CardStyle)+"/black_joker.png";
     int i = 2;
     for(int j = 15; j>2; j--)
     {
         for(int k = 1; k<5; k++)
         {
             AllCards[i].Point = j; AllCards[i].Type = k;
-            AllCards[1].ImagePath = ":/image/image/Cards_"+QString::number(CardStyle)+"/"+QString::number(j)+"_"+QString::number(k)+".png";
+            AllCards[1].ImagePath = ":/image/image/Cards_"+QString::number(CardStyle)+"/"+PointIndex[j]+"_of_"+TypeIndex[k]+".png";
             i++;
         }
     }

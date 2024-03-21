@@ -8,8 +8,71 @@
         <file>image/Icon/key.png</file>
         <file>image/Icon/username.png</file>
         <file>image/Icon/eye_open.png</file>
-    </qresource>
-    <qresource prefix="/">
-        <file>image/Icon/eye_open.png</file>
+        <file>image/Cards_0/2_of_clubs.png</file>
+        <file>image/Cards_0/2_of_diamonds.png</file>
+        <file>image/Cards_0/2_of_hearts.png</file>
+        <file>image/Cards_0/2_of_spades.png</file>
+        <file>image/Cards_0/3_of_clubs.png</file>
+        <file>image/Cards_0/3_of_diamonds.png</file>
+        <file>image/Cards_0/3_of_hearts.png</file>
+        <file>image/Cards_0/3_of_spades.png</file>
+        <file>image/Cards_0/4_of_clubs.png</file>
+        <file>image/Cards_0/4_of_diamonds.png</file>
+        <file>image/Cards_0/4_of_hearts.png</file>
+        <file>image/Cards_0/4_of_spades.png</file>
+        <file>image/Cards_0/5_of_clubs.png</file>
+        <file>image/Cards_0/5_of_diamonds.png</file>
+        <file>image/Cards_0/5_of_hearts.png</file>
+        <file>image/Cards_0/5_of_spades.png</file>
+        <file>image/Cards_0/6_of_clubs.png</file>
+        <file>image/Cards_0/6_of_diamonds.png</file>
+        <file>image/Cards_0/6_of_hearts.png</file>
+        <file>image/Cards_0/6_of_spades.png</file>
+        <file>image/Cards_0/7_of_clubs.png</file>
+        <file>image/Cards_0/7_of_diamonds.png</file>
+        <file>image/Cards_0/7_of_hearts.png</file>
+        <file>image/Cards_0/7_of_spades.png</file>
+        <file>image/Cards_0/8_of_clubs.png</file>
+        <file>image/Cards_0/8_of_diamonds.png</file>
+        <file>image/Cards_0/8_of_hearts.png</file>
+        <file>image/Cards_0/8_of_spades.png</file>
+        <file>image/Cards_0/9_of_clubs.png</file>
+        <file>image/Cards_0/9_of_diamonds.png</file>
+        <file>image/Cards_0/9_of_hearts.png</file>
+        <file>image/Cards_0/9_of_spades.png</file>
+        <file>image/Cards_0/10_of_clubs.png</file>
+        <file>image/Cards_0/10_of_diamonds.png</file>
+        <file>image/Cards_0/10_of_hearts.png</file>
+        <file>image/Cards_0/10_of_spades.png</file>
+        <file>image/Cards_0/ace_of_clubs.png</file>
+        <file>image/Cards_0/ace_of_diamonds.png</file>
+        <file>image/Cards_0/ace_of_hearts.png</file>
+        <file>image/Cards_0/ace_of_spades.png</file>
+        <file>image/Cards_0/black_joker.png</file>
+        <file>image/Cards_0/jack_of_clubs.png</file>
+        <file>image/Cards_0/jack_of_diamonds.png</file>
+        <file>image/Cards_0/jack_of_hearts.png</file>
+        <file>image/Cards_0/jack_of_spades.png</file>
+        <file>image/Cards_0/king_of_clubs.png</file>
+        <file>image/Cards_0/king_of_diamonds.png</file>
+        <file>image/Cards_0/king_of_hearts.png</file>
+        <file>image/Cards_0/king_of_spades.png</file>
+        <file>image/Cards_0/queen_of_clubs.png</file>
+        <file>image/Cards_0/queen_of_diamonds.png</file>
+        <file>image/Cards_0/queen_of_hearts.png</file>
+        <file>image/Cards_0/queen_of_spades.png</file>
+        <file>image/Cards_0/red_joker.png</file>
+        <file>image/Profile/mjq.jpg</file>
+        <file>image/Icon/buy.png</file>
+        <file>image/Icon/diamond.png</file>
+        <file>image/Icon/happybean.png</file>
+        <file>image/Profile/dcx.jpg</file>
+        <file>image/Profile/hjl.jpg</file>
+        <file>image/Profile/lyw.jpg</file>
+        <file>image/Profile/syx.jpg</file>
+        <file>image/Profile/yhx.jpg</file>
+        <file>image/Profile/zzy.jpg</file>
+        <file>image/Icon/rule.png</file>
+        <file>image/Icon/setting.png</file>
     </qresource>
 </RCC>

@@ -15,15 +15,37 @@ class GameWidget : public QWidget
 public:
     explicit GameWidget(QWidget *parent = nullptr);
     ~GameWidget();
-    int Width=1080,Height=1920;     //用于修改分辨率&实例化新的窗口时的参数。
+    int Width,Height;
     std::vector<WidgetCard> PreviousPlayerOutCards,NextPlayerOutCards,PlayerOutCards,PlayerHandCards,FinalCards;
     WidgetArgCard CardArg;
+    const QString TypeIndex[6] = { "",
+        "spades",
+        "hearts",
+        "clubs",
+        "diamonds",
+        "joker"
+    };
+    const QString PointIndex[16] = {"","","",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "jack",
+        "queen",
+        "king",
+        "ace",
+        "2",
+    };
 
 private:
     Ui::GameWidget *ui;
     int CardStyle = 0;
     WidgetCard AllCards[54];
-//    void InitAllCards(WidgetCard AllCards[54]);
+    void InitAllCards();
     //将CardArg中的OutCard和HandCard译成vector<WidgetCard>对象，包含Point Type Path
 //    std::vector<WidgetCard> Transform_To_Vector(std::bitset<54> BitsetCards);
     //将PreviousPlayerOutCards等译成Bitset对象，包含HandCard和OutCard

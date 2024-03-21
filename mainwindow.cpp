@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->statusBar()->hide();
     this->setFixedSize(1400,900);
-    BackgroundWidget *backgroundWidget = new BackgroundWidget(this);
+    backgroundWidget = new BackgroundWidget(this);
     backgroundWidget->setGifBackground(":/image/image/mjqyjb.gif"); // 使用不同的GIF图像文件路径
     setCentralWidget(backgroundWidget);
 
@@ -18,8 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     loginButton->setIconSize(QSize(20, 20)); // 设置图标大小
     loginButton->setStyleSheet("QPushButton { background-color: #ffffff; }"); // 设置登录按钮背景色
     loginButton->setMinimumHeight(50);
-    //connect(loginButton, &QPushButton::clicked, this, &MainWindow::onLoginButtonClicked);
-
+    connect(loginButton, &QPushButton::clicked, this, &MainWindow::onLoginButtonClicked);
 
     forgetPasswordButton = new QPushButton(" 忘记密码 ", this);     // 创建忘记密码按钮
     forgetPasswordButton->setStyleSheet("QPushButton { background-color: transparent; }"); // 设置忘记密码按钮背景为透明色
@@ -69,13 +68,13 @@ MainWindow::MainWindow(QWidget *parent)
     HidePassword->setStyleSheet("border:0px");
     connect(HidePassword, &QPushButton::clicked, this, &MainWindow::onHidePasswordClicked);
 
-    QGridLayout *GridLayout = new QGridLayout(backgroundWidget);
-    QHBoxLayout *HBoxLayout = new QHBoxLayout(backgroundWidget);
+    GridLayout = new QGridLayout(backgroundWidget);
+    HBoxLayout = new QHBoxLayout();
     //QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    QSpacerItem *spacer1 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QSpacerItem *spacer2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QSpacerItem *spacer3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QSpacerItem *spacer4 = new QSpacerItem(20, 300, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    spacer1 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed);
+    spacer2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed);
+    spacer3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed);
+    spacer4 = new QSpacerItem(20, 300, QSizePolicy::Fixed, QSizePolicy::Fixed);
     GridLayout->addWidget(usernameLineEdit,1,1);
     GridLayout->addWidget(passwordLineEdit,2,1);
     GridLayout->addWidget(loginButton,3,1);
@@ -120,8 +119,38 @@ void MainWindow::onHidePasswordClicked()
     ShowPassword->show(); HidePassword->hide();
     passwordLineEdit->setEchoMode(QLineEdit::Password);
 }
+void MainWindow::onLoginButtonClicked()
+{
+    LobbyWidget *lobbyWidget = new LobbyWidget();
+    lobbyWidget->show();
+             //改为delete，先delete所有成员指针
+
+    //deleteLater();
+    this->close();
+    //this->deleteLater();
+
+}
 MainWindow::~MainWindow()
 {
     delete ui;
+
+//    delete(loginButton);
+//    delete(forgetPasswordButton);
+//    delete(registerButton);
+//    delete(ShowPassword);
+//    delete(HidePassword);
+//    delete(rememberAccountCheckbox);
+//    delete(usernameLineEdit);
+//    delete(passwordLineEdit);
+//    delete(spacer1);
+//    delete(spacer2);
+//    delete(spacer3);
+//    delete(spacer4);
+//    delete(stackedWidget);qDebug()<<"123";
+//    delete(HBoxLayout);qDebug()<<"123";
+//    delete(backgroundWidget);qDebug()<<"123";
+//    delete(GridLayout);qDebug()<<"123";
+
+
 }
 

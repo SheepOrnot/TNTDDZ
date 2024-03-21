@@ -16,6 +16,7 @@ SOURCES += \
     lobbywidget.cpp \
     main.cpp \
     mainwindow.cpp \
+    settingwidget.cpp \
     widgetargcard.cpp \
     widgetargplayer.cpp \
     widgetargroom.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     gamewidget.h \
     lobbywidget.h \
     mainwindow.h \
+    settingwidget.h \
     widgetargcard.h \
     widgetargplayer.h \
     widgetargroom.h \
@@ -37,7 +39,8 @@ FORMS += \
     findandsignupwidget.ui \
     gamewidget.ui \
     lobbywidget.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    settingwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

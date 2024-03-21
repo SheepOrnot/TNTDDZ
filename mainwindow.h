@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "backgroundwidget.h"
 #include "findandsignupwidget.h"
+#include "lobbywidget.h"
 #include <QPushButton>
 #include <QCheckBox>
 #include <QLineEdit>
@@ -24,7 +25,7 @@ public:
     ~MainWindow();
 
 private slots:
-    //void onLoginButtonClicked();
+    void onLoginButtonClicked();
 
     void onForgetPasswordButtonClicked();
     void onRegisterButtonClicked();
@@ -32,14 +33,20 @@ private slots:
     void onHidePasswordClicked();
 private:
     Ui::MainWindow *ui;
-    BackgroundWidget *m_backgroundWidget;
-    QPushButton *loginButton;
-    QPushButton *forgetPasswordButton;
-    QPushButton *registerButton;
-    QPushButton *ShowPassword,*HidePassword;
-    QCheckBox *rememberAccountCheckbox;
-    QLineEdit *usernameLineEdit;
-    QLineEdit *passwordLineEdit;
-    QStackedWidget *stackedWidget;
+    BackgroundWidget *backgroundWidget = nullptr;
+    QPushButton *loginButton= nullptr;
+    QPushButton *forgetPasswordButton= nullptr;
+    QPushButton *registerButton= nullptr;
+    QPushButton *ShowPassword= nullptr,*HidePassword= nullptr;
+    QCheckBox *rememberAccountCheckbox= nullptr;
+    QLineEdit *usernameLineEdit= nullptr;
+    QLineEdit *passwordLineEdit= nullptr;
+    QStackedWidget *stackedWidget= nullptr;
+    QGridLayout *GridLayout= nullptr;
+    QHBoxLayout *HBoxLayout= nullptr;
+    QSpacerItem *spacer1= nullptr;
+    QSpacerItem *spacer2= nullptr;
+    QSpacerItem *spacer3= nullptr;
+    QSpacerItem *spacer4= nullptr;
 };
 #endif // MAINWINDOW_H
