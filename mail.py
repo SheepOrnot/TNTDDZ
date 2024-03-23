@@ -33,7 +33,7 @@ def write_email(user_name, to, code):
     # 邮件的基础设置
     email['Subject'] = Header('斗地主验证码', 'utf-8').encode()
     email['To'] = to
-    email['From'] = f'冷锋科技 <{user_name}>'
+    email['From'] = f'=?UTF-8?B?5Ya36ZSL56eR5oqA?= <{user_name}>'
     # 添加文本
     text = MIMEText('[冷锋科技]验证码：'+str(code)+'\n'+'您正在使用邮箱登录验证码注册/找回密码功能，该验证码五分钟内有效，请勿泄露给他人使用。', 'plain', 'utf-8')
     email.attach(text)

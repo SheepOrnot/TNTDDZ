@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test's forum</title>
+    <style>
+        h1,form {text-align: center;}
+        textarea {width:800px;height:200px;}
+        div.post {
+            border: 5px solid #888;
+            padding: 20px 20px;
+            margin: 20px 20%%; }
+        hr.postbound {width:50%%;}
+        em.date {color: #888;}
+    </style>
+</head>
+<body>
+    <h1>test's forum</h1>
+    <form action="" method=post>
+        <div>
+            <textarea name="content" id="content" cols="30" rows="10"></textarea>
+        </div> 
+        <div>
+            <button id="go" name="bt1" type="submit">Enter there to post in test's forum</button>
+            <button id="del" name="bt2" type="submit">delete a slice of data from forum</button>
+        </div>
+    </form>
+    
+    <!-- post内容会在这里 -->
+    %s
+</body>
+</html>

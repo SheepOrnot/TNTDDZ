@@ -9,31 +9,131 @@ import mail
 #import sendcard
 from flask_socketio import SocketIO, emit, disconnect, join_room, leave_room
 from flask import Blueprint
+from flask import render_template
+import json
+import redis
 
+room_db = redis.Redis(host='127.0.0.1', port=6379, db=0)
+db = 'room_dbase'
 
+connected_client = []
 
+rooms = []
+room_id = 1
 app = Flask(__name__)
+socketio = SocketIO()
+socketio.init_app(app, cors_allowed_origins='*')
 
-# #todo
-# socket_bp = Blueprint('my_blueprint',__name__)
-# def create_app():
-#     app = Flask(__name__)
-#     socketio.init_app(app) 
-#     #app.register_blueprint(socket_bp)
-#     return app
-
-# socketio = SocketIO()
-# app = create_app()
-# @socketio.on('connect')
-# def Handleconnect():
-#     print("客户端和服务器建立连接")
-
-# @socketio.on('disconnnect')
-# def Handledisconnect():
-#     print('客户端和服务器断开连接')
-# #todo
 
 UserData = sl.connect('D:\\server\\userdata.db',check_same_thread=False)
+
+@app.route('/')
+def index():
+     return render_template('test.html')
+
+
+@socketio.on('create_room')
+def Create_room(data):
+    global room_id
+    data_room_id = str(room_id)
+    
+    data = json.loads(data)
+    
+    data_account = data.get('account')
+    room_db.set(data_account,data_room_id)
+
+    join_room(room_id)
+    keys = room_db.keys()
+
+    # 遍历每个键，并输出键和对应的值
+    for key in keys:
+        value = room_db.get(key)
+        print(key.decode(), "->", value.decode())
+
+    emit('server_response',room_id)
+    room_id = room_id+1
+    return str(room_id - 1) 
+
+
+@socketio.on('join_room')
+def Join_room(data):
+    ##################################
+    # 获取所有键
+    keys = room_db.keys()
+    print("--------------------加入时候数据库内数据")
+    # 遍历每个键，并输出键和对应的值
+    for key in keys:
+        value = room_db.get(key)
+        print(key.decode(), "->", value.decode())
+    ##################################
+
+    data = json.loads(data)
+    data_room_id = data.get("roomid")
+    
+    
+    count = 0
+    Find = False
+    for key in keys:
+        value1 = room_db.get(key)
+        if value1.decode() == data_room_id:
+            count += 1
+            Find = True
+    print("当前房间中人数为",count)
+
+    data_account = data.get("account")
+    
+    if count >= 3:
+        print("当前房间已满")
+        return False
+    elif Find == False:
+        print("加入的房间不存在")
+        emit('server_response','房间不存在')
+        
+    else:
+        join_room(data_room_id)
+        room_db.set(data_account,data_room_id)
+        print(request.sid,"已经成功加入")
+        emit('server_response','加入房间成功')
+        print("--------------------",room_db.get(data_account))
+        return True
+    
+    
+    
+@socketio.on('leave_room')
+def Leave_room(data):
+
+
+    ##############################################
+    # 获取所有键
+    keys = room_db.keys()
+    print("--------------------删除前数据库内数据")
+    # 遍历每个键，并输出键和对应的值
+    for key in keys:
+        value = room_db.get(key)
+        print(key.decode(), "->", value.decode())
+    ##############################################
+
+
+
+
+    data = json.loads(data)
+    print("要断开连接的数据是",data)
+    data_account = data.get("account")
+    data_room_id = data.get("roomid")
+    room_db.delete(data_account)
+    leave_room(data_room_id)
+    print("删除成功")
+    emit('server_response','退出房间成功')
+    ######################################
+    # 获取所有键
+    keys = room_db.keys()
+    print("删除后数据库内容")
+    # 遍历每个键，并输出键和对应的值
+    for key in keys:
+        value = room_db.get(key)
+        print(key.decode(), "->", value.decode())
+    ######################################
+    return True
 
 
 
@@ -52,7 +152,7 @@ def SignupMailPost():
     print(SignupMailData)
 
     mailData = SignupMailData.get("mail")
-    
+    print('mail=======================',mailData)
     code = mail.generate_verification_code()
 
     global code5minute
@@ -69,7 +169,7 @@ def SignupPost():
     cursor.execute('SELECT COUNT(*) FROM UserTable')
 
     accountData = str(cursor.fetchone()[0])
-    accountData = accountData.fill(11)
+    accountData = accountData.zfill(11)
 
     print("accountData ==",accountData)
 
@@ -77,7 +177,7 @@ def SignupPost():
     usernameData = SignupData.get("username")
     codeData = SignupData.get("code")
     passwordData = SignupData.get("password")
-
+    global code5minute
     if str(codeData) == code5minute:
         passwordData = hashlib.md5(passwordData.encode()).digest().hex()
         UserDataDB = [usernameData,accountData,mailData,passwordData]
@@ -180,10 +280,10 @@ def PasswordForgetMailPost():
 cursor = UserData.cursor()
 print("userdata")
 CreateTable = '''CREATE TABLE UserTable (Uusername char(20),Uaccount char(20),Umail char(50),Upassword char(20),primary key(Uaccount))'''
-
+#cursor.execute(CreateTable)
 
     
-#socketio.run(app,debug = True)  
-app.run(host="0.0.0.0",port=22222)
+
+socketio.run(app,port=22222,debug= True)
 
 UserData.close()
