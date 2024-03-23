@@ -12,6 +12,7 @@
 #include <QStackedWidget>
 #include <QLabel>
 #include<QSpacerItem>
+#include<QRegularExpressionValidator>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -23,7 +24,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    QString EmailOrUid="";            //输入的用户名，点击登录时赋值
+    QString Password = "";            //输入的密码，点击登录时赋值
 private slots:
     void onLoginButtonClicked();
 
@@ -48,5 +50,7 @@ private:
     QSpacerItem *spacer2= nullptr;
     QSpacerItem *spacer3= nullptr;
     QSpacerItem *spacer4= nullptr;
+    QRegularExpressionValidator *PasswordValidator = nullptr;
+    QRegularExpressionValidator *UsernameValidator = nullptr;
 };
 #endif // MAINWINDOW_H

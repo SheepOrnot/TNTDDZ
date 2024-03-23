@@ -12,26 +12,44 @@ FindAndSignUpWidget::FindAndSignUpWidget(int _mode,QWidget *parent):
     ui->Password1LineEdit->hide();
     ui->Password2LineEdit->hide();
     ui->EnterPushButton->hide();
+
     QIcon MailIcon(":/image/image/Icon/mail.png");
     ui->MailLineEdit->setClearButtonEnabled(true);// 添加清除按钮
     ui->MailLineEdit->setPlaceholderText("Email");
     ui->MailLineEdit->addAction(MailIcon, QLineEdit::LeadingPosition); // 添加图标（LeadingPosition为左侧位置）
+    QRegularExpression EmailRegex("^\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\\b$");
+    EmailValidator = new QRegularExpressionValidator(EmailRegex, this);
+    ui->MailLineEdit->setValidator(EmailValidator);
+    ui->MailLineEdit->setMaxLength(50);
 
     QIcon KeyIcon(":/image/image/Icon/key.png");
     ui->KeyLineEdit->setClearButtonEnabled(true);// 添加清除按钮
     ui->KeyLineEdit->setPlaceholderText("Verification code");
     ui->KeyLineEdit->addAction(KeyIcon, QLineEdit::LeadingPosition); // 添加图标（LeadingPosition为左侧位置）
+    QRegularExpression VerificationCodeRegex("^\\d{6}$");
+    VerificationCodeValidator = new QRegularExpressionValidator(VerificationCodeRegex, this);
+    ui->KeyLineEdit->setValidator(VerificationCodeValidator);
 
     QIcon UsernameIcon(":/image/image/Icon/username.png");
     ui->UsernameLineEdit->setClearButtonEnabled(true); // 添加清除按钮
     ui->UsernameLineEdit->setPlaceholderText("Username");
     ui->UsernameLineEdit->addAction(UsernameIcon, QLineEdit::LeadingPosition); // 添加图标（LeadingPosition为左侧位置）
+    QRegularExpression UsernameRegex("^[\u4e00-\u9fa5A-Za-z0-9_@~!#$%^&*:<>《|]*");
+    UsernameValidator = new QRegularExpressionValidator(UsernameRegex, this);
+    ui->UsernameLineEdit->setValidator(UsernameValidator);
+    ui->UsernameLineEdit->setMaxLength(30);
 
     QIcon PasswordIcon(":/image/image/Icon/password.png");
     ui->Password1LineEdit->setEchoMode(QLineEdit::Password); // 设置密码输入框为密码模式
     ui->Password2LineEdit->setEchoMode(QLineEdit::Password); // 设置密码输入框为密码模式
     ui->Password1LineEdit->addAction(PasswordIcon, QLineEdit::LeadingPosition); // 添加图标（LeadingPosition为左侧位置）
     ui->Password2LineEdit->addAction(PasswordIcon, QLineEdit::LeadingPosition); // 添加图标（LeadingPosition为左侧位置）
+    QRegularExpression PasswordRegex("[A-Za-z0-9_.*~#!@$%^&]*");
+    PasswordValidator = new QRegularExpressionValidator(PasswordRegex, this);
+    ui->Password1LineEdit->setValidator(PasswordValidator);
+    ui->Password1LineEdit->setMaxLength(20);
+    ui->Password2LineEdit->setValidator(PasswordValidator);
+    ui->Password2LineEdit->setMaxLength(20);
 
     ShowPassword1 = new QPushButton(this);
     ShowPassword1->setIcon(QIcon(":/image/image/Icon/eye_open.png"));

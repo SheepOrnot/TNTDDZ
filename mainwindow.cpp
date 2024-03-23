@@ -35,6 +35,10 @@ MainWindow::MainWindow(QWidget *parent)
     usernameLineEdit = new QLineEdit(this);
     passwordLineEdit = new QLineEdit(this);
     passwordLineEdit->setEchoMode(QLineEdit::Password);        // 设置密码输入框为密码模式
+    QRegularExpression PasswordRegex("[A-Za-z0-9_.*~#!@$%^&]*");
+    PasswordValidator = new QRegularExpressionValidator(PasswordRegex, this);
+    passwordLineEdit->setValidator(PasswordValidator);
+    passwordLineEdit->setMaxLength(20);
 
     // 设置输入框的提示文本
     usernameLineEdit->setPlaceholderText("Account/Email");
@@ -43,6 +47,11 @@ MainWindow::MainWindow(QWidget *parent)
     passwordLineEdit->setMinimumHeight(50);
     usernameLineEdit->setStyleSheet("background-color: transparent; border: 1px solid black;");
     passwordLineEdit->setStyleSheet("background-color: transparent; border: 1px solid black;");
+
+    QRegularExpression UsernameRegex("^[\u4e00-\u9fa5A-Za-z0-9_@~!#$%^&*:<>《|]*");
+    UsernameValidator = new QRegularExpressionValidator(UsernameRegex, this);
+    usernameLineEdit->setValidator(UsernameValidator);
+    usernameLineEdit->setMaxLength(30);
 
     QIcon MailIcon(":/image/image/Icon/mail.png");
     usernameLineEdit->setClearButtonEnabled(true); // 添加清除按钮
@@ -57,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
     ShowPassword->setGeometry(430,15,20,20);
     ShowPassword->setStyleSheet("QPushButton { background-color: transparent;}");
     ShowPassword->setStyleSheet("border:0px");
-    ShowPassword->hide();
+
     connect(ShowPassword, &QPushButton::clicked, this, &MainWindow::onShowPasswordClicked);
 
     HidePassword = new QPushButton(passwordLineEdit);
@@ -66,6 +75,7 @@ MainWindow::MainWindow(QWidget *parent)
     HidePassword->setGeometry(430,15,20,20);
     HidePassword->setStyleSheet("QPushButton { background-color: transparent;}");
     HidePassword->setStyleSheet("border:0px");
+    HidePassword->hide();
     connect(HidePassword, &QPushButton::clicked, this, &MainWindow::onHidePasswordClicked);
 
     GridLayout = new QGridLayout(backgroundWidget);
@@ -121,6 +131,8 @@ void MainWindow::onHidePasswordClicked()
 }
 void MainWindow::onLoginButtonClicked()
 {
+    EmailOrUid = usernameLineEdit->text();
+    Password = passwordLineEdit->text();
     LobbyWidget *lobbyWidget = new LobbyWidget();
     lobbyWidget->show();
              //改为delete，先delete所有成员指针

@@ -8,13 +8,20 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     //*******本地获取的配置数据
+    //Width = 2560; Height = 1440;
     Width = 1920; Height = 1080;
+    //Width = 1200; Height = 900;
+    //Width = 800; Height = 600;
+    //Width = 400; Height = 300;
+    radius = Height*0.047*0.5;
     //*******end
 
     //*******从服务器获取的配置数据（测试用）
     ProfileImagePath = ":/image/image/Profile/mjq.jpg";
     BeanNum = "12345";
     DiamondNum = "1234567";
+    Username = "冷锋";
+    UID = "00000000000";
     //*******end
     RollImageIndex = 0;
     this->setFixedSize(Width,Height);
@@ -36,6 +43,7 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
 
     ui->SettingBtn->setIcon(QIcon(":/image/image/Icon/setting.png"));
     ui->SettingBtn->setStyleSheet("QPushButton { background-color: transparent; }");
+    connect(ui->SettingBtn,&QPushButton::clicked,this,&LobbyWidget::onSettingBtnClicked);
 
     ui->RuleBtn->setIcon(QIcon(":/image/image/Icon/rule.png"));
     ui->RuleBtn->setStyleSheet("QPushButton { background-color: transparent; }");
@@ -73,13 +81,21 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
 
     ui->BeanEdit->setText(BeanNum);
     ui->BeanEdit->setReadOnly(true);
-    ui->BeanEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: 25px; background-color: transparent;font: 12pt Segoe Script; }");
+    ui->BeanEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
     ui->BeanEdit->setAlignment(Qt::AlignHCenter);
 
     ui->DiamondEdit->setText(DiamondNum);
     ui->DiamondEdit->setReadOnly(true);
-    ui->DiamondEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: 25px; background-color: transparent;font: 12pt Segoe Script; }");
+    ui->DiamondEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
     ui->DiamondEdit->setAlignment(Qt::AlignHCenter);
+
+    ui->UsernameLabel->setStyleSheet("QLabel {font: 12pt 华文新魏; background-color: yellow}");
+    ui->UsernameLabel->setText(Username);
+
+    ui->UidLabel->setStyleSheet("QLabel {font: 12pt Segoe Script; background-color: yellow}");
+    ui->UidLabel->setText(UID);
+
+    connect(ui->ClassicModeBtn,&QPushButton::clicked,this,&LobbyWidget::onClassicModeBtnClicked);
 }
 
 LobbyWidget::~LobbyWidget()
@@ -106,14 +122,24 @@ void LobbyWidget::ResolutionChanged(int _Width,int _Height)
     ui->RollLabel->setGeometry(0.604*Width,0.166*Height,0.328*Width,0.463*Height);
     ui->ClassicModeBtn->setGeometry(0.682*Width,0.652*Height,0.161*Width,0.084*Height);
     ui->ExitGameBtn->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
+    ui->BeanEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
+    ui->DiamondEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
     update();
 }
-
+void LobbyWidget::onSettingBtnClicked()
+{
+    settingWidget = new SettingWidget(Width,Height);
+    settingWidget->show();
+}
+void LobbyWidget::onClassicModeBtnClicked()
+{
+    gameWidget = new GameWidget(Width,Height);
+    gameWidget->show();
+}
 void LobbyWidget::RollImage()
 {
 
     QPixmap nextPixmap(RollPixmapsPath[RollImageIndex]);
-    qDebug()<<"Next Picture";
     QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(this);
     ui->RollLabel->setGraphicsEffect(effect);
     QPropertyAnimation *animation = new QPropertyAnimation(effect, "opacity");

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPushButton>
+#include<QRegularExpressionValidator>
 namespace Ui {
 class FindAndSignUpWidget;
 }
@@ -13,9 +14,20 @@ class FindAndSignUpWidget : public QWidget
 
 public:
     explicit FindAndSignUpWidget(int mode,QWidget *parent = nullptr);
-    int mode;
-    QPushButton *ShowPassword1,*HidePassword1,*ShowPassword2,*HidePassword2;
+    QString Email = "";
+    QString VerificationCode= "";
+    QString Username= "";
+    QString Password1= "";
+    QString Password2= "";
+
     ~FindAndSignUpWidget();
+private:
+    QPushButton *ShowPassword1,*HidePassword1,*ShowPassword2,*HidePassword2;
+    int mode;
+    QRegularExpressionValidator *PasswordValidator = nullptr;
+    QRegularExpressionValidator *EmailValidator = nullptr;
+    QRegularExpressionValidator *VerificationCodeValidator = nullptr;
+    QRegularExpressionValidator *UsernameValidator = nullptr;
 
 private slots:
     void on_EnterKeyPushButton_clicked();

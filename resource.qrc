@@ -48,7 +48,6 @@
         <file>image/Cards_0/ace_of_diamonds.png</file>
         <file>image/Cards_0/ace_of_hearts.png</file>
         <file>image/Cards_0/ace_of_spades.png</file>
-        <file>image/Cards_0/black_joker.png</file>
         <file>image/Cards_0/jack_of_clubs.png</file>
         <file>image/Cards_0/jack_of_diamonds.png</file>
         <file>image/Cards_0/jack_of_hearts.png</file>
@@ -61,7 +60,6 @@
         <file>image/Cards_0/queen_of_diamonds.png</file>
         <file>image/Cards_0/queen_of_hearts.png</file>
         <file>image/Cards_0/queen_of_spades.png</file>
-        <file>image/Cards_0/red_joker.png</file>
         <file>image/Profile/mjq.jpg</file>
         <file>image/Icon/buy.png</file>
         <file>image/Icon/diamond.png</file>
@@ -74,5 +72,10 @@
         <file>image/Profile/zzy.jpg</file>
         <file>image/Icon/rule.png</file>
         <file>image/Icon/setting.png</file>
+        <file>image/Cards_0/black_of_joker.png</file>
+        <file>image/Cards_0/red_of_joker.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>image/Cards_0/back.jpg</file>
     </qresource>
 </RCC>

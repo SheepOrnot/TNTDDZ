@@ -39,7 +39,8 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(85, 255, 0);</string>
+    <string notr="true">background-color: rgb(255, 255, 0);
+font: 9pt &quot;华文新魏&quot;;</string>
    </property>
    <property name="text">
     <string>Username</string>
@@ -55,7 +56,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(85, 255, 127);</string>
+    <string notr="true">background-color: rgb(255, 255, 0);</string>
    </property>
    <property name="text">
     <string>Uid</string>

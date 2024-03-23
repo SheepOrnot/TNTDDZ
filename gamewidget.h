@@ -13,11 +13,12 @@ class GameWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit GameWidget(QWidget *parent = nullptr);
+    explicit GameWidget(int _Width,int _Height,QWidget *parent = nullptr);
     ~GameWidget();
     int Width,Height;
+    QString ProfilePath;
     std::vector<WidgetCard> PreviousPlayerOutCards,NextPlayerOutCards,PlayerOutCards,PlayerHandCards,FinalCards;
-    WidgetArgCard CardArg;
+    WidgetArgCard CardArg;             //卡牌参数对象
     const QString TypeIndex[6] = { "",
         "spades",
         "hearts",
@@ -25,7 +26,7 @@ public:
         "diamonds",
         "joker"
     };
-    const QString PointIndex[16] = {"","","",
+    const QString PointIndex[18] = {"","","",
         "3",
         "4",
         "5",
@@ -39,6 +40,8 @@ public:
         "king",
         "ace",
         "2",
+        "black",
+        "red"
     };
 
 private:
@@ -47,9 +50,9 @@ private:
     WidgetCard AllCards[54];
     void InitAllCards();
     //将CardArg中的OutCard和HandCard译成vector<WidgetCard>对象，包含Point Type Path
-//    std::vector<WidgetCard> Transform_To_Vector(std::bitset<54> BitsetCards);
+    std::vector<WidgetCard> Transform_To_Vector(std::bitset<54> BitsetCards);
     //将PreviousPlayerOutCards等译成Bitset对象，包含HandCard和OutCard
-//    std::bitset<54> Transform_To_Bitset(std::vector<WidgetCard> VectorCards);
+    std::bitset<54> Transform_To_Bitset(std::vector<WidgetCard> VectorCards);
 private slots:
 //    void ResolutionChanged(int _Width,int _Height);      //接收设置界面发出的分辨率修改信号。
 };
