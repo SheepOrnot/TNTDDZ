@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "widgetargcard.h"
 #include "widgetcard.h"
+#include<QListView>
 namespace Ui {
 class GameWidget;
 }
@@ -16,9 +17,17 @@ public:
     explicit GameWidget(int _Width,int _Height,QWidget *parent = nullptr);
     ~GameWidget();
     int Width,Height;
-    QString ProfilePath;
     std::vector<WidgetCard> PreviousPlayerOutCards,NextPlayerOutCards,PlayerOutCards,PlayerHandCards,FinalCards;
     WidgetArgCard CardArg;             //卡牌参数对象
+    int PreviousProfileNum,NextProfileNum,PlayerProfileNum;
+private:
+    Ui::GameWidget *ui;
+    int CardStyle = 0;
+    WidgetCard AllCards[54];
+    QPixmap ProfilePixmap1,ProfilePixmap2,ProfilePixmap3,
+        IdentityPixmap1,IdentityPixmap2,IdentityPixmap3,
+        ClockPixmap;
+    QString PreviousIdentity,NextIdentity,PlayerIdentity;
     const QString TypeIndex[6] = { "",
         "spades",
         "hearts",
@@ -43,18 +52,26 @@ public:
         "black",
         "red"
     };
-
+    const QString ProfilePathIndex[7] = {
+        ":/image/image/Profile/mjq.jpg",
+        ":/image/image/Profile/syx.jpg",
+        ":/image/image/Profile/lyw.jpg",
+        ":/image/image/Profile/dcx.jpg",
+        ":/image/image/Profile/zzy.jpg",
+        ":/image/image/Profile/yhx.jpg",
+        ":/image/image/Profile/hjl.jpg"
+    };
 private:
-    Ui::GameWidget *ui;
-    int CardStyle = 0;
-    WidgetCard AllCards[54];
     void InitAllCards();
-    //将CardArg中的OutCard和HandCard译成vector<WidgetCard>对象，包含Point Type Path
-    std::vector<WidgetCard> Transform_To_Vector(std::bitset<54> BitsetCards);
-    //将PreviousPlayerOutCards等译成Bitset对象，包含HandCard和OutCard
-    std::bitset<54> Transform_To_Bitset(std::vector<WidgetCard> VectorCards);
+//    void PlaceHandCrads();
+//    void PlacePlayerOutCards();
+//    void PlacePreviousOutCards();
+//    void PlaceNextOutCards();
+    std::vector<WidgetCard> Transform_To_Vector(std::bitset<54> BitsetCards); //将CardArg中的OutCard和HandCard译成vector<WidgetCard>对象，包含Point Type Path
+    std::bitset<54> Transform_To_Bitset(std::vector<WidgetCard> VectorCards); //将PreviousPlayerOutCards等译成Bitset对象，包含HandCard和OutCard
+    void ShowIdentityIcon();
 private slots:
-//    void ResolutionChanged(int _Width,int _Height);      //接收设置界面发出的分辨率修改信号。
+    void ResolutionChanged(int _Width,int _Height);      //接收设置界面发出的分辨率修改信号。
 };
 
 #endif // GAMEWIDGET_H

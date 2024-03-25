@@ -40,12 +40,14 @@ private:
     int RollImageIndex;
     SettingWidget *settingWidget;
     GameWidget *gameWidget;
+    QPushButton *GameExitBtn;
 public slots:
     void ResolutionChanged(int _Width,int _Height);
     //void ProfileChanged(int _Width,int _Height);
 private slots:
     void onSettingBtnClicked();
     void onClassicModeBtnClicked();
+    void onExitGameBtnClicked();
     void RollImage();
 signals:
     void ChangeResolutions(int _Width,int _Height);            //********测试用 ;

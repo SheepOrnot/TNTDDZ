@@ -74,6 +74,10 @@
         <file>image/Icon/setting.png</file>
         <file>image/Cards_0/black_of_joker.png</file>
         <file>image/Cards_0/red_of_joker.png</file>
+        <file>image/Icon/farmer.png</file>
+        <file>image/Icon/landlord.png</file>
+        <file>image/Icon/quitgame.png</file>
+        <file>image/Icon/clock.png</file>
     </qresource>
     <qresource prefix="/">
         <file>image/Cards_0/back.jpg</file>
