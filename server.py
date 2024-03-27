@@ -31,6 +31,10 @@ UserData = sl.connect('D:\\server\\userdata.db',check_same_thread=False)
 def index():
      return render_template('test.html')
 
+# 对特定值进行计数
+def count_value(key):
+    count = redis_db.incr(key)
+    return count
 
 @socketio.on('create_room')
 def Create_room(data):
@@ -41,11 +45,13 @@ def Create_room(data):
     
     data_account = data.get('account')
     redis_db.set(data_account,data_room_id)
-    
+    join_room(data_account)#用户自己的房间用于服务器区分用户
     join_room(room_id)
     check_room = str(room_id)+"_room"
-    redis_db.set(check_room,'1')
-
+    exist_room = str(room_id)+"_exist_room"
+    redis_db.set(check_room,0)
+    redis_db.set(exist_room,1)
+    count_value(check_room)
 
     keys = redis_db.keys()
 
@@ -59,6 +65,7 @@ def Create_room(data):
     return str(room_id - 1) 
 
 
+
 @socketio.on('join_room')
 def Join_room(data):
     ##################################
@@ -70,27 +77,24 @@ def Join_room(data):
         value = redis_db.get(key)
         print(key.decode(), "->", value.decode())
     ##################################
-
+    
     data = json.loads(data)
     data_room_id = data.get("roomid")
+    check_room = str(room_id-1)+"_room"
+    count_value(check_room)
     
-    
-    count = 0
-    Find = False
-    for key in keys:
-        value1 = redis_db.get(key)
-        if value1.decode() == data_room_id:
-            count += 1
-            Find = True
-    print("当前房间中人数为",count)
+    count = redis_db.get(check_room)
+    print("当前房间中人数为",count.decode())
 
     data_account = data.get("account")
-    
-    if count >= 3:
+    join_room(data_account)
+    print("str(room_id)",str(room_id))
+    print("redis_db.get(str(room_id)+)",redis_db.get(str(room_id-1)+"_exist_room"))
+    if int(count.decode()) >= 3:
         print("当前房间已满")
         emit('sever_response','房间人数已满，无法加入')
         return False
-    elif Find == False:
+    elif redis_db.get(str(room_id-1)+"_exist_room") == None:
         print("加入的房间不存在")
         emit('server_response','房间不存在')
         
@@ -147,6 +151,33 @@ ready_player = ReadyPlayer()
 ready_player.num = 0
 ready_player.account = []
 
+
+
+class HandCards(threading.local):
+    def __init__(self):
+        self.all_cards = list(range(1,55))
+        self.player_1_cards = []
+        self.player_2_cards = []
+        self.player_3_cards = []
+        self.lord_cards = []
+cards = HandCards()
+def wash_cards():
+    
+    random.shuffle(cards.all_cards)
+    cards.player_1_cards = cards.all_cards[:17]
+        
+    cards.all_cards = cards.all_cards[17:]
+    cards.player_2_cards = cards.all_cards[:17]
+    cards.all_cards = cards.all_cards[17:]
+    cards.player_3_cards = cards.all_cards[:17]
+    cards.all_cards = cards.all_cards[17:]
+    cards.lord_cards = cards.all_cards
+
+
+def package_cards(group):
+    return int(sendcard.changetostring(sendcard.transfercard(group)),2)
+
+
 @socketio.on('ready')
 def ready(data):
     data = json.loads(data)
@@ -160,35 +191,17 @@ def ready(data):
     print(data_account + "已经准备")
     if ready_player.num == 3:
         emit('server_response','所有玩家都已经准备',room = room_now)
+        wash_cards()
 
+        print("一号玩家的手牌是",package_cards(cards.player_1_cards),"一号玩家的account:",ready_player.account[0])
+        print("二号玩家的手牌是",package_cards(cards.player_2_cards),"二号玩家的account:",ready_player.account[1])
+        print("三号玩家的手牌是",package_cards(cards.player_3_cards),"三号玩家的account:",ready_player.account[2])
+        emit('server_response',package_cards(cards.player_1_cards),room = ready_player.account[0])
+        emit('server_response',package_cards(cards.player_2_cards),room = ready_player.account[1])
+        emit('server_response',package_cards(cards.player_3_cards),room = ready_player.account[2])
     return data_account + "已经准备" 
 
 
-class HandCards(threading.local):
-    def __init__(self):
-        all_cards = list(range(1,55))
-# 生成1到54的所有数字  
-all_numbers = list(range(1, 55))  
-  
-# 打乱数字顺序  
-random.shuffle(all_numbers)  
-  
-# 分三次取出十七个数字  
-group1 = all_numbers[:17]  
-all_numbers = all_numbers[17:]  # 移除已经取出的数字  
-  
-group2 = all_numbers[:17]  
-all_numbers = all_numbers[17:]  # 移除已经取出的数字  
-
-group3 = all_numbers[:17]  
-all_numbers = all_numbers[17:]  # 移除已经取出的数字  
-# 剩余的三个数字作为第四组  
-group4 = all_numbers  
-
-# @socketio.on('sendcard')
-# def sendCard(data):
-#     global group1,group2,
-#     sendcard.transfercard()
 
 
 @app.route('/battle',methods = ["POST"])#存储对战数据
@@ -351,7 +364,7 @@ cursor = UserData.cursor()
 print("userdata")
 CreateTable = '''CREATE TABLE UserTable (Uusername char(20),Uaccount char(20),Umail char(50),Upassword char(20),primary key(Uaccount))'''
 #cursor.execute(CreateTable)
-
+redis_db.flushdb()
     
 
 socketio.run(app,port=22222,debug= True)
