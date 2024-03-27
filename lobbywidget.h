@@ -20,7 +20,7 @@ public:
 private:
     Ui::LobbyWidget *ui;
     int Width=1920,Height=1080;     //用于修改分辨率&实例化新的窗口时的参数。
-    int radius = 25;
+    int radius;
 
     QString ProfileImagePath;        //头像图片(服务器获取)
     QString BeanNum,DiamondNum;      //豆和钻石数量(服务器获取)
