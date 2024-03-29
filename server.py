@@ -36,6 +36,10 @@ def count_value(key):
     count = redis_db.incr(key)
     return count
 
+def decrease_value(key):
+    count = redis_db.decr(key)
+    return count
+
 @socketio.on('create_room')
 def Create_room(data):
     global room_id
@@ -60,7 +64,7 @@ def Create_room(data):
         value = redis_db.get(key)
         print(key.decode(), "->", value.decode())
 
-    emit('server_response',room_id)
+    emit('server_response',jsonify(type = 4,roomid = room_id).data.decode())
     room_id = room_id+1
     return str(room_id - 1) 
 
@@ -80,8 +84,9 @@ def Join_room(data):
     
     data = json.loads(data)
     data_room_id = data.get("roomid")
+    global room_id
     check_room = str(room_id-1)+"_room"
-    count_value(check_room)
+    
     
     count = redis_db.get(check_room)
     print("当前房间中人数为",count.decode())
@@ -92,17 +97,18 @@ def Join_room(data):
     print("redis_db.get(str(room_id)+)",redis_db.get(str(room_id-1)+"_exist_room"))
     if int(count.decode()) >= 3:
         print("当前房间已满")
-        emit('sever_response','房间人数已满，无法加入')
+        emit('sever_response',jsonify(type = 5,status = 2).data.decode())
         return False
     elif redis_db.get(str(room_id-1)+"_exist_room") == None:
         print("加入的房间不存在")
-        emit('server_response','房间不存在')
+        emit('server_response',jsonify(type = 5,status = 0).data.decode())
         
     else:
+        count_value(check_room)
         join_room(data_room_id)
         redis_db.set(data_account,data_room_id)
         print(request.sid,"已经成功加入")
-        emit('server_response','加入房间成功')
+        emit('server_response',jsonify(type = 5,status = 1).data.decode())
         print("--------------------",redis_db.get(data_account))
         return True
     
@@ -122,17 +128,18 @@ def Leave_room(data):
         print(key.decode(), "->", value.decode())
     ##############################################
 
-
-
-
     data = json.loads(data)
     print("要断开连接的数据是",data)
     data_account = data.get("account")
     data_room_id = data.get("roomid")
+    check_room = str(room_id-1)+"_room"
+    
+    decrease_value(check_room)
     redis_db.delete(data_account)
+
     leave_room(data_room_id)
     print("删除成功")
-    emit('server_response','退出房间成功')
+    emit('server_response',jsonify(type = 6,status = 1).data.decode())
     ######################################
     # 获取所有键
     keys = redis_db.keys()
@@ -190,15 +197,15 @@ def ready(data):
     emit('server_response',data_account,room = room_now)
     print(data_account + "已经准备")
     if ready_player.num == 3:
-        emit('server_response','所有玩家都已经准备',room = room_now)
+        #emit('server_response','所有玩家都已经准备',room = room_now)
         wash_cards()
 
         print("一号玩家的手牌是",package_cards(cards.player_1_cards),"一号玩家的account:",ready_player.account[0])
         print("二号玩家的手牌是",package_cards(cards.player_2_cards),"二号玩家的account:",ready_player.account[1])
         print("三号玩家的手牌是",package_cards(cards.player_3_cards),"三号玩家的account:",ready_player.account[2])
-        emit('server_response',package_cards(cards.player_1_cards),room = ready_player.account[0])
-        emit('server_response',package_cards(cards.player_2_cards),room = ready_player.account[1])
-        emit('server_response',package_cards(cards.player_3_cards),room = ready_player.account[2])
+        emit('server_response',jsonify(type = 8,handcards = package_cards(cards.player_1_cards),account = ready_player.account[0]).data.decode(),room = ready_player.account[0])
+        emit('server_response',jsonify(type = 8,handcards = package_cards(cards.player_2_cards),account = ready_player.account[1]).data.decode(),room = ready_player.account[1])
+        emit('server_response',jsonify(type = 8,handcards = package_cards(cards.player_3_cards),account = ready_player.account[2]).data.decode(),room = ready_player.account[2])
     return data_account + "已经准备" 
 
 
@@ -290,10 +297,10 @@ def LoginPost():
     print("-----------------mail_match_result",len(queryresult_mail))
     
     if len(queryresult_account) == 0 and len(queryresult_mail) == 0:
-        Loginresult = False
+        return jsonify(type = 1,loginStatus = 0)    
     else:
-        Loginresult = True
-    return jsonify(result = Loginresult)
+        return jsonify(type = 1,loginStatus = 1)
+
 
 @app.route('/passwordforget',methods = ["POST"])#找回密码（验证是否发生过注册）
 def PasswordForgetPost():
