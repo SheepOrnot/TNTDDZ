@@ -83,13 +83,16 @@ def Join_room(data):
     ##################################
     
     data = json.loads(data)
+
     data_room_id = data.get("roomid")
     global room_id
     check_room = str(room_id-1)+"_room"
-    
+
     
     count = redis_db.get(check_room)
-    print("当前房间中人数为",count.decode())
+    print("当前房间中人数为",count)
+    if count == None:
+        count = b'0'
 
     data_account = data.get("account")
     join_room(data_account)
