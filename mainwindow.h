@@ -13,6 +13,9 @@
 #include <QLabel>
 #include<QSpacerItem>
 #include<QRegularExpressionValidator>
+
+#include "widgetrevpacker.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -26,6 +29,9 @@ public:
     ~MainWindow();
     QString EmailOrUid="";            //输入的用户名，点击登录时赋值
     QString Password = "";            //输入的密码，点击登录时赋值
+
+    void interfaceLoginSuccess(WidgetArgPackage* arg);     //接口: 界面登录成功
+    void interfaceLoginFail(WidgetArgPackage* arg);        //接口：界面登录失败
 private slots:
     void onLoginButtonClicked();
 
@@ -52,5 +58,8 @@ private:
     QSpacerItem *spacer4= nullptr;
     QRegularExpressionValidator *PasswordValidator = nullptr;
     QRegularExpressionValidator *UsernameValidator = nullptr;
+
+    MessageCenter   *message_center;
+    WidgetRevPacker *widget_rev_packer;
 };
 #endif // MAINWINDOW_H

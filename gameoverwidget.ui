@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GameOverWidget</class>
+ <widget class="QWidget" name="GameOverWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1186</width>
+    <height>667</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLabel" name="Title">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>60</y>
+     <width>400</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);
+font: 72pt &quot;ZXF Small Pudding Trial&quot;;</string>
+   </property>
+   <property name="text">
+    <string>   胜利</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Username3">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>270</y>
+     <width>201</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Uname1（Identity）</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Username1">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>340</y>
+     <width>201</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Uname2</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Username2">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>410</y>
+     <width>201</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Uname3</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Times3">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>270</y>
+     <width>81</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>      ⨉N</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Times1">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>340</y>
+     <width>81</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>      ⨉N</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Times2">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>410</y>
+     <width>81</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>      ⨉N</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Score3">
+   <property name="geometry">
+    <rect>
+     <x>760</x>
+     <y>270</y>
+     <width>111</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>-aaaa</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Score1">
+   <property name="geometry">
+    <rect>
+     <x>760</x>
+     <y>340</y>
+     <width>111</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>+bbbb</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Score2">
+   <property name="geometry">
+    <rect>
+     <x>760</x>
+     <y>410</y>
+     <width>111</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>-cccc</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ReturnToLobby">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>520</y>
+     <width>191</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>返回大厅</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ContinueGame">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>520</y>
+     <width>191</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>继续游戏</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

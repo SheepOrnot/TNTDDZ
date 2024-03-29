@@ -9,34 +9,37 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    argclass.cpp \
     backgroundwidget.cpp \
     findandsignupwidget.cpp \
+    gameoverwidget.cpp \
     gamewidget.cpp \
     lobbywidget.cpp \
     main.cpp \
     mainwindow.cpp \
     settingwidget.cpp \
-    widgetargcard.cpp \
-    widgetargplayer.cpp \
-    widgetargroom.cpp \
     widgetcard.cpp
 
 HEADERS += \
-    argclass.h \
+    HTTPJSONSender.h \
     backgroundwidget.h \
+    common.h \
     findandsignupwidget.h \
+    gameoverwidget.h \
     gamewidget.h \
     lobbywidget.h \
     mainwindow.h \
+    messagecenter.h \
+    messagepackage.h \
+    networkrevpacker.h \
     settingwidget.h \
-    widgetargcard.h \
-    widgetargplayer.h \
-    widgetargroom.h \
-    widgetcard.h
+    threadpool.h \
+    widgetargpackage.h \
+    widgetcard.h \
+    widgetrevpacker.h
 
 FORMS += \
     findandsignupwidget.ui \
+    gameoverwidget.ui \
     gamewidget.ui \
     lobbywidget.ui \
     mainwindow.ui \
@@ -49,3 +52,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resource.qrc
+
+INCLUDEPATH += /home/fish/program/boost_1_84_0/

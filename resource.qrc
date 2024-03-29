@@ -128,12 +128,12 @@
         <file>image/Cards_1/king_of_diamonds.png</file>
         <file>image/Cards_1/king_of_hearts.png</file>
         <file>image/Cards_1/king_of_spades.png</file>
-        <file>image/Cards_1/poker_0050_card_101-(2).png</file>
         <file>image/Cards_1/queen_of_clubs.png</file>
         <file>image/Cards_1/queen_of_diamonds.png</file>
         <file>image/Cards_1/queen_of_hearts.png</file>
         <file>image/Cards_1/queen_of_spades.png</file>
         <file>image/Cards_1/red_of_joker.png</file>
+        <file>image/Cards_1/10_of_diamonds.png</file>
     </qresource>
     <qresource prefix="/">
         <file>image/Cards_1/2_of_clubs.png</file>
@@ -185,7 +185,6 @@
         <file>image/Cards_1/king_of_diamonds.png</file>
         <file>image/Cards_1/king_of_hearts.png</file>
         <file>image/Cards_1/king_of_spades.png</file>
-        <file>image/Cards_1/poker_0050_card_101-(2).png</file>
         <file>image/Cards_1/queen_of_clubs.png</file>
         <file>image/Cards_1/queen_of_diamonds.png</file>
         <file>image/Cards_1/queen_of_hearts.png</file>

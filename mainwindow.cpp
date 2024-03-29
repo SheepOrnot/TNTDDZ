@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
     usernameLineEdit->setStyleSheet("background-color: transparent; border: 1px solid black;");
     passwordLineEdit->setStyleSheet("background-color: transparent; border: 1px solid black;");
 
-    QRegularExpression UsernameRegex("^[\u4e00-\u9fa5A-Za-z0-9_@~!#$%^&*:<>《|]*");
+    QRegularExpression UsernameRegex("^[\u4e00-\u9fa5A-Za-z0-9_@~!#$%^&*:<>《|]*.[a-zA-Z]*");
     UsernameValidator = new QRegularExpressionValidator(UsernameRegex, this);
     usernameLineEdit->setValidator(UsernameValidator);
     usernameLineEdit->setMaxLength(30);
@@ -108,6 +108,14 @@ MainWindow::MainWindow(QWidget *parent)
     GridLayout->setRowStretch(2,1);
     GridLayout->setRowStretch(3,1);
     GridLayout->setRowStretch(4,0);
+
+    //***********************need global********************************
+    message_center = new MessageCenter();
+    widget_rev_packer = new WidgetRevPacker(message_center);
+
+    message_center->loadInterface("interfaceLoginSuccess", std::bind(&MainWindow::interfaceLoginSuccess, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceLoginFail",    std::bind(&MainWindow::interfaceLoginFail, this, std::placeholders::_1));
+
 }
 void MainWindow::onForgetPasswordButtonClicked()
 {
@@ -133,15 +141,37 @@ void MainWindow::onLoginButtonClicked()
 {
     EmailOrUid = usernameLineEdit->text();
     Password = passwordLineEdit->text();
+
+    WidgetArgPackage* login_submit = new WidgetArgPackage();
+    login_submit->packMessage<WidgetArgLogin>(EmailOrUid.toStdString(), EmailOrUid.toStdString(), Password.toStdString(), "");
+    widget_rev_packer->WidgetsendMessage(login_submit);
+
+}
+
+
+//********************INTERFACE****************************
+void MainWindow::interfaceLoginSuccess(WidgetArgPackage* arg)
+{
+    EmailOrUid = usernameLineEdit->text();
+    Password = passwordLineEdit->text();
     LobbyWidget *lobbyWidget = new LobbyWidget();
     lobbyWidget->show();
-             //改为delete，先delete所有成员指针
+        //改为delete，先delete所有成员指针
 
     //deleteLater();
     this->close();
     //this->deleteLater();
-
 }
+void MainWindow::interfaceLoginFail(WidgetArgPackage* arg)
+{
+    WidgetArgStatus *status = static_cast<WidgetArgStatus*>(arg->package);
+    std::cout << "Login Fail, code: " << status->status << std::endl;
+
+    delete arg;
+}
+//********************************************************
+
+
 MainWindow::~MainWindow()
 {
     delete ui;
