@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "common.h"
 #include <QMainWindow>
 #include "backgroundwidget.h"
 #include "findandsignupwidget.h"

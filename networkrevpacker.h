@@ -38,10 +38,16 @@ public:
 
         MessagePackage* message = new MessagePackage();
         //发送包到消息中心
-        switch (pt.get<int>("type"))
+        switch ((NETWORK)pt.get<int>("type"))
         {
-        case 1:
-            message->packMessage<MessageStatus>(pt.get<int>("loginStatus") == 1);
+        case NETWORK::LOGIN:
+            message->packMessage<MessageVerifyStatus>(VERIFY_TYPE::LOGIN, pt.get<int>("loginStatus"));
+            break;
+        case NETWORK::REGISTER:
+            message->packMessage<MessageVerifyStatus>(VERIFY_TYPE::REGISTER, pt.get<int>("registerStatus"));
+            break;
+        case NETWORK::FORGET_PASSWORD:
+            message->packMessage<MessageVerifyStatus>(VERIFY_TYPE::FORGET_PASSWORD, pt.get<int>("findpasswordStatus"));
             break;
 
         default:

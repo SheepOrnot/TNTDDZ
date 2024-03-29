@@ -27,10 +27,10 @@ public:
         //发送包到消息中心
         switch (current_widget_arg->widget_arg_type)
         {
-        case 1:
+        case WIDGET_ARG_TYPE::LOGIN:
             //login
             WidgetArgLogin *login_package = static_cast<WidgetArgLogin*>(current_widget_arg->package);
-            msg_ptr->packMessage<MessageLogin>(login_package->mail, login_package->accout, login_package->password);
+            msg_ptr->packMessage<MessageLogin>(LOGIN_OPCODE::LOGIN, login_package->mail, login_package->accout, login_package->password, login_package->code);
             break;
         }
 

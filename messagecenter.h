@@ -23,31 +23,100 @@ public:
     {
         switch (current_message->message_type)
         {
-        case 1:
+            case MESSAGE_TYPE::LOGIN:
+            {
+                MessageLogin *package = static_cast<MessageLogin*>(current_message->package);
+                switch(package->opcode)
+                {
+                    case LOGIN_OPCODE::LOGIN:
+                    {
+                        //login
+                        std::string login_json = "{\"mail\":\""      + package->mail + "\","
+                                                + " \"account\":\""  + package->accout + "\","
+                                                + " \"password\":\"" + package->password + "\"}";
+                        MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/login", login_json));
+                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        break;
+                    }
+                    case LOGIN_OPCODE::REGISTER_MAIL:
+                    {
+                        //register_mail
+                        std::string register_mail_json = "{\"mail\":\""     + package->mail + "\"}";
+                        MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/signupmail", register_mail_json));
+                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        break;
+                    }
+                    case LOGIN_OPCODE::REGISTER:
+                    {
+                        //register
+                        std::string register_json = "{\"mail\":\""   + package->mail     + "\","
+                                                + " \"account\":\""  + package->accout   + "\","
+                                                + " \"password\":\"" + package->password + "\","
+                                                + " \"code\":\""     + package->code     + "\"}";
+                        MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/signup", register_json));
+                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        break;
+                    }
+                    case LOGIN_OPCODE::FORGET_PASSWORD_MAIL:
+                    {
+                        //register_mail
+                        std::string register_mail_json = "{\"mail\":\""     + package->mail + "\"}";
+                        MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforgetmail", register_mail_json));
+                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        break;
+                    }
+                    case LOGIN_OPCODE::FORGET_PASSWORD:
+                    {
+                        //register
+                        std::string register_json = "{\"mail\":\""   + package->mail     + "\","
+                                                + " \"password\":\"" + package->password + "\","
+                                                + " \"code\":\""     + package->code     + "\"}";
+                        MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforget", register_json));
+                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        break;
+                    }
+                }
+            }
+            case MESSAGE_TYPE::VERIFY:
+            {
+                MessageVerifyStatus *status = static_cast<MessageVerifyStatus*>(current_message->package);
+                switch(status->type)
+                {
+                    case VERIFY_TYPE::LOGIN:
+                    {
+                        WidgetArgPackage *arg = new WidgetArgPackage();
+                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::LOGIN, status->code);
+                        
+                        std::cout << "loginStatus: " << status->code << std::endl;
+                        if(status->code == 1)
+                            current_center->WidgetInterface["interfaceLoginSuccess"](arg);
+                        else
+                            current_center->WidgetInterface["interfaceLoginFail"](arg);
+                        break;
+                    }
+                    case VERIFY_TYPE::REGISTER:
+                    {
+                        WidgetArgPackage *arg = new WidgetArgPackage();
+                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::REGISTER, status->code);
 
-            //login
-            MessageLogin *login_package = static_cast<MessageLogin*>(current_message->package);
-            std::string login_json = "{\"mail\":\""     + login_package->mail + "\","
-                                     + " \"account\":\""  + login_package->accout + "\","
-                                     + " \"password\":\"" + login_package->password + "\"}";
-            MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/login", login_json));
-            std::cout << rev_from_svr << std::endl;
-            MessageStatus *status = static_cast<MessageStatus*>(rev_from_svr->package);
-            std::cout << "loginStatus: " << status->success << std::endl;
-            if(status->success)
-            {
-                WidgetArgPackage *arg = new WidgetArgPackage();
-                arg->packMessage<WidgetArgStatus>(1, status->success);
-                current_center->WidgetInterface["interfaceLoginSuccess"](arg);
+                        std::cout << "registerStatus: " << status->code << std::endl;
+                        //TODO
+                        break;
+                    }
+                    case VERIFY_TYPE::FORGET_PASSWORD:
+                    {
+                        WidgetArgPackage *arg = new WidgetArgPackage();
+                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::FORGET_PASSWORD, status->code);
+
+                        std::cout << "findPasswordStatus: " << status->code << std::endl;
+                        //TODO
+                        break;
+                    }
+                }
+                break;
             }
-            else
-            {
-                WidgetArgPackage *arg = new WidgetArgPackage();
-                arg->packMessage<WidgetArgStatus>(1, status->success);
-                current_center->WidgetInterface["interfaceLoginFail"](arg);
-            }
-            break;
         }
+
 
         delete current_message;
     }
