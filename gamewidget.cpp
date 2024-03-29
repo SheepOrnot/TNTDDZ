@@ -44,6 +44,7 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     placeOutCards(3);
 
 //******end******
+
     //上家(previous)->1     下家(next)->2      自己->3
     ui->ProfileLabel1      ->setGeometry( 0.026*Width,  0.25 *Height,  0.063*Width,   0.121*Height);
     ui->ProfileLabel2      ->setGeometry( 0.906*Width,  0.259*Height,  0.063*Width,   0.121*Height);
@@ -74,6 +75,7 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     ui->DoubleBtn          ->setGeometry( 0.358*Width,  0.680*Height,  0.083*Width,   0.047*Height);    ui->DoubleBtn           ->hide();
     ui->UnDoubleBtn        ->setGeometry( 0.520*Width,  0.680*Height,  0.083*Width,   0.047*Height);    ui->UnDoubleBtn         ->hide();
     ui->ChatComboBox       ->setGeometry( 0.885*Width,  0.785*Height,  0.104*Width,   0.028*Height);
+    ui->RoomId             ->setGeometry( 0.830*Width,  0.020*Height,  0.070*Width,   0.048*Height);
 
     ui->SettingBtn->setIcon(QIcon(":/image/image/Icon/setting.png"));
     ui->SettingBtn->setStyleSheet("QPushButton { background-color: transparent; }");
@@ -131,7 +133,10 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     ui->ChatComboBox->addItem("Option 6");
     ui->ChatComboBox->addItem("Option 7");
     ui->ChatComboBox->setMaxVisibleItems(5);
+
     qDebug()<<"Build GameWidget Completely";
+
+
 }
 
 GameWidget::~GameWidget()
@@ -232,6 +237,7 @@ void GameWidget::ResolutionChanged(int _Width,int _Height)
     ui->DoubleBtn          ->setGeometry( 0.358*Width,  0.680*Height,  0.083*Width,   0.047*Height);
     ui->UnDoubleBtn        ->setGeometry( 0.520*Width,  0.680*Height,  0.083*Width,   0.047*Height);
     ui->ChatComboBox       ->setGeometry( 0.885*Width,  0.785*Height,  0.104*Width,   0.028*Height);
+    ui->RoomId             ->setGeometry( 0.830*Width,  0.020*Height,  0.070*Width,   0.048*Height);
 
 }
 
@@ -358,6 +364,37 @@ void GameWidget::placeOutCards(int pos)
             PlayerOutCards[i].btn->setGeometry((StartX+0.018*i)*Width,0.57*Height,0.036*Width,0.091*Height);
             PlayerOutCards[i].btn->setIconSize(PlayerOutCards[i].btn->size());
             PlayerOutCards[i].btn->show();
+        }
+    }
+}
+
+void GameWidget::ImportConfig()
+{
+    QString filePath = "./config/config.json";
+    QFile ConfigFile(filePath);
+    if (ConfigFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QByteArray jsonData = ConfigFile.readAll();
+        ConfigFile.close();
+        // 解析JSON数据
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+        if (!jsonDoc.isNull())
+        {
+            if (jsonDoc.isObject())
+            {
+                QJsonObject jsonObj = jsonDoc.object();
+                QJsonObject GameObj = jsonObj["Game"].toObject();
+                BGMState = bool(GameObj.value("GameBGM").toVariant().toInt());
+                EffectState = bool(GameObj.value("Effect").toVariant().toInt());
+            }
+            else
+            {
+                qDebug() << "JSON document is not an object.";
+            }
+        }
+        else
+        {
+            qDebug() << "Failed to load JSON document.";
         }
     }
 }

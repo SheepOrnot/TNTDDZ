@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QTimer>
+#include <QFile>
 #include <QGraphicsOpacityEffect>
 #include <QMediaPlayer>
 #include <QCoreApplication>
@@ -25,7 +26,7 @@ private:
     Ui::LobbyWidget *ui;
     int Width=1920,Height=1080;     //用于修改分辨率&实例化新的窗口时的参数。
     int radius;
-
+    bool BGMState;
     QString ProfileImagePath;        //头像图片(服务器获取)
     QString BeanNum,DiamondNum;      //豆和钻石数量(服务器获取)
     QString Username,UID;            //username和uid(服务器获取)
@@ -46,6 +47,9 @@ private:
     GameWidget *gameWidget;
     QPushButton *GameExitBtn;
     QMediaPlayer BGMPlayer;
+    QThread *BGMThread;
+private:
+    void ImportConfig();
 public slots:
     void ResolutionChanged(int _Width,int _Height);
     //void ProfileChanged(int _Width,int _Height);

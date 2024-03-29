@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     rememberAccountCheckbox = new QCheckBox(" 记住账号 ", this); // 创建“记住账号”的勾选框
+    if(RemUser==true)rememberAccountCheckbox->setCheckState(Qt::Checked);
 
     // 创建输入账号和密码的文本框
     usernameLineEdit = new QLineEdit(this);
@@ -48,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent)
     usernameLineEdit->setStyleSheet("background-color: transparent; border: 1px solid black;");
     passwordLineEdit->setStyleSheet("background-color: transparent; border: 1px solid black;");
 
-    QRegularExpression UsernameRegex("^[\u4e00-\u9fa5A-Za-z0-9_@~!#$%^&*:<>《|]*");
+    QRegularExpression UsernameRegex("^[\u4e00-\u9fa5A-Za-z0-9_@~!#$%^&*:<>《|]*.[a-zA-Z]*");
     UsernameValidator = new QRegularExpressionValidator(UsernameRegex, this);
     usernameLineEdit->setValidator(UsernameValidator);
     usernameLineEdit->setMaxLength(30);
@@ -80,7 +81,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     GridLayout = new QGridLayout(backgroundWidget);
     HBoxLayout = new QHBoxLayout();
-    //QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     spacer1 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed);
     spacer2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed);
     spacer3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -96,7 +96,6 @@ MainWindow::MainWindow(QWidget *parent)
     HBoxLayout->QHBoxLayout::addSpacerItem(spacer3);
     HBoxLayout->addWidget(forgetPasswordButton,2);
     HBoxLayout->addWidget(registerButton,3);
-
 
     GridLayout->setVerticalSpacing(35);
     GridLayout->setColumnStretch(0,1);
@@ -139,30 +138,60 @@ void MainWindow::onLoginButtonClicked()
 
     //deleteLater();
     this->close();
-    //this->deleteLater();
-
+}
+void MainWindow::ImportConfig()
+{
+    QString filePath = "./config/config.json";
+    QFile ConfigFile(filePath);
+    if (ConfigFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QByteArray jsonData = ConfigFile.readAll();
+        ConfigFile.close();
+        // 解析JSON数据
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+        if (!jsonDoc.isNull())
+        {
+            if (jsonDoc.isObject())
+            {
+                QJsonObject jsonObj = jsonDoc.object();
+                QJsonObject RemObj = jsonObj["Login"].toObject();
+                // 获取JSON中的键值对
+                RemUser = bool(RemObj.value("Rem").toVariant().toInt());
+                EmailOrUid = RemObj.value("Username").toVariant().toString();
+                CiphertextPwd = RemObj.value("Password").toVariant().toString();
+            }
+            else
+            {
+                qDebug() << "JSON document is not an object.";
+            }
+        }
+        else
+        {
+            qDebug() << "Failed to load JSON document.";
+        }
+    }
 }
 MainWindow::~MainWindow()
 {
     delete ui;
 
-//    delete(loginButton);
-//    delete(forgetPasswordButton);
-//    delete(registerButton);
-//    delete(ShowPassword);
-//    delete(HidePassword);
-//    delete(rememberAccountCheckbox);
-//    delete(usernameLineEdit);
-//    delete(passwordLineEdit);
-//    delete(spacer1);
-//    delete(spacer2);
-//    delete(spacer3);
-//    delete(spacer4);
-//    delete(stackedWidget);qDebug()<<"123";
-//    delete(HBoxLayout);qDebug()<<"123";
-//    delete(backgroundWidget);qDebug()<<"123";
-//    delete(GridLayout);qDebug()<<"123";
-
+//    delete loginButton;
+//    delete forgetPasswordButton;
+//    delete registerButton;
+//    delete ShowPassword;
+//    delete HidePassword;
+//    delete rememberAccountCheckbox;
+//    delete usernameLineEdit;
+//    delete passwordLineEdit;
+//    delete spacer1;
+//    delete spacer2;
+//    delete spacer3;
+//    delete spacer4;
+    //可能会寄在这里
+//    delete stackedWidget;qDebug()<<"123";
+//    delete HBoxLayout;qDebug()<<"123";
+//    delete backgroundWidget;qDebug()<<"123";
+//    delete GridLayout;qDebug()<<"123";
 
 }
 

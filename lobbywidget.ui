@@ -221,6 +221,19 @@ font: 9pt &quot;华文新魏&quot;;</string>
     <string>giflabel</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="JoinRoomBtn">
+   <property name="geometry">
+    <rect>
+     <x>1310</x>
+     <y>880</y>
+     <width>311</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>加入房间</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

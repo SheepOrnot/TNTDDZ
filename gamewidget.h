@@ -6,7 +6,9 @@
 #include "widgetcard.h"
 #include "settingwidget.h"
 #include "gameoverwidget.h"
-
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QListView>
 namespace Ui {
 class GameWidget;
@@ -36,6 +38,7 @@ private:
     GameOverWidget *gameoverWidget;
     QIcon BeanIcon;
     int radius;
+    bool BGMState,EffectState;
     const QString TypeIndex[6] = { "",
         "spades",
         "hearts",
@@ -80,6 +83,7 @@ private:
     void ShowIdentityIcon();
     void placeHandCards();
     void placeOutCards(int Pos);
+    void ImportConfig();
 private slots:
     void ResolutionChanged(int _Width,int _Height);      //接收设置界面发出的分辨率修改信号。
     void onSettingBtnClicked();

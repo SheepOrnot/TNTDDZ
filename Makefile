@@ -266,6 +266,7 @@ Makefile: TNTDDZ.pro ..\..\5.15.2\msvc2019\mkspecs\win32-msvc\qmake.conf ..\..\5
 		..\..\5.15.2\msvc2019\mkspecs\features\qt_config.prf \
 		..\..\5.15.2\msvc2019\mkspecs\win32-msvc\qmake.conf \
 		..\..\5.15.2\msvc2019\mkspecs\features\spec_post.prf \
+		.qmake.stash \
 		..\..\5.15.2\msvc2019\mkspecs\features\exclusive_builds.prf \
 		..\..\5.15.2\msvc2019\mkspecs\common\msvc-version.conf \
 		..\..\5.15.2\msvc2019\mkspecs\features\toolchain.prf \
@@ -291,14 +292,18 @@ Makefile: TNTDDZ.pro ..\..\5.15.2\msvc2019\mkspecs\win32-msvc\qmake.conf ..\..\5
 		..\..\5.15.2\msvc2019\mkspecs\features\yacc.prf \
 		..\..\5.15.2\msvc2019\mkspecs\features\lex.prf \
 		TNTDDZ.pro \
+		..\..\5.15.2\msvc2019\lib\Qt5Multimedia.prl \
 		..\..\5.15.2\msvc2019\lib\Qt5Widgets.prl \
 		..\..\5.15.2\msvc2019\lib\Qt5Gui.prl \
+		..\..\5.15.2\msvc2019\lib\Qt5Network.prl \
 		..\..\5.15.2\msvc2019\lib\Qt5Core.prl \
 		..\..\5.15.2\msvc2019\lib\qtmain.prl \
-		.qmake.stash \
 		..\..\5.15.2\msvc2019\mkspecs\features\build_pass.prf \
+		resource.qrc \
+		..\..\5.15.2\msvc2019\lib\Qt5Multimediad.prl \
 		..\..\5.15.2\msvc2019\lib\Qt5Widgetsd.prl \
 		..\..\5.15.2\msvc2019\lib\Qt5Guid.prl \
+		..\..\5.15.2\msvc2019\lib\Qt5Networkd.prl \
 		..\..\5.15.2\msvc2019\lib\Qt5Cored.prl \
 		..\..\5.15.2\msvc2019\lib\qtmaind.prl
 	$(QMAKE) -o Makefile TNTDDZ.pro -spec win32-msvc "CONFIG+=debug" "CONFIG+=qml_debug"
@@ -484,6 +489,7 @@ Makefile: TNTDDZ.pro ..\..\5.15.2\msvc2019\mkspecs\win32-msvc\qmake.conf ..\..\5
 ..\..\5.15.2\msvc2019\mkspecs\features\qt_config.prf:
 ..\..\5.15.2\msvc2019\mkspecs\win32-msvc\qmake.conf:
 ..\..\5.15.2\msvc2019\mkspecs\features\spec_post.prf:
+.qmake.stash:
 ..\..\5.15.2\msvc2019\mkspecs\features\exclusive_builds.prf:
 ..\..\5.15.2\msvc2019\mkspecs\common\msvc-version.conf:
 ..\..\5.15.2\msvc2019\mkspecs\features\toolchain.prf:
@@ -509,14 +515,18 @@ Makefile: TNTDDZ.pro ..\..\5.15.2\msvc2019\mkspecs\win32-msvc\qmake.conf ..\..\5
 ..\..\5.15.2\msvc2019\mkspecs\features\yacc.prf:
 ..\..\5.15.2\msvc2019\mkspecs\features\lex.prf:
 TNTDDZ.pro:
+..\..\5.15.2\msvc2019\lib\Qt5Multimedia.prl:
 ..\..\5.15.2\msvc2019\lib\Qt5Widgets.prl:
 ..\..\5.15.2\msvc2019\lib\Qt5Gui.prl:
+..\..\5.15.2\msvc2019\lib\Qt5Network.prl:
 ..\..\5.15.2\msvc2019\lib\Qt5Core.prl:
 ..\..\5.15.2\msvc2019\lib\qtmain.prl:
-.qmake.stash:
 ..\..\5.15.2\msvc2019\mkspecs\features\build_pass.prf:
+resource.qrc:
+..\..\5.15.2\msvc2019\lib\Qt5Multimediad.prl:
 ..\..\5.15.2\msvc2019\lib\Qt5Widgetsd.prl:
 ..\..\5.15.2\msvc2019\lib\Qt5Guid.prl:
+..\..\5.15.2\msvc2019\lib\Qt5Networkd.prl:
 ..\..\5.15.2\msvc2019\lib\Qt5Cored.prl:
 ..\..\5.15.2\msvc2019\lib\qtmaind.prl:
 qmake: FORCE

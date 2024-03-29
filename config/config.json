@@ -1,0 +1,20 @@
+{
+    "Login":{
+        "Rem" : "1" ,
+        "Username" : "1483078835@qq.com",
+        "Password" : "16531555"
+    },
+    "Universal":{
+        "Width" : "1920" ,
+        "Height": "1080" 
+    },
+
+    "Lobby":{
+        "LobbyBGM"   : "1"   
+    },
+
+    "Game":{
+        "GameBGM"   : "1"    ,
+        "Effect": "1"
+    }
+}
