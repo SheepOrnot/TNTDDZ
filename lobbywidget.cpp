@@ -7,6 +7,16 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui(new Ui::LobbyWidget)
 {
     ui->setupUi(this);
+    QMediaPlaylist *playlist = new QMediaPlaylist;
+    playlist->addMedia(QUrl::fromLocalFile(":/sound/sound/BGM/lobbybgm.mp3"));
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
+    BGMPlayer.setPlaylist(playlist);
+    BGMPlayer.play();
+    BGMPlayer.setVolume(50);
+    QThread *BGMThread = new QThread;
+    BGMThread->start();
+    connect(qApp, &QCoreApplication::aboutToQuit,BGMThread, &QThread::quit);
+
 //*****************本地获取的配置数据***************
     //Width = 2560; Height = 1440;
     Width = 1920; Height = 1080;

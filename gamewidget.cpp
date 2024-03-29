@@ -11,18 +11,38 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     InitAllCards();
 //****** 测试******
     //std::bitset<54> BitsetCards(std::string("111000111000000000110011001100110011101000000010001110"));
+    QPushButton *GameOverbtn = new QPushButton(this);
+    GameOverbtn->setGeometry(0.624*Width,  0.018*Height,  0.025*Width,   0.04*Height);
+    GameOverbtn->show();
+    connect(GameOverbtn,&QPushButton::clicked,[&](){
+        gameoverWidget = new GameOverWidget(Width,Height);
+        gameoverWidget->show();
+    });
+
     std::bitset<54> BitsetCards(std::string("111111111111111111110000000000000000000000000000000000"));
+    std::bitset<54>previousBitset(std::string("111111111111111111110000000000000000000000000000000000"));
+    std::bitset<54>nextBitset(std::string("000000000000000000001111111111111111111100000000000000"));
+    std::bitset<54>playerBitset(std::string("000000000000000000001111111110000000000000000000000000"));
+
     PlayerProfileNum = 0; PreviousProfileNum = 3; NextProfileNum = 4;
     PreviousIdentity = "landlord"; NextIdentity = "farmer"; PlayerIdentity = "farmer";
     PreviousBeanNum = "5.68W ";  NextBeanNum = "3266";  PlayerBeanNum = "359.62Y ";
     CardStyle = 0;
     PlayerHandCards = Transform_To_Vector(BitsetCards);
+    PreviousPlayerOutCards  = Transform_To_Vector(previousBitset);
+    NextPlayerOutCards = Transform_To_Vector(nextBitset);
+    PlayerOutCards = Transform_To_Vector(playerBitset);
+
     std::bitset<54> TestCardBits = Transform_To_Bitset(PlayerHandCards);
     std::cout<<BitsetCards<<"\n";
     std::cout<<TestCardBits<<"\n";
     std::flush(std::cout);
     ShowIdentityIcon();                                 //调用展示身份图标函数
     placeHandCards();
+    placeOutCards(1);
+    placeOutCards(2);
+    placeOutCards(3);
+
 //******end******
     //上家(previous)->1     下家(next)->2      自己->3
     ui->ProfileLabel1      ->setGeometry( 0.026*Width,  0.25 *Height,  0.063*Width,   0.121*Height);
@@ -37,7 +57,7 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     ui->DoubleLabel1       ->setGeometry( 0.062*Width,  0.425*Height,  0.026*Width,   0.017*Height);
     ui->DoubleLabel2       ->setGeometry( 0.906*Width,  0.435*Height,  0.026*Width,   0.017*Height);
     ui->DoubleLabel3       ->setGeometry( 0.135*Width,  0.962*Height,  0.026*Width,   0.017*Height);
-    ui->FinalCard1         ->setGeometry( 0.415*Width,  0.018*Height,  0.042*Width,   0.102*Height);
+    ui->FinalCard1         ->setGeometry( 0.420*Width,  0.018*Height,  0.042*Width,   0.102*Height);
     ui->FinalCard2         ->setGeometry( 0.472*Width,  0.018*Height,  0.042*Width,   0.102*Height);
     ui->FinalCard3         ->setGeometry( 0.524*Width,  0.018*Height,  0.042*Width,   0.102*Height);
     ui->MultiplierLabel    ->setGeometry( 0.571*Width,  0.046*Height,  0.042*Width,   0.075*Height);
@@ -195,7 +215,7 @@ void GameWidget::ResolutionChanged(int _Width,int _Height)
     ui->DoubleLabel1       ->setGeometry( 0.062*Width,  0.425*Height,  0.026*Width,   0.017*Height);
     ui->DoubleLabel2       ->setGeometry( 0.906*Width,  0.435*Height,  0.026*Width,   0.017*Height);
     ui->DoubleLabel3       ->setGeometry( 0.135*Width,  0.962*Height,  0.026*Width,   0.017*Height);
-    ui->FinalCard1         ->setGeometry( 0.415*Width,  0.018*Height,  0.042*Width,   0.102*Height);
+    ui->FinalCard1         ->setGeometry( 0.420*Width,  0.018*Height,  0.042*Width,   0.102*Height);
     ui->FinalCard2         ->setGeometry( 0.472*Width,  0.018*Height,  0.042*Width,   0.102*Height);
     ui->FinalCard3         ->setGeometry( 0.524*Width,  0.018*Height,  0.042*Width,   0.102*Height);
     ui->MultiplierLabel    ->setGeometry( 0.571*Width,  0.046*Height,  0.042*Width,   0.075*Height);
@@ -250,5 +270,94 @@ void GameWidget::placeHandCards()
         PlayerHandCards[i].btn->setGeometry((0.198+0.03*i)*Width,0.796*Height,0.06*Width,0.148*Height);
         PlayerHandCards[i].btn->setIconSize(PlayerHandCards[i].btn->size());
         PlayerHandCards[i].btn->show();
+    }
+}
+
+void GameWidget::placeOutCards(int pos)
+{
+    if(pos == 1)
+    {
+        if(PreviousPlayerOutCards.size()<=10)
+        {
+            for(int i = 0; i < PreviousPlayerOutCards.size(); i++)
+            {
+                PreviousPlayerOutCards[i].btn = new QPushButton(this);
+                PreviousPlayerOutCards[i].btn->setIcon(QIcon(PreviousPlayerOutCards[i].ImagePath));
+                PreviousPlayerOutCards[i].btn->setStyleSheet("QPushButton { background-color: transparent; }");
+                PreviousPlayerOutCards[i].btn->setGeometry((0.198+0.018*i)*Width,0.287*Height,0.036*Width,0.091*Height);
+                PreviousPlayerOutCards[i].btn->setIconSize(PreviousPlayerOutCards[i].btn->size());
+                PreviousPlayerOutCards[i].btn->show();
+            }
+        }
+        else
+        {
+            for(int i = 0; i < 10; i++)
+            {
+                PreviousPlayerOutCards[i].btn = new QPushButton(this);
+                PreviousPlayerOutCards[i].btn->setIcon(QIcon(PreviousPlayerOutCards[i].ImagePath));
+                PreviousPlayerOutCards[i].btn->setStyleSheet("QPushButton { background-color: transparent; }");
+                PreviousPlayerOutCards[i].btn->setGeometry((0.198+0.018*i)*Width,0.287*Height,0.036*Width,0.091*Height);
+                PreviousPlayerOutCards[i].btn->setIconSize(PreviousPlayerOutCards[i].btn->size());
+                PreviousPlayerOutCards[i].btn->show();
+            }
+            for(int i = 10; i < PreviousPlayerOutCards.size(); i++)
+            {
+                PreviousPlayerOutCards[i].btn = new QPushButton(this);
+                PreviousPlayerOutCards[i].btn->setIcon(QIcon(PreviousPlayerOutCards[i].ImagePath));
+                PreviousPlayerOutCards[i].btn->setStyleSheet("QPushButton { background-color: transparent; }");
+                PreviousPlayerOutCards[i].btn->setGeometry((0.198+0.018*(i-10))*Width,0.34*Height,0.036*Width,0.091*Height);
+                PreviousPlayerOutCards[i].btn->setIconSize(PreviousPlayerOutCards[i].btn->size());
+                PreviousPlayerOutCards[i].btn->show();
+            }
+        }
+    }
+    if(pos == 2)
+    {
+        if(NextPlayerOutCards.size()<=10)
+        {
+            for(int i = 0; i < NextPlayerOutCards.size(); i++)
+            {
+                NextPlayerOutCards[i].btn = new QPushButton(this);
+                NextPlayerOutCards[i].btn->setIcon(QIcon(NextPlayerOutCards[i].ImagePath));
+                NextPlayerOutCards[i].btn->setStyleSheet("QPushButton { background-color: transparent; }");
+                NextPlayerOutCards[i].btn->setGeometry((0.604+0.018*i)*Width,0.287*Height,0.036*Width,0.091*Height);
+                NextPlayerOutCards[i].btn->setIconSize(NextPlayerOutCards[i].btn->size());
+                NextPlayerOutCards[i].btn->show();
+            }
+        }
+        else
+        {
+            for(int i = 0; i < 10; i++)
+            {
+                NextPlayerOutCards[i].btn = new QPushButton(this);
+                NextPlayerOutCards[i].btn->setIcon(QIcon(NextPlayerOutCards[i].ImagePath));
+                NextPlayerOutCards[i].btn->setStyleSheet("QPushButton { background-color: transparent; }");
+                NextPlayerOutCards[i].btn->setGeometry((0.604+0.018*i)*Width,0.287*Height,0.036*Width,0.091*Height);
+                NextPlayerOutCards[i].btn->setIconSize(NextPlayerOutCards[i].btn->size());
+                NextPlayerOutCards[i].btn->show();
+            }
+            for(unsigned int i = 10; i < NextPlayerOutCards.size(); i++)
+            {
+                NextPlayerOutCards[i].btn = new QPushButton(this);
+                NextPlayerOutCards[i].btn->setIcon(QIcon(NextPlayerOutCards[i].ImagePath));
+                NextPlayerOutCards[i].btn->setStyleSheet("QPushButton { background-color: transparent; }");
+                NextPlayerOutCards[i].btn->setGeometry((0.604+0.018*(i-10))*Width,0.34*Height,0.036*Width,0.091*Height);
+                NextPlayerOutCards[i].btn->setIconSize(NextPlayerOutCards[i].btn->size());
+                NextPlayerOutCards[i].btn->show();
+            }
+        }
+    }
+    if(pos == 3)
+    {
+        double StartX = 0.5-((0.036+(PlayerOutCards.size()-1)*0.018)/2);
+        for(unsigned int i = 0; i < PlayerOutCards.size(); i++)
+        {
+            PlayerOutCards[i].btn = new QPushButton(this);
+            PlayerOutCards[i].btn->setIcon(QIcon(PlayerOutCards[i].ImagePath));
+            PlayerOutCards[i].btn->setStyleSheet("QPushButton { background-color: transparent; }");
+            PlayerOutCards[i].btn->setGeometry((StartX+0.018*i)*Width,0.57*Height,0.036*Width,0.091*Height);
+            PlayerOutCards[i].btn->setIconSize(PlayerOutCards[i].btn->size());
+            PlayerOutCards[i].btn->show();
+        }
     }
 }

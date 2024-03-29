@@ -2,8 +2,12 @@
 #define LOBBYWIDGET_H
 
 #include <QWidget>
-#include<QTimer>
-#include<QGraphicsOpacityEffect>
+#include <QTimer>
+#include <QGraphicsOpacityEffect>
+#include <QMediaPlayer>
+#include <QCoreApplication>
+#include <QThread>
+#include <QMediaPlaylist>
 #include"settingwidget.h"
 #include"gamewidget.h"
 namespace Ui {
@@ -41,6 +45,7 @@ private:
     SettingWidget *settingWidget;
     GameWidget *gameWidget;
     QPushButton *GameExitBtn;
+    QMediaPlayer BGMPlayer;
 public slots:
     void ResolutionChanged(int _Width,int _Height);
     //void ProfileChanged(int _Width,int _Height);

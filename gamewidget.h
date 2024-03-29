@@ -5,7 +5,9 @@
 #include "widgetargcard.h"
 #include "widgetcard.h"
 #include "settingwidget.h"
-#include<QListView>
+#include "gameoverwidget.h"
+
+#include <QListView>
 namespace Ui {
 class GameWidget;
 }
@@ -31,6 +33,7 @@ private:
         IdentityPixmap1,IdentityPixmap2,IdentityPixmap3,
         ClockPixmap;
     SettingWidget *settingWidget;
+    GameOverWidget *gameoverWidget;
     QIcon BeanIcon;
     int radius;
     const QString TypeIndex[6] = { "",
@@ -76,7 +79,7 @@ private:
     std::bitset<54> Transform_To_Bitset(std::vector<WidgetCard> VectorCards); //将PreviousPlayerOutCards等译成Bitset对象，包含HandCard和OutCard
     void ShowIdentityIcon();
     void placeHandCards();
-    void placeoutCards(int Pos);
+    void placeOutCards(int Pos);
 private slots:
     void ResolutionChanged(int _Width,int _Height);      //接收设置界面发出的分辨率修改信号。
     void onSettingBtnClicked();

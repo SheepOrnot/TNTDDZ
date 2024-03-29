@@ -1,5 +1,5 @@
 QT       += core gui
-
+QT       += multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -12,6 +12,7 @@ SOURCES += \
     argclass.cpp \
     backgroundwidget.cpp \
     findandsignupwidget.cpp \
+    gameoverwidget.cpp \
     gamewidget.cpp \
     lobbywidget.cpp \
     main.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     argclass.h \
     backgroundwidget.h \
     findandsignupwidget.h \
+    gameoverwidget.h \
     gamewidget.h \
     lobbywidget.h \
     mainwindow.h \
@@ -37,6 +39,7 @@ HEADERS += \
 
 FORMS += \
     findandsignupwidget.ui \
+    gameoverwidget.ui \
     gamewidget.ui \
     lobbywidget.ui \
     mainwindow.ui \
