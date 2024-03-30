@@ -48,7 +48,12 @@ enum class NETWORK
 {
     LOGIN = 1,
     REGISTER = 2,
-    FORGET_PASSWORD = 3
+    FORGET_PASSWORD = 3,
+    CREATE_ROOM = 4,
+    JOIN_ROOM = 5,
+    LEAVE_ROOM = 6,
+    READY = 7,
+    SEND_CARD = 8
 };
 enum class ROOM_OPCODE {
     JOIN = 1
