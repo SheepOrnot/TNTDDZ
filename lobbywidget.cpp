@@ -21,7 +21,7 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
 //*******************end**************************
 
     QMediaPlaylist *playlist = new QMediaPlaylist;
-    playlist->addMedia(QUrl::fromLocalFile("./sound/BGM/lobbybgm.mp3"));
+    playlist->addMedia(QUrl("qrc:///sound/sound/BGM/lobbybgm.mp3"));
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
     BGMPlayer.setPlaylist(playlist);
     BGMPlayer.setVolume(30);
