@@ -9,6 +9,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->statusBar()->hide();
     this->setFixedSize(1400,900);
+
+    ImportConfig();
+
     backgroundWidget = new BackgroundWidget(this);
     backgroundWidget->setGifBackground(":/image/image/mjqyjb.gif"); // 使用不同的GIF图像文件路径
     setCentralWidget(backgroundWidget);
@@ -61,6 +64,10 @@ MainWindow::MainWindow(QWidget *parent)
     QIcon PasswordIcon(":/image/image/Icon/password.png");
     passwordLineEdit->addAction(PasswordIcon, QLineEdit::LeadingPosition); // 添加图标（LeadingPosition为左侧位置）
 
+    if(RemUser==true){
+        usernameLineEdit->setText(EmailOrUid);
+        passwordLineEdit->setText(Password);
+    }
     ShowPassword = new QPushButton(passwordLineEdit);
     ShowPassword->setIcon(QIcon(":/image/image/Icon/eye_open.png"));
     ShowPassword->setIconSize(QSize(20,20));
@@ -135,8 +142,8 @@ void MainWindow::onLoginButtonClicked()
     LobbyWidget *lobbyWidget = new LobbyWidget();
     lobbyWidget->show();
              //改为delete，先delete所有成员指针
-
-    //deleteLater();
+    CiphertextPwd = Encryption();
+    RestoreConfig();
     this->close();
 }
 void MainWindow::ImportConfig()
@@ -159,6 +166,7 @@ void MainWindow::ImportConfig()
                 RemUser = bool(RemObj.value("Rem").toVariant().toInt());
                 EmailOrUid = RemObj.value("Username").toVariant().toString();
                 CiphertextPwd = RemObj.value("Password").toVariant().toString();
+                Password = Decryption();
             }
             else
             {
@@ -170,6 +178,68 @@ void MainWindow::ImportConfig()
             qDebug() << "Failed to load JSON document.";
         }
     }
+}
+
+QString MainWindow::Encryption()
+{
+    QString s = "";
+    for(int i = 0; i < Password.size(); i++)
+    {
+        s += QChar(static_cast<char>(Password[i].unicode())+3);
+    }
+
+    return s;
+}
+
+QString MainWindow::Decryption()
+{
+    QString s = "";
+    for(int i = 0; i < CiphertextPwd.size(); i++)
+    {
+        s += QChar(static_cast<char>(CiphertextPwd[i].unicode())-3);
+    }
+    return s;
+}
+
+void MainWindow::RestoreConfig()
+{
+    QFile file("./config/config.json");
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        qDebug() << "Fail to import config: " << file.errorString();
+        return;
+    }
+
+    // 解析JSON文件内容
+    QByteArray jsonData = file.readAll();
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(jsonData));
+    QJsonObject jsonObj = jsonDoc.object();
+    if (jsonObj.contains("Login"))
+    {
+        QJsonObject sectionObj = jsonObj.value("Login").toObject();
+        if(rememberAccountCheckbox->isChecked()==true)
+        {
+            sectionObj.insert("Password", QJsonValue::fromVariant(CiphertextPwd));
+            sectionObj.insert("Username", QJsonValue::fromVariant(EmailOrUid));
+            sectionObj.insert("Rem", QJsonValue::fromVariant("1"));
+        }
+        else if(rememberAccountCheckbox->isChecked()==false)
+        {
+            sectionObj.insert("Password", QJsonValue::fromVariant(""));
+            sectionObj.insert("Username", QJsonValue::fromVariant(""));
+            sectionObj.insert("Rem", QJsonValue::fromVariant("0"));
+        }
+        jsonObj.insert("Login", sectionObj);
+    }
+    else
+    {
+        qDebug() << "Section not found!";
+        return;
+    }
+    // 保存修改后的JSON数据到文件
+    file.resize(0); // 清空文件内容
+    file.write(QJsonDocument(jsonObj).toJson());
+    file.close();
 }
 MainWindow::~MainWindow()
 {

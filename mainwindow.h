@@ -33,6 +33,7 @@ private slots:
     void onRegisterButtonClicked();
     void onShowPasswordClicked();
     void onHidePasswordClicked();
+
 private:
     Ui::MainWindow *ui;
     BackgroundWidget *backgroundWidget = nullptr;
@@ -58,6 +59,7 @@ private:
     void ImportConfig();
     QString Encryption();
     QString Decryption();
+    void RestoreConfig();
 };
 
 #endif // MAINWINDOW_H

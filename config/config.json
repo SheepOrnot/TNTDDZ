@@ -1,20 +1,18 @@
 {
-    "Login":{
-        "Rem" : "1" ,
-        "Username" : "1483078835@qq.com",
-        "Password" : "16531555"
+    "Game": {
+        "Effect": "1",
+        "GameBGM": "1"
     },
-    "Universal":{
-        "Width" : "1920" ,
-        "Height": "1080" 
+    "Lobby": {
+        "LobbyBGM": "1"
     },
-
-    "Lobby":{
-        "LobbyBGM"   : "1"   
+    "Login": {
+        "Password": "k{|363858",
+        "Rem": "1",
+        "Username": "1483078835@qq.com"
     },
-
-    "Game":{
-        "GameBGM"   : "1"    ,
-        "Effect": "1"
+    "Universal": {
+        "Height": "1080",
+        "Width": "1920"
     }
 }

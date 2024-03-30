@@ -17,6 +17,7 @@ SOURCES += \
     lobbywidget.cpp \
     main.cpp \
     mainwindow.cpp \
+    personalinfowidget.cpp \
     settingwidget.cpp \
     widgetargcard.cpp \
     widgetargplayer.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     gamewidget.h \
     lobbywidget.h \
     mainwindow.h \
+    personalinfowidget.h \
     settingwidget.h \
     widgetargcard.h \
     widgetargplayer.h \
@@ -43,6 +45,7 @@ FORMS += \
     gamewidget.ui \
     lobbywidget.ui \
     mainwindow.ui \
+    personalinfowidget.ui \
     settingwidget.ui
 
 # Default rules for deployment.
@@ -52,3 +55,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resource.qrc
+
+
