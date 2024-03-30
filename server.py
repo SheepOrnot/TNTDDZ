@@ -14,6 +14,7 @@ import json
 import redis
 import random
 import threading
+import time
 redis_db = redis.Redis(host='127.0.0.1', port=6379, db=0)
 db = 'room_dbase'
 
@@ -26,6 +27,101 @@ socketio.init_app(app, cors_allowed_origins='*')
 
 
 UserData = sl.connect('D:\\server\\userdata.db',check_same_thread=False)
+
+class Player(threading.local):
+    def __init__(self):
+
+        self.handcards = 0
+        self.lord = 0
+        self.account = ""
+        self.double = 0
+        self.next_player  = None
+        self.previous_player = None
+        self.handcards_num = 0
+        self.situation = 0
+    def setlord(self,becomelord):
+        self.lord = becomelord
+    def sethandcards(self,cards):
+        self.handcards = cards
+    def setdouble(self,becomedouble):
+        self.double = becomedouble
+    def setnext_player(self,becomenext_player):
+        self.next_player = becomenext_player
+    def setprevious_player(self,becomeprevious_player):
+        self.previous_player = becomeprevious_player
+    def sethandcards_num(self,becomehandcards_num):
+        self.handcards_num = becomehandcards_num
+    def find_next_player(self):
+        return self.next_player
+    def change_handcards(self,cards):
+        result = int(self.handcards, 2) ^ int(cards, 2)
+        binary_result = bin(result)[2:].zfill(max(len(self.handcards), len(cards)))
+        return binary_result
+
+
+
+class BattleStatus(threading.local):
+    def __init__(self):
+        global room_id
+        self.room_id = room_id
+        self.room_count = 0
+        self.player_1 = Player()
+        self.player_2 = Player()
+        self.player_3 = Player()
+        self.account_list = []
+        self.room_status = 0 #房间当前状态号码，暂且定义1为游戏已经开始，0为游戏没有开始
+
+    def set_account_list(self,account):
+        self.account_list.append(account)
+    def someone_join_room(self):
+        self.room_count += 1
+    def someone_leave_room(self):
+        self.room_count -= 1
+    def player_enter_room(self,player):
+        if self.room_count == 1:
+            self.player_2 = player
+            return 2
+        elif self.room_count == 2:
+            self.player_3 = player
+            return 3
+    def inform_room_status(self,relink_account):
+        situation_new = 0
+        for i in range(0,4):
+            if self.account_list[i] == relink_account:
+                situation_new = i+1
+                break
+        relink_player = Player()
+        if situation_new == 1:
+            relink_player = self.player_1
+        elif situation_new == 2:
+            relink_player = self.player_2
+        elif situation_new == 3:
+            relink_player = self.player_3
+
+        emit('server_response',jsonify(roomid = self.room_id,situation = situation_new,
+                                       handcards = relink_player.handcards,
+                                       lord = relink_player.lord,double = relink_player.double).data.decode(),room = relink_account)
+        emit('server_response',jsonify(roomid = self.room_id,situation = situation_new,
+                                       lord = relink_player.lord,double = relink_player.double).data.decode(),room = self.room_id)
+
+battle_data = BattleStatus()
+
+class ReadyPlayer(threading.local):
+    def __init__(self):
+        self.num = 0
+        self.account = []
+ready_player = ReadyPlayer()
+ready_player.num = 0
+ready_player.account = []
+
+class HandCards(threading.local):
+    def __init__(self):
+        self.all_cards = list(range(1,55))
+        self.player_1_cards = []
+        self.player_2_cards = []
+        self.player_3_cards = []
+        self.lord_cards = []
+cards = HandCards()
 
 @app.route('/')
 def index():
@@ -42,29 +138,42 @@ def decrease_value(key):
 
 @socketio.on('create_room')
 def Create_room(data):
-    global room_id
-    data_room_id = str(room_id)
+    global battle_data
+    battle_data.someone_join_room()
+    data_room_id = str(battle_data.room_id)
     
     data = json.loads(data)
-    
     data_account = data.get('account')
+    roomhost = Player()
+    roomhost.account = data_account
+    roomhost.situation = 1
+    battle_data.player_1 = roomhost
+    battle_data.set_account_list(data_account)
+
     redis_db.set(data_account,data_room_id)
+#########################################################
+    print("data_room_id",data_room_id,"\n","battle_data.player_1.account",battle_data.player_1.account)    
+
+
+#########################################################
     join_room(data_account)#用户自己的房间用于服务器区分用户
-    join_room(room_id)
-    check_room = str(room_id)+"_room"
-    exist_room = str(room_id)+"_exist_room"
+    join_room(data_room_id)
+
+    check_room = str(data_room_id)+"_count_room"
+    exist_room = str(data_room_id)+"_exist_room"
     redis_db.set(check_room,0)
     redis_db.set(exist_room,1)
     count_value(check_room)
-
+#################################################################
     keys = redis_db.keys()
 
     # 遍历每个键，并输出键和对应的值
     for key in keys:
         value = redis_db.get(key)
         print(key.decode(), "->", value.decode())
-
-    emit('server_response',jsonify(type = 4,roomid = room_id).data.decode())
+#################################################################
+    emit('server_response',jsonify(type = 4,roomid = data_room_id).data.decode(),room = data_account)
+    global room_id
     room_id = room_id+1
     return str(room_id - 1) 
 
@@ -72,25 +181,17 @@ def Create_room(data):
 
 @socketio.on('join_room')
 def Join_room(data):
-    ##################################
-    # 获取所有键
-    keys = redis_db.keys()
-    print("--------------------加入时候数据库内数据")
-    # 遍历每个键，并输出键和对应的值
-    for key in keys:
-        value = redis_db.get(key)
-        print(key.decode(), "->", value.decode())
-    ##################################
+    global battle_data
     
     data = json.loads(data)
 
     data_room_id = data.get("roomid")
     global room_id
-    check_room = str(room_id-1)+"_room"
+    check_room = str(room_id-1)+"_count_room"
 
     
     count = redis_db.get(check_room)
-    print("当前房间中人数为",count)
+
     if count == None:
         count = b'0'
 
@@ -100,77 +201,90 @@ def Join_room(data):
     print("redis_db.get(str(room_id)+)",redis_db.get(str(room_id-1)+"_exist_room"))
     if int(count.decode()) >= 3:
         print("当前房间已满")
-        emit('sever_response',jsonify(type = 5,status = 2).data.decode())
+        print("data_account",data_account)
+        emit('server_response',jsonify(type = 5,status = 2).data.decode(),room = data_account)
         return False
     elif redis_db.get(str(room_id-1)+"_exist_room") == None:
         print("加入的房间不存在")
-        emit('server_response',jsonify(type = 5,status = 0).data.decode())
+        emit('server_response',jsonify(type = 5,status = 0).data.decode(),room = data_account)
         
     else:
+        
+        joiner = Player()
+        joiner.account = data_account
+        selectplayer = battle_data.player_enter_room(joiner)
+        print("======================================",selectplayer)
+        if selectplayer == 2:
+            joiner.situation = 2
+            joiner.previous_player = battle_data.player_1
+            battle_data.player_1 = Player()
+            battle_data.player_1.next_player = joiner
+        elif selectplayer == 3:
+            joiner.situation = 3
+            joiner.previous_player = battle_data.player_2
+            joiner.next_player = battle_data.player_1
+            battle_data.player_2 = Player()
+            battle_data.player_2.next_player = joiner
+            battle_data.player_1 = Player()
+            battle_data.player_1.previous_player = joiner
+        battle_data.set_account_list(data_account)
+        battle_data.someone_join_room()
+        battle_data.inform_room_status(data_account)
+
         count_value(check_room)
         join_room(data_room_id)
         redis_db.set(data_account,data_room_id)
         print(request.sid,"已经成功加入")
-        emit('server_response',jsonify(type = 5,status = 1).data.decode())
+        emit('server_response',jsonify(type = 5,status = 1,account = data_account).data.decode(),room = data_room_id)
         print("--------------------",redis_db.get(data_account))
         return True
-    
+
     
     
 @socketio.on('leave_room')
 def Leave_room(data):
 
 
-    ##############################################
-    # 获取所有键
-    keys = redis_db.keys()
-    print("--------------------删除前数据库内数据")
-    # 遍历每个键，并输出键和对应的值
-    for key in keys:
-        value = redis_db.get(key)
-        print(key.decode(), "->", value.decode())
-    ##############################################
-
+    global battle_data
     data = json.loads(data)
     print("要断开连接的数据是",data)
     data_account = data.get("account")
     data_room_id = data.get("roomid")
-    check_room = str(room_id-1)+"_room"
+    check_room = str(room_id-1)+"_count_room"
     
     decrease_value(check_room)
     redis_db.delete(data_account)
-
-    leave_room(data_room_id)
+    print("account_list",battle_data.account_list)
+    
+    if ready_player.account != []:
+        ready_player.account.remove(data_account)
     print("删除成功")
-    emit('server_response',jsonify(type = 6,status = 1).data.decode())
+    
+    
+
+    #battle_data.account_list.remove(data_account)
+    battle_data.someone_leave_room()
+    print("*********************",jsonify( type = 6 ,status = 1).data.decode())
+    emit('server_response',jsonify( type = 6 ,status = 1,account = data_account).data.decode(),room = data_room_id)
+   
+    leave_room(data_room_id)
+   
     ######################################
     # 获取所有键
     keys = redis_db.keys()
-    print("删除后数据库内容")
+    print("-----------------------删除后数据库内容")
     # 遍历每个键，并输出键和对应的值
     for key in keys:
         value = redis_db.get(key)
         print(key.decode(), "->", value.decode())
+    print("------------------------删除后数据库内容")
     ######################################
     return True
-class ReadyPlayer(threading.local):
-    def __init__(self):
-        self.num = 0
-        self.account = []
-ready_player = ReadyPlayer()
-ready_player.num = 0
-ready_player.account = []
 
 
 
-class HandCards(threading.local):
-    def __init__(self):
-        self.all_cards = list(range(1,55))
-        self.player_1_cards = []
-        self.player_2_cards = []
-        self.player_3_cards = []
-        self.lord_cards = []
-cards = HandCards()
+
+
 def wash_cards():
     
     random.shuffle(cards.all_cards)
@@ -211,6 +325,9 @@ def ready(data):
         emit('server_response',jsonify(type = 8,handcards = package_cards(cards.player_3_cards),account = ready_player.account[2]).data.decode(),room = ready_player.account[2])
     return data_account + "已经准备" 
 
+@socketio.on('first_lord')
+def first_lord():
+    return 0
 
 
 

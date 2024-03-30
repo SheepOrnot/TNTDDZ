@@ -27,3 +27,79 @@
     ready_player.num这个变量来记录当前准备客户端的个数，当ready_player.num==3时候向房间内部的三个客户端发出所有玩家都已经准备的信号
 功能五：发牌
     发牌功能目前的计划是在ready函数中进行实现，当服务器收到客户端的准备信号的数量达到三时候，直接先向三个客户端发送全体玩家都已经准备的消息，随后进行发牌
+功能六：叫地主
+    为了叫地主的开始的随机性，计划在叫地主的前一步中服务器回复给客户端的json中添加一个决定谁先开始叫地主的key，目前拟定叫“firstlord”，这个key为1的时候，就由这台客户端向服务器发出叫地主请求，然后对于叫地主请求，准备一个first_lord接口
+    叫地主，叫地主第一个人
+            下一个叫地主，线性局部变量
+            room
+            {
+                room_id
+                room_count
+                player
+                {   
+                    handcards,
+                    lord,
+                    next_player,
+                    previous_player,
+                    account，
+                    double
+                }    
+            }
+
+
+
+class Player(threading.local):
+    def __init__(self):
+        self.handcards = ""
+        self.lord = 0
+        self.account = ""
+        self.double = 0
+        self.next_player  = None
+        self.previous_player = None
+        self.handcards_num = 0
+    def setlord(self,becomelord):
+        self.lord = becomelord
+    def sethandcards(self,cards):
+        self.handcards = cards
+    def setdouble(self,becomedouble):
+        self.double = becomedouble
+    def setnext_player(self,becomenext_player):
+        self.next_player = becomenext_player
+    def setprevious_player(self,becomeprevious_player):
+        self.previous_player = becomeprevious_player
+    def sethandcards_num(self,becomehandcards_num):
+        self.handcards_num = becomehandcards_num
+    def find_next_player(self):
+        return self.next_player
+    def change_handcards(self,cards):
+        result = int(self.handcards, 2) ^ int(cards, 2)
+        binary_result = bin(result)[2:].zfill(max(len(self.handcards), len(cards)))
+        return binary_result
+
+class BattleStatus:
+    def __init__(self):
+        global room_id
+        self.room_id = room_id
+        self.room_count = 0
+        self.player_1 = None
+        self.player_2 = None
+        self.player_3 = None
+        self.account_list = []
+        self.room_status = 0 #房间当前状态号码，暂且定义1为游戏已经开始，0为游戏没有开始
+    def set_account_list(self,account):
+        self.account_list.append(account)
+    def someone_join_room(self):
+        self.room_count += 1
+    def someone_leave_room(self):
+        self.room_count -= 1
+
+    {
+        roomid:room_id
+        
+    }
+
+游戏是否开局
+游戏阶段
+时钟
+房间满了没告诉我
+房间不存在没告诉我
