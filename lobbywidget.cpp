@@ -25,9 +25,10 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
     BGMPlayer.setPlaylist(playlist);
     BGMPlayer.setVolume(30);
-    if(BGMState) BGMPlayer.play();
     BGMThread = new QThread;
     BGMThread->start();
+    if(BGMState) BGMPlayer.play();
+
     connect(qApp, &QCoreApplication::aboutToQuit,BGMThread, &QThread::quit);
 
     RollImageIndex = 0;
