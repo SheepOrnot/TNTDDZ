@@ -7,12 +7,8 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui(new Ui::LobbyWidget)
 {
     ui->setupUi(this);
+    ImportConfig();
 //*****************本地获取的配置数据***************
-    //Width = 2560; Height = 1440;
-    Width = 1920; Height = 1080;
-    //Width = 1200; Height = 900;
-    //Width = 800; Height = 600;
-    //Width = 400; Height = 300;
     radius = Height*0.047*0.5;
 //********************end*************************
 
@@ -23,7 +19,19 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     Username = "冷锋";
     UID = "00000000000";
 //*******************end**************************
+
+    QMediaPlaylist *playlist = new QMediaPlaylist;
+    playlist->addMedia(QUrl("qrc:///sound/sound/BGM/lobbybgm.mp3"));
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
+    BGMPlayer.setPlaylist(playlist);
+    BGMPlayer.setVolume(30);
+    if(BGMState) BGMPlayer.play();
+    BGMThread = new QThread;
+    BGMThread->start();
+    connect(qApp, &QCoreApplication::aboutToQuit,BGMThread, &QThread::quit);
+
     RollImageIndex = 0;
+
     this->setFixedSize(Width,Height);
     ui->ProfileLabel  ->setGeometry(0.020*Width,0.018*Height,0.067*Width,0.120*Height);
     ui->UsernameLabel ->setGeometry(0.109*Width,0.027*Height,0.094*Width,0.028*Height);
@@ -40,6 +48,8 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui->RollLabel     ->setGeometry(0.604*Width,0.166*Height,0.328*Width,0.463*Height);
     ui->ClassicModeBtn->setGeometry(0.682*Width,0.652*Height,0.161*Width,0.084*Height);
     ui->ExitGameBtn   ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
+    ui->JoinRoomBtn   ->setGeometry(0.682*Width,0.874*Height,0.161*Width,0.084*Height);
+
 
     ui->SettingBtn->setIcon(QIcon(":/image/image/Icon/setting.png"));
     ui->SettingBtn->setStyleSheet("QPushButton { background-color: transparent; }");
@@ -123,6 +133,7 @@ void LobbyWidget::ResolutionChanged(int _Width,int _Height)
     ui->RollLabel     ->setGeometry(0.604*Width,0.166*Height,0.328*Width,0.463*Height);
     ui->ClassicModeBtn->setGeometry(0.682*Width,0.652*Height,0.161*Width,0.084*Height);
     ui->ExitGameBtn   ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
+    ui->JoinRoomBtn   ->setGeometry(0.682*Width,0.874*Height,0.161*Width,0.084*Height);
     ui->BeanEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
     ui->DiamondEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
     update();
@@ -132,7 +143,7 @@ void LobbyWidget::onSettingBtnClicked()
     settingWidget = new SettingWidget(Width,Height);
     settingWidget->show();
 }
-void LobbyWidget::onClassicModeBtnClicked()
+void LobbyWidget::onClassicModeBtnClicked()            //创建房间按钮
 {
     gameWidget = new GameWidget(Width,Height);
     this->hide();
@@ -143,6 +154,7 @@ void LobbyWidget::onClassicModeBtnClicked()
     GameExitBtn->setStyleSheet("QPushButton { background-color: transparent; }");
     GameExitBtn->setIconSize(GameExitBtn->size());
     GameExitBtn->show();
+    BGMPlayer.stop();
     connect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
 }
 void LobbyWidget::RollImage()
@@ -167,6 +179,40 @@ void LobbyWidget::onExitGameBtnClicked()
     disconnect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
     delete GameExitBtn;
     delete gameWidget;
-
+    if(BGMState) BGMPlayer.play();
 }
 
+void LobbyWidget::ImportConfig()
+{
+    QString filePath = "./config/config.json";
+    QFile ConfigFile(filePath);
+    if (ConfigFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QByteArray jsonData = ConfigFile.readAll();
+        ConfigFile.close();
+        // 解析JSON数据
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+        if (!jsonDoc.isNull())
+        {
+            if (jsonDoc.isObject())
+            {
+                QJsonObject jsonObj = jsonDoc.object();
+                QJsonObject UniversalObj = jsonObj["Universal"].toObject();
+                QJsonObject LobbyObj = jsonObj["Lobby"].toObject();
+
+                // 获取JSON中的键值对
+                Width = UniversalObj.value("Width").toVariant().toInt();
+                Height = UniversalObj.value("Height").toVariant().toInt();
+                BGMState = bool(LobbyObj.value("LobbyBGM").toVariant().toInt());
+            }
+            else
+            {
+                qDebug() << "JSON document is not an object.";
+            }
+        }
+        else
+        {
+            qDebug() << "Failed to load JSON document.";
+        }
+    }
+}

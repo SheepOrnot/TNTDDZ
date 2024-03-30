@@ -40,6 +40,7 @@ private slots:
     void onRegisterButtonClicked();
     void onShowPasswordClicked();
     void onHidePasswordClicked();
+
 private:
     Ui::MainWindow *ui;
     BackgroundWidget *backgroundWidget = nullptr;
@@ -62,5 +63,13 @@ private:
 
     MessageCenter   *message_center;
     WidgetRevPacker *widget_rev_packer;
+    QString CiphertextPwd;         //需要记住账号密码时，在返回登录成功后写入json
+private:
+    bool RemUser;
+    void ImportConfig();
+    QString Encryption();
+    QString Decryption();
+    void RestoreConfig();
 };
+
 #endif // MAINWINDOW_H

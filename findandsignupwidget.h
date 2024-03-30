@@ -30,12 +30,12 @@ private:
     QRegularExpressionValidator *UsernameValidator = nullptr;
 
 private slots:
-    void on_EnterKeyPushButton_clicked();
-    void on_ShowPassword1_clicked();
-    void on_ShowPassword2_clicked();
-    void on_HidePassword1_clicked();
-    void on_HidePassword2_clicked();
-
+    void onEnterKeyPushButtonclicked();
+    void onShowPassword1clicked();
+    void onShowPassword2clicked();
+    void onHidePassword1clicked();
+    void onHidePassword2clicked();
+    void onSendKeyPushButtonclicked();
 private:
     Ui::FindAndSignUpWidget *ui;
 };

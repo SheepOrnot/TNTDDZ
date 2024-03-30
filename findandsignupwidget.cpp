@@ -56,14 +56,14 @@ FindAndSignUpWidget::FindAndSignUpWidget(int _mode,QWidget *parent):
     ShowPassword1->setIconSize(QSize(20,20));
     ShowPassword1->setGeometry(ui->Password1LineEdit->x()+275,ui->Password1LineEdit->y()+25,20,20);
     ShowPassword1->setStyleSheet("QPushButton { background-color: transparent; }");
-    connect(ShowPassword1, &QPushButton::clicked, this, &FindAndSignUpWidget::on_ShowPassword1_clicked);
+    connect(ShowPassword1, &QPushButton::clicked, this, &FindAndSignUpWidget::onShowPassword1clicked);
 
     ShowPassword2 = new QPushButton(this);
     ShowPassword2->setIcon(QIcon(":/image/image/Icon/eye_open.png"));
     ShowPassword2->setIconSize(QSize(20,20));
     ShowPassword2->setGeometry(ui->Password2LineEdit->x()+275,ui->Password2LineEdit->y()+25,20,20);
     ShowPassword2->setStyleSheet("QPushButton { background-color: transparent; }");
-    connect(ShowPassword2, &QPushButton::clicked, this, &FindAndSignUpWidget::on_ShowPassword2_clicked);
+    connect(ShowPassword2, &QPushButton::clicked, this, &FindAndSignUpWidget::onShowPassword2clicked);
 
 
     HidePassword1 = new QPushButton(this);
@@ -72,7 +72,7 @@ FindAndSignUpWidget::FindAndSignUpWidget(int _mode,QWidget *parent):
     HidePassword1->setGeometry(ui->Password1LineEdit->x()+275,ui->Password1LineEdit->y()+25,20,20);
     HidePassword1->setStyleSheet("QPushButton { background-color: transparent; }");
     HidePassword1->hide();
-    connect(HidePassword1, &QPushButton::clicked, this, &FindAndSignUpWidget::on_HidePassword1_clicked);
+    connect(HidePassword1, &QPushButton::clicked, this, &FindAndSignUpWidget::onHidePassword1clicked);
 
     HidePassword2 = new QPushButton(this);
     HidePassword2->setIcon(QIcon(":/image/image/Icon/eye_close.png"));
@@ -80,8 +80,10 @@ FindAndSignUpWidget::FindAndSignUpWidget(int _mode,QWidget *parent):
     HidePassword2->setGeometry(ui->Password2LineEdit->x()+275,ui->Password2LineEdit->y()+25,20,20);
     HidePassword2->setStyleSheet("QPushButton { background-color: transparent; }");
     HidePassword2->hide();
-    connect(HidePassword2, &QPushButton::clicked, this, &FindAndSignUpWidget::on_HidePassword2_clicked);
+    connect(HidePassword2, &QPushButton::clicked, this, &FindAndSignUpWidget::onHidePassword2clicked);
 
+    connect(ui->SendKeyPushButton,&QPushButton::clicked,this,&FindAndSignUpWidget::onSendKeyPushButtonclicked);
+    connect(ui->EnterKeyPushButton,&QPushButton::clicked,this,&FindAndSignUpWidget::onEnterKeyPushButtonclicked);
 }
 
 FindAndSignUpWidget::~FindAndSignUpWidget()
@@ -91,7 +93,7 @@ FindAndSignUpWidget::~FindAndSignUpWidget()
 
 }
 //确定验证码按钮点击，修改界面尺寸，显示其它输入框，删除按钮
-void FindAndSignUpWidget::on_EnterKeyPushButton_clicked()
+void FindAndSignUpWidget::onEnterKeyPushButtonclicked()
 {
     if(mode==0)
     {
@@ -118,26 +120,30 @@ void FindAndSignUpWidget::on_EnterKeyPushButton_clicked()
         HidePassword2->setGeometry(ui->Password2LineEdit->x()+275,ui->Password2LineEdit->y()+25,20,20);
     }
 }
-void FindAndSignUpWidget::on_ShowPassword1_clicked()
+void FindAndSignUpWidget::onShowPassword1clicked()
 {
     ShowPassword1->hide(); HidePassword1->show();
     ui->Password1LineEdit->setEchoMode(QLineEdit::Normal);
 }
 
-void FindAndSignUpWidget::on_ShowPassword2_clicked()
+void FindAndSignUpWidget::onShowPassword2clicked()
 {
     ShowPassword2->hide(); HidePassword2->show();
     ui->Password2LineEdit->setEchoMode(QLineEdit::Normal);
 }
 
-void FindAndSignUpWidget::on_HidePassword1_clicked()
+void FindAndSignUpWidget::onHidePassword1clicked()
 {
     ShowPassword1->show(); HidePassword1->hide();
     ui->Password1LineEdit->setEchoMode(QLineEdit::Password);
 }
 
-void FindAndSignUpWidget::on_HidePassword2_clicked()
+void FindAndSignUpWidget::onHidePassword2clicked()
 {
     ShowPassword2->show(); HidePassword2->hide();
     ui->Password2LineEdit->setEchoMode(QLineEdit::Password);
+}
+void FindAndSignUpWidget::onSendKeyPushButtonclicked()
+{
+    qDebug()<<"Send Verify Code";
 }

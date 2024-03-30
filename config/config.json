@@ -1,0 +1,18 @@
+{
+    "Game": {
+        "Effect": "1",
+        "GameBGM": "1"
+    },
+    "Lobby": {
+        "LobbyBGM": "1"
+    },
+    "Login": {
+        "Password": "",
+        "Rem": "1",
+        "Username": "846446214@qq.com"
+    },
+    "Universal": {
+        "Height": "1080",
+        "Width": "1920"
+    }
+}

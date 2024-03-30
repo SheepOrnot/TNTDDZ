@@ -1,5 +1,5 @@
 QT       += core gui
-
+QT       += multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -16,6 +16,7 @@ SOURCES += \
     lobbywidget.cpp \
     main.cpp \
     mainwindow.cpp \
+    personalinfowidget.cpp \
     settingwidget.cpp \
     widgetcard.cpp
 
@@ -28,6 +29,7 @@ HEADERS += \
     gamewidget.h \
     lobbywidget.h \
     mainwindow.h \
+    personalinfowidget.h \
     messagecenter.h \
     messagepackage.h \
     networkrevpacker.h \
@@ -43,6 +45,7 @@ FORMS += \
     gamewidget.ui \
     lobbywidget.ui \
     mainwindow.ui \
+    personalinfowidget.ui \
     settingwidget.ui
 
 # Default rules for deployment.

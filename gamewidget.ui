@@ -421,6 +421,24 @@ X6</string>
     <string>不加倍</string>
    </property>
   </widget>
+  <widget class="QLabel" name="RoomId">
+   <property name="geometry">
+    <rect>
+     <x>1570</x>
+     <y>30</y>
+     <width>131</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 600 20pt &quot;Sitka Subheading Semibold&quot;;
+border-color: rgb(0, 0, 0);
+border:1px solid;</string>
+   </property>
+   <property name="text">
+    <string>123789</string>
+   </property>
+  </widget>
   <zorder>ClockImageLabel</zorder>
   <zorder>FinalCard1</zorder>
   <zorder>FinalCard2</zorder>
@@ -450,6 +468,7 @@ X6</string>
   <zorder>SkipLandlordBidBtn</zorder>
   <zorder>DoubleBtn</zorder>
   <zorder>UnDoubleBtn</zorder>
+  <zorder>RoomId</zorder>
  </widget>
  <resources/>
  <connections/>
