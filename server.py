@@ -15,6 +15,7 @@ import redis
 import random
 import threading
 import time
+
 redis_db = redis.Redis(host='127.0.0.1', port=6379, db=0)
 db = 'room_dbase'
 
@@ -30,15 +31,13 @@ UserData = sl.connect('D:\\server\\userdata.db',check_same_thread=False)
 
 class Player(threading.local):
     def __init__(self):
-
         self.handcards = 0
         self.lord = 0
         self.account = ""
         self.double = 0
-        self.next_player  = None
-        self.previous_player = None
         self.handcards_num = 0
         self.situation = 0
+        self.leaveroomtimes = 0
     def setlord(self,becomelord):
         self.lord = becomelord
     def sethandcards(self,cards):
@@ -57,7 +56,10 @@ class Player(threading.local):
         result = int(self.handcards, 2) ^ int(cards, 2)
         binary_result = bin(result)[2:].zfill(max(len(self.handcards), len(cards)))
         return binary_result
-
+class AccountSituation(threading.local):
+    def __init__(self,account,situation):
+        self.account = account
+        self.situation = situation
 
 
 class BattleStatus(threading.local):
@@ -66,13 +68,28 @@ class BattleStatus(threading.local):
         self.room_id = room_id
         self.room_count = 0
         self.player_1 = Player()
+
         self.player_2 = Player()
+
         self.player_3 = Player()
-        self.account_list = []
+
+        self.account_list = [AccountSituation("",0),AccountSituation("",0),AccountSituation("",0)]
         self.room_status = 0 #房间当前状态号码，暂且定义1为游戏已经开始，0为游戏没有开始
 
-    def set_account_list(self,account):
-        self.account_list.append(account)
+    def set_account_list(self,account,situation):
+        accountsituation = AccountSituation(account,situation)
+        if accountsituation not in self.account_list:
+            
+            self.account_list[int(situation)-1] = accountsituation
+    def find_situation(self,account):
+        for i in range(0,3):
+            if self.account_list[i].account == account:
+                return self.account_list[i].situation
+        
+    def del_account_list(self,account,situation):
+        accountsituation = AccountSituation(account,situation)
+        self.account_list.remove(accountsituation)
+
     def someone_join_room(self):
         self.room_count += 1
     def someone_leave_room(self):
@@ -84,35 +101,78 @@ class BattleStatus(threading.local):
         elif self.room_count == 2:
             self.player_3 = player
             return 3
-    def inform_room_status(self,relink_account):
-        situation_new = 0
-        for i in range(0,4):
-            if self.account_list[i] == relink_account:
-                situation_new = i+1
-                break
-        relink_player = Player()
-        if situation_new == 1:
-            relink_player = self.player_1
-        elif situation_new == 2:
-            relink_player = self.player_2
-        elif situation_new == 3:
-            relink_player = self.player_3
 
-        emit('server_response',jsonify(roomid = self.room_id,situation = situation_new,
-                                       handcards = relink_player.handcards,
-                                       lord = relink_player.lord,double = relink_player.double).data.decode(),room = relink_account)
-        emit('server_response',jsonify(roomid = self.room_id,situation = situation_new,
-                                       lord = relink_player.lord,double = relink_player.double).data.decode(),room = self.room_id)
-
-battle_data = BattleStatus()
+    def to_dict(self):
+        return {'roomid':self.room_id,'player_1_account':self.player_1.account,
+                'player_2_account':self.player_2.account,'player_3_account':self.player_3.account,
+                'player_1_handcards':self.player_1.handcards,'player_2_handcards':self.player_2.handcards,
+                'player_3_handcards':self.player_3.handcards,'room_status':self.room_status,
+                'player_1_lord':self.player_1.lord,'player_2_lord':self.player_2.lord,
+                'player_3_lord':self.player_2.lord,'room_status':self.room_status,
+                'player_1_leavetimes':self.player_1.leaveroomtimes,'player_2_leavetimes':self.player_2.leaveroomtimes,
+                'player_3_leavetimes':self.player_3.leaveroomtimes,'room_count':self.room_count
+                }
+def inform_room_status(relink_account,situation,room_id):
+    situation_new = situation
+    battle_data = BattleStatus()
+    key = room_id+"_battle_data"
+    battle_status = redis_db.get(key).decode()
+    battle_status = json.loads(battle_status)
+    roomid = battle_status.get("roomid")
+    player_1_account = battle_status.get("player_1_account")
+    player_2_account = battle_status.get("player_2_account")
+    player_3_account = battle_status.get("player_3_account")
+    player_1_handcards = battle_status.get("player_1_handcards")
+    player_2_handcards = battle_status.get("player_2_handcards")
+    player_3_handcards = battle_status.get("player_3_handcards")
+    room_status = battle_status.get("room_status")
+    player_1_lord = battle_status.get("player_1_lord")
+    player_2_lord = battle_status.get("player_2_lord")
+    player_3_lord = battle_status.get("player_3_lord")
+    player_1_leavetimes = battle_status.get("player_1_leavetimes")
+    player_2_leavetimes = battle_status.get("player_2_leavetimes")
+    player_3_leavetimes = battle_status.get("player_3_leavetimes")
+    room_count = battle_status.get("room_count")
+ 
+    battle_data.room_id = roomid
+    battle_data.player_1.account = player_1_account
+    battle_data.player_2.account = player_2_account
+    battle_data.player_3.account = player_3_account
+    battle_data.player_1.handcards = player_1_handcards
+    battle_data.player_2.handcards = player_2_handcards
+    battle_data.player_3.handcards = player_3_handcards
+    battle_data.room_status = room_status
+    battle_data.player_1.lord = player_1_lord
+    battle_data.player_2.lord = player_2_lord
+    battle_data.player_3.lord = player_3_lord
+    battle_data.player_1.leaveroomtimes = player_1_leavetimes
+    battle_data.player_2.leaveroomtimes = player_2_leavetimes
+    battle_data.player_3.leaveroomtimes = player_3_leavetimes
+    battle_data.room_count = room_count       
+ 
+    print("--------------------",situation_new)
+    print("-----------------",battle_data.account_list)
+    relink_player = Player()
+    if situation_new == 1:
+        relink_player = battle_data.player_1
+    elif situation_new == 2:
+        relink_player = battle_data.player_2
+    elif situation_new == 3:
+        relink_player = battle_data.player_3
+    print("battle_data.room_id",battle_data.room_id)
+    print("relink_player.handcards",relink_player.handcards)
+    emit('server_response',jsonify(roomid = battle_data.room_id,situation = situation_new,
+                                   handcards = relink_player.handcards,
+                                   lord = relink_player.lord,double = relink_player.double).data.decode(),room = relink_account)
+    emit('server_response',jsonify(roomid = battle_data.room_id,situation = situation_new,
+                                   lord = relink_player.lord,double = relink_player.double).data.decode(),room = room_id)
 
 class ReadyPlayer(threading.local):
     def __init__(self):
         self.num = 0
         self.account = []
 ready_player = ReadyPlayer()
-ready_player.num = 0
-ready_player.account = []
+
 
 class HandCards(threading.local):
     def __init__(self):
@@ -138,18 +198,20 @@ def decrease_value(key):
 
 @socketio.on('create_room')
 def Create_room(data):
-    global battle_data
+    # global battle_data
+    battle_data = BattleStatus()
     battle_data.someone_join_room()
     data_room_id = str(battle_data.room_id)
-    
+    print("Battle_data:",battle_data.room_id)
     data = json.loads(data)
     data_account = data.get('account')
     roomhost = Player()
     roomhost.account = data_account
     roomhost.situation = 1
     battle_data.player_1 = roomhost
-    battle_data.set_account_list(data_account)
-
+    
+    battle_data.set_account_list(data_account,roomhost.situation)
+    redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
     redis_db.set(data_account,data_room_id)
 #########################################################
     print("data_room_id",data_room_id,"\n","battle_data.player_1.account",battle_data.player_1.account)    
@@ -173,6 +235,7 @@ def Create_room(data):
         print(key.decode(), "->", value.decode())
 #################################################################
     emit('server_response',jsonify(type = 4,roomid = data_room_id).data.decode(),room = data_account)
+    
     global room_id
     room_id = room_id+1
     return str(room_id - 1) 
@@ -181,13 +244,54 @@ def Create_room(data):
 
 @socketio.on('join_room')
 def Join_room(data):
-    global battle_data
-    
+    # global battle_data
     data = json.loads(data)
-
     data_room_id = data.get("roomid")
+    print("data_room_id",data_room_id)
+    key = data_room_id+"_battle_data"
+    print("key--------==-=-=-=-=-=-=-=-=-=",key)
+    battle_data = BattleStatus()
+    
+    
+    
+    battle_status = redis_db.get(key).decode()
+    battle_status = json.loads(battle_status)
+    roomid = battle_status.get("roomid")
+    player_1_account = battle_status.get("player_1_account")
+    player_2_account = battle_status.get("player_2_account")
+    player_3_account = battle_status.get("player_3_account")
+    player_1_handcards = battle_status.get("player_1_handcards")
+    player_2_handcards = battle_status.get("player_2_handcards")
+    player_3_handcards = battle_status.get("player_3_handcards")
+    room_status = battle_status.get("room_status")
+    player_1_lord = battle_status.get("player_1_lord")
+    player_2_lord = battle_status.get("player_2_lord")
+    player_3_lord = battle_status.get("player_3_lord")
+    player_1_leavetimes = battle_status.get("player_1_leavetimes")
+    player_2_leavetimes = battle_status.get("player_2_leavetimes")
+    player_3_leavetimes = battle_status.get("player_3_leavetimes")
+    room_count = battle_status.get("room_count")
+
+    battle_data.room_id = roomid
+    battle_data.player_1.account = player_1_account
+    battle_data.player_2.account = player_2_account
+    battle_data.player_3.account = player_3_account
+    battle_data.player_1.handcards = player_1_handcards
+    battle_data.player_2.handcards = player_2_handcards
+    battle_data.player_3.handcards = player_3_handcards
+    battle_data.room_status = room_status
+    battle_data.player_1.lord = player_1_lord
+    battle_data.player_2.lord = player_2_lord
+    battle_data.player_3.lord = player_3_lord
+    battle_data.player_1.leaveroomtimes = player_1_leavetimes
+    battle_data.player_2.leaveroomtimes = player_2_leavetimes
+    battle_data.player_3.leaveroomtimes = player_3_leavetimes
+    battle_data.room_count = room_count
+
+
+    
     global room_id
-    check_room = str(room_id-1)+"_count_room"
+    check_room = str(battle_data.room_id)+"_count_room"
 
     
     count = redis_db.get(check_room)
@@ -197,14 +301,14 @@ def Join_room(data):
 
     data_account = data.get("account")
     join_room(data_account)
-    print("str(room_id)",str(room_id))
-    print("redis_db.get(str(room_id)+)",redis_db.get(str(room_id-1)+"_exist_room"))
+    print("str(room_id)",roomid)
+    print("redis_db.get(str(room_id)+)",redis_db.get(str(battle_data.room_id)+"_exist_room"))
     if int(count.decode()) >= 3:
         print("当前房间已满")
         print("data_account",data_account)
         emit('server_response',jsonify(type = 5,status = 2).data.decode(),room = data_account)
         return False
-    elif redis_db.get(str(room_id-1)+"_exist_room") == None:
+    elif redis_db.get(str(battle_data.room_id)+"_exist_room") == None:
         print("加入的房间不存在")
         emit('server_response',jsonify(type = 5,status = 0).data.decode(),room = data_account)
         
@@ -212,29 +316,53 @@ def Join_room(data):
         
         joiner = Player()
         joiner.account = data_account
-        selectplayer = battle_data.player_enter_room(joiner)
-        print("======================================",selectplayer)
-        if selectplayer == 2:
+        if joiner.account == player_1_account:
+            joiner.situation = 1
+        elif joiner.account == player_2_account:
             joiner.situation = 2
-            joiner.previous_player = battle_data.player_1
-            battle_data.player_1 = Player()
-            battle_data.player_1.next_player = joiner
-        elif selectplayer == 3:
+        elif joiner.situation == player_3_account:
             joiner.situation = 3
-            joiner.previous_player = battle_data.player_2
-            joiner.next_player = battle_data.player_1
-            battle_data.player_2 = Player()
-            battle_data.player_2.next_player = joiner
-            battle_data.player_1 = Player()
-            battle_data.player_1.previous_player = joiner
-        battle_data.set_account_list(data_account)
+        print("joiner.situation:",joiner.situation)
+        if joiner.situation == 0:
+            selectplayer = battle_data.player_enter_room(joiner)
+            print("======================================",selectplayer)
+            if selectplayer == 2:
+                joiner.situation = 2
+            elif selectplayer == 3:
+                joiner.situation = 3
+            else:
+                joiner.situation = 1
+        if joiner.situation == 1:
+            battle_data.player_1.account = joiner.account
+            battle_data.player_1.situation = joiner.situation
+            joiner.leaveroomtimes = player_1_leavetimes
+        elif joiner.situation ==2:
+            battle_data.player_2.account = joiner.account
+            battle_data.player_2.situation = joiner.situation
+            joiner.leaveroomtimes = player_2_leavetimes
+        else:
+            battle_data.player_3.account = joiner.account   
+            battle_data.player_3.situation = joiner.situation
+            joiner.leaveroomtimes = player_3_leavetimes
+        if joiner.leaveroomtimes == 0:
+            battle_data.set_account_list(data_account,joiner.situation)
         battle_data.someone_join_room()
-        battle_data.inform_room_status(data_account)
-
+        
+        print("json.dumps(battle_data.to_dict()",joiner.account)
+        redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+        inform_room_status(data_account,joiner.situation,data_room_id)
+        
         count_value(check_room)
         join_room(data_room_id)
         redis_db.set(data_account,data_room_id)
-        print(request.sid,"已经成功加入")
+#################################################################
+        keys = redis_db.keys()
+
+        # 遍历每个键，并输出键和对应的值
+        for key in keys:
+            value = redis_db.get(key)
+            print(key.decode(), "->", value.decode())
+#################################################################
         emit('server_response',jsonify(type = 5,status = 1,account = data_account).data.decode(),room = data_room_id)
         print("--------------------",redis_db.get(data_account))
         return True
@@ -244,13 +372,50 @@ def Join_room(data):
 @socketio.on('leave_room')
 def Leave_room(data):
 
-
-    global battle_data
+    battle_data = BattleStatus()
     data = json.loads(data)
     print("要断开连接的数据是",data)
     data_account = data.get("account")
     data_room_id = data.get("roomid")
-    check_room = str(room_id-1)+"_count_room"
+    check_room = str(data_room_id)+"_count_room"
+    
+
+    key = data_room_id+"_battle_data"
+    
+    battle_status = redis_db.get(key).decode()
+    battle_status = json.loads(battle_status)
+    roomid = battle_status.get("roomid")
+    player_1_account = battle_status.get("player_1_account")
+    player_2_account = battle_status.get("player_2_account")
+    player_3_account = battle_status.get("player_3_account")
+    player_1_handcards = battle_status.get("player_1_handcards")
+    player_2_handcards = battle_status.get("player_2_handcards")
+    player_3_handcards = battle_status.get("player_3_handcards")
+    room_status = battle_status.get("room_status")
+    player_1_lord = battle_status.get("player_1_lord")
+    player_2_lord = battle_status.get("player_2_lord")
+    player_3_lord = battle_status.get("player_3_lord")
+    player_1_leavetimes = battle_status.get("player_1_leavetimes")
+    player_2_leavetimes = battle_status.get("player_2_leavetimes")
+    player_3_leavetimes = battle_status.get("player_3_leavetimes")
+    room_count = battle_status.get("room_count")
+
+    battle_data.room_id = roomid
+    battle_data.player_1.account = player_1_account
+    battle_data.player_2.account = player_2_account
+    battle_data.player_3.account = player_3_account
+    battle_data.player_1.handcards = player_1_handcards
+    battle_data.player_2.handcards = player_2_handcards
+    battle_data.player_3.handcards = player_3_handcards
+    battle_data.room_status = room_status
+    battle_data.player_1.lord = player_1_lord
+    battle_data.player_2.lord = player_2_lord
+    battle_data.player_3.lord = player_3_lord
+    battle_data.player_1.leaveroomtimes = player_1_leavetimes
+    battle_data.player_2.leaveroomtimes = player_2_leavetimes
+    battle_data.player_3.leaveroomtimes = player_3_leavetimes
+    battle_data.room_count = room_count
+
     
     decrease_value(check_room)
     redis_db.delete(data_account)
@@ -260,10 +425,23 @@ def Leave_room(data):
         ready_player.account.remove(data_account)
     print("删除成功")
     
-    
+    quiter = Player()
+    quiter.account = data_account
+    quiter.leaveroomtimes +=1
+    situation =  battle_data.find_situation(quiter.account)
+    if situation == 1 :
+        battle_data.player_1.account = quiter.account
+        battle_data.player_1.leaveroomtimes = quiter.leaveroomtimes
+    elif situation == 2:
+        battle_data.player_2.account = quiter.account
+        battle_data.player_2.leaveroomtimes = quiter.leaveroomtimes
+    else:
+        battle_data.player_3.account = quiter.account
+        battle_data.player_3.leaveroomtimes = quiter.leaveroomtimes
 
-    #battle_data.account_list.remove(data_account)
+    #battle_data.del_account_list(data_account,battle_data.account_list.index(data_account)+1)
     battle_data.someone_leave_room()
+    redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
     print("*********************",jsonify( type = 6 ,status = 1).data.decode())
     emit('server_response',jsonify( type = 6 ,status = 1,account = data_account).data.decode(),room = data_room_id)
    
@@ -301,28 +479,77 @@ def wash_cards():
 def package_cards(group):
     return int(sendcard.changetostring(sendcard.transfercard(group)),2)
 
-
+ 
 @socketio.on('ready')
 def ready(data):
+    battle_data = BattleStatus()
+
     data = json.loads(data)
     data_account = data.get("account")
-    
-    ready_player.account.append(data_account)
+    data_room_id = data.get("roomid")
+    global ready_player
+    if data_account not in ready_player.account:
+        ready_player.account.append(data_account)
+    print("========================",ready_player.account)
     ready_player.num = ready_player.num + 1
-    room_now = room_id -1
+    room_now = data_room_id
     print("------------------room_id",room_now)
     emit('server_response',data_account,room = room_now)
     print(data_account + "已经准备")
-    if ready_player.num == 3:
-        #emit('server_response','所有玩家都已经准备',room = room_now)
-        wash_cards()
 
-        print("一号玩家的手牌是",package_cards(cards.player_1_cards),"一号玩家的account:",ready_player.account[0])
-        print("二号玩家的手牌是",package_cards(cards.player_2_cards),"二号玩家的account:",ready_player.account[1])
-        print("三号玩家的手牌是",package_cards(cards.player_3_cards),"三号玩家的account:",ready_player.account[2])
+    key = data_room_id+"_battle_data"
+    
+    battle_status = redis_db.get(key).decode()
+    battle_status = json.loads(battle_status)
+    roomid = battle_status.get("roomid")
+    player_1_account = battle_status.get("player_1_account")
+    player_2_account = battle_status.get("player_2_account")
+    player_3_account = battle_status.get("player_3_account")
+    player_1_handcards = battle_status.get("player_1_handcards")
+    player_2_handcards = battle_status.get("player_2_handcards")
+    player_3_handcards = battle_status.get("player_3_handcards")
+    room_status = battle_status.get("room_status")
+    player_1_lord = battle_status.get("player_1_lord")
+    player_2_lord = battle_status.get("player_2_lord")
+    player_3_lord = battle_status.get("player_3_lord")
+    player_1_leavetimes = battle_status.get("player_1_leavetimes")
+    player_2_leavetimes = battle_status.get("player_2_leavetimes")
+    player_3_leavetimes = battle_status.get("player_3_leavetimes")
+    room_count = battle_status.get("room_count")
+
+    battle_data.room_id = roomid
+    battle_data.player_1.account = player_1_account
+    battle_data.player_2.account = player_2_account
+    battle_data.player_3.account = player_3_account
+    battle_data.player_1.handcards = player_1_handcards
+    battle_data.player_2.handcards = player_2_handcards
+    battle_data.player_3.handcards = player_3_handcards
+    battle_data.room_status = room_status
+    battle_data.player_1.lord = player_1_lord
+    battle_data.player_2.lord = player_2_lord
+    battle_data.player_3.lord = player_3_lord
+    battle_data.player_1.leaveroomtimes = player_1_leavetimes
+    battle_data.player_2.leaveroomtimes = player_2_leavetimes
+    battle_data.player_3.leaveroomtimes = player_3_leavetimes
+    battle_data.room_count = room_count
+
+
+    
+    if ready_player.num == 3:
+
+        wash_cards()
+        battle_data.player_1.handcards = package_cards(cards.player_1_cards)
+        battle_data.player_2.handcards = package_cards(cards.player_2_cards)
+        battle_data.player_3.handcards = package_cards(cards.player_3_cards)
+        print("一号玩家的手牌是",battle_data.player_1.handcards,"一号玩家的account:",ready_player.account[0])
+        print("二号玩家的手牌是",battle_data.player_2.handcards,"二号玩家的account:",ready_player.account[1])
+        print("三号玩家的手牌是",battle_data.player_3.handcards,"三号玩家的account:",ready_player.account[2])
         emit('server_response',jsonify(type = 8,handcards = package_cards(cards.player_1_cards),account = ready_player.account[0]).data.decode(),room = ready_player.account[0])
         emit('server_response',jsonify(type = 8,handcards = package_cards(cards.player_2_cards),account = ready_player.account[1]).data.decode(),room = ready_player.account[1])
         emit('server_response',jsonify(type = 8,handcards = package_cards(cards.player_3_cards),account = ready_player.account[2]).data.decode(),room = ready_player.account[2])
+        redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+
+
     return data_account + "已经准备" 
 
 @socketio.on('first_lord')
@@ -492,7 +719,7 @@ print("userdata")
 CreateTable = '''CREATE TABLE UserTable (Uusername char(20),Uaccount char(20),Umail char(50),Upassword char(20),primary key(Uaccount))'''
 #cursor.execute(CreateTable)
 redis_db.flushdb()
-    
+redis_db.set("room_id",1)
 
 socketio.run(app,port=22222,debug= True)
 
