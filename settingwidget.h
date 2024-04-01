@@ -2,7 +2,7 @@
 #define SETTINGWIDGET_H
 
 #include <QWidget>
-
+#include <QDebug>
 namespace Ui {
 class SettingWidget;
 }
@@ -18,6 +18,17 @@ public:
     int Height;
 private:
     Ui::SettingWidget *ui;
+    double gameBGMVolume,gameEffectVolume;
+    bool LobbyBGM;
+    int NewWidth,NewHeight;
+    int CardStyle;
+private:
+    void WriteBackConfig();
+private slots:
+    void onBasicBtnClicked();
+    void onFrameBtnClicked();
+    void onSoundEffectBtnClicked();
+    void onApplyBtnClicked();
 };
 
 #endif // SETTINGWIDGET_H

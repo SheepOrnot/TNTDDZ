@@ -20,16 +20,18 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     UID = "00000000000";
 //*******************end**************************
 
-    QMediaPlaylist *playlist = new QMediaPlaylist;
-    playlist->addMedia(QUrl::fromLocalFile("./sound/BGM/lobbybgm.mp3"));
-    playlist->setPlaybackMode(QMediaPlaylist::Loop);
-    BGMPlayer.setPlaylist(playlist);
-    BGMPlayer.setVolume(30);
-    if(BGMState) BGMPlayer.play();
+    BGMPlayer = new QMediaPlayer();
+    BGMPlayer->setSource(QUrl("qrc:/sound/sound/BGM/lobbybgm.mp3"));
+    BGMPlayer->setLoops(-1);
+    BGMaudioOutput = new QAudioOutput();
+    BGMaudioOutput->setVolume(0.5);
+    BGMPlayer->setAudioOutput(BGMaudioOutput);
+    if(BGMState) BGMPlayer->play();
     BGMThread = new QThread;
+    BGMPlayer->moveToThread(BGMThread);
     BGMThread->start();
-    connect(qApp, &QCoreApplication::aboutToQuit,BGMThread, &QThread::quit);
 
+    connect(qApp, &QCoreApplication::aboutToQuit,BGMThread, &QThread::quit);
     RollImageIndex = 0;
 
     this->setFixedSize(Width,Height);
@@ -154,7 +156,7 @@ void LobbyWidget::onClassicModeBtnClicked()            //创建房间按钮
     GameExitBtn->setStyleSheet("QPushButton { background-color: transparent; }");
     GameExitBtn->setIconSize(GameExitBtn->size());
     GameExitBtn->show();
-    BGMPlayer.stop();
+    BGMPlayer->stop();
     connect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
 }
 void LobbyWidget::RollImage()
@@ -179,7 +181,7 @@ void LobbyWidget::onExitGameBtnClicked()
     disconnect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
     delete GameExitBtn;
     delete gameWidget;
-    if(BGMState) BGMPlayer.play();
+    if(BGMState) BGMPlayer->play();
 }
 
 void LobbyWidget::ImportConfig()

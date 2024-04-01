@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'gamewidget.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.2
+** Created by: Qt User Interface Compiler version 6.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -56,108 +56,108 @@ public:
     void setupUi(QWidget *GameWidget)
     {
         if (GameWidget->objectName().isEmpty())
-            GameWidget->setObjectName(QString::fromUtf8("GameWidget"));
+            GameWidget->setObjectName("GameWidget");
         GameWidget->resize(1920, 1080);
         FinalCard1 = new QLabel(GameWidget);
-        FinalCard1->setObjectName(QString::fromUtf8("FinalCard1"));
+        FinalCard1->setObjectName("FinalCard1");
         FinalCard1->setGeometry(QRect(740, 20, 81, 111));
         FinalCard1->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
         FinalCard2 = new QLabel(GameWidget);
-        FinalCard2->setObjectName(QString::fromUtf8("FinalCard2"));
+        FinalCard2->setObjectName("FinalCard2");
         FinalCard2->setGeometry(QRect(850, 20, 81, 111));
         FinalCard2->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
         FinalCard3 = new QLabel(GameWidget);
-        FinalCard3->setObjectName(QString::fromUtf8("FinalCard3"));
+        FinalCard3->setObjectName("FinalCard3");
         FinalCard3->setGeometry(QRect(950, 20, 81, 111));
         FinalCard3->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
         MultiplierLabel = new QLabel(GameWidget);
-        MultiplierLabel->setObjectName(QString::fromUtf8("MultiplierLabel"));
+        MultiplierLabel->setObjectName("MultiplierLabel");
         MultiplierLabel->setGeometry(QRect(1040, 50, 81, 81));
         RuleBtn = new QPushButton(GameWidget);
-        RuleBtn->setObjectName(QString::fromUtf8("RuleBtn"));
+        RuleBtn->setObjectName("RuleBtn");
         RuleBtn->setGeometry(QRect(1730, 20, 61, 61));
         SettingBtn = new QPushButton(GameWidget);
-        SettingBtn->setObjectName(QString::fromUtf8("SettingBtn"));
+        SettingBtn->setObjectName("SettingBtn");
         SettingBtn->setGeometry(QRect(1810, 20, 61, 61));
         ProfileLabel1 = new QLabel(GameWidget);
-        ProfileLabel1->setObjectName(QString::fromUtf8("ProfileLabel1"));
+        ProfileLabel1->setObjectName("ProfileLabel1");
         ProfileLabel1->setGeometry(QRect(50, 270, 121, 131));
         ProfileLabel1->setStyleSheet(QString::fromUtf8(""));
         ProfileLabel2 = new QLabel(GameWidget);
-        ProfileLabel2->setObjectName(QString::fromUtf8("ProfileLabel2"));
+        ProfileLabel2->setObjectName("ProfileLabel2");
         ProfileLabel2->setGeometry(QRect(1740, 280, 121, 131));
         ProfileLabel2->setStyleSheet(QString::fromUtf8(""));
         BeansLineEdit1 = new QLineEdit(GameWidget);
-        BeansLineEdit1->setObjectName(QString::fromUtf8("BeansLineEdit1"));
+        BeansLineEdit1->setObjectName("BeansLineEdit1");
         BeansLineEdit1->setGeometry(QRect(50, 420, 121, 31));
         BeansLineEdit2 = new QLineEdit(GameWidget);
-        BeansLineEdit2->setObjectName(QString::fromUtf8("BeansLineEdit2"));
+        BeansLineEdit2->setObjectName("BeansLineEdit2");
         BeansLineEdit2->setGeometry(QRect(1740, 430, 121, 31));
         ClockNum = new QLabel(GameWidget);
-        ClockNum->setObjectName(QString::fromUtf8("ClockNum"));
+        ClockNum->setObjectName("ClockNum");
         ClockNum->setGeometry(QRect(1550, 250, 20, 21));
         ClockNum->setStyleSheet(QString::fromUtf8("background-color: rgb(85, 255, 127);"));
         ClockImageLabel = new QLabel(GameWidget);
-        ClockImageLabel->setObjectName(QString::fromUtf8("ClockImageLabel"));
+        ClockImageLabel->setObjectName("ClockImageLabel");
         ClockImageLabel->setGeometry(QRect(1540, 240, 41, 41));
         ClockImageLabel->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
         DoubleLabel1 = new QLabel(GameWidget);
-        DoubleLabel1->setObjectName(QString::fromUtf8("DoubleLabel1"));
+        DoubleLabel1->setObjectName("DoubleLabel1");
         DoubleLabel1->setGeometry(QRect(120, 460, 51, 19));
         DoubleLabel2 = new QLabel(GameWidget);
-        DoubleLabel2->setObjectName(QString::fromUtf8("DoubleLabel2"));
+        DoubleLabel2->setObjectName("DoubleLabel2");
         DoubleLabel2->setGeometry(QRect(1740, 470, 51, 19));
         IdentityLabel1 = new QLabel(GameWidget);
-        IdentityLabel1->setObjectName(QString::fromUtf8("IdentityLabel1"));
+        IdentityLabel1->setObjectName("IdentityLabel1");
         IdentityLabel1->setGeometry(QRect(90, 220, 41, 41));
         IdentityLabel1->setStyleSheet(QString::fromUtf8(""));
         IdentityLabel2 = new QLabel(GameWidget);
-        IdentityLabel2->setObjectName(QString::fromUtf8("IdentityLabel2"));
+        IdentityLabel2->setObjectName("IdentityLabel2");
         IdentityLabel2->setGeometry(QRect(1780, 230, 41, 41));
         IdentityLabel2->setStyleSheet(QString::fromUtf8(""));
         PlayCardBtn = new QPushButton(GameWidget);
-        PlayCardBtn->setObjectName(QString::fromUtf8("PlayCardBtn"));
+        PlayCardBtn->setObjectName("PlayCardBtn");
         PlayCardBtn->setGeometry(QRect(630, 770, 161, 51));
         ProfileLabel3 = new QLabel(GameWidget);
-        ProfileLabel3->setObjectName(QString::fromUtf8("ProfileLabel3"));
+        ProfileLabel3->setObjectName("ProfileLabel3");
         ProfileLabel3->setGeometry(QRect(120, 890, 121, 131));
         ProfileLabel3->setStyleSheet(QString::fromUtf8(""));
         BeansLineEdit3 = new QLineEdit(GameWidget);
-        BeansLineEdit3->setObjectName(QString::fromUtf8("BeansLineEdit3"));
+        BeansLineEdit3->setObjectName("BeansLineEdit3");
         BeansLineEdit3->setGeometry(QRect(120, 1030, 121, 31));
         DoubleLabel3 = new QLabel(GameWidget);
-        DoubleLabel3->setObjectName(QString::fromUtf8("DoubleLabel3"));
+        DoubleLabel3->setObjectName("DoubleLabel3");
         DoubleLabel3->setGeometry(QRect(260, 1040, 51, 19));
         IdentityLabel3 = new QLabel(GameWidget);
-        IdentityLabel3->setObjectName(QString::fromUtf8("IdentityLabel3"));
+        IdentityLabel3->setObjectName("IdentityLabel3");
         IdentityLabel3->setGeometry(QRect(160, 840, 41, 41));
         IdentityLabel3->setStyleSheet(QString::fromUtf8(""));
         ChatComboBox = new QComboBox(GameWidget);
-        ChatComboBox->setObjectName(QString::fromUtf8("ChatComboBox"));
+        ChatComboBox->setObjectName("ChatComboBox");
         ChatComboBox->setGeometry(QRect(1700, 1010, 201, 31));
         SkipTurnBtn = new QPushButton(GameWidget);
-        SkipTurnBtn->setObjectName(QString::fromUtf8("SkipTurnBtn"));
+        SkipTurnBtn->setObjectName("SkipTurnBtn");
         SkipTurnBtn->setGeometry(QRect(1000, 770, 161, 51));
         CallLandlordBtn = new QPushButton(GameWidget);
-        CallLandlordBtn->setObjectName(QString::fromUtf8("CallLandlordBtn"));
+        CallLandlordBtn->setObjectName("CallLandlordBtn");
         CallLandlordBtn->setGeometry(QRect(630, 750, 161, 51));
         SkipCallLandlordBtn = new QPushButton(GameWidget);
-        SkipCallLandlordBtn->setObjectName(QString::fromUtf8("SkipCallLandlordBtn"));
+        SkipCallLandlordBtn->setObjectName("SkipCallLandlordBtn");
         SkipCallLandlordBtn->setGeometry(QRect(1000, 750, 161, 51));
         BidForLandlordBtn = new QPushButton(GameWidget);
-        BidForLandlordBtn->setObjectName(QString::fromUtf8("BidForLandlordBtn"));
+        BidForLandlordBtn->setObjectName("BidForLandlordBtn");
         BidForLandlordBtn->setGeometry(QRect(630, 730, 161, 51));
         SkipLandlordBidBtn = new QPushButton(GameWidget);
-        SkipLandlordBidBtn->setObjectName(QString::fromUtf8("SkipLandlordBidBtn"));
+        SkipLandlordBidBtn->setObjectName("SkipLandlordBidBtn");
         SkipLandlordBidBtn->setGeometry(QRect(1000, 730, 161, 51));
         DoubleBtn = new QPushButton(GameWidget);
-        DoubleBtn->setObjectName(QString::fromUtf8("DoubleBtn"));
+        DoubleBtn->setObjectName("DoubleBtn");
         DoubleBtn->setGeometry(QRect(630, 710, 161, 51));
         UnDoubleBtn = new QPushButton(GameWidget);
-        UnDoubleBtn->setObjectName(QString::fromUtf8("UnDoubleBtn"));
+        UnDoubleBtn->setObjectName("UnDoubleBtn");
         UnDoubleBtn->setGeometry(QRect(1000, 710, 161, 51));
         RoomId = new QLabel(GameWidget);
-        RoomId->setObjectName(QString::fromUtf8("RoomId"));
+        RoomId->setObjectName("RoomId");
         RoomId->setGeometry(QRect(1570, 30, 131, 41));
         RoomId->setStyleSheet(QString::fromUtf8("font: 600 20pt \"Sitka Subheading Semibold\";\n"
 "border-color: rgb(0, 0, 0);\n"

@@ -1,58 +1,58 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'findandsignupwidget.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.2)
+** Created by: The Qt Meta Object Compiler version 68 (Qt 6.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include <memory>
 #include "../findandsignupwidget.h"
-#include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
+
+#include <QtCore/qtmochelpers.h>
+
+#include <memory>
+
+
+#include <QtCore/qxptype_traits.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'findandsignupwidget.h' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.15.2. It"
+#elif Q_MOC_OUTPUT_REVISION != 68
+#error "This file was generated using the moc from 6.7.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
-QT_BEGIN_MOC_NAMESPACE
+#ifndef Q_CONSTINIT
+#define Q_CONSTINIT
+#endif
+
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_FindAndSignUpWidget_t {
-    QByteArrayData data[8];
-    char stringdata0[168];
-};
-#define QT_MOC_LITERAL(idx, ofs, len) \
-    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_FindAndSignUpWidget_t, stringdata0) + ofs \
-        - idx * sizeof(QByteArrayData)) \
-    )
-static const qt_meta_stringdata_FindAndSignUpWidget_t qt_meta_stringdata_FindAndSignUpWidget = {
-    {
-QT_MOC_LITERAL(0, 0, 19), // "FindAndSignUpWidget"
-QT_MOC_LITERAL(1, 20, 27), // "onEnterKeyPushButtonclicked"
-QT_MOC_LITERAL(2, 48, 0), // ""
-QT_MOC_LITERAL(3, 49, 22), // "onShowPassword1clicked"
-QT_MOC_LITERAL(4, 72, 22), // "onShowPassword2clicked"
-QT_MOC_LITERAL(5, 95, 22), // "onHidePassword1clicked"
-QT_MOC_LITERAL(6, 118, 22), // "onHidePassword2clicked"
-QT_MOC_LITERAL(7, 141, 26) // "onSendKeyPushButtonclicked"
+QT_WARNING_DISABLE_GCC("-Wuseless-cast")
+namespace {
 
-    },
-    "FindAndSignUpWidget\0onEnterKeyPushButtonclicked\0"
-    "\0onShowPassword1clicked\0onShowPassword2clicked\0"
-    "onHidePassword1clicked\0onHidePassword2clicked\0"
+#ifdef QT_MOC_HAS_STRINGDATA
+struct qt_meta_stringdata_CLASSFindAndSignUpWidgetENDCLASS_t {};
+constexpr auto qt_meta_stringdata_CLASSFindAndSignUpWidgetENDCLASS = QtMocHelpers::stringData(
+    "FindAndSignUpWidget",
+    "onEnterKeyPushButtonclicked",
+    "",
+    "onShowPassword1clicked",
+    "onShowPassword2clicked",
+    "onHidePassword1clicked",
+    "onHidePassword2clicked",
     "onSendKeyPushButtonclicked"
-};
-#undef QT_MOC_LITERAL
+);
+#else  // !QT_MOC_HAS_STRINGDATA
+#error "qtmochelpers.h not found or too old."
+#endif // !QT_MOC_HAS_STRINGDATA
+} // unnamed namespace
 
-static const uint qt_meta_data_FindAndSignUpWidget[] = {
+Q_CONSTINIT static const uint qt_meta_data_CLASSFindAndSignUpWidgetENDCLASS[] = {
 
  // content:
-       8,       // revision
+      12,       // revision
        0,       // classname
        0,    0, // classinfo
        6,   14, // methods
@@ -62,13 +62,13 @@ static const uint qt_meta_data_FindAndSignUpWidget[] = {
        0,       // flags
        0,       // signalCount
 
- // slots: name, argc, parameters, tag, flags
-       1,    0,   44,    2, 0x08 /* Private */,
-       3,    0,   45,    2, 0x08 /* Private */,
-       4,    0,   46,    2, 0x08 /* Private */,
-       5,    0,   47,    2, 0x08 /* Private */,
-       6,    0,   48,    2, 0x08 /* Private */,
-       7,    0,   49,    2, 0x08 /* Private */,
+ // slots: name, argc, parameters, tag, flags, initial metatype offsets
+       1,    0,   50,    2, 0x08,    1 /* Private */,
+       3,    0,   51,    2, 0x08,    2 /* Private */,
+       4,    0,   52,    2, 0x08,    3 /* Private */,
+       5,    0,   53,    2, 0x08,    4 /* Private */,
+       6,    0,   54,    2, 0x08,    5 /* Private */,
+       7,    0,   55,    2, 0x08,    6 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -81,11 +81,36 @@ static const uint qt_meta_data_FindAndSignUpWidget[] = {
        0        // eod
 };
 
+Q_CONSTINIT const QMetaObject FindAndSignUpWidget::staticMetaObject = { {
+    QMetaObject::SuperData::link<QWidget::staticMetaObject>(),
+    qt_meta_stringdata_CLASSFindAndSignUpWidgetENDCLASS.offsetsAndSizes,
+    qt_meta_data_CLASSFindAndSignUpWidgetENDCLASS,
+    qt_static_metacall,
+    nullptr,
+    qt_incomplete_metaTypeArray<qt_meta_stringdata_CLASSFindAndSignUpWidgetENDCLASS_t,
+        // Q_OBJECT / Q_GADGET
+        QtPrivate::TypeAndForceComplete<FindAndSignUpWidget, std::true_type>,
+        // method 'onEnterKeyPushButtonclicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onShowPassword1clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onShowPassword2clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onHidePassword1clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onHidePassword2clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onSendKeyPushButtonclicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>
+    >,
+    nullptr
+} };
+
 void FindAndSignUpWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<FindAndSignUpWidget *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->onEnterKeyPushButtonclicked(); break;
         case 1: _t->onShowPassword1clicked(); break;
@@ -96,18 +121,8 @@ void FindAndSignUpWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
         default: ;
         }
     }
-    Q_UNUSED(_a);
+    (void)_a;
 }
-
-QT_INIT_METAOBJECT const QMetaObject FindAndSignUpWidget::staticMetaObject = { {
-    QMetaObject::SuperData::link<QWidget::staticMetaObject>(),
-    qt_meta_stringdata_FindAndSignUpWidget.data,
-    qt_meta_data_FindAndSignUpWidget,
-    qt_static_metacall,
-    nullptr,
-    nullptr
-} };
-
 
 const QMetaObject *FindAndSignUpWidget::metaObject() const
 {
@@ -117,7 +132,7 @@ const QMetaObject *FindAndSignUpWidget::metaObject() const
 void *FindAndSignUpWidget::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_FindAndSignUpWidget.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_CLASSFindAndSignUpWidgetENDCLASS.stringdata0))
         return static_cast<void*>(this);
     return QWidget::qt_metacast(_clname);
 }
@@ -133,10 +148,9 @@ int FindAndSignUpWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         _id -= 6;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         if (_id < 6)
-            *reinterpret_cast<int*>(_a[0]) = -1;
+            *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
         _id -= 6;
     }
     return _id;
 }
 QT_WARNING_POP
-QT_END_MOC_NAMESPACE
