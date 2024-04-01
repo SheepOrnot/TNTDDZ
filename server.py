@@ -36,7 +36,7 @@ class Player(threading.local):
         self.account = ""
         self.double = 0
         self.handcards_num = 0
-        self.situation = 0
+        self.seat = 0
         self.leaveroomtimes = 0
     def setlord(self,becomelord):
         self.lord = becomelord
@@ -56,10 +56,10 @@ class Player(threading.local):
         result = int(self.handcards, 2) ^ int(cards, 2)
         binary_result = bin(result)[2:].zfill(max(len(self.handcards), len(cards)))
         return binary_result
-class AccountSituation(threading.local):
-    def __init__(self,account,situation):
+class Accountseat(threading.local):
+    def __init__(self,account,seat):
         self.account = account
-        self.situation = situation
+        self.seat = seat
 
 
 class BattleStatus(threading.local):
@@ -73,22 +73,22 @@ class BattleStatus(threading.local):
 
         self.player_3 = Player()
 
-        self.account_list = [AccountSituation("",0),AccountSituation("",0),AccountSituation("",0)]
+        self.account_list = [Accountseat("",0),Accountseat("",0),Accountseat("",0)]
         self.room_status = 0 #房间当前状态号码，暂且定义1为游戏已经开始，0为游戏没有开始
 
-    def set_account_list(self,account,situation):
-        accountsituation = AccountSituation(account,situation)
-        if accountsituation not in self.account_list:
+    def set_account_list(self,account,seat):
+        accountseat = Accountseat(account,seat)
+        if accountseat not in self.account_list:
             
-            self.account_list[int(situation)-1] = accountsituation
-    def find_situation(self,account):
+            self.account_list[int(seat)-1] = accountseat
+    def find_seat(self,account):
         for i in range(0,3):
             if self.account_list[i].account == account:
-                return self.account_list[i].situation
+                return self.account_list[i].seat
         
-    def del_account_list(self,account,situation):
-        accountsituation = AccountSituation(account,situation)
-        self.account_list.remove(accountsituation)
+    def del_account_list(self,account,seat):
+        accountseat = Accountseat(account,seat)
+        self.account_list.remove(accountseat)
 
     def someone_join_room(self):
         self.room_count += 1
@@ -112,8 +112,8 @@ class BattleStatus(threading.local):
                 'player_1_leavetimes':self.player_1.leaveroomtimes,'player_2_leavetimes':self.player_2.leaveroomtimes,
                 'player_3_leavetimes':self.player_3.leaveroomtimes,'room_count':self.room_count
                 }
-def inform_room_status(relink_account,situation,room_id):
-    situation_new = situation
+def inform_room_status(relink_account,seat,room_id):
+    seat_new = seat
     battle_data = BattleStatus()
     key = room_id+"_battle_data"
     battle_status = redis_db.get(key).decode()
@@ -150,25 +150,25 @@ def inform_room_status(relink_account,situation,room_id):
     battle_data.player_3.leaveroomtimes = player_3_leavetimes
     battle_data.room_count = room_count       
  
-    print("--------------------",situation_new)
+    print("--------------------",seat_new)
     print("-----------------",battle_data.account_list)
     relink_player = Player()
-    if situation_new == 1:
+    if seat_new == 1:
         relink_player = battle_data.player_1
-    elif situation_new == 2:
+    elif seat_new == 2:
         relink_player = battle_data.player_2
-    elif situation_new == 3:
+    elif seat_new == 3:
         relink_player = battle_data.player_3
     print("battle_data.room_id",battle_data.room_id)
     #redis_db.set(str(data_room_id)+"_"+str(data_account)+"_player_1_handcards",battle_data.player_1.handcards)
-    if redis_db.get(str(battle_data.room_id)+"_"+str(relink_player.account)+"_player_"+str(situation_new)+"_handcards") is not None:
-        relink_player.handcards = redis_db.get(str(battle_data.room_id)+"_"+str(relink_player.account)+"_player_"+str(situation_new)+"_handcards").decode()
+    if redis_db.get(str(battle_data.room_id)+"_"+str(relink_player.account)+"_player_"+str(seat_new)+"_handcards") is not None:
+        relink_player.handcards = redis_db.get(str(battle_data.room_id)+"_"+str(relink_player.account)+"_player_"+str(seat_new)+"_handcards").decode()
     print("relink_player手牌:",relink_player.handcards)
     print("relink_player.handcards",relink_player.handcards)
-    emit('server_response',jsonify(roomid = battle_data.room_id,situation = situation_new,
-                                   handcards = relink_player.handcards,
+    emit('server_response',jsonify(roomid = battle_data.room_id,seat = seat_new,
+                                   handcards = int(relink_player.handcards),
                                    lord = relink_player.lord,double = relink_player.double).data.decode(),room = relink_account)
-    emit('server_response',jsonify(roomid = battle_data.room_id,situation = situation_new,
+    emit('server_response',jsonify(account = relink_player.account,roomid = battle_data.room_id,seat = seat_new,
                                    lord = relink_player.lord,double = relink_player.double).data.decode(),room = room_id)
 
 class ReadyPlayer(threading.local):
@@ -203,6 +203,7 @@ def decrease_value(key):
 @socketio.on('create_room')
 def Create_room(data):
     # global battle_data
+    print(f"接收到创建房间请求: {data}")
     battle_data = BattleStatus()
     battle_data.someone_join_room()
     data_room_id = str(battle_data.room_id)
@@ -211,10 +212,10 @@ def Create_room(data):
     data_account = data.get('account')
     roomhost = Player()
     roomhost.account = data_account
-    roomhost.situation = 1
+    roomhost.seat = 1
     battle_data.player_1 = roomhost
     
-    battle_data.set_account_list(data_account,roomhost.situation)
+    battle_data.set_account_list(data_account,roomhost.seat)
     redis_db.set(str(data_room_id)+"_ready_count",0)
     redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
     redis_db.set(data_account,data_room_id)
@@ -239,7 +240,7 @@ def Create_room(data):
         value = redis_db.get(key)
         print(key.decode(), "->", value.decode())
 #################################################################
-    emit('server_response',jsonify(type = 4,roomid = data_room_id).data.decode(),room = data_account)
+    emit('server_response',jsonify(type = 4,roomid = data_room_id,seat = roomhost.seat).data.decode(),room = data_account)
     
     global room_id
     room_id = room_id+1
@@ -326,40 +327,40 @@ def Join_room(data):
         print("player_2_account",player_2_account)
         print("player_3_account",player_3_account)
         if str(joiner.account) == str(player_1_account):
-            joiner.situation = 1
+            joiner.seat = 1
         elif str(joiner.account) == str(player_2_account):
-            joiner.situation = 2
+            joiner.seat = 2
         elif str(joiner.account) == str(player_3_account):
-            joiner.situation = 3
-        print("joiner.situation:",joiner.situation)
-        if joiner.situation == 0:
+            joiner.seat = 3
+        print("joiner.seat:",joiner.seat)
+        if joiner.seat == 0:
             selectplayer = battle_data.player_enter_room(joiner)
             print("======================================",selectplayer)
             if selectplayer == 2:
-                joiner.situation = 2
+                joiner.seat = 2
             elif selectplayer == 3:
-                joiner.situation = 3
+                joiner.seat = 3
             else:
-                joiner.situation = 1
-        if joiner.situation == 1:
+                joiner.seat = 1
+        if joiner.seat == 1:
             battle_data.player_1.account = joiner.account
-            battle_data.player_1.situation = joiner.situation
+            battle_data.player_1.seat = joiner.seat
             joiner.leaveroomtimes = player_1_leavetimes
-        elif joiner.situation ==2:
+        elif joiner.seat ==2:
             battle_data.player_2.account = joiner.account
-            battle_data.player_2.situation = joiner.situation
+            battle_data.player_2.seat = joiner.seat
             joiner.leaveroomtimes = player_2_leavetimes
-        elif joiner.situation ==3:
+        elif joiner.seat ==3:
             battle_data.player_3.account = joiner.account   
-            battle_data.player_3.situation = joiner.situation
+            battle_data.player_3.seat = joiner.seat
             joiner.leaveroomtimes = player_3_leavetimes
         if joiner.leaveroomtimes == 0:
-            battle_data.set_account_list(data_account,joiner.situation)
+            battle_data.set_account_list(data_account,joiner.seat)
         battle_data.someone_join_room()
         
         print("json.dumps(battle_data.to_dict()",joiner.account)
         redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
-        inform_room_status(data_account,joiner.situation,data_room_id)
+        inform_room_status(data_account,joiner.seat,data_room_id)
         
         count_value(check_room)
         join_room(data_room_id)
@@ -372,7 +373,7 @@ def Join_room(data):
             value = redis_db.get(key)
             print(key.decode(), "->", value.decode())
 #################################################################
-        emit('server_response',jsonify(type = 5,status = 1,account = data_account).data.decode(),room = data_room_id)
+        emit('server_response',jsonify(type = 5,status = 1,account = data_account,seat = joiner.seat).data.decode(),room = data_room_id)
         print("--------------------",redis_db.get(data_account))
         return True
 
@@ -438,19 +439,19 @@ def Leave_room(data):
     quiter.account = data_account
     quiter.leaveroomtimes +=1
     if str(quiter.account) == str(player_1_account):
-        situation = 1
+        seat = 1
     elif str(quiter.account) == str(player_2_account):
-        situation = 2
+        seat = 2
     elif str(quiter.account) == str(player_3_account):
-        situation = 3
+        seat = 3
 
-    if situation == 1 :
+    if seat == 1 :
         battle_data.player_1.account = quiter.account
         battle_data.player_1.leaveroomtimes = quiter.leaveroomtimes
-    elif situation == 2:
+    elif seat == 2:
         battle_data.player_2.account = quiter.account
         battle_data.player_2.leaveroomtimes = quiter.leaveroomtimes
-    elif situation == 3:
+    elif seat == 3:
         battle_data.player_3.account = quiter.account
         battle_data.player_3.leaveroomtimes = quiter.leaveroomtimes
 
@@ -508,7 +509,7 @@ def ready(data):
 
     room_now = data_room_id
     print("------------------room_id",room_now)
-    emit('server_response',data_account,room = room_now)
+    #emit('server_response',data_account,room = room_now)
     print(data_account + "已经准备")
 
     key = data_room_id+"_battle_data"
@@ -546,15 +547,15 @@ def ready(data):
     battle_data.player_2.leaveroomtimes = player_2_leavetimes
     battle_data.player_3.leaveroomtimes = player_3_leavetimes
     battle_data.room_count = room_count
-    situation = 0
+    seat = 0
     if data_account == player_1_account:
-        situation = 1
+        seat = 1
     elif data_account == player_2_account:
-        situation = 2
+        seat = 2
     elif data_account == player_3_account:
-        situation = 3
+        seat = 3
 
-    redis_db.set(str(data_room_id)+"_"+str(situation)+"_ready_account",data_account)
+    redis_db.set(str(data_room_id)+"_"+str(seat)+"_ready_account",data_account)
 
     print("redis_db.get(str(data_room_id)",redis_db.get(str(data_room_id)+"_ready_count").decode())
     if redis_db.get(str(data_room_id)+"_ready_count").decode() == '3':
