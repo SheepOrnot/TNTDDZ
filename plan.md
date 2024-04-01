@@ -103,4 +103,6 @@ class BattleStatus:
 时钟
 <!-- 房间满了没告诉我
 房间不存在没告诉我 -->
-{}
+{
+    account
+}

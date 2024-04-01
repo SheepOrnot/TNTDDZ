@@ -160,6 +160,10 @@ def inform_room_status(relink_account,situation,room_id):
     elif situation_new == 3:
         relink_player = battle_data.player_3
     print("battle_data.room_id",battle_data.room_id)
+    #redis_db.set(str(data_room_id)+"_"+str(data_account)+"_player_1_handcards",battle_data.player_1.handcards)
+    if redis_db.get(str(battle_data.room_id)+"_"+str(relink_player.account)+"_player_"+str(situation_new)+"_handcards") is not None:
+        relink_player.handcards = redis_db.get(str(battle_data.room_id)+"_"+str(relink_player.account)+"_player_"+str(situation_new)+"_handcards").decode()
+    print("relink_player手牌:",relink_player.handcards)
     print("relink_player.handcards",relink_player.handcards)
     emit('server_response',jsonify(roomid = battle_data.room_id,situation = situation_new,
                                    handcards = relink_player.handcards,
@@ -171,7 +175,7 @@ class ReadyPlayer(threading.local):
     def __init__(self):
         self.num = 0
         self.account = []
-ready_player = ReadyPlayer()
+
 
 
 class HandCards(threading.local):
@@ -181,7 +185,7 @@ class HandCards(threading.local):
         self.player_2_cards = []
         self.player_3_cards = []
         self.lord_cards = []
-cards = HandCards()
+
 
 @app.route('/')
 def index():
@@ -211,6 +215,7 @@ def Create_room(data):
     battle_data.player_1 = roomhost
     
     battle_data.set_account_list(data_account,roomhost.situation)
+    redis_db.set(str(data_room_id)+"_ready_count",0)
     redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
     redis_db.set(data_account,data_room_id)
 #########################################################
@@ -316,11 +321,15 @@ def Join_room(data):
         
         joiner = Player()
         joiner.account = data_account
-        if joiner.account == player_1_account:
+        print("joiner_account:",joiner.account)
+        print("player_1_account",player_1_account)
+        print("player_2_account",player_2_account)
+        print("player_3_account",player_3_account)
+        if str(joiner.account) == str(player_1_account):
             joiner.situation = 1
-        elif joiner.account == player_2_account:
+        elif str(joiner.account) == str(player_2_account):
             joiner.situation = 2
-        elif joiner.situation == player_3_account:
+        elif str(joiner.account) == str(player_3_account):
             joiner.situation = 3
         print("joiner.situation:",joiner.situation)
         if joiner.situation == 0:
@@ -340,7 +349,7 @@ def Join_room(data):
             battle_data.player_2.account = joiner.account
             battle_data.player_2.situation = joiner.situation
             joiner.leaveroomtimes = player_2_leavetimes
-        else:
+        elif joiner.situation ==3:
             battle_data.player_3.account = joiner.account   
             battle_data.player_3.situation = joiner.situation
             joiner.leaveroomtimes = player_3_leavetimes
@@ -419,23 +428,29 @@ def Leave_room(data):
     
     decrease_value(check_room)
     redis_db.delete(data_account)
-    print("account_list",battle_data.account_list)
+
     
-    if ready_player.account != []:
-        ready_player.account.remove(data_account)
+    # if ready_player.account != []:
+    #     ready_player.account.remove(data_account)
     print("删除成功")
     
     quiter = Player()
     quiter.account = data_account
     quiter.leaveroomtimes +=1
-    situation =  battle_data.find_situation(quiter.account)
+    if str(quiter.account) == str(player_1_account):
+        situation = 1
+    elif str(quiter.account) == str(player_2_account):
+        situation = 2
+    elif str(quiter.account) == str(player_3_account):
+        situation = 3
+
     if situation == 1 :
         battle_data.player_1.account = quiter.account
         battle_data.player_1.leaveroomtimes = quiter.leaveroomtimes
     elif situation == 2:
         battle_data.player_2.account = quiter.account
         battle_data.player_2.leaveroomtimes = quiter.leaveroomtimes
-    else:
+    elif situation == 3:
         battle_data.player_3.account = quiter.account
         battle_data.player_3.leaveroomtimes = quiter.leaveroomtimes
 
@@ -463,7 +478,7 @@ def Leave_room(data):
 
 
 
-def wash_cards():
+def wash_cards(cards):
     
     random.shuffle(cards.all_cards)
     cards.player_1_cards = cards.all_cards[:17]
@@ -483,15 +498,14 @@ def package_cards(group):
 @socketio.on('ready')
 def ready(data):
     battle_data = BattleStatus()
-
+    
     data = json.loads(data)
     data_account = data.get("account")
     data_room_id = data.get("roomid")
-    global ready_player
-    if data_account not in ready_player.account:
-        ready_player.account.append(data_account)
-    print("========================",ready_player.account)
-    ready_player.num = ready_player.num + 1
+    count_value(data_room_id+"_ready_count")
+
+   
+
     room_now = data_room_id
     print("------------------room_id",room_now)
     emit('server_response',data_account,room = room_now)
@@ -532,23 +546,43 @@ def ready(data):
     battle_data.player_2.leaveroomtimes = player_2_leavetimes
     battle_data.player_3.leaveroomtimes = player_3_leavetimes
     battle_data.room_count = room_count
+    situation = 0
+    if data_account == player_1_account:
+        situation = 1
+    elif data_account == player_2_account:
+        situation = 2
+    elif data_account == player_3_account:
+        situation = 3
 
+    redis_db.set(str(data_room_id)+"_"+str(situation)+"_ready_account",data_account)
 
-    
-    if ready_player.num == 3:
-
-        wash_cards()
+    print("redis_db.get(str(data_room_id)",redis_db.get(str(data_room_id)+"_ready_count").decode())
+    if redis_db.get(str(data_room_id)+"_ready_count").decode() == '3':
+        cards = HandCards()
+        wash_cards(cards)
         battle_data.player_1.handcards = package_cards(cards.player_1_cards)
+        redis_db.set(str(data_room_id)+"_"+str(battle_data.player_1.account)+"_player_1_handcards",battle_data.player_1.handcards)
         battle_data.player_2.handcards = package_cards(cards.player_2_cards)
+        redis_db.set(str(data_room_id)+"_"+str(battle_data.player_2.account)+"_player_2_handcards",battle_data.player_2.handcards)
         battle_data.player_3.handcards = package_cards(cards.player_3_cards)
-        print("一号玩家的手牌是",battle_data.player_1.handcards,"一号玩家的account:",ready_player.account[0])
-        print("二号玩家的手牌是",battle_data.player_2.handcards,"二号玩家的account:",ready_player.account[1])
-        print("三号玩家的手牌是",battle_data.player_3.handcards,"三号玩家的account:",ready_player.account[2])
-        emit('server_response',jsonify(type = 8,handcards = package_cards(cards.player_1_cards),account = ready_player.account[0]).data.decode(),room = ready_player.account[0])
-        emit('server_response',jsonify(type = 8,handcards = package_cards(cards.player_2_cards),account = ready_player.account[1]).data.decode(),room = ready_player.account[1])
-        emit('server_response',jsonify(type = 8,handcards = package_cards(cards.player_3_cards),account = ready_player.account[2]).data.decode(),room = ready_player.account[2])
+        redis_db.set(str(data_room_id)+"_"+str(battle_data.player_3.account)+"_player_3_handcards",battle_data.player_3.handcards)
+        print("一号玩家的手牌是",battle_data.player_1.handcards,"一号玩家的account:",redis_db.get(str(data_room_id)+"_1_ready_account").decode())
+        print("二号玩家的手牌是",battle_data.player_2.handcards,"二号玩家的account:",redis_db.get(str(data_room_id)+"_2_ready_account").decode())
+        print("三号玩家的手牌是",battle_data.player_3.handcards,"三号玩家的account:",redis_db.get(str(data_room_id)+"_3_ready_account").decode())
+        emit('server_response',jsonify(type = 8,handcards = battle_data.player_1.handcards,account = redis_db.get(str(data_room_id)+"_1_ready_account").decode()).data.decode(),room = redis_db.get(str(data_room_id)+"_1_ready_account").decode())
+        emit('server_response',jsonify(type = 8,handcards = battle_data.player_2.handcards,account = redis_db.get(str(data_room_id)+"_2_ready_account").decode()).data.decode(),room = redis_db.get(str(data_room_id)+"_2_ready_account").decode())
+        emit('server_response',jsonify(type = 8,handcards = battle_data.player_3.handcards,account = redis_db.get(str(data_room_id)+"_3_ready_account").decode()).data.decode(),room = redis_db.get(str(data_room_id)+"_3_ready_account").decode())
         redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
-
+        ######################################
+        # 获取所有键
+        keys = redis_db.keys()
+        print("-----------------------")
+        # 遍历每个键，并输出键和对应的值
+        for key in keys:
+            value = redis_db.get(key)
+            print(key.decode(), "->", value.decode())
+        print("------------------------")
+        ######################################
 
     return data_account + "已经准备" 
 
