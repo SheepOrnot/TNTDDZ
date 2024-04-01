@@ -7,8 +7,8 @@
 #include <QGraphicsOpacityEffect>
 #include <QMediaPlayer>
 #include <QCoreApplication>
+#include <QAudioOutput>
 #include <QThread>
-#include <QMediaPlaylist>
 #include"settingwidget.h"
 #include"gamewidget.h"
 namespace Ui {
@@ -46,7 +46,8 @@ private:
     SettingWidget *settingWidget;
     GameWidget *gameWidget;
     QPushButton *GameExitBtn;
-    QMediaPlayer BGMPlayer;
+    QMediaPlayer *BGMPlayer;
+    QAudioOutput *BGMaudioOutput;
     QThread *BGMThread;
 private:
     void ImportConfig();

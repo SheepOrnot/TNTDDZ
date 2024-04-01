@@ -1,5 +1,6 @@
-QT       += core gui
-QT       += multimedia
+QT       += core gui multimedia network
+QT       += core5compat
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -56,4 +57,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     resource.qrc
 
-INCLUDEPATH += /home/fish/program/boost_1_84_0/
+INCLUDEPATH += D:\Program\library\boost_1_84_0
+LIBS += -LD:\Program\library\boost_1_84_0\stage\lib
+
+win32: LIBS += -lws2_32

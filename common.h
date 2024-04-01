@@ -5,7 +5,6 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <dlfcn.h>
 #include <vector>
 #include <bitset>
 #include <map>
