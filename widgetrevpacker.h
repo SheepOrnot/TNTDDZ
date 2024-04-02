@@ -25,6 +25,8 @@ public:
         MessagePackage *msg_ptr = new MessagePackage;
 
         //发送包到消息中心
+        std::cout << "recv package: " << (int)msg_ptr->message_type << std::endl;
+        std::flush(std::cout);
         switch (current_widget_arg->widget_arg_type)
         {
         case WIDGET_ARG_TYPE::LOGIN:

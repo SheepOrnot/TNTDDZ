@@ -51,6 +51,8 @@ public:
             break;
 
         default:
+            std::cout << "unknown network package" << std::endl;
+            std::flush(std::cout);
             break;
         }
 

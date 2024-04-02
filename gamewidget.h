@@ -25,7 +25,6 @@ public:
     int Width,Height;
     std::vector<WidgetCard> PreviousPlayerOutCards,NextPlayerOutCards,PlayerOutCards,PlayerHandCards,FinalCards;
     std::bitset<54> SelectedCards = 0;
-    WidgetArgCard CardArg;             //卡牌参数对象
     int PreviousProfileNum,NextProfileNum,PlayerProfileNum;
     QString PreviousIdentity,NextIdentity,PlayerIdentity;
     QString PreviousBeanNum,NextBeanNum,PlayerBeanNum;
@@ -98,7 +97,7 @@ private Q_SLOTS:
     // void onSkipLandlordBidBtnClicked();  //点击不抢按钮
     // void onDoubleBtnClicked();          //点击加倍按钮
     // void onUnDoubleBtnClicked();        //点击不加倍按钮
-signals:
+Q_SIGNALS:
     void HaveNoHandCard();
 };
 

@@ -32,7 +32,9 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     BGMThread->start();
 
     connect(qApp, &QCoreApplication::aboutToQuit,BGMThread, &QThread::quit);
+
     RollImageIndex = 0;
+
 
     this->setFixedSize(Width,Height);
     ui->ProfileLabel  ->setGeometry(0.020*Width,0.018*Height,0.067*Width,0.120*Height);

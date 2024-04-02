@@ -39,7 +39,7 @@ private:
     void WriteBackConfig();
     void ImportConfig();
 
-private slots:
+private Q_SLOTS:
     void onBasicBtnClicked();
     void onFrameBtnClicked();
     void onSoundEffectBtnClicked();

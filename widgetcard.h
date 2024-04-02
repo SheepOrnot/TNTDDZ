@@ -28,8 +28,6 @@ public:
     void toggleMove();
 private:
     void animateMove(const QPoint& startPos, const QPoint& endPos);
-private slots:
-
 
 };
 
