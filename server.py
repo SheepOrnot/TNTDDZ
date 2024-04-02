@@ -496,6 +496,29 @@ def LoginPost():
     else:
         return jsonify(type = 1,loginStatus = 1)
 
+@app.route('/passwordforget_code_verify',methods = ["POST"])
+def PasswordForget_Code_Verify():
+    PasswordForgetData = request.get_json()
+    Findingmail = PasswordForgetData.get("mail")
+    Findingcode = PasswordForgetData.get("code")
+    code = redis_data.redis_db.get(str(Findingmail)+'_passwordforgetmail').decode()
+    if code == str(Findingcode):
+        Findingresult = 1
+    else:
+        Findingresult = 0
+    return jsonify(type = 10,result = Findingresult)
+
+@app.route('/signup_code_verify',methods = ["POST"])
+def Signup_code_verify():
+    Signup = request.get_json()
+    Findingmail = Signup.get("mail")
+    Findingcode = Signup.get("code")
+    code = redis_data.redis_db.get(str(Findingmail)+'_signupmail').decode()
+    if code == str(Findingcode):
+        Findingresult = 1
+    else:
+        Findingresult = 0
+    return jsonify(type = 9,result = Findingresult)
 
 @app.route('/passwordforget',methods = ["POST"])#找回密码（验证是否发生过注册）
 def PasswordForgetPost():
