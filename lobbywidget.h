@@ -5,10 +5,6 @@
 #include <QTimer>
 #include <QFile>
 #include <QGraphicsOpacityEffect>
-#include <QMediaPlayer>
-#include <QCoreApplication>
-#include <QThread>
-#include <QAudioOutput>
 #include"settingwidget.h"
 #include"gamewidget.h"
 namespace Ui {

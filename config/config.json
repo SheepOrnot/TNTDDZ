@@ -1,13 +1,13 @@
 {
     "Game": {
-        "BGMVolume": "20",
+        "BGMVolume": "24",
         "Card": "1",
         "Effect": "1",
-        "EffectVolume": "44",
+        "EffectVolume": "4",
         "GameBGM": "1"
     },
     "Lobby": {
-        "LobbyBGM": "0"
+        "LobbyBGM": "1"
     },
     "Login": {
         "Password": "k{|363858",

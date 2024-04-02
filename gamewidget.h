@@ -11,6 +11,10 @@
 #include <QPropertyAnimation>
 #include <QJsonObject>
 #include <QListView>
+#include <QMediaPlayer>
+#include <QCoreApplication>
+#include <QThread>
+#include <QAudioOutput>
 namespace Ui {
 class GameWidget;
 }
@@ -29,6 +33,7 @@ public:
     int PreviousProfileNum,NextProfileNum,PlayerProfileNum;
     QString PreviousIdentity,NextIdentity,PlayerIdentity;
     QString PreviousBeanNum,NextBeanNum,PlayerBeanNum;
+    QMediaPlayer *BGMPlayer;
 private:
     Ui::GameWidget *ui;
     int CardStyle;
@@ -36,11 +41,15 @@ private:
     QPixmap ProfilePixmap1,ProfilePixmap2,ProfilePixmap3,
         IdentityPixmap1,IdentityPixmap2,IdentityPixmap3,
         ClockPixmap;
+
+    QAudioOutput *BGMaudioOutput;
+    QThread *BGMThread;
     SettingWidget *settingWidget;
     GameOverWidget *gameoverWidget;
     QIcon BeanIcon;
     bool BGMState,EffectState;
     int radius;
+    double BGMVolume,EffectVolume;
     const QString TypeIndex[6] = { "",
         "spades",
         "hearts",

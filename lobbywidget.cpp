@@ -184,6 +184,7 @@ void LobbyWidget::onExitGameBtnClicked()
     disconnect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
     delete GameExitBtn;
     delete gameWidget;
+    gameWidget->BGMPlayer->stop();
     if(BGMState) BGMPlayer->play();
 }
 

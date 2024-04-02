@@ -9,7 +9,20 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     ui->setupUi(this);
     this->setFixedSize(Width,Height);
     ImportConfig();
-    InitAllCards();   
+    InitAllCards();
+
+    BGMPlayer = new QMediaPlayer();
+    BGMPlayer->setSource(QUrl("qrc:/sound/sound/BGM/gamebgm.mp3"));
+    BGMPlayer->setLoops(-1);
+    BGMaudioOutput = new QAudioOutput();
+    BGMaudioOutput->setVolume(BGMVolume/100);
+    BGMPlayer->setAudioOutput(BGMaudioOutput);
+    if(BGMState) BGMPlayer->play();
+    BGMThread = new QThread;
+    BGMPlayer->moveToThread(BGMThread);
+    BGMThread->start();
+    connect(qApp, &QCoreApplication::aboutToQuit,BGMThread, &QThread::quit);
+
 //****** 测试******
     //std::bitset<54> BitsetCards(std::string("111000111000000000110011001100110011101000000010001110"));
     QPushButton *GameOverbtn = new QPushButton(this);
@@ -28,12 +41,14 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     PlayerProfileNum = 0; PreviousProfileNum = 3; NextProfileNum = 4;
     PreviousIdentity = "landlord"; NextIdentity = "farmer"; PlayerIdentity = "farmer";
     PreviousBeanNum = "5.68W ";  NextBeanNum = "3266";  PlayerBeanNum = "359.62Y ";
+
     PlayerHandCards = Transform_To_Vector(BitsetCards);
     PreviousPlayerOutCards  = Transform_To_Vector(previousBitset);
     NextPlayerOutCards = Transform_To_Vector(nextBitset);
     PlayerOutCards = Transform_To_Vector(playerBitset);
 
     ShowIdentityIcon();                                 //调用展示身份图标函数
+
     placeHandCards();
     placeOutCards(1);
     placeOutCards(2);
@@ -187,7 +202,7 @@ std::bitset<54> GameWidget::Transform_To_Bitset(std::vector<WidgetCard> VectorCa
     {
         if(VectorCards[i].Point==17) {TempBits[53]=1; continue;}
         if(VectorCards[i].Point==16) {TempBits[52]=1; continue;}
-        TempBits[(VectorCards[i].Point-3)*4+VectorCards[i].Type-1] = 1;
+        TempBits[(VectorCards[i].Point-3)*4+5-(VectorCards[i].Type+1)] = 1; qDebug()<< VectorCards[i].ImagePath<<"  "<<(VectorCards[i].Point-3)*4+5-(VectorCards[i].Type+1)<<" "<<VectorCards[i].Type;
     }
     return TempBits;
 }
@@ -341,6 +356,9 @@ void GameWidget::ImportConfig()
                 BGMState = bool(GameObj.value("GameBGM").toVariant().toInt());
                 EffectState = bool(GameObj.value("Effect").toVariant().toInt());
                 CardStyle = GameObj.value("Card").toVariant().toInt();     qDebug()<<CardStyle;
+                BGMVolume = GameObj.value("BGMVolume").toVariant().toDouble();
+                EffectVolume = GameObj.value("EffectVolume").toVariant().toDouble();
+
             }
             else
             {

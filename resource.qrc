@@ -138,5 +138,6 @@
     <qresource prefix="/sound">
         <file>sound/Sound_effects/lobbybgm.mp3</file>
         <file>sound/BGM/lobbybgm.mp3</file>
+        <file>sound/BGM/gamebgm.mp3</file>
     </qresource>
 </RCC>

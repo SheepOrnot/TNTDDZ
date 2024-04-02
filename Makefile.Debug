@@ -301,7 +301,8 @@ debug/qrc_resource.cpp: resource.qrc \
 		image/Cards_0/black_of_joker.png \
 		image/Cards_0/6_of_clubs.png \
 		sound/Sound_effects/lobbybgm.mp3 \
-		sound/BGM/lobbybgm.mp3
+		sound/BGM/lobbybgm.mp3 \
+		sound/BGM/gamebgm.mp3
 	D:\Qt\6.7.0\mingw_64\bin\rcc.exe -name resource --no-zstd resource.qrc -o debug\qrc_resource.cpp
 
 compiler_moc_predefs_make_all: debug/moc_predefs.h
@@ -1108,6 +1109,11 @@ debug/moc_gamewidget.cpp: gamewidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QPushButton \
 		../../6.7.0/mingw_64/include/QtWidgets/qpushbutton.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qabstractbutton.h \
+		../../6.7.0/mingw_64/include/QtCore/QPropertyAnimation \
+		../../6.7.0/mingw_64/include/QtCore/qpropertyanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qvariantanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qabstractanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qeasingcurve.h \
 		settingwidget.h \
 		../../6.7.0/mingw_64/include/QtCore/QDebug \
 		../../6.7.0/mingw_64/include/QtCore/QFile \
@@ -1124,6 +1130,17 @@ debug/moc_gamewidget.cpp: gamewidget.h \
 		../../6.7.0/mingw_64/include/QtCore/quuid.h \
 		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		../../6.7.0/mingw_64/include/QtCore/qjsonobject.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/QRegExp \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qregexp.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qcore5global.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qtcore5compat-config.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QDialog \
+		../../6.7.0/mingw_64/include/QtWidgets/qdialog.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QVBoxLayout \
+		../../6.7.0/mingw_64/include/QtWidgets/qboxlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayoutitem.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qgridlayout.h \
 		gameoverwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QListView \
 		../../6.7.0/mingw_64/include/QtWidgets/qlistview.h \
@@ -1142,6 +1159,19 @@ debug/moc_gamewidget.cpp: gamewidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
+		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../6.7.0/mingw_64/include/QtCore/qmetaobject.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtaudio.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
+		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
+		../../6.7.0/mingw_64/include/QtCore/QThread \
+		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		debug/moc_predefs.h \
 		../../6.7.0/mingw_64/bin/moc.exe
 	D:\Qt\6.7.0\mingw_64\bin\moc.exe $(DEFINES) --include D:/Qt/projects/TNTDDZ/debug/moc_predefs.h -ID:/Qt/6.7.0/mingw_64/mkspecs/win32-g++ -ID:/Qt/projects/TNTDDZ -ID:/Qt/6.7.0/mingw_64/include -ID:/Qt/6.7.0/mingw_64/include/QtMultimedia -ID:/Qt/6.7.0/mingw_64/include/QtWidgets -ID:/Qt/6.7.0/mingw_64/include/QtGui -ID:/Qt/6.7.0/mingw_64/include/QtNetwork -ID:/Qt/6.7.0/mingw_64/include/QtCore5Compat -ID:/Qt/6.7.0/mingw_64/include/QtCore -I"D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE" -I"D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE" -I"D:\Windows Kits\10\include\10.0.22000.0\ucrt" -I"D:\Windows Kits\10\include\10.0.22000.0\shared" -I"D:\Windows Kits\10\include\10.0.22000.0\um" -I"D:\Windows Kits\10\include\10.0.22000.0\winrt" gamewidget.h -o debug\moc_gamewidget.cpp
@@ -1341,19 +1371,6 @@ debug/moc_lobbywidget.cpp: lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtCore/qfiledevice.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QGraphicsOpacityEffect \
 		../../6.7.0/mingw_64/include/QtWidgets/qgraphicseffect.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
-		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qmediaenumdebug.h \
-		../../6.7.0/mingw_64/include/QtCore/qmetaobject.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtaudio.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
-		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
-		../../6.7.0/mingw_64/include/QtCore/QThread \
-		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
-		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		settingwidget.h \
 		../../6.7.0/mingw_64/include/QtCore/QDebug \
 		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
@@ -1367,6 +1384,17 @@ debug/moc_lobbywidget.cpp: lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtCore/quuid.h \
 		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		../../6.7.0/mingw_64/include/QtCore/qjsonobject.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/QRegExp \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qregexp.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qcore5global.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qtcore5compat-config.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QDialog \
+		../../6.7.0/mingw_64/include/QtWidgets/qdialog.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QVBoxLayout \
+		../../6.7.0/mingw_64/include/QtWidgets/qboxlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayoutitem.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qgridlayout.h \
 		gamewidget.h \
 		widgetargcard.h \
 		widgetcard.h \
@@ -1374,6 +1402,11 @@ debug/moc_lobbywidget.cpp: lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QPushButton \
 		../../6.7.0/mingw_64/include/QtWidgets/qpushbutton.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qabstractbutton.h \
+		../../6.7.0/mingw_64/include/QtCore/QPropertyAnimation \
+		../../6.7.0/mingw_64/include/QtCore/qpropertyanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qvariantanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qabstractanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qeasingcurve.h \
 		gameoverwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QListView \
 		../../6.7.0/mingw_64/include/QtWidgets/qlistview.h \
@@ -1392,6 +1425,19 @@ debug/moc_lobbywidget.cpp: lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
+		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../6.7.0/mingw_64/include/QtCore/qmetaobject.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtaudio.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
+		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
+		../../6.7.0/mingw_64/include/QtCore/QThread \
+		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		debug/moc_predefs.h \
 		../../6.7.0/mingw_64/bin/moc.exe
 	D:\Qt\6.7.0\mingw_64\bin\moc.exe $(DEFINES) --include D:/Qt/projects/TNTDDZ/debug/moc_predefs.h -ID:/Qt/6.7.0/mingw_64/mkspecs/win32-g++ -ID:/Qt/projects/TNTDDZ -ID:/Qt/6.7.0/mingw_64/include -ID:/Qt/6.7.0/mingw_64/include/QtMultimedia -ID:/Qt/6.7.0/mingw_64/include/QtWidgets -ID:/Qt/6.7.0/mingw_64/include/QtGui -ID:/Qt/6.7.0/mingw_64/include/QtNetwork -ID:/Qt/6.7.0/mingw_64/include/QtCore5Compat -ID:/Qt/6.7.0/mingw_64/include/QtCore -I"D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE" -I"D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE" -I"D:\Windows Kits\10\include\10.0.22000.0\ucrt" -I"D:\Windows Kits\10\include\10.0.22000.0\shared" -I"D:\Windows Kits\10\include\10.0.22000.0\um" -I"D:\Windows Kits\10\include\10.0.22000.0\winrt" lobbywidget.h -o debug\moc_lobbywidget.cpp
@@ -1622,28 +1668,31 @@ debug/moc_mainwindow.cpp: mainwindow.h \
 		../../6.7.0/mingw_64/include/QtCore/qfiledevice.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QGraphicsOpacityEffect \
 		../../6.7.0/mingw_64/include/QtWidgets/qgraphicseffect.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
-		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qmediaenumdebug.h \
-		../../6.7.0/mingw_64/include/QtCore/qmetaobject.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtaudio.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
-		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
-		../../6.7.0/mingw_64/include/QtCore/QThread \
-		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
-		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		settingwidget.h \
 		../../6.7.0/mingw_64/include/QtCore/QDebug \
 		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
 		../../6.7.0/mingw_64/include/QtCore/qjsondocument.h \
 		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
+		../../6.7.0/mingw_64/include/QtCore5Compat/QRegExp \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qregexp.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qcore5global.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qtcore5compat-config.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QDialog \
+		../../6.7.0/mingw_64/include/QtWidgets/qdialog.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QVBoxLayout \
+		../../6.7.0/mingw_64/include/QtWidgets/qboxlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayoutitem.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qgridlayout.h \
 		gamewidget.h \
 		widgetargcard.h \
 		widgetcard.h \
 		../../6.7.0/mingw_64/include/QtCore/QString \
+		../../6.7.0/mingw_64/include/QtCore/QPropertyAnimation \
+		../../6.7.0/mingw_64/include/QtCore/qpropertyanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qvariantanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qabstractanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qeasingcurve.h \
 		gameoverwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QListView \
 		../../6.7.0/mingw_64/include/QtWidgets/qlistview.h \
@@ -1660,6 +1709,19 @@ debug/moc_mainwindow.cpp: mainwindow.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qstyle.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
+		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../6.7.0/mingw_64/include/QtCore/qmetaobject.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtaudio.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
+		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
+		../../6.7.0/mingw_64/include/QtCore/QThread \
+		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QCheckBox \
 		../../6.7.0/mingw_64/include/QtWidgets/qcheckbox.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QLineEdit \
@@ -1668,10 +1730,6 @@ debug/moc_mainwindow.cpp: mainwindow.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextformat.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QHBoxLayout \
-		../../6.7.0/mingw_64/include/QtWidgets/qboxlayout.h \
-		../../6.7.0/mingw_64/include/QtWidgets/qlayout.h \
-		../../6.7.0/mingw_64/include/QtWidgets/qlayoutitem.h \
-		../../6.7.0/mingw_64/include/QtWidgets/qgridlayout.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QStackedWidget \
 		../../6.7.0/mingw_64/include/QtWidgets/qstackedwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
@@ -2075,6 +2133,17 @@ debug/moc_settingwidget.cpp: settingwidget.h \
 		../../6.7.0/mingw_64/include/QtCore/quuid.h \
 		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		../../6.7.0/mingw_64/include/QtCore/qjsonobject.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/QRegExp \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qregexp.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qcore5global.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qtcore5compat-config.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QDialog \
+		../../6.7.0/mingw_64/include/QtWidgets/qdialog.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QVBoxLayout \
+		../../6.7.0/mingw_64/include/QtWidgets/qboxlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayoutitem.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qgridlayout.h \
 		debug/moc_predefs.h \
 		../../6.7.0/mingw_64/bin/moc.exe
 	D:\Qt\6.7.0\mingw_64\bin\moc.exe $(DEFINES) --include D:/Qt/projects/TNTDDZ/debug/moc_predefs.h -ID:/Qt/6.7.0/mingw_64/mkspecs/win32-g++ -ID:/Qt/projects/TNTDDZ -ID:/Qt/6.7.0/mingw_64/include -ID:/Qt/6.7.0/mingw_64/include/QtMultimedia -ID:/Qt/6.7.0/mingw_64/include/QtWidgets -ID:/Qt/6.7.0/mingw_64/include/QtGui -ID:/Qt/6.7.0/mingw_64/include/QtNetwork -ID:/Qt/6.7.0/mingw_64/include/QtCore5Compat -ID:/Qt/6.7.0/mingw_64/include/QtCore -I"D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE" -I"D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE" -I"D:\Windows Kits\10\include\10.0.22000.0\ucrt" -I"D:\Windows Kits\10\include\10.0.22000.0\shared" -I"D:\Windows Kits\10\include\10.0.22000.0\um" -I"D:\Windows Kits\10\include\10.0.22000.0\winrt" settingwidget.h -o debug\moc_settingwidget.cpp
@@ -2944,6 +3013,11 @@ debug/gamewidget.o: gamewidget.cpp gamewidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QPushButton \
 		../../6.7.0/mingw_64/include/QtWidgets/qpushbutton.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qabstractbutton.h \
+		../../6.7.0/mingw_64/include/QtCore/QPropertyAnimation \
+		../../6.7.0/mingw_64/include/QtCore/qpropertyanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qvariantanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qabstractanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qeasingcurve.h \
 		settingwidget.h \
 		../../6.7.0/mingw_64/include/QtCore/QDebug \
 		../../6.7.0/mingw_64/include/QtCore/QFile \
@@ -2960,6 +3034,17 @@ debug/gamewidget.o: gamewidget.cpp gamewidget.h \
 		../../6.7.0/mingw_64/include/QtCore/quuid.h \
 		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		../../6.7.0/mingw_64/include/QtCore/qjsonobject.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/QRegExp \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qregexp.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qcore5global.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qtcore5compat-config.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QDialog \
+		../../6.7.0/mingw_64/include/QtWidgets/qdialog.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QVBoxLayout \
+		../../6.7.0/mingw_64/include/QtWidgets/qboxlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayoutitem.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qgridlayout.h \
 		gameoverwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QListView \
 		../../6.7.0/mingw_64/include/QtWidgets/qlistview.h \
@@ -2978,6 +3063,19 @@ debug/gamewidget.o: gamewidget.cpp gamewidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
+		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../6.7.0/mingw_64/include/QtCore/qmetaobject.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtaudio.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
+		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
+		../../6.7.0/mingw_64/include/QtCore/QThread \
+		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		ui_gamewidget.h \
 		../../6.7.0/mingw_64/include/QtCore/QVariant \
 		../../6.7.0/mingw_64/include/QtWidgets/QApplication \
@@ -3191,19 +3289,6 @@ debug/lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtCore/qfiledevice.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QGraphicsOpacityEffect \
 		../../6.7.0/mingw_64/include/QtWidgets/qgraphicseffect.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
-		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qmediaenumdebug.h \
-		../../6.7.0/mingw_64/include/QtCore/qmetaobject.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtaudio.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
-		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
-		../../6.7.0/mingw_64/include/QtCore/QThread \
-		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
-		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		settingwidget.h \
 		../../6.7.0/mingw_64/include/QtCore/QDebug \
 		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
@@ -3217,6 +3302,17 @@ debug/lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtCore/quuid.h \
 		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		../../6.7.0/mingw_64/include/QtCore/qjsonobject.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/QRegExp \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qregexp.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qcore5global.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qtcore5compat-config.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QDialog \
+		../../6.7.0/mingw_64/include/QtWidgets/qdialog.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QVBoxLayout \
+		../../6.7.0/mingw_64/include/QtWidgets/qboxlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayoutitem.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qgridlayout.h \
 		gamewidget.h \
 		widgetargcard.h \
 		widgetcard.h \
@@ -3224,6 +3320,11 @@ debug/lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QPushButton \
 		../../6.7.0/mingw_64/include/QtWidgets/qpushbutton.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qabstractbutton.h \
+		../../6.7.0/mingw_64/include/QtCore/QPropertyAnimation \
+		../../6.7.0/mingw_64/include/QtCore/qpropertyanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qvariantanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qabstractanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qeasingcurve.h \
 		gameoverwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QListView \
 		../../6.7.0/mingw_64/include/QtWidgets/qlistview.h \
@@ -3242,6 +3343,19 @@ debug/lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
+		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../6.7.0/mingw_64/include/QtCore/qmetaobject.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtaudio.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
+		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
+		../../6.7.0/mingw_64/include/QtCore/QThread \
+		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		ui_lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtCore/QVariant \
 		../../6.7.0/mingw_64/include/QtWidgets/QApplication \
@@ -3255,12 +3369,7 @@ debug/lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextcursor.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextformat.h \
 		../../6.7.0/mingw_64/include/QtGui/qpen.h \
-		../../6.7.0/mingw_64/include/QtGui/qtextoption.h \
-		../../6.7.0/mingw_64/include/QtCore/QPropertyAnimation \
-		../../6.7.0/mingw_64/include/QtCore/qpropertyanimation.h \
-		../../6.7.0/mingw_64/include/QtCore/qvariantanimation.h \
-		../../6.7.0/mingw_64/include/QtCore/qabstractanimation.h \
-		../../6.7.0/mingw_64/include/QtCore/qeasingcurve.h
+		../../6.7.0/mingw_64/include/QtGui/qtextoption.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\lobbywidget.o lobbywidget.cpp
 
 debug/main.o: main.cpp mainwindow.h \
@@ -3489,28 +3598,31 @@ debug/main.o: main.cpp mainwindow.h \
 		../../6.7.0/mingw_64/include/QtCore/qfiledevice.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QGraphicsOpacityEffect \
 		../../6.7.0/mingw_64/include/QtWidgets/qgraphicseffect.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
-		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qmediaenumdebug.h \
-		../../6.7.0/mingw_64/include/QtCore/qmetaobject.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtaudio.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
-		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
-		../../6.7.0/mingw_64/include/QtCore/QThread \
-		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
-		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		settingwidget.h \
 		../../6.7.0/mingw_64/include/QtCore/QDebug \
 		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
 		../../6.7.0/mingw_64/include/QtCore/qjsondocument.h \
 		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
+		../../6.7.0/mingw_64/include/QtCore5Compat/QRegExp \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qregexp.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qcore5global.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qtcore5compat-config.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QDialog \
+		../../6.7.0/mingw_64/include/QtWidgets/qdialog.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QVBoxLayout \
+		../../6.7.0/mingw_64/include/QtWidgets/qboxlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayoutitem.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qgridlayout.h \
 		gamewidget.h \
 		widgetargcard.h \
 		widgetcard.h \
 		../../6.7.0/mingw_64/include/QtCore/QString \
+		../../6.7.0/mingw_64/include/QtCore/QPropertyAnimation \
+		../../6.7.0/mingw_64/include/QtCore/qpropertyanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qvariantanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qabstractanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qeasingcurve.h \
 		gameoverwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QListView \
 		../../6.7.0/mingw_64/include/QtWidgets/qlistview.h \
@@ -3527,6 +3639,19 @@ debug/main.o: main.cpp mainwindow.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qstyle.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
+		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../6.7.0/mingw_64/include/QtCore/qmetaobject.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtaudio.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
+		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
+		../../6.7.0/mingw_64/include/QtCore/QThread \
+		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QCheckBox \
 		../../6.7.0/mingw_64/include/QtWidgets/qcheckbox.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QLineEdit \
@@ -3535,10 +3660,6 @@ debug/main.o: main.cpp mainwindow.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextformat.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QHBoxLayout \
-		../../6.7.0/mingw_64/include/QtWidgets/qboxlayout.h \
-		../../6.7.0/mingw_64/include/QtWidgets/qlayout.h \
-		../../6.7.0/mingw_64/include/QtWidgets/qlayoutitem.h \
-		../../6.7.0/mingw_64/include/QtWidgets/qgridlayout.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QStackedWidget \
 		../../6.7.0/mingw_64/include/QtWidgets/qstackedwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
@@ -3775,28 +3896,31 @@ debug/mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../6.7.0/mingw_64/include/QtCore/qfiledevice.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QGraphicsOpacityEffect \
 		../../6.7.0/mingw_64/include/QtWidgets/qgraphicseffect.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
-		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qmediaenumdebug.h \
-		../../6.7.0/mingw_64/include/QtCore/qmetaobject.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qtaudio.h \
-		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
-		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
-		../../6.7.0/mingw_64/include/QtCore/QThread \
-		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
-		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		settingwidget.h \
 		../../6.7.0/mingw_64/include/QtCore/QDebug \
 		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
 		../../6.7.0/mingw_64/include/QtCore/qjsondocument.h \
 		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
+		../../6.7.0/mingw_64/include/QtCore5Compat/QRegExp \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qregexp.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qcore5global.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qtcore5compat-config.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QDialog \
+		../../6.7.0/mingw_64/include/QtWidgets/qdialog.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QVBoxLayout \
+		../../6.7.0/mingw_64/include/QtWidgets/qboxlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayoutitem.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qgridlayout.h \
 		gamewidget.h \
 		widgetargcard.h \
 		widgetcard.h \
 		../../6.7.0/mingw_64/include/QtCore/QString \
+		../../6.7.0/mingw_64/include/QtCore/QPropertyAnimation \
+		../../6.7.0/mingw_64/include/QtCore/qpropertyanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qvariantanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qabstractanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qeasingcurve.h \
 		gameoverwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QListView \
 		../../6.7.0/mingw_64/include/QtWidgets/qlistview.h \
@@ -3813,6 +3937,19 @@ debug/mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qstyle.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
+		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../6.7.0/mingw_64/include/QtCore/qmetaobject.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qtaudio.h \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
+		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
+		../../6.7.0/mingw_64/include/QtCore/QThread \
+		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QCheckBox \
 		../../6.7.0/mingw_64/include/QtWidgets/qcheckbox.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QLineEdit \
@@ -3821,10 +3958,6 @@ debug/mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextformat.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QHBoxLayout \
-		../../6.7.0/mingw_64/include/QtWidgets/qboxlayout.h \
-		../../6.7.0/mingw_64/include/QtWidgets/qlayout.h \
-		../../6.7.0/mingw_64/include/QtWidgets/qlayoutitem.h \
-		../../6.7.0/mingw_64/include/QtWidgets/qgridlayout.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QStackedWidget \
 		../../6.7.0/mingw_64/include/QtWidgets/qstackedwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
@@ -4238,6 +4371,17 @@ debug/settingwidget.o: settingwidget.cpp settingwidget.h \
 		../../6.7.0/mingw_64/include/QtCore/quuid.h \
 		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		../../6.7.0/mingw_64/include/QtCore/qjsonobject.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/QRegExp \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qregexp.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qcore5global.h \
+		../../6.7.0/mingw_64/include/QtCore5Compat/qtcore5compat-config.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QDialog \
+		../../6.7.0/mingw_64/include/QtWidgets/qdialog.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QVBoxLayout \
+		../../6.7.0/mingw_64/include/QtWidgets/qboxlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayout.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qlayoutitem.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qgridlayout.h \
 		ui_settingwidget.h \
 		../../6.7.0/mingw_64/include/QtCore/QVariant \
 		../../6.7.0/mingw_64/include/QtWidgets/QApplication \
@@ -4466,7 +4610,12 @@ debug/widgetcard.o: widgetcard.cpp widgetcard.h \
 		../../6.7.0/mingw_64/include/QtCore/qpromise.h \
 		../../6.7.0/mingw_64/include/QtGui/qinputmethod.h \
 		../../6.7.0/mingw_64/include/QtCore/qlocale.h \
-		../../6.7.0/mingw_64/include/QtGui/qguiapplication_platform.h
+		../../6.7.0/mingw_64/include/QtGui/qguiapplication_platform.h \
+		../../6.7.0/mingw_64/include/QtCore/QPropertyAnimation \
+		../../6.7.0/mingw_64/include/QtCore/qpropertyanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qvariantanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qabstractanimation.h \
+		../../6.7.0/mingw_64/include/QtCore/qeasingcurve.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\widgetcard.o widgetcard.cpp
 
 debug/qrc_resource.o: debug/qrc_resource.cpp 
