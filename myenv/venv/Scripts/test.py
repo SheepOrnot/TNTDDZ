@@ -72,19 +72,19 @@ print("p1-p6 准备")
 sleep(3)
 
 # 断线重连
-player_list[1].leave_room(1)
-sleep(1)
-player_list[1].join_room(1)
+# player_list[1].leave_room(1)
+# sleep(1)
+# player_list[1].join_room(1)
 
-'''
-player_list[4].leave_room(2)
-sleep(1)
-player_list[4].join_room(2)
 
-player_list[5].leave_room(2)
-sleep(1)
-player_list[5].join_room(2)
-'''
+# player_list[4].leave_room(2)
+# sleep(1)
+# player_list[4].join_room(2)
+
+# player_list[5].leave_room(2)
+# sleep(1)
+# player_list[5].join_room(2)
+
 
 print("p1 断线重连")
 sleep(1)
