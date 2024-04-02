@@ -25,7 +25,7 @@ public:
         {
             case MESSAGE_TYPE::ACCOUNT:
             {
-                MessageLogin *package = static_cast<MessageLogin*>(current_message->package);
+                MessageAccount *package = static_cast<MessageAccount*>(current_message->package);
                 switch(package->opcode)
                 {
                 case ACCOUNT_OPCODE::LOGIN:
@@ -60,18 +60,36 @@ public:
                     case ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL:
                     {
                         //register_mail
-                        std::string register_mail_json = "{\"mail\":\""     + package->mail + "\"}";
-                        MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforgetmail", register_mail_json));
+                        std::string forget_password_mail_json = "{\"mail\":\""     + package->mail + "\"}";
+                        MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforgetmail", forget_password_mail_json));
                         current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
                         break;
                     }
                     case ACCOUNT_OPCODE::FORGET_PASSWORD:
                     {
                         //register
-                        std::string register_json = "{\"mail\":\""   + package->mail     + "\","
+                        std::string forget_password_json = "{\"mail\":\""   + package->mail     + "\","
                                                 + " \"password\":\"" + package->password + "\","
                                                 + " \"code\":\""     + package->code     + "\"}";
-                        MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforget", register_json));
+                        MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforget", forget_password_json));
+                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        break;
+                    }
+                    case ACCOUNT_OPCODE::REGISTER_MAIL_CODE_VERIFY:
+                    {
+                        //register_mail
+                        std::string register_mail_verify_json = "{\"mail\":\""   + package->mail     + "\","
+                                                            + " \"code\":\""     + package->code     + "\"}";
+                        MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/register_code_verify", register_mail_verify_json));
+                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        break;
+                    }
+                    case ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL_CODE_VERIFY:
+                    {
+                        //register
+                        std::string forget_mail_verify_json = "{\"mail\":\""   + package->mail     + "\","
+                                                          + " \"code\":\""     + package->code     + "\"}";
+                        MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforget_code_verify", forget_mail_verify_json));
                         current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
                         break;
                     }
@@ -116,6 +134,30 @@ public:
                             current_center->WidgetInterface["interfaceFindPasswoardSuccess"](arg);
                         else
                             current_center->WidgetInterface["interfaceFindPasswoardFail"](arg);
+                        break;
+                    }
+                    case VERIFY_TYPE::REGISTER_MAIL:
+                    {
+                        WidgetArgPackage *arg = new WidgetArgPackage();
+                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ACCOUNT, status->code);
+
+                        std::cout << "registerMailStatus: " << status->code << std::endl;
+                        if(status->code == 1)
+                            current_center->WidgetInterface["interfaceRegisterMailSuccess"](arg);
+                        else
+                            current_center->WidgetInterface["interfaceRegisterMailFail"](arg);
+                        break;
+                    }
+                    case VERIFY_TYPE::FORGET_PASSWORD_MAIL:
+                    {
+                        WidgetArgPackage *arg = new WidgetArgPackage();
+                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ACCOUNT, status->code);
+
+                        std::cout << "findPasswordMailStatus: " << status->code << std::endl;
+                        if(status->code == 1)
+                            current_center->WidgetInterface["interfaceForgetPasswordMailSuccess"](arg);
+                        else
+                            current_center->WidgetInterface["interfaceForgetPasswordMailFail"](arg);
                         break;
                     }
                 }

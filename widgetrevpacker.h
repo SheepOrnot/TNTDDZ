@@ -23,14 +23,14 @@ public:
     void WidgetsendMessage(WidgetArgPackage* current_widget_arg)
     {
         MessagePackage *msg_ptr = new MessagePackage;
-        WidgetArgAccount *login_package;
+        WidgetArgAccount *account_package;
         //发送包到消息中心
         switch (current_widget_arg->widget_arg_type)
         {
         case WIDGET_ARG_TYPE::ACCOUNT:
-            //login
-            login_package = static_cast<WidgetArgAccount*>(current_widget_arg->package);
-            msg_ptr->packMessage<MessageLogin>(login_package->opcode, login_package->mail, login_package->accout, login_package->password, login_package->code);
+            //account
+            account_package = static_cast<WidgetArgAccount*>(current_widget_arg->package);
+            msg_ptr->packMessage<MessageAccount>(account_package->opcode, account_package->mail, account_package->accout, account_package->password, account_package->username, account_package->code);
             break;
         }
 

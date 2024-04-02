@@ -57,7 +57,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     resource.qrc
 
-INCLUDEPATH += D:\Program\library\boost_1_84_0
-LIBS += -LD:\Program\library\boost_1_84_0\stage\lib
 
+
+win32: INCLUDEPATH += D:\Program\library\boost_1_84_0
+win32: LIBS += -LD:\Program\library\boost_1_84_0\stage\lib
 win32: LIBS += -lws2_32
+
+unix: INCLUDEPATH += /home/fish/program/boost_1_84_0

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'gameoverwidget.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.3
+** Created by: Qt User Interface Compiler version 6.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -36,45 +36,45 @@ public:
     void setupUi(QWidget *GameOverWidget)
     {
         if (GameOverWidget->objectName().isEmpty())
-            GameOverWidget->setObjectName(QString::fromUtf8("GameOverWidget"));
+            GameOverWidget->setObjectName("GameOverWidget");
         GameOverWidget->resize(1186, 667);
         Title = new QLabel(GameOverWidget);
-        Title->setObjectName(QString::fromUtf8("Title"));
+        Title->setObjectName("Title");
         Title->setGeometry(QRect(380, 60, 400, 160));
         Title->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);\n"
 "font: 72pt \"ZXF Small Pudding Trial\";"));
         Username3 = new QLabel(GameOverWidget);
-        Username3->setObjectName(QString::fromUtf8("Username3"));
+        Username3->setObjectName("Username3");
         Username3->setGeometry(QRect(330, 270, 201, 51));
         Username1 = new QLabel(GameOverWidget);
-        Username1->setObjectName(QString::fromUtf8("Username1"));
+        Username1->setObjectName("Username1");
         Username1->setGeometry(QRect(330, 340, 201, 51));
         Username2 = new QLabel(GameOverWidget);
-        Username2->setObjectName(QString::fromUtf8("Username2"));
+        Username2->setObjectName("Username2");
         Username2->setGeometry(QRect(330, 410, 201, 51));
         Times3 = new QLabel(GameOverWidget);
-        Times3->setObjectName(QString::fromUtf8("Times3"));
+        Times3->setObjectName("Times3");
         Times3->setGeometry(QRect(570, 270, 81, 51));
         Times1 = new QLabel(GameOverWidget);
-        Times1->setObjectName(QString::fromUtf8("Times1"));
+        Times1->setObjectName("Times1");
         Times1->setGeometry(QRect(570, 340, 81, 51));
         Times2 = new QLabel(GameOverWidget);
-        Times2->setObjectName(QString::fromUtf8("Times2"));
+        Times2->setObjectName("Times2");
         Times2->setGeometry(QRect(570, 410, 81, 51));
         Score3 = new QLabel(GameOverWidget);
-        Score3->setObjectName(QString::fromUtf8("Score3"));
+        Score3->setObjectName("Score3");
         Score3->setGeometry(QRect(760, 270, 111, 51));
         Score1 = new QLabel(GameOverWidget);
-        Score1->setObjectName(QString::fromUtf8("Score1"));
+        Score1->setObjectName("Score1");
         Score1->setGeometry(QRect(760, 340, 111, 51));
         Score2 = new QLabel(GameOverWidget);
-        Score2->setObjectName(QString::fromUtf8("Score2"));
+        Score2->setObjectName("Score2");
         Score2->setGeometry(QRect(760, 410, 111, 51));
         ReturnToLobby = new QPushButton(GameOverWidget);
-        ReturnToLobby->setObjectName(QString::fromUtf8("ReturnToLobby"));
+        ReturnToLobby->setObjectName("ReturnToLobby");
         ReturnToLobby->setGeometry(QRect(190, 520, 191, 71));
         ContinueGame = new QPushButton(GameOverWidget);
-        ContinueGame->setObjectName(QString::fromUtf8("ContinueGame"));
+        ContinueGame->setObjectName("ContinueGame");
         ContinueGame->setGeometry(QRect(770, 520, 191, 71));
 
         retranslateUi(GameOverWidget);
