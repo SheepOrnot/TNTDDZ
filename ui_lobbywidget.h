@@ -37,6 +37,7 @@ public:
     QPushButton *ExitGameBtn;
     QLabel *GifLabel;
     QPushButton *JoinRoomBtn;
+    QLineEdit *RoomId;
 
     void setupUi(QWidget *LobbyWidget)
     {
@@ -96,6 +97,11 @@ public:
         JoinRoomBtn = new QPushButton(LobbyWidget);
         JoinRoomBtn->setObjectName("JoinRoomBtn");
         JoinRoomBtn->setGeometry(QRect(1310, 880, 311, 91));
+        RoomId = new QLineEdit(LobbyWidget);
+        RoomId->setObjectName("RoomId");
+        RoomId->setGeometry(QRect(1140, 910, 141, 41));
+        RoomId->setStyleSheet(QString::fromUtf8("font: 36pt \"Microsoft YaHei UI\";\n"
+""));
 
         retranslateUi(LobbyWidget);
 
@@ -121,6 +127,7 @@ public:
         ExitGameBtn->setText(QCoreApplication::translate("LobbyWidget", "\351\200\200\345\207\272\346\270\270\346\210\217", nullptr));
         GifLabel->setText(QCoreApplication::translate("LobbyWidget", "giflabel", nullptr));
         JoinRoomBtn->setText(QCoreApplication::translate("LobbyWidget", "\345\212\240\345\205\245\346\210\277\351\227\264", nullptr));
+        RoomId->setText(QCoreApplication::translate("LobbyWidget", "000000", nullptr));
     } // retranslateUi
 
 };

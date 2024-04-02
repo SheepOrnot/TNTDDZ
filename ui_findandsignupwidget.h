@@ -34,7 +34,7 @@ public:
         if (FindAndSignUpWidget->objectName().isEmpty())
             FindAndSignUpWidget->setObjectName("FindAndSignUpWidget");
         FindAndSignUpWidget->resize(600, 900);
-        FindAndSignUpWidget->setStyleSheet(QString::fromUtf8("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 189, 137, 236), stop:1 rgba(255, 255, 255, 255));"));
+        FindAndSignUpWidget->setStyleSheet(QString::fromUtf8("#FindAndSignUpWidget{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 189, 137, 236), stop:1 rgba(255, 255, 255, 255));}"));
         MailLineEdit = new QLineEdit(FindAndSignUpWidget);
         MailLineEdit->setObjectName("MailLineEdit");
         MailLineEdit->setGeometry(QRect(150, 70, 300, 70));

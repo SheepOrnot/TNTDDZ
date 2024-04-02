@@ -1109,7 +1109,7 @@ release/moc_gamewidget.cpp: gamewidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qpushbutton.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qabstractbutton.h \
 		settingwidget.h \
-		gameoverwidget.h \
+		../../6.7.0/mingw_64/include/QtCore/QDebug \
 		../../6.7.0/mingw_64/include/QtCore/QFile \
 		../../6.7.0/mingw_64/include/QtCore/qfile.h \
 		../../6.7.0/mingw_64/include/QtCore/qfiledevice.h \
@@ -1124,6 +1124,7 @@ release/moc_gamewidget.cpp: gamewidget.h \
 		../../6.7.0/mingw_64/include/QtCore/quuid.h \
 		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		../../6.7.0/mingw_64/include/QtCore/qjsonobject.h \
+		gameoverwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QListView \
 		../../6.7.0/mingw_64/include/QtWidgets/qlistview.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qabstractitemview.h \
@@ -1351,15 +1352,10 @@ release/moc_lobbywidget.cpp: lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
 		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
 		../../6.7.0/mingw_64/include/QtCore/QThread \
+		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		settingwidget.h \
-		gamewidget.h \
-		widgetargcard.h \
-		widgetcard.h \
-		../../6.7.0/mingw_64/include/QtCore/QString \
-		../../6.7.0/mingw_64/include/QtWidgets/QPushButton \
-		../../6.7.0/mingw_64/include/QtWidgets/qpushbutton.h \
-		../../6.7.0/mingw_64/include/QtWidgets/qabstractbutton.h \
-		gameoverwidget.h \
+		../../6.7.0/mingw_64/include/QtCore/QDebug \
 		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
 		../../6.7.0/mingw_64/include/QtCore/qjsondocument.h \
 		../../6.7.0/mingw_64/include/QtCore/qjsonvalue.h \
@@ -1371,6 +1367,14 @@ release/moc_lobbywidget.cpp: lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtCore/quuid.h \
 		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		../../6.7.0/mingw_64/include/QtCore/qjsonobject.h \
+		gamewidget.h \
+		widgetargcard.h \
+		widgetcard.h \
+		../../6.7.0/mingw_64/include/QtCore/QString \
+		../../6.7.0/mingw_64/include/QtWidgets/QPushButton \
+		../../6.7.0/mingw_64/include/QtWidgets/qpushbutton.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qabstractbutton.h \
+		gameoverwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QListView \
 		../../6.7.0/mingw_64/include/QtWidgets/qlistview.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qabstractitemview.h \
@@ -1629,15 +1633,18 @@ release/moc_mainwindow.cpp: mainwindow.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
 		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
 		../../6.7.0/mingw_64/include/QtCore/QThread \
+		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		settingwidget.h \
+		../../6.7.0/mingw_64/include/QtCore/QDebug \
+		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
+		../../6.7.0/mingw_64/include/QtCore/qjsondocument.h \
+		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		gamewidget.h \
 		widgetargcard.h \
 		widgetcard.h \
 		../../6.7.0/mingw_64/include/QtCore/QString \
 		gameoverwidget.h \
-		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
-		../../6.7.0/mingw_64/include/QtCore/qjsondocument.h \
-		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		../../6.7.0/mingw_64/include/QtWidgets/QListView \
 		../../6.7.0/mingw_64/include/QtWidgets/qlistview.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qabstractitemview.h \
@@ -2053,6 +2060,21 @@ release/moc_settingwidget.cpp: settingwidget.h \
 		../../6.7.0/mingw_64/include/QtGui/qinputmethod.h \
 		../../6.7.0/mingw_64/include/QtCore/qlocale.h \
 		../../6.7.0/mingw_64/include/QtGui/qguiapplication_platform.h \
+		../../6.7.0/mingw_64/include/QtCore/QDebug \
+		../../6.7.0/mingw_64/include/QtCore/QFile \
+		../../6.7.0/mingw_64/include/QtCore/qfile.h \
+		../../6.7.0/mingw_64/include/QtCore/qfiledevice.h \
+		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
+		../../6.7.0/mingw_64/include/QtCore/qjsondocument.h \
+		../../6.7.0/mingw_64/include/QtCore/qjsonvalue.h \
+		../../6.7.0/mingw_64/include/QtCore/qcborvalue.h \
+		../../6.7.0/mingw_64/include/QtCore/qdatetime.h \
+		../../6.7.0/mingw_64/include/QtCore/qcalendar.h \
+		../../6.7.0/mingw_64/include/QtCore/qcborcommon.h \
+		../../6.7.0/mingw_64/include/QtCore/qregularexpression.h \
+		../../6.7.0/mingw_64/include/QtCore/quuid.h \
+		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
+		../../6.7.0/mingw_64/include/QtCore/qjsonobject.h \
 		release/moc_predefs.h \
 		../../6.7.0/mingw_64/bin/moc.exe
 	D:\Qt\6.7.0\mingw_64\bin\moc.exe $(DEFINES) --include D:/Qt/projects/TNTDDZ/release/moc_predefs.h -ID:/Qt/6.7.0/mingw_64/mkspecs/win32-g++ -ID:/Qt/projects/TNTDDZ -ID:/Qt/6.7.0/mingw_64/include -ID:/Qt/6.7.0/mingw_64/include/QtMultimedia -ID:/Qt/6.7.0/mingw_64/include/QtWidgets -ID:/Qt/6.7.0/mingw_64/include/QtGui -ID:/Qt/6.7.0/mingw_64/include/QtNetwork -ID:/Qt/6.7.0/mingw_64/include/QtCore5Compat -ID:/Qt/6.7.0/mingw_64/include/QtCore -I"D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE" -I"D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE" -I"D:\Windows Kits\10\include\10.0.22000.0\ucrt" -I"D:\Windows Kits\10\include\10.0.22000.0\shared" -I"D:\Windows Kits\10\include\10.0.22000.0\um" -I"D:\Windows Kits\10\include\10.0.22000.0\winrt" settingwidget.h -o release\moc_settingwidget.cpp
@@ -2513,6 +2535,17 @@ release/findandsignupwidget.o: findandsignupwidget.cpp findandsignupwidget.h \
 		../../6.7.0/mingw_64/include/QtGui/qvalidator.h \
 		../../6.7.0/mingw_64/include/QtCore/qregularexpression.h \
 		ui_findandsignupwidget.h \
+		../../6.7.0/mingw_64/include/QtCore/QVariant \
+		../../6.7.0/mingw_64/include/QtWidgets/QApplication \
+		../../6.7.0/mingw_64/include/QtWidgets/qapplication.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLineEdit \
+		../../6.7.0/mingw_64/include/QtWidgets/qlineedit.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qframe.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextcursor.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextformat.h \
+		../../6.7.0/mingw_64/include/QtGui/qpen.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextoption.h \
 		../../6.7.0/mingw_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\findandsignupwidget.o findandsignupwidget.cpp
 
@@ -2704,6 +2737,17 @@ release/gameoverwidget.o: gameoverwidget.cpp gameoverwidget.h \
 		../../6.7.0/mingw_64/include/QtCore/qlocale.h \
 		../../6.7.0/mingw_64/include/QtGui/qguiapplication_platform.h \
 		ui_gameoverwidget.h \
+		../../6.7.0/mingw_64/include/QtCore/QVariant \
+		../../6.7.0/mingw_64/include/QtWidgets/QApplication \
+		../../6.7.0/mingw_64/include/QtWidgets/qapplication.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
+		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qframe.h \
+		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QPushButton \
+		../../6.7.0/mingw_64/include/QtWidgets/qpushbutton.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qabstractbutton.h \
 		../../6.7.0/mingw_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gameoverwidget.o gameoverwidget.cpp
 
@@ -2901,7 +2945,7 @@ release/gamewidget.o: gamewidget.cpp gamewidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qpushbutton.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qabstractbutton.h \
 		settingwidget.h \
-		gameoverwidget.h \
+		../../6.7.0/mingw_64/include/QtCore/QDebug \
 		../../6.7.0/mingw_64/include/QtCore/QFile \
 		../../6.7.0/mingw_64/include/QtCore/qfile.h \
 		../../6.7.0/mingw_64/include/QtCore/qfiledevice.h \
@@ -2916,6 +2960,7 @@ release/gamewidget.o: gamewidget.cpp gamewidget.h \
 		../../6.7.0/mingw_64/include/QtCore/quuid.h \
 		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		../../6.7.0/mingw_64/include/QtCore/qjsonobject.h \
+		gameoverwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QListView \
 		../../6.7.0/mingw_64/include/QtWidgets/qlistview.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qabstractitemview.h \
@@ -2934,7 +2979,21 @@ release/gamewidget.o: gamewidget.cpp gamewidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
 		ui_gamewidget.h \
-		../../6.7.0/mingw_64/include/QtCore/QDebug
+		../../6.7.0/mingw_64/include/QtCore/QVariant \
+		../../6.7.0/mingw_64/include/QtWidgets/QApplication \
+		../../6.7.0/mingw_64/include/QtWidgets/qapplication.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QComboBox \
+		../../6.7.0/mingw_64/include/QtWidgets/qcombobox.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
+		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
+		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLineEdit \
+		../../6.7.0/mingw_64/include/QtWidgets/qlineedit.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextcursor.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextformat.h \
+		../../6.7.0/mingw_64/include/QtGui/qpen.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextoption.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gamewidget.o gamewidget.cpp
 
 release/lobbywidget.o: lobbywidget.cpp lobbywidget.h \
@@ -3143,15 +3202,10 @@ release/lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
 		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
 		../../6.7.0/mingw_64/include/QtCore/QThread \
+		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		settingwidget.h \
-		gamewidget.h \
-		widgetargcard.h \
-		widgetcard.h \
-		../../6.7.0/mingw_64/include/QtCore/QString \
-		../../6.7.0/mingw_64/include/QtWidgets/QPushButton \
-		../../6.7.0/mingw_64/include/QtWidgets/qpushbutton.h \
-		../../6.7.0/mingw_64/include/QtWidgets/qabstractbutton.h \
-		gameoverwidget.h \
+		../../6.7.0/mingw_64/include/QtCore/QDebug \
 		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
 		../../6.7.0/mingw_64/include/QtCore/qjsondocument.h \
 		../../6.7.0/mingw_64/include/QtCore/qjsonvalue.h \
@@ -3163,6 +3217,14 @@ release/lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtCore/quuid.h \
 		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		../../6.7.0/mingw_64/include/QtCore/qjsonobject.h \
+		gamewidget.h \
+		widgetargcard.h \
+		widgetcard.h \
+		../../6.7.0/mingw_64/include/QtCore/QString \
+		../../6.7.0/mingw_64/include/QtWidgets/QPushButton \
+		../../6.7.0/mingw_64/include/QtWidgets/qpushbutton.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qabstractbutton.h \
+		gameoverwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QListView \
 		../../6.7.0/mingw_64/include/QtWidgets/qlistview.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qabstractitemview.h \
@@ -3181,7 +3243,19 @@ release/lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
 		ui_lobbywidget.h \
-		../../6.7.0/mingw_64/include/QtCore/QDebug \
+		../../6.7.0/mingw_64/include/QtCore/QVariant \
+		../../6.7.0/mingw_64/include/QtWidgets/QApplication \
+		../../6.7.0/mingw_64/include/QtWidgets/qapplication.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
+		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
+		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLineEdit \
+		../../6.7.0/mingw_64/include/QtWidgets/qlineedit.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextcursor.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextformat.h \
+		../../6.7.0/mingw_64/include/QtGui/qpen.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextoption.h \
 		../../6.7.0/mingw_64/include/QtCore/QPropertyAnimation \
 		../../6.7.0/mingw_64/include/QtCore/qpropertyanimation.h \
 		../../6.7.0/mingw_64/include/QtCore/qvariantanimation.h \
@@ -3426,15 +3500,18 @@ release/main.o: main.cpp mainwindow.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
 		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
 		../../6.7.0/mingw_64/include/QtCore/QThread \
+		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		settingwidget.h \
+		../../6.7.0/mingw_64/include/QtCore/QDebug \
+		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
+		../../6.7.0/mingw_64/include/QtCore/qjsondocument.h \
+		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		gamewidget.h \
 		widgetargcard.h \
 		widgetcard.h \
 		../../6.7.0/mingw_64/include/QtCore/QString \
 		gameoverwidget.h \
-		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
-		../../6.7.0/mingw_64/include/QtCore/qjsondocument.h \
-		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		../../6.7.0/mingw_64/include/QtWidgets/QListView \
 		../../6.7.0/mingw_64/include/QtWidgets/qlistview.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qabstractitemview.h \
@@ -3709,15 +3786,18 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/qaudio.h \
 		../../6.7.0/mingw_64/include/QtCore/QCoreApplication \
 		../../6.7.0/mingw_64/include/QtCore/QThread \
+		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
+		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
 		settingwidget.h \
+		../../6.7.0/mingw_64/include/QtCore/QDebug \
+		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
+		../../6.7.0/mingw_64/include/QtCore/qjsondocument.h \
+		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		gamewidget.h \
 		widgetargcard.h \
 		widgetcard.h \
 		../../6.7.0/mingw_64/include/QtCore/QString \
 		gameoverwidget.h \
-		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
-		../../6.7.0/mingw_64/include/QtCore/qjsondocument.h \
-		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
 		../../6.7.0/mingw_64/include/QtWidgets/QListView \
 		../../6.7.0/mingw_64/include/QtWidgets/qlistview.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qabstractitemview.h \
@@ -3751,7 +3831,16 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
 		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QSpacerItem \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		../../6.7.0/mingw_64/include/QtCore/QVariant \
+		../../6.7.0/mingw_64/include/QtWidgets/QApplication \
+		../../6.7.0/mingw_64/include/QtWidgets/qapplication.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QGridLayout \
+		../../6.7.0/mingw_64/include/QtWidgets/QMenuBar \
+		../../6.7.0/mingw_64/include/QtWidgets/qmenubar.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qmenu.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QStatusBar \
+		../../6.7.0/mingw_64/include/QtWidgets/qstatusbar.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o mainwindow.cpp
 
 release/personalinfowidget.o: personalinfowidget.cpp personalinfowidget.h \
@@ -3941,7 +4030,10 @@ release/personalinfowidget.o: personalinfowidget.cpp personalinfowidget.h \
 		../../6.7.0/mingw_64/include/QtGui/qinputmethod.h \
 		../../6.7.0/mingw_64/include/QtCore/qlocale.h \
 		../../6.7.0/mingw_64/include/QtGui/qguiapplication_platform.h \
-		ui_personalinfowidget.h
+		ui_personalinfowidget.h \
+		../../6.7.0/mingw_64/include/QtCore/QVariant \
+		../../6.7.0/mingw_64/include/QtWidgets/QApplication \
+		../../6.7.0/mingw_64/include/QtWidgets/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\personalinfowidget.o personalinfowidget.cpp
 
 release/settingwidget.o: settingwidget.cpp settingwidget.h \
@@ -4131,7 +4223,49 @@ release/settingwidget.o: settingwidget.cpp settingwidget.h \
 		../../6.7.0/mingw_64/include/QtGui/qinputmethod.h \
 		../../6.7.0/mingw_64/include/QtCore/qlocale.h \
 		../../6.7.0/mingw_64/include/QtGui/qguiapplication_platform.h \
-		ui_settingwidget.h
+		../../6.7.0/mingw_64/include/QtCore/QDebug \
+		../../6.7.0/mingw_64/include/QtCore/QFile \
+		../../6.7.0/mingw_64/include/QtCore/qfile.h \
+		../../6.7.0/mingw_64/include/QtCore/qfiledevice.h \
+		../../6.7.0/mingw_64/include/QtCore/QJsonDocument \
+		../../6.7.0/mingw_64/include/QtCore/qjsondocument.h \
+		../../6.7.0/mingw_64/include/QtCore/qjsonvalue.h \
+		../../6.7.0/mingw_64/include/QtCore/qcborvalue.h \
+		../../6.7.0/mingw_64/include/QtCore/qdatetime.h \
+		../../6.7.0/mingw_64/include/QtCore/qcalendar.h \
+		../../6.7.0/mingw_64/include/QtCore/qcborcommon.h \
+		../../6.7.0/mingw_64/include/QtCore/qregularexpression.h \
+		../../6.7.0/mingw_64/include/QtCore/quuid.h \
+		../../6.7.0/mingw_64/include/QtCore/QJsonObject \
+		../../6.7.0/mingw_64/include/QtCore/qjsonobject.h \
+		ui_settingwidget.h \
+		../../6.7.0/mingw_64/include/QtCore/QVariant \
+		../../6.7.0/mingw_64/include/QtWidgets/QApplication \
+		../../6.7.0/mingw_64/include/QtWidgets/qapplication.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QCheckBox \
+		../../6.7.0/mingw_64/include/QtWidgets/qcheckbox.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qabstractbutton.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QComboBox \
+		../../6.7.0/mingw_64/include/QtWidgets/qcombobox.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qabstractitemdelegate.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qstyleoption.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qabstractspinbox.h \
+		../../6.7.0/mingw_64/include/QtGui/qvalidator.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qslider.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qabstractslider.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qstyle.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qtabwidget.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qframe.h \
+		../../6.7.0/mingw_64/include/QtCore/qabstractitemmodel.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
+		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
+		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QPushButton \
+		../../6.7.0/mingw_64/include/QtWidgets/qpushbutton.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QSlider
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\settingwidget.o settingwidget.cpp
 
 release/widgetargcard.o: widgetargcard.cpp widgetargcard.h

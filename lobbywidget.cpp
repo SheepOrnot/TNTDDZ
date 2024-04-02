@@ -51,6 +51,7 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui->ClassicModeBtn->setGeometry(0.682*Width,0.652*Height,0.161*Width,0.084*Height);
     ui->ExitGameBtn   ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
     ui->JoinRoomBtn   ->setGeometry(0.682*Width,0.874*Height,0.161*Width,0.084*Height);
+    ui->RoomId        ->setGeometry(0.560*Width,0.876*Height,0.120*Width,0.080*Height);
 
 
     ui->SettingBtn->setIcon(QIcon(":/image/image/Icon/setting.png"));
@@ -136,6 +137,8 @@ void LobbyWidget::ResolutionChanged(int _Width,int _Height)
     ui->ClassicModeBtn->setGeometry(0.682*Width,0.652*Height,0.161*Width,0.084*Height);
     ui->ExitGameBtn   ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
     ui->JoinRoomBtn   ->setGeometry(0.682*Width,0.874*Height,0.161*Width,0.084*Height);
+    ui->RoomId        ->setGeometry(0.600*Width,0.876*Height,0.080*Width,0.080*Height);
+
     ui->BeanEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
     ui->DiamondEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
     update();

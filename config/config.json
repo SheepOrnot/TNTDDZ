@@ -1,10 +1,13 @@
 {
     "Game": {
+        "BGMVolume": "20",
+        "Card": "1",
         "Effect": "1",
+        "EffectVolume": "44",
         "GameBGM": "1"
     },
     "Lobby": {
-        "LobbyBGM": "1"
+        "LobbyBGM": "0"
     },
     "Login": {
         "Password": "k{|363858",
@@ -12,7 +15,8 @@
         "Username": "1483078835@qq.com"
     },
     "Universal": {
-        "Height": "900",
-        "Width": "1600"
+        "Height": "945",
+        "Index": "6",
+        "Width": "1680"
     }
 }

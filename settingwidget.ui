@@ -20,7 +20,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(153, 255, 102, 255), stop:1 rgba(255, 255, 255, 255));</string>
+   <string notr="true"/>
   </property>
   <widget class="QPushButton" name="BasicBtn">
    <property name="geometry">
@@ -136,6 +136,16 @@ text-decoration: underline;</string>
      <height>31</height>
     </rect>
    </property>
+   <item>
+    <property name="text">
+     <string>经典款</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>经典中的经典款</string>
+    </property>
+   </item>
   </widget>
   <widget class="QLabel" name="CardStyleWord">
    <property name="geometry">
@@ -182,7 +192,7 @@ text-decoration: underline;</string>
   <widget class="QSlider" name="BGMVolume">
    <property name="geometry">
     <rect>
-     <x>530</x>
+     <x>550</x>
      <y>420</y>
      <width>311</width>
      <height>22</height>
@@ -195,7 +205,7 @@ text-decoration: underline;</string>
   <widget class="QSlider" name="EffectVolume">
    <property name="geometry">
     <rect>
-     <x>530</x>
+     <x>550</x>
      <y>460</y>
      <width>311</width>
      <height>22</height>
@@ -257,7 +267,7 @@ text-decoration: underline;</string>
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="ApplyBtn">
    <property name="geometry">
     <rect>
      <x>910</x>
@@ -271,6 +281,48 @@ text-decoration: underline;</string>
    </property>
    <property name="text">
     <string>应用</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="CancelBtn">
+   <property name="geometry">
+    <rect>
+     <x>750</x>
+     <y>660</y>
+     <width>141</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>取消</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="GameBGMCheck">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>420</y>
+     <width>16</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="GameEffectCheck">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>460</y>
+     <width>16</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>
