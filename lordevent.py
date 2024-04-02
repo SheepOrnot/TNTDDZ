@@ -4,6 +4,7 @@ import battlestatus
 import random
 from flask import jsonify
 import json
+from time import sleep
 from flask_socketio import SocketIO, emit, disconnect, join_room, leave_room
 def decide_lord(data_lord,data_account,data_room_id,data_seat):
     if data_lord == 1:
@@ -16,7 +17,8 @@ def decide_lord(data_lord,data_account,data_room_id,data_seat):
         #广播地主牌
         broadcast_information(data_account,data_room_id,data_seat,int(lord_cards))
         #通知是否加倍
-
+        sleep(3)
+        emit('server_response',jsonify(type = 1).data.decode(),room = data_room_id)
     elif data_lord == 0:
         #通知下一名玩家叫地主
         print("下一名玩家的座位号：",find_next_seat(data_seat))

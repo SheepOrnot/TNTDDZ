@@ -361,8 +361,30 @@ def who_start_first_lord():
     first_lord_seat = random.randint(1,3)
     return first_lord_seat
 
+@socketio.on('double')
+def double(data):
+    data = json.loads(data)
+    data_room_id = data.get("roomid")
+    data_double = data.get("double")
+    data_seat = data.get("seat")
+    key = data_room_id+"_battle_data"
+    
+    battle_data = battlestatus.BattleStatus()
+    battle_data.room_id = data_room_id
+    battle_status = redis_data.redis_db.get(key).decode()
+    battle_status = json.loads(battle_status)
 
-
+    battle_data.get_battle_status(battle_status)
+    if int(data_seat) == 1:
+        battle_data.player_1.double = int(data_double)
+        emit('server_response',jsonify(seat = data_seat,double = int(data_double),account = battle_data.player_1.account,type = 1).data.decode(),room = data_room_id)
+    elif int(data_seat) == 2:
+        battle_data.player_2.double = int(data_double)
+        emit('server_response',jsonify(seat = data_seat,double = int(data_double),account = battle_data.player_2.account,type = 1).data.decode(),room = data_room_id)
+    elif int(data_seat) == 3:
+        battle_data.player_3.double = int(data_double)
+        emit('server_response',jsonify(seat = data_seat,double = int(data_double),account = battle_data.player_3.account,type = 1).data.decode(),room = data_room_id)
+    redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
 
 @socketio.on('ask_for_lord')
 def ask_for_lord(data):
