@@ -65,20 +65,39 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     resource.qrc
 
-INCLUDEPATH += ./
-INCLUDEPATH += ./../LIB/
-INCLUDEPATH += /home/fish/program/boost_1_84_0/
-INCLUDEPATH += /home/fish/Desktop/Software_project/qt_project/LIB/
-INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include/
-INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/lib/websocketpp/
-INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include/
-INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/src/
-INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/src/internal
+unix:!macx:INCLUDEPATH += ./
+unix:!macx:INCLUDEPATH += ./../LIB/
+unix:!macx:INCLUDEPATH += /home/fish/program/boost_1_84_0/
+unix:!macx:INCLUDEPATH += /home/fish/Desktop/Software_project/qt_project/LIB/
+unix:!macx:INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include/
+unix:!macx:INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/lib/websocketpp/
+unix:!macx:INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include/
+unix:!macx:INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/src/
+unix:!macx:INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/src/internal
 
 
 unix:!macx: LIBS += -L$$PWD/../LIB/ -lsioclient
 
-INCLUDEPATH += $$PWD/../LIB
-DEPENDPATH += $$PWD/../LIB
+unix:!macx:INCLUDEPATH += $$PWD/../LIB
+unix:!macx:DEPENDPATH += $$PWD/../LIB
 
 unix:!macx: PRE_TARGETDEPS += $$PWD/../LIB/libsioclient.a
+
+win32: INCLUDEPATH += D:\Program\library\boost_1_84_0
+win32: LIBS += -LD:\Program\library\boost_1_84_0\stage\lib
+win32: LIBS += -lws2_32
+win32: INCLUDEPATH += D:\Program\library\socket.io-client-cpp\lib\asio\asio\include
+win32: INCLUDEPATH += D:\Program\library\socket.io-client-cpp\lib\websocketpp
+win32: INCLUDEPATH += D:\Program\library\socket.io-client-cpp\lib\rapidjson\include
+win32: INCLUDEPATH += D:\\Program\\library\\socket.io-client-cpp\\src\\internal
+win32: INCLUDEPATH += D:\\Program\\library\\socket.io-client-cpp\\src
+win32: SOURCES += D:\\Program\\library\\socket.io-client-cpp\\src\\internal\\sio_packet.cpp
+win32: SOURCES += D:\\Program\\library\\socket.io-client-cpp\\src\\internal\\sio_client_impl.cpp
+win32: SOURCES += D:\\Program\\library\\socket.io-client-cpp\\src\\sio_client.cpp
+win32: SOURCES += D:\\Program\\library\\socket.io-client-cpp\\src\\sio_socket.cpp
+win32: HEADERS += D:\\Program\\library\\socket.io-client-cpp\\src\\sio_client.h
+win32: DEFINES += BOOST_DATE_TIME_NO_LIB
+win32: DEFINES += BOOST_REGEX_NO_LIB
+win32: DEFINES += ASIO_STANDALONE
+win32: DEFINES += _WEBSOCKETPP_CPP11_STL_
+win32: DEFINES += _WEBSOCKETPP_CPP11_FUNCTIONAL_
