@@ -23,12 +23,12 @@ public:
     {
         switch (current_message->message_type)
         {
-            case MESSAGE_TYPE::LOGIN:
+            case MESSAGE_TYPE::ACCOUNT:
             {
                 MessageLogin *package = static_cast<MessageLogin*>(current_message->package);
                 switch(package->opcode)
                 {
-                    case LOGIN_OPCODE::LOGIN:
+                case ACCOUNT_OPCODE::LOGIN:
                     {
                         //login
                         std::string login_json = "{\"mail\":\""      + package->mail + "\","
@@ -38,7 +38,7 @@ public:
                         current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
                         break;
                     }
-                    case LOGIN_OPCODE::REGISTER_MAIL:
+                    case ACCOUNT_OPCODE::REGISTER_MAIL:
                     {
                         //register_mail
                         std::string register_mail_json = "{\"mail\":\""     + package->mail + "\"}";
@@ -46,7 +46,7 @@ public:
                         current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
                         break;
                     }
-                    case LOGIN_OPCODE::REGISTER:
+                    case ACCOUNT_OPCODE::REGISTER:
                     {
                         //register
                         std::string register_json = "{\"mail\":\""   + package->mail     + "\","
@@ -57,7 +57,7 @@ public:
                         current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
                         break;
                     }
-                    case LOGIN_OPCODE::FORGET_PASSWORD_MAIL:
+                    case ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL:
                     {
                         //register_mail
                         std::string register_mail_json = "{\"mail\":\""     + package->mail + "\"}";
@@ -65,7 +65,7 @@ public:
                         current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
                         break;
                     }
-                    case LOGIN_OPCODE::FORGET_PASSWORD:
+                    case ACCOUNT_OPCODE::FORGET_PASSWORD:
                     {
                         //register
                         std::string register_json = "{\"mail\":\""   + package->mail     + "\","
@@ -85,7 +85,7 @@ public:
                     case VERIFY_TYPE::LOGIN:
                     {
                         WidgetArgPackage *arg = new WidgetArgPackage();
-                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::LOGIN, status->code);
+                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ACCOUNT, status->code);
                         
                         std::cout << "loginStatus: " << status->code << std::endl;
                         if(status->code == 1)
@@ -97,19 +97,25 @@ public:
                     case VERIFY_TYPE::REGISTER:
                     {
                         WidgetArgPackage *arg = new WidgetArgPackage();
-                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::REGISTER, status->code);
+                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ACCOUNT, status->code);
 
                         std::cout << "registerStatus: " << status->code << std::endl;
-                        //TODO
+                        if(status->code == 1)
+                            current_center->WidgetInterface["interfaceRegisterSuccess"](arg);
+                        else
+                            current_center->WidgetInterface["interfaceRegisterFail"](arg);
                         break;
                     }
                     case VERIFY_TYPE::FORGET_PASSWORD:
                     {
                         WidgetArgPackage *arg = new WidgetArgPackage();
-                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::FORGET_PASSWORD, status->code);
+                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ACCOUNT, status->code);
 
                         std::cout << "findPasswordStatus: " << status->code << std::endl;
-                        //TODO
+                        if(status->code == 1)
+                            current_center->WidgetInterface["interfaceFindPasswoardSuccess"](arg);
+                        else
+                            current_center->WidgetInterface["interfaceFindPasswoardFail"](arg);
                         break;
                     }
                 }

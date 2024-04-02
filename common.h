@@ -14,16 +14,14 @@
 typedef void (*PluginFuncPtr)();
 
 enum class WIDGET_ARG_TYPE {
-    LOGIN = 1,
+    ACCOUNT = 1,
     PLAYER = 2,
     CARD = 3,
     ROOM = 4,
     STATUS = 5, //server -> widget
-    VERIFY = 6,  //widget -> server
-    REGISTER,
-    FORGET_PASSWORD
+    VERIFY = 6  //widget -> server
 };
-enum class LOGIN_OPCODE {
+enum class ACCOUNT_OPCODE {
     LOGIN = 1,
     REGISTER_MAIL = 2,
     REGISTER = 3,
@@ -31,12 +29,12 @@ enum class LOGIN_OPCODE {
     FORGET_PASSWORD = 5
 };
 enum class MESSAGE_TYPE {
-    LOGIN = 1,
+    ACCOUNT = 1,
     PLAYER = 2,
     CARD = 3,
     ROOM = 4,
     STATUS = 5,
-    VERIFY = 6
+    VERIFY = 6,
 };
 enum class VERIFY_TYPE {
     LOGIN = 1,

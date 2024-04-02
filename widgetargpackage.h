@@ -16,18 +16,18 @@ public:
     WIDGET_ARG_TYPE widget_arg_type;
 };
 
-class WidgetArgLogin : public WidgetArg
+class WidgetArgAccount : public WidgetArg
 {
 public:
-    WidgetArgLogin(LOGIN_OPCODE _opcode, std::string _mail, std::string _accout, std::string _password, std::string _code = "")
-        : WidgetArg(WIDGET_ARG_TYPE::LOGIN),
+    WidgetArgAccount(ACCOUNT_OPCODE _opcode, std::string _mail, std::string _accout, std::string _password, std::string _code = "")
+        : WidgetArg(WIDGET_ARG_TYPE::ACCOUNT),
         opcode(_opcode),
         mail(_mail),
         accout(_accout),
         password(_password),
         code(_code)
     {}
-    LOGIN_OPCODE opcode;
+    ACCOUNT_OPCODE opcode;
     std::string mail;
     std::string accout;
     std::string password;

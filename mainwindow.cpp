@@ -121,17 +121,29 @@ MainWindow::MainWindow(QWidget *parent)
 
     message_center->loadInterface("interfaceLoginSuccess", std::bind(&MainWindow::interfaceLoginSuccess, this, std::placeholders::_1));
     message_center->loadInterface("interfaceLoginFail",    std::bind(&MainWindow::interfaceLoginFail, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceForgetPasswordSuccess", std::bind(&MainWindow::interfaceForgetPasswordSuccess, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceForgetPasswordFail",    std::bind(&MainWindow::interfaceForgetPasswordFail, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceRegisterSuccess", std::bind(&MainWindow::interfaceRegisterSuccess, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceRegisterFail",    std::bind(&MainWindow::interfaceRegisterFail, this, std::placeholders::_1));
 
 }
 void MainWindow::onForgetPasswordButtonClicked()
 {
     FindAndSignUpWidget *FindWidget = new FindAndSignUpWidget(1);        //mode1 -> 忘记密码
     FindWidget->show();
+
+    WidgetArgPackage* forgetPassword_submit = new WidgetArgPackage();
+    forgetPassword_submit->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::FORGET_PASSWORD, EmailOrUid.toStdString(), EmailOrUid.toStdString(), "");
+    widget_rev_packer->WidgetsendMessage(forgetPassword_submit);
 }
 void MainWindow::onRegisterButtonClicked()
 {
     FindAndSignUpWidget *SignUPWidget = new FindAndSignUpWidget(0);         //mode0 -> 注册
     SignUPWidget->show();
+
+    WidgetArgPackage* register_submit = new WidgetArgPackage();
+    register_submit->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::REGISTER, EmailOrUid.toStdString(), EmailOrUid.toStdString(), Password.toStdString(), "");
+    widget_rev_packer->WidgetsendMessage(register_submit);
 }
 void MainWindow::onShowPasswordClicked()
 {
@@ -149,7 +161,7 @@ void MainWindow::onLoginButtonClicked()
     Password = passwordLineEdit->text();
 
     WidgetArgPackage* login_submit = new WidgetArgPackage();
-    login_submit->packMessage<WidgetArgLogin>(LOGIN_OPCODE::LOGIN, EmailOrUid.toStdString(), EmailOrUid.toStdString(), Password.toStdString(), "");
+    login_submit->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::LOGIN, EmailOrUid.toStdString(), EmailOrUid.toStdString(), Password.toStdString(), "");
     widget_rev_packer->WidgetsendMessage(login_submit);
 
     interfaceLoginSuccess(nullptr);
@@ -157,6 +169,28 @@ void MainWindow::onLoginButtonClicked()
 
 
 //********************INTERFACE****************************
+void MainWindow::interfaceForgetPasswordSuccess(WidgetArgPackage* arg)
+{
+    ;
+}
+void MainWindow::interfaceForgetPasswordFail(WidgetArgPackage* arg)
+{
+    WidgetArgStatus *status = static_cast<WidgetArgStatus*>(arg->package);
+    std::cout << "ForgetPassword Fail, code: " << status->status << std::endl;
+
+    delete arg;
+}
+void MainWindow::interfaceRegisterSuccess(WidgetArgPackage* arg)
+{
+    ;
+}
+void MainWindow::interfaceRegisterFail(WidgetArgPackage* arg)
+{
+    WidgetArgStatus *status = static_cast<WidgetArgStatus*>(arg->package);
+    std::cout << "Register Fail, code: " << status->status << std::endl;
+
+    delete arg;
+}
 void MainWindow::interfaceLoginSuccess(WidgetArgPackage* arg)
 {
     EmailOrUid = usernameLineEdit->text();
