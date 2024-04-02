@@ -24,7 +24,7 @@ socketio = SocketIO()
 socketio.init_app(app, cors_allowed_origins='*')
 
 
-UserData = sl.connect('D:\\server\\userdata.db',check_same_thread=False)
+UserData = sl.connect('userdata.db',check_same_thread=False)
 
 
 def inform_room_status(relink_account,seat,room_id):
@@ -463,9 +463,9 @@ def SignupPost():
         global UserData
         UserData.commit()
         #UserData.close()
-        return jsonify(upsignresult = True)
+        return jsonify(type = 2, signupresult = 1)
     else :
-        return jsonify(upsignresult = False)
+        return jsonify(type = 2, signupresult = 0)
 
 
 @app.route('/login',methods = ["POST"])#存储登录信息
@@ -538,10 +538,10 @@ def PasswordForgetPost():
     check_code =redis_data.redis_db.get(str(Findingmail)+'_passwordforgetmail')
     print(" str(Findingcode):", str(Findingcode),"check_code:",check_code.decode())
     if len(queryresult) != 0 and str(Findingcode) == check_code.decode():
-        Findingresult = True
+        Findingresult = 1
     else:
-        Findingresult = False
-    if Findingresult == True:
+        Findingresult = 0
+    if Findingresult == 1:
         ChangeLanguage = '''UPDATE UserTable SET Upassword = ? WHERE Umail like ?'''
         FindingNewpassword = hashlib.md5(FindingNewpassword.encode()).digest().hex()
         cursor.execute(ChangeLanguage,[FindingNewpassword,Findingmail])
@@ -553,7 +553,7 @@ def PasswordForgetPost():
         print("您的验证码错误或者邮箱不存在")
 
 
-    return jsonify(result = Findingresult)
+    return jsonify(type = 3,result = Findingresult)
 
 @app.route('/passwordforgetmail',methods = ["POST"])#发送找回密码的验证码
 def PasswordForgetMailPost():
