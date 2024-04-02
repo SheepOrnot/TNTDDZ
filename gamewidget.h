@@ -84,7 +84,7 @@ private:
     void placeHandCards();
     void placeOutCards(int Pos);
     void ImportConfig();
-private slots:
+private Q_SLOTS:
     void ResolutionChanged(int _Width,int _Height);      //接收设置界面发出的分辨率修改信号。
     void onSettingBtnClicked();
 };

@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_QML_DEBUG -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_QML_DEBUG -DQT_NO_KEYWORDS -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -g -std=gnu++1z -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -I../../../../program/boost_1_84_0 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
+CXXFLAGS      = -pipe -lsioclient -lboost_random -lboost_system -lboost_date_time -g -std=gnu++1z -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
+INCPATH       = -I. -I. -I../LIB -I../../../../program/boost_1_84_0 -I../LIB -I../../../../gitpack/socket.io-client-cpp/lib/asio/asio/include -I../../../../gitpack/socket.io-client-cpp/lib/websocketpp -I../../../../gitpack/socket.io-client-cpp/lib/rapidjson/include -I../../../../gitpack/socket.io-client-cpp/src -I../../../../gitpack/socket.io-client-cpp/src/internal -I../LIB -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
 QMAKE         = /usr/lib/qt5/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = TNTDDZ1.0.0
 DISTDIR = /home/fish/Desktop/Software_project/qt_project/TNTDDZ/.tmp/TNTDDZ1.0.0
 LINK          = g++
 LFLAGS        = 
-LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt5Multimedia.so /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Network.so /usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread   
+LIBS          = $(SUBLIBS) -L/home/fish/Desktop/Software_project/qt_project/TNTDDZ/../LIB/ -lsioclient /usr/lib/x86_64-linux-gnu/libQt5Multimedia.so /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Network.so /usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -61,6 +61,7 @@ SOURCES       = backgroundwidget.cpp \
 		mainwindow.cpp \
 		personalinfowidget.cpp \
 		settingwidget.cpp \
+		socketioclient.cpp \
 		widgetcard.cpp qrc_resource.cpp \
 		moc_backgroundwidget.cpp \
 		moc_findandsignupwidget.cpp \
@@ -79,6 +80,7 @@ OBJECTS       = backgroundwidget.o \
 		mainwindow.o \
 		personalinfowidget.o \
 		settingwidget.o \
+		socketioclient.o \
 		widgetcard.o \
 		qrc_resource.o \
 		moc_backgroundwidget.o \
@@ -190,6 +192,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		messagepackage.h \
 		networkrevpacker.h \
 		settingwidget.h \
+		socketioclient.h \
 		threadpool.h \
 		widgetargpackage.h \
 		widgetcard.h \
@@ -202,6 +205,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		mainwindow.cpp \
 		personalinfowidget.cpp \
 		settingwidget.cpp \
+		socketioclient.cpp \
 		widgetcard.cpp
 QMAKE_TARGET  = TNTDDZ
 DESTDIR       = 
@@ -211,7 +215,7 @@ TARGET        = TNTDDZ
 first: all
 ####### Build rules
 
-TNTDDZ: ui_findandsignupwidget.h ui_gameoverwidget.h ui_gamewidget.h ui_lobbywidget.h ui_mainwindow.h ui_personalinfowidget.h ui_settingwidget.h $(OBJECTS)  
+TNTDDZ: /home/fish/Desktop/Software_project/qt_project/TNTDDZ/../LIB/libsioclient.a ui_findandsignupwidget.h ui_gameoverwidget.h ui_gamewidget.h ui_lobbywidget.h ui_mainwindow.h ui_personalinfowidget.h ui_settingwidget.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: TNTDDZ.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -411,8 +415,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resource.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents HTTPJSONSender.h backgroundwidget.h common.h findandsignupwidget.h gameoverwidget.h gamewidget.h lobbywidget.h mainwindow.h personalinfowidget.h messagecenter.h messagepackage.h networkrevpacker.h settingwidget.h threadpool.h widgetargpackage.h widgetcard.h widgetrevpacker.h $(DISTDIR)/
-	$(COPY_FILE) --parents backgroundwidget.cpp findandsignupwidget.cpp gameoverwidget.cpp gamewidget.cpp lobbywidget.cpp main.cpp mainwindow.cpp personalinfowidget.cpp settingwidget.cpp widgetcard.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents HTTPJSONSender.h backgroundwidget.h common.h findandsignupwidget.h gameoverwidget.h gamewidget.h lobbywidget.h mainwindow.h personalinfowidget.h messagecenter.h messagepackage.h networkrevpacker.h settingwidget.h socketioclient.h threadpool.h widgetargpackage.h widgetcard.h widgetrevpacker.h $(DISTDIR)/
+	$(COPY_FILE) --parents backgroundwidget.cpp findandsignupwidget.cpp gameoverwidget.cpp gamewidget.cpp lobbywidget.cpp main.cpp mainwindow.cpp personalinfowidget.cpp settingwidget.cpp socketioclient.cpp widgetcard.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents findandsignupwidget.ui gameoverwidget.ui gamewidget.ui lobbywidget.ui mainwindow.ui personalinfowidget.ui settingwidget.ui $(DISTDIR)/
 
 
@@ -584,7 +588,7 @@ compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
-	g++ -pipe -g -std=gnu++1z -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
+	g++ -pipe -lsioclient -lboost_random -lboost_system -lboost_date_time -g -std=gnu++1z -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
 compiler_moc_header_make_all: moc_backgroundwidget.cpp moc_findandsignupwidget.cpp moc_gameoverwidget.cpp moc_gamewidget.cpp moc_lobbywidget.cpp moc_mainwindow.cpp moc_personalinfowidget.cpp moc_settingwidget.cpp
 compiler_moc_header_clean:
@@ -718,7 +722,7 @@ moc_backgroundwidget.cpp: backgroundwidget.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtGui/qpen.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/program/boost_1_84_0 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' backgroundwidget.h -o moc_backgroundwidget.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' backgroundwidget.h -o moc_backgroundwidget.cpp
 
 moc_findandsignupwidget.cpp: findandsignupwidget.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget \
@@ -833,7 +837,7 @@ moc_findandsignupwidget.cpp: findandsignupwidget.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtCore/qregularexpression.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/program/boost_1_84_0 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' findandsignupwidget.h -o moc_findandsignupwidget.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' findandsignupwidget.h -o moc_findandsignupwidget.cpp
 
 moc_gameoverwidget.cpp: gameoverwidget.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget \
@@ -941,7 +945,7 @@ moc_gameoverwidget.cpp: gameoverwidget.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtGui/qtouchdevice.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/program/boost_1_84_0 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' gameoverwidget.h -o moc_gameoverwidget.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' gameoverwidget.h -o moc_gameoverwidget.cpp
 
 moc_gamewidget.cpp: gamewidget.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget \
@@ -1085,7 +1089,7 @@ moc_gamewidget.cpp: gamewidget.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qrubberband.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/program/boost_1_84_0 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' gamewidget.h -o moc_gamewidget.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' gamewidget.h -o moc_gamewidget.cpp
 
 moc_lobbywidget.cpp: lobbywidget.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget \
@@ -1263,10 +1267,13 @@ moc_lobbywidget.cpp: lobbywidget.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qrubberband.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/program/boost_1_84_0 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' lobbywidget.h -o moc_lobbywidget.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' lobbywidget.h -o moc_lobbywidget.cpp
 
 moc_mainwindow.cpp: mainwindow.h \
 		common.h \
+		../../../../gitpack/socket.io-client-cpp/src/sio_client.h \
+		../../../../gitpack/socket.io-client-cpp/src/sio_message.h \
+		../../../../gitpack/socket.io-client-cpp/src/sio_socket.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMainWindow \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmainwindow.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgetsglobal.h \
@@ -3584,9 +3591,10 @@ moc_mainwindow.cpp: mainwindow.h \
 		../../../../program/boost_1_84_0/boost/property_tree/json_parser/detail/standard_callbacks.hpp \
 		../../../../program/boost_1_84_0/boost/property_tree/json_parser/detail/write.hpp \
 		widgetargpackage.h \
+		socketioclient.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/program/boost_1_84_0 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' mainwindow.h -o moc_mainwindow.cpp
 
 moc_personalinfowidget.cpp: personalinfowidget.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget \
@@ -3694,7 +3702,7 @@ moc_personalinfowidget.cpp: personalinfowidget.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtGui/qtouchdevice.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/program/boost_1_84_0 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' personalinfowidget.h -o moc_personalinfowidget.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' personalinfowidget.h -o moc_personalinfowidget.cpp
 
 moc_settingwidget.cpp: settingwidget.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget \
@@ -3802,7 +3810,7 @@ moc_settingwidget.cpp: settingwidget.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtGui/qtouchdevice.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/program/boost_1_84_0 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' settingwidget.h -o moc_settingwidget.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' settingwidget.h -o moc_settingwidget.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -4591,6 +4599,9 @@ lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 
 main.o: main.cpp mainwindow.h \
 		common.h \
+		../../../../gitpack/socket.io-client-cpp/src/sio_client.h \
+		../../../../gitpack/socket.io-client-cpp/src/sio_message.h \
+		../../../../gitpack/socket.io-client-cpp/src/sio_socket.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMainWindow \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmainwindow.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgetsglobal.h \
@@ -6908,6 +6919,7 @@ main.o: main.cpp mainwindow.h \
 		../../../../program/boost_1_84_0/boost/property_tree/json_parser/detail/standard_callbacks.hpp \
 		../../../../program/boost_1_84_0/boost/property_tree/json_parser/detail/write.hpp \
 		widgetargpackage.h \
+		socketioclient.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QApplication \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qapplication.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qdesktopwidget.h \
@@ -6917,6 +6929,9 @@ main.o: main.cpp mainwindow.h \
 
 mainwindow.o: mainwindow.cpp mainwindow.h \
 		common.h \
+		../../../../gitpack/socket.io-client-cpp/src/sio_client.h \
+		../../../../gitpack/socket.io-client-cpp/src/sio_message.h \
+		../../../../gitpack/socket.io-client-cpp/src/sio_socket.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMainWindow \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmainwindow.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgetsglobal.h \
@@ -9234,6 +9249,7 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../../../program/boost_1_84_0/boost/property_tree/json_parser/detail/standard_callbacks.hpp \
 		../../../../program/boost_1_84_0/boost/property_tree/json_parser/detail/write.hpp \
 		widgetargpackage.h \
+		socketioclient.h \
 		ui_mainwindow.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/QApplication \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qapplication.h \
@@ -9483,6 +9499,13 @@ settingwidget.o: settingwidget.cpp settingwidget.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractbutton.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtGui/qicon.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settingwidget.o settingwidget.cpp
+
+socketioclient.o: socketioclient.cpp socketioclient.h \
+		common.h \
+		../../../../gitpack/socket.io-client-cpp/src/sio_client.h \
+		../../../../gitpack/socket.io-client-cpp/src/sio_message.h \
+		../../../../gitpack/socket.io-client-cpp/src/sio_socket.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o socketioclient.o socketioclient.cpp
 
 widgetcard.o: widgetcard.cpp widgetcard.h \
 		/usr/include/x86_64-linux-gnu/qt5/QtCore/QString \

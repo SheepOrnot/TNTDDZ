@@ -122,6 +122,10 @@ MainWindow::MainWindow(QWidget *parent)
     message_center->loadInterface("interfaceLoginSuccess", std::bind(&MainWindow::interfaceLoginSuccess, this, std::placeholders::_1));
     message_center->loadInterface("interfaceLoginFail",    std::bind(&MainWindow::interfaceLoginFail, this, std::placeholders::_1));
 
+    //****************test socketIO client******************************
+    WidgetArgPackage* create_room_submit = new WidgetArgPackage();
+    create_room_submit->packMessage<WidgetArgRoom>(ROOM_OPCODE::CREATE_ROOM, "00000000001", "");
+    widget_rev_packer->WidgetsendMessage(create_room_submit);
 }
 void MainWindow::onForgetPasswordButtonClicked()
 {

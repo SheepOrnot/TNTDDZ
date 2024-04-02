@@ -40,7 +40,15 @@ public:
 class MessageRoom : public Message
 {
 public:
-    MessageRoom() : Message(MESSAGE_TYPE::ROOM) {};
+    MessageRoom(ROOM_OPCODE _opcode, std::string _account, std::string _roomid)
+        : Message(MESSAGE_TYPE::ROOM),
+        opcode(_opcode),
+        account(_account),
+        roomid(_roomid)
+        {};
+    ROOM_OPCODE opcode;
+    std::string account;
+    std::string roomid;
 };
 class MessageStatus : public Message
 {

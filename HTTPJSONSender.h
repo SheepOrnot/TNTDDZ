@@ -1,7 +1,7 @@
 #ifndef HTTPJSONSENDER_H
 #define HTTPJSONSENDER_H
 
-
+#include "common.h"
 #include <iostream>
 #include <istream>
 #include <ostream>
@@ -128,11 +128,9 @@ public:
 
     string static HTTPJSONSend(string api, string data)
     {
-        string host = "127.0.0.1";
-        string port = "22222";
         string reponse_data;
         std::cout << "Sending: " << data << std::endl;
-        int ret = HTTPJSONPost(host, port, api, data, reponse_data);
+        int ret = HTTPJSONPost(SERVER_IP, SERVER_PORT, api, data, reponse_data);
         if (ret != 0)
         {
             std::cout << "error_code:" << ret << std::endl;

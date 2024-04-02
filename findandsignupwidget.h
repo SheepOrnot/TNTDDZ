@@ -29,7 +29,7 @@ private:
     QRegularExpressionValidator *VerificationCodeValidator = nullptr;
     QRegularExpressionValidator *UsernameValidator = nullptr;
 
-private slots:
+private Q_SLOTS:
     void onEnterKeyPushButtonclicked();
     void onShowPassword1clicked();
     void onShowPassword2clicked();

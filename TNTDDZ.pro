@@ -2,8 +2,14 @@ QT       += core gui
 QT       += multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+CONFIG += no_keywords
 CONFIG += c++17
 
+QMAKE_CXXFLAGS += -lsioclient
+QMAKE_CXXFLAGS += -lboost_random
+QMAKE_CXXFLAGS += -lboost_system
+QMAKE_CXXFLAGS += -lboost_date_time
+# LIBS += -lsioclient
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
@@ -18,6 +24,7 @@ SOURCES += \
     mainwindow.cpp \
     personalinfowidget.cpp \
     settingwidget.cpp \
+    socketioclient.cpp \
     widgetcard.cpp
 
 HEADERS += \
@@ -34,6 +41,7 @@ HEADERS += \
     messagepackage.h \
     networkrevpacker.h \
     settingwidget.h \
+    socketioclient.h \
     threadpool.h \
     widgetargpackage.h \
     widgetcard.h \
@@ -56,4 +64,20 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     resource.qrc
 
+INCLUDEPATH += ./
+INCLUDEPATH += ./../LIB/
 INCLUDEPATH += /home/fish/program/boost_1_84_0/
+INCLUDEPATH += /home/fish/Desktop/Software_project/qt_project/LIB/
+INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include/
+INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/lib/websocketpp/
+INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include/
+INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/src/
+INCLUDEPATH += /home/fish/gitpack/socket.io-client-cpp/src/internal
+
+
+unix:!macx: LIBS += -L$$PWD/../LIB/ -lsioclient
+
+INCLUDEPATH += $$PWD/../LIB
+DEPENDPATH += $$PWD/../LIB
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../LIB/libsioclient.a

@@ -50,15 +50,15 @@ private:
     QThread *BGMThread;
 private:
     void ImportConfig();
-public slots:
+public Q_SLOTS:
     void ResolutionChanged(int _Width,int _Height);
     //void ProfileChanged(int _Width,int _Height);
-private slots:
+private Q_SLOTS:
     void onSettingBtnClicked();
     void onClassicModeBtnClicked();
     void onExitGameBtnClicked();
     void RollImage();
-signals:
+Q_SIGNALS:
     void ChangeResolutions(int _Width,int _Height);            //********测试用 ;
 
 };

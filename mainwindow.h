@@ -33,7 +33,7 @@ public:
 
     void interfaceLoginSuccess(WidgetArgPackage* arg);     //接口: 界面登录成功
     void interfaceLoginFail(WidgetArgPackage* arg);        //接口：界面登录失败
-private slots:
+private Q_SLOTS:
     void onLoginButtonClicked();
 
     void onForgetPasswordButtonClicked();
