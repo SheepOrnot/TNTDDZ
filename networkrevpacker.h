@@ -41,16 +41,33 @@ public:
         switch ((NETWORK)pt.get<int>("type"))
         {
         case NETWORK::LOGIN:
+        {
             message->packMessage<MessageVerifyStatus>(VERIFY_TYPE::LOGIN, pt.get<int>("loginStatus"));
             break;
+        }
         case NETWORK::REGISTER:
-            message->packMessage<MessageVerifyStatus>(VERIFY_TYPE::REGISTER, pt.get<int>("registerStatus"));
+        {
+            message->packMessage<MessageVerifyStatus>(VERIFY_TYPE::REGISTER, pt.get<int>("signupresult"));
             break;
+        }
         case NETWORK::FORGET_PASSWORD:
-            message->packMessage<MessageVerifyStatus>(VERIFY_TYPE::FORGET_PASSWORD, pt.get<int>("findpasswordStatus"));
+        {
+            message->packMessage<MessageVerifyStatus>(VERIFY_TYPE::FORGET_PASSWORD, pt.get<int>("result"));
             break;
-
+        }
+        case NETWORK::REGISTER_MAIL_CODE_VERIFY:
+        {
+            message->packMessage<MessageVerifyStatus>(VERIFY_TYPE::REGISTER_MAIL, pt.get<int>("result"));
+            break;
+        }
+        case NETWORK::FORGET_PASSWORD_MAIL_CODE_VERIFY:
+        {
+            message->packMessage<MessageVerifyStatus>(VERIFY_TYPE::FORGET_PASSWORD_MAIL, pt.get<int>("result"));
+            break;
+        }
         default:
+            std::cout << "unknown network package" << std::endl;
+            std::flush(std::cout);
             break;
         }
 

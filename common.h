@@ -54,7 +54,9 @@ enum class NETWORK
     JOIN_ROOM = 5,
     LEAVE_ROOM = 6,
     READY = 7,
-    SEND_CARD = 8
+    SEND_CARD = 8,
+    REGISTER_MAIL_CODE_VERIFY = 9,
+    FORGET_PASSWORD_MAIL_CODE_VERIFY = 10
 };
 enum class ROOM_OPCODE {
     JOIN = 1

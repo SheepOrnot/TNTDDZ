@@ -28,7 +28,7 @@ public:
                 MessageAccount *package = static_cast<MessageAccount*>(current_message->package);
                 switch(package->opcode)
                 {
-                case ACCOUNT_OPCODE::LOGIN:
+                    case ACCOUNT_OPCODE::LOGIN:
                     {
                         //login
                         std::string login_json = "{\"mail\":\""      + package->mail + "\","
@@ -52,14 +52,24 @@ public:
                         std::string register_json = "{\"mail\":\""   + package->mail     + "\","
                                                 + " \"account\":\""  + package->accout   + "\","
                                                 + " \"password\":\"" + package->password + "\","
+                                                + " \"username\":\"" + package->username + "\","
                                                 + " \"code\":\""     + package->code     + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/signup", register_json));
                         current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
                         break;
                     }
+                    case ACCOUNT_OPCODE::REGISTER_MAIL_CODE_VERIFY:
+                    {
+                        //forgetr_mail_verify
+                        std::string register_mail_verify_json = "{\"mail\":\""   + package->mail     + "\","
+                                                                + " \"code\":\""     + package->code     + "\"}";
+                        MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/signup_code_verify", register_mail_verify_json));
+                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        break;
+                    }
                     case ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL:
                     {
-                        //register_mail
+                        //forget_mail
                         std::string forget_password_mail_json = "{\"mail\":\""     + package->mail + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforgetmail", forget_password_mail_json));
                         current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
@@ -67,7 +77,7 @@ public:
                     }
                     case ACCOUNT_OPCODE::FORGET_PASSWORD:
                     {
-                        //register
+                        //forget
                         std::string forget_password_json = "{\"mail\":\""   + package->mail     + "\","
                                                 + " \"password\":\"" + package->password + "\","
                                                 + " \"code\":\""     + package->code     + "\"}";
@@ -75,18 +85,9 @@ public:
                         current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
                         break;
                     }
-                    case ACCOUNT_OPCODE::REGISTER_MAIL_CODE_VERIFY:
-                    {
-                        //register_mail
-                        std::string register_mail_verify_json = "{\"mail\":\""   + package->mail     + "\","
-                                                            + " \"code\":\""     + package->code     + "\"}";
-                        MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/register_code_verify", register_mail_verify_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
-                        break;
-                    }
                     case ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL_CODE_VERIFY:
                     {
-                        //register
+                        //register_mail_verify
                         std::string forget_mail_verify_json = "{\"mail\":\""   + package->mail     + "\","
                                                           + " \"code\":\""     + package->code     + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforget_code_verify", forget_mail_verify_json));
@@ -94,10 +95,12 @@ public:
                         break;
                     }
                 }
+                break;
             }
             case MESSAGE_TYPE::VERIFY:
             {
                 MessageVerifyStatus *status = static_cast<MessageVerifyStatus*>(current_message->package);
+                std::cout << "Do Verify: " << status->code << std::endl;
                 switch(status->type)
                 {
                     case VERIFY_TYPE::LOGIN:
@@ -131,9 +134,9 @@ public:
 
                         std::cout << "findPasswordStatus: " << status->code << std::endl;
                         if(status->code == 1)
-                            current_center->WidgetInterface["interfaceFindPasswoardSuccess"](arg);
+                            current_center->WidgetInterface["interfaceForgetPasswordSuccess"](arg);
                         else
-                            current_center->WidgetInterface["interfaceFindPasswoardFail"](arg);
+                            current_center->WidgetInterface["interfaceForgetPasswordFail"](arg);
                         break;
                     }
                     case VERIFY_TYPE::REGISTER_MAIL:

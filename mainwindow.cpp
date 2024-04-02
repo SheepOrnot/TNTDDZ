@@ -158,8 +158,6 @@ void MainWindow::onLoginButtonClicked()
     WidgetArgPackage* login_submit = new WidgetArgPackage();
     login_submit->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::LOGIN, EmailOrUid.toStdString(), EmailOrUid.toStdString(), Password.toStdString(), "");
     widget_rev_packer->WidgetsendMessage(login_submit);
-
-    interfaceLoginSuccess(nullptr);
 }
 
 

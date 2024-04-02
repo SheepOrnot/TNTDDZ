@@ -86,6 +86,7 @@ FindAndSignUpWidget::FindAndSignUpWidget(int _mode,MessageCenter *_message_cente
 
     connect(ui->SendKeyPushButton,&QPushButton::clicked,this,&FindAndSignUpWidget::onSendKeyPushButtonclicked);
     connect(ui->EnterKeyPushButton,&QPushButton::clicked,this,&FindAndSignUpWidget::onEnterKeyPushButtonclicked);
+    connect(ui->EnterPushButton,&QPushButton::clicked,this,&FindAndSignUpWidget::onEnterPushButtonclicked);
 
     message_center->loadInterface("interfaceForgetPasswordSuccess", std::bind(&FindAndSignUpWidget::interfaceForgetPasswordSuccess, this, std::placeholders::_1));
     message_center->loadInterface("interfaceForgetPasswordFail",    std::bind(&FindAndSignUpWidget::interfaceForgetPasswordFail, this, std::placeholders::_1));
@@ -140,13 +141,13 @@ void FindAndSignUpWidget::onSendKeyPushButtonclicked()
     if(mode==0) //find password
     {
         WidgetArgPackage* package = new WidgetArgPackage();
-        package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL, Email.toStdString(), "", "", "", VerificationCode.toStdString());
+        package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::REGISTER_MAIL, Email.toStdString(), "", "", "", VerificationCode.toStdString());
         widget_rev_packer->WidgetsendMessage(package);
     }
     else    //register
     {
         WidgetArgPackage* package = new WidgetArgPackage();
-        package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::REGISTER_MAIL, Email.toStdString(), "", "", "", VerificationCode.toStdString());
+        package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL, Email.toStdString(), "", "", "", VerificationCode.toStdString());
         widget_rev_packer->WidgetsendMessage(package);
     }
 }
@@ -165,16 +166,16 @@ void FindAndSignUpWidget::onEnterPushButtonclicked() //send infomation
         qDebug() << "两次密码不相同";
         return;
     }
-    if(mode==0) //find password
-    {
-        WidgetArgPackage* package = new WidgetArgPackage();
-        package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::FORGET_PASSWORD, Email.toStdString(), "", Password1.toStdString(), "", VerificationCode.toStdString());
-        widget_rev_packer->WidgetsendMessage(package);
-    }
-    else    //register
+    if(mode==0) //register
     {
         WidgetArgPackage* package = new WidgetArgPackage();
         package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::REGISTER, Email.toStdString(), "", Password1.toStdString(), Username.toStdString(), VerificationCode.toStdString());
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else    //findpassword
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::FORGET_PASSWORD, Email.toStdString(), "", Password1.toStdString(), Username.toStdString(), VerificationCode.toStdString());
         widget_rev_packer->WidgetsendMessage(package);
     }
 }
@@ -188,16 +189,16 @@ void FindAndSignUpWidget::onEnterKeyPushButtonclicked() //verify code
     Username = ui->UsernameLineEdit->text();
     Password1 = ui->Password1LineEdit->text();
     Password2 = ui->Password2LineEdit->text();
-    if(mode==0) //find password
-    {
-        WidgetArgPackage* package = new WidgetArgPackage();
-        package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL_CODE_VERIFY, Email.toStdString(), "", "", "", VerificationCode.toStdString());
-        widget_rev_packer->WidgetsendMessage(package);
-    }
-    else    //register
+    if(mode==0) //register
     {
         WidgetArgPackage* package = new WidgetArgPackage();
         package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::REGISTER_MAIL_CODE_VERIFY, Email.toStdString(), "", "", "", VerificationCode.toStdString());
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else    //findpassword
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL_CODE_VERIFY, Email.toStdString(), "", "", "", VerificationCode.toStdString());
         widget_rev_packer->WidgetsendMessage(package);
     }
 }
@@ -222,16 +223,6 @@ void FindAndSignUpWidget::interfaceRegisterMailFail(WidgetArgPackage* arg)
 void FindAndSignUpWidget::interfaceForgetPasswordMailSuccess(WidgetArgPackage* arg)
 {
     qDebug() << "验证码正确";
-    this->setFixedSize(600,900);
-    ui->EnterKeyPushButton->hide();
-    ui->UsernameLineEdit->show();
-    ui->Password1LineEdit->show();
-    ui->Password2LineEdit->show();
-    ui->EnterPushButton->show();
-}
-void FindAndSignUpWidget::interfaceRegisterMailSuccess(WidgetArgPackage* arg)
-{
-    qDebug() << "验证码正确";
     this->setFixedSize(600,750);
     ui->EnterKeyPushButton->hide();
     ui->Password1LineEdit->setGeometry(150,330,300,70);
@@ -244,6 +235,16 @@ void FindAndSignUpWidget::interfaceRegisterMailSuccess(WidgetArgPackage* arg)
     ShowPassword2->setGeometry(ui->Password2LineEdit->x()+275,ui->Password2LineEdit->y()+25,20,20);
     HidePassword1->setGeometry(ui->Password1LineEdit->x()+275,ui->Password1LineEdit->y()+25,20,20);
     HidePassword2->setGeometry(ui->Password2LineEdit->x()+275,ui->Password2LineEdit->y()+25,20,20);
+}
+void FindAndSignUpWidget::interfaceRegisterMailSuccess(WidgetArgPackage* arg)
+{
+    qDebug() << "验证码正确";
+    this->setFixedSize(600,900);
+    ui->EnterKeyPushButton->hide();
+    ui->UsernameLineEdit->show();
+    ui->Password1LineEdit->show();
+    ui->Password2LineEdit->show();
+    ui->EnterPushButton->show();
 }
 void FindAndSignUpWidget::interfaceForgetPasswordSuccess(WidgetArgPackage* arg)
 {
