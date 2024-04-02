@@ -1,2 +1,6 @@
 .qtc_clangd/
 debug/
+release/
+moc*
+*.o
+*.user
