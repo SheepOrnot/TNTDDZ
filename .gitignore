@@ -1,0 +1,8 @@
+.qtc_clangd/
+debug/
+release/
+moc*
+Makefile*
+*.o
+*.user
+qrc_resource.cpp
