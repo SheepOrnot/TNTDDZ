@@ -28,13 +28,13 @@ private:
     QString BeanNum,DiamondNum;      //豆和钻石数量(服务器获取)
     QString Username,UID;            //username和uid(服务器获取)
     QString RollPixmapsPath[7] = {
-        ":/image/image/Profile/mjq.jpg",
-        ":/image/image/Profile/syx.jpg",
-        ":/image/image/Profile/lyw.jpg",
-        ":/image/image/Profile/dcx.jpg",
-        ":/image/image/Profile/zzy.jpg",
-        ":/image/image/Profile/yhx.jpg",
-        ":/image/image/Profile/hjl.jpg"
+        ":/image/image/Profile/0.jpg",
+        ":/image/image/Profile/1.jpg",
+        ":/image/image/Profile/2.jpg",
+        ":/image/image/Profile/3.jpg",
+        ":/image/image/Profile/4.jpg",
+        ":/image/image/Profile/5.jpg",
+        ":/image/image/Profile/6.jpg"
     };
     QPixmap DiamondPixmap,BeanPixmap;
     QPixmap ProfilePixmap;

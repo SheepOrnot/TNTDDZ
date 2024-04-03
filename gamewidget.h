@@ -2,7 +2,6 @@
 #define GAMEWIDGET_H
 
 #include <QWidget>
-#include "widgetargcard.h"
 #include "widgetcard.h"
 #include "settingwidget.h"
 #include "gameoverwidget.h"
@@ -16,6 +15,7 @@
 #include <QCoreApplication>
 #include <QThread>
 #include <QAudioOutput>
+#include <bitset>
 namespace Ui {
 class GameWidget;
 }
@@ -30,7 +30,6 @@ public:
     int Width,Height;
     std::vector<WidgetCard> PreviousPlayerOutCards,NextPlayerOutCards,PlayerOutCards,PlayerHandCards,FinalCards;
     std::bitset<54> SelectedCards = 0;
-    WidgetArgCard CardArg;             //卡牌参数对象
     QString PreviousIdentity,NextIdentity,PlayerIdentity;
     QString PreviousBeanNum,NextBeanNum,PlayerBeanNum;
     QMediaPlayer *BGMPlayer;
@@ -79,13 +78,13 @@ private:
         "red"
     };
     const QString ProfilePathIndex[7] = {
-        ":/image/image/Profile/mjq.jpg",
-        ":/image/image/Profile/syx.jpg",
-        ":/image/image/Profile/lyw.jpg",
-        ":/image/image/Profile/dcx.jpg",
-        ":/image/image/Profile/zzy.jpg",
-        ":/image/image/Profile/yhx.jpg",
-        ":/image/image/Profile/hjl.jpg"
+        ":/image/image/Profile/0.jpg",
+        ":/image/image/Profile/1.jpg",
+        ":/image/image/Profile/2.jpg",
+        ":/image/image/Profile/3.jpg",
+        ":/image/image/Profile/4.jpg",
+        ":/image/image/Profile/5.jpg",
+        ":/image/image/Profile/6.jpg"
     };
 private:
     void InitAllCards();

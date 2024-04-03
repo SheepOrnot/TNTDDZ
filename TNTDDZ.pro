@@ -10,7 +10,6 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    argclass.cpp \
     backgroundwidget.cpp \
     findandsignupwidget.cpp \
     gameoverwidget.cpp \
@@ -20,13 +19,9 @@ SOURCES += \
     mainwindow.cpp \
     personalinfowidget.cpp \
     settingwidget.cpp \
-    widgetargcard.cpp \
-    widgetargplayer.cpp \
-    widgetargroom.cpp \
     widgetcard.cpp
 
 HEADERS += \
-    argclass.h \
     backgroundwidget.h \
     findandsignupwidget.h \
     gameoverwidget.h \
@@ -35,9 +30,6 @@ HEADERS += \
     mainwindow.h \
     personalinfowidget.h \
     settingwidget.h \
-    widgetargcard.h \
-    widgetargplayer.h \
-    widgetargroom.h \
     widgetcard.h
 
 FORMS += \
