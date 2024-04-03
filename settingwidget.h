@@ -35,6 +35,7 @@ private:
     QString NewResolutionIndex;
 
     QPixmap CardFrontPixmap,CardBackPixmap;
+    QString optipnStyleSheet;
 private:
     void WriteBackConfig();
     void ImportConfig();

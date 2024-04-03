@@ -7,6 +7,7 @@
 *****************************************************************************/
 
 #include "../lobbywidget.h"
+#include <QtGui/qtextcursor.h>
 #include <QtCore/qmetatype.h>
 
 #include <QtCore/qtmochelpers.h>
@@ -36,14 +37,14 @@ namespace {
 struct qt_meta_stringdata_CLASSLobbyWidgetENDCLASS_t {};
 constexpr auto qt_meta_stringdata_CLASSLobbyWidgetENDCLASS = QtMocHelpers::stringData(
     "LobbyWidget",
-    "ChangeResolutions",
+    "ResolutionChanged",
     "",
     "_Width",
     "_Height",
-    "ResolutionChanged",
     "onSettingBtnClicked",
     "onClassicModeBtnClicked",
     "onExitGameBtnClicked",
+    "onPersonalInfoBtnClicked",
     "RollImage"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
@@ -62,23 +63,19 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSLobbyWidgetENDCLASS[] = {
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       1,       // signalCount
-
- // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    2,   50,    2, 0x06,    1 /* Public */,
+       0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       5,    2,   55,    2, 0x0a,    4 /* Public */,
-       6,    0,   60,    2, 0x08,    7 /* Private */,
-       7,    0,   61,    2, 0x08,    8 /* Private */,
-       8,    0,   62,    2, 0x08,    9 /* Private */,
-       9,    0,   63,    2, 0x08,   10 /* Private */,
-
- // signals: parameters
-    QMetaType::Void, QMetaType::Int, QMetaType::Int,    3,    4,
+       1,    2,   50,    2, 0x0a,    1 /* Public */,
+       5,    0,   55,    2, 0x08,    4 /* Private */,
+       6,    0,   56,    2, 0x08,    5 /* Private */,
+       7,    0,   57,    2, 0x08,    6 /* Private */,
+       8,    0,   58,    2, 0x08,    7 /* Private */,
+       9,    0,   59,    2, 0x08,    8 /* Private */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::Int, QMetaType::Int,    3,    4,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -96,10 +93,6 @@ Q_CONSTINIT const QMetaObject LobbyWidget::staticMetaObject = { {
     qt_incomplete_metaTypeArray<qt_meta_stringdata_CLASSLobbyWidgetENDCLASS_t,
         // Q_OBJECT / Q_GADGET
         QtPrivate::TypeAndForceComplete<LobbyWidget, std::true_type>,
-        // method 'ChangeResolutions'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<int, std::false_type>,
-        QtPrivate::TypeAndForceComplete<int, std::false_type>,
         // method 'ResolutionChanged'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<int, std::false_type>,
@@ -109,6 +102,8 @@ Q_CONSTINIT const QMetaObject LobbyWidget::staticMetaObject = { {
         // method 'onClassicModeBtnClicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'onExitGameBtnClicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onPersonalInfoBtnClicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'RollImage'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
@@ -122,22 +117,13 @@ void LobbyWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         auto *_t = static_cast<LobbyWidget *>(_o);
         (void)_t;
         switch (_id) {
-        case 0: _t->ChangeResolutions((*reinterpret_cast< std::add_pointer_t<int>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
-        case 1: _t->ResolutionChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
-        case 2: _t->onSettingBtnClicked(); break;
-        case 3: _t->onClassicModeBtnClicked(); break;
-        case 4: _t->onExitGameBtnClicked(); break;
+        case 0: _t->ResolutionChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
+        case 1: _t->onSettingBtnClicked(); break;
+        case 2: _t->onClassicModeBtnClicked(); break;
+        case 3: _t->onExitGameBtnClicked(); break;
+        case 4: _t->onPersonalInfoBtnClicked(); break;
         case 5: _t->RollImage(); break;
         default: ;
-        }
-    } else if (_c == QMetaObject::IndexOfMethod) {
-        int *result = reinterpret_cast<int *>(_a[0]);
-        {
-            using _t = void (LobbyWidget::*)(int , int );
-            if (_t _q_method = &LobbyWidget::ChangeResolutions; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
-                *result = 0;
-                return;
-            }
         }
     }
 }
@@ -170,12 +156,5 @@ int LobbyWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         _id -= 6;
     }
     return _id;
-}
-
-// SIGNAL 0
-void LobbyWidget::ChangeResolutions(int _t1, int _t2)
-{
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
-    QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_WARNING_POP

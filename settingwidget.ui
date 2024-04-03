@@ -157,7 +157,7 @@ text-decoration: underline;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(93, 255, 131);</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>牌组</string>
@@ -183,7 +183,7 @@ text-decoration: underline;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(93, 255, 131);</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>分辨率</string>

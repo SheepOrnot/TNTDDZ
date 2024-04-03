@@ -12,20 +12,20 @@ SettingWidget::SettingWidget(int _Width,int _Height,QWidget *parent) :
     ui->FrameBtn          ->setGeometry(0.020*Width,  0.203*Height,  0.104*Width,  0.084*Height);
     ui->NameListBtn       ->setGeometry(0.026*Width,  0.588*Height,  0.089*Width,  0.028*Height);
     ui->SoundEffectBtn    ->setGeometry(0.020*Width,  0.342*Height,  0.104*Width,  0.084*Height);
-    ui->ResolutionComboBox->setGeometry(0.322*Width,  0.166*Height,  0.120*Width,  0.028*Height);
-    ui->CardStyleComboBox ->setGeometry(0.322*Width,  0.129*Height,  0.120*Width,  0.028*Height);
-    ui->CardStyleWord     ->setGeometry(0.276*Width,  0.129*Height,  0.042*Width,  0.028*Height);
-    ui->ResolutionWord    ->setGeometry(0.276*Width,  0.166*Height,  0.042*Width,  0.028*Height);
+    ui->ResolutionComboBox->setGeometry(0.322*Width,  0.160*Height,  0.120*Width,  0.028*Height);
+    ui->CardStyleComboBox ->setGeometry(0.322*Width,  0.120*Height,  0.120*Width,  0.028*Height);
+    ui->CardStyleWord     ->setGeometry(0.266*Width,  0.129*Height,  0.052*Width,  0.028*Height);
+    ui->ResolutionWord    ->setGeometry(0.266*Width,  0.166*Height,  0.052*Width,  0.028*Height);
     ui->BGMVolume         ->setGeometry(0.350*Width,  0.180*Height,  0.161*Width,  0.020*Height);
     ui->EffectVolume      ->setGeometry(0.350*Width,  0.240*Height,  0.161*Width,  0.020*Height);
     ui->CardBack          ->setGeometry(0.385*Width,  0.222*Height,  0.057*Width,  0.139*Height);
     ui->CardFront         ->setGeometry(0.270*Width,  0.222*Height,  0.057*Width,  0.139*Height);
-    ui->GameBGMCheck      ->setGeometry(0.330*Width,  0.181*Height,  0.015*Width,  0.030*Height);
-    ui->GameEffectCheck   ->setGeometry(0.330*Width,  0.240*Height,  0.015*Width,  0.030*Height);
-    ui->LobbyBGMCheck     ->setGeometry(0.330*Width,  0.120*Height,  0.015*Width,  0.030*Height);
-    ui->LobbyBGMWord      ->setGeometry(0.270*Width,  0.120*Height,  0.060*Width,  0.030*Height);
-    ui->GameBGMWord       ->setGeometry(0.270*Width,  0.180*Height,  0.060*Width,  0.030*Height);
-    ui->GameEffectWord    ->setGeometry(0.270*Width,  0.240*Height,  0.060*Width,  0.030*Height);
+    ui->GameBGMCheck      ->setGeometry(0.330*Width,  0.176*Height,  0.015*Width,  0.030*Height);
+    ui->GameEffectCheck   ->setGeometry(0.330*Width,  0.234*Height,  0.015*Width,  0.030*Height);
+    ui->LobbyBGMCheck     ->setGeometry(0.330*Width,  0.116*Height,  0.015*Width,  0.030*Height);
+    ui->LobbyBGMWord      ->setGeometry(0.220*Width,  0.122*Height,  0.100*Width,  0.030*Height);
+    ui->GameBGMWord       ->setGeometry(0.220*Width,  0.182*Height,  0.100*Width,  0.030*Height);
+    ui->GameEffectWord    ->setGeometry(0.220*Width,  0.242*Height,  0.100*Width,  0.030*Height);
     ui->ApplyBtn          ->setGeometry(0.490*Width,  0.520*Height,  0.080*Width,  0.070*Height);
     ui->CancelBtn         ->setGeometry(0.390*Width,  0.520*Height,  0.080*Width,  0.070*Height);
 
@@ -49,6 +49,7 @@ SettingWidget::SettingWidget(int _Width,int _Height,QWidget *parent) :
     ui->ResolutionComboBox->addItems(resolutionOptions);
     ui->ResolutionComboBox->setMaxVisibleItems(4);
     ui->ResolutionComboBox->setCurrentIndex(ResolutionIndex);
+    ui->ResolutionComboBox->setMinimumWidth(150);
 
     ui->CardStyleComboBox->setCurrentIndex(CardStyleIndex);
     QString CardFrontPath = ":/image/image/Cards_"+QString::number(CardStyleIndex)+"/6_of_hearts.png";
@@ -63,6 +64,31 @@ SettingWidget::SettingWidget(int _Width,int _Height,QWidget *parent) :
     ui->CardBack->setPixmap(CardBackPixmap);
     ui->CardBack->setScaledContents(true);
 
+    optipnStyleSheet = QString("QPushButton{ background-color: transparent; border-radius: %1px;border:1px solid;font: %2pt 字心坊小呀小布丁体;}").arg(0.042*Height-1).arg(0.03*Height);
+    ui->BasicBtn->setStyleSheet(optipnStyleSheet);
+    ui->FrameBtn->setStyleSheet(optipnStyleSheet);
+    ui->SoundEffectBtn->setStyleSheet(optipnStyleSheet);
+
+    ui->LobbyBGMWord->setMinimumSize(80,20);
+    ui->LobbyBGMWord->setAlignment(Qt::AlignRight);
+
+    ui->GameBGMWord  -> setMinimumSize(80,20);
+    ui->GameBGMWord->setAlignment(Qt::AlignRight);
+
+    ui->GameEffectWord -> setMinimumSize(80,20);
+    ui->GameEffectWord->setAlignment(Qt::AlignRight);
+
+    ui->GameBGMCheck->setMinimumSize(17,17);
+    ui->GameEffectCheck->setMinimumSize(17,17);
+    ui->LobbyBGMCheck->setMinimumSize(17,17);
+
+    ui->CardStyleWord->setMinimumWidth(40);
+    ui->CardStyleWord->setAlignment(Qt::AlignRight);
+
+    ui->ResolutionWord->setMinimumWidth(40);
+    ui->ResolutionWord->setAlignment(Qt::AlignRight);
+
+    ui->CardStyleComboBox->setMinimumSize(150,27);
     connect(ui->BasicBtn,&QPushButton::clicked,this,&SettingWidget::onBasicBtnClicked);
     connect(ui->FrameBtn,&QPushButton::clicked,this,&SettingWidget::onFrameBtnClicked);
     connect(ui->SoundEffectBtn,&QPushButton::clicked,this,&SettingWidget::onSoundEffectBtnClicked);

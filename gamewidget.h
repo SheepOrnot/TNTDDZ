@@ -11,6 +11,7 @@
 #include <QPropertyAnimation>
 #include <QJsonObject>
 #include <QListView>
+#include <QLabel>
 #include <QMediaPlayer>
 #include <QCoreApplication>
 #include <QThread>
@@ -30,7 +31,6 @@ public:
     std::vector<WidgetCard> PreviousPlayerOutCards,NextPlayerOutCards,PlayerOutCards,PlayerHandCards,FinalCards;
     std::bitset<54> SelectedCards = 0;
     WidgetArgCard CardArg;             //卡牌参数对象
-    int PreviousProfileNum,NextProfileNum,PlayerProfileNum;
     QString PreviousIdentity,NextIdentity,PlayerIdentity;
     QString PreviousBeanNum,NextBeanNum,PlayerBeanNum;
     QMediaPlayer *BGMPlayer;
@@ -47,9 +47,13 @@ private:
     SettingWidget *settingWidget;
     GameOverWidget *gameoverWidget;
     QIcon BeanIcon;
+    QPixmap CardBackPixmap;
+    QLabel *PreviousCardsNumLabel, *NextCardsNumLabel;
     bool BGMState,EffectState;
-    int radius;
+    int radius,RoomIdFontSize;
     double BGMVolume,EffectVolume;
+    int PreviousCardsNumber,NextCardsNumber;
+    int PreviousProfileIndex,NextProfileIndex,PlayerProfileIndex;
     const QString TypeIndex[6] = { "",
         "spades",
         "hearts",
@@ -96,6 +100,8 @@ private:
     void DisconnectHandCards();
     void AnimateMove(const QPoint& startPos, const QPoint& endPos,QPushButton *btn);
     void AnimateMoveLeft(QPushButton* btn, int distance);
+    void PlacePreviousHandCards();
+    void PlaceNextHandCards();
 private slots:
     void onSettingBtnClicked();
     void onPlayCardsClicked();    //点击出牌按钮，判断牌型和管牌逻辑；

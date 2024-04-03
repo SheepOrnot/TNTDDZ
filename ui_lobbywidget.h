@@ -21,7 +21,6 @@ QT_BEGIN_NAMESPACE
 class Ui_LobbyWidget
 {
 public:
-    QLabel *ProfileLabel;
     QLabel *UsernameLabel;
     QLabel *UidLabel;
     QPushButton *SettingBtn;
@@ -38,16 +37,13 @@ public:
     QLabel *GifLabel;
     QPushButton *JoinRoomBtn;
     QLineEdit *RoomId;
+    QPushButton *ProfileLabel;
 
     void setupUi(QWidget *LobbyWidget)
     {
         if (LobbyWidget->objectName().isEmpty())
             LobbyWidget->setObjectName("LobbyWidget");
         LobbyWidget->resize(1920, 1080);
-        ProfileLabel = new QLabel(LobbyWidget);
-        ProfileLabel->setObjectName("ProfileLabel");
-        ProfileLabel->setGeometry(QRect(40, 20, 130, 130));
-        ProfileLabel->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 170, 0);"));
         UsernameLabel = new QLabel(LobbyWidget);
         UsernameLabel->setObjectName("UsernameLabel");
         UsernameLabel->setGeometry(QRect(210, 30, 181, 31));
@@ -99,9 +95,12 @@ public:
         JoinRoomBtn->setGeometry(QRect(1310, 880, 311, 91));
         RoomId = new QLineEdit(LobbyWidget);
         RoomId->setObjectName("RoomId");
-        RoomId->setGeometry(QRect(1140, 910, 141, 41));
+        RoomId->setGeometry(QRect(1070, 890, 211, 61));
         RoomId->setStyleSheet(QString::fromUtf8("font: 36pt \"Microsoft YaHei UI\";\n"
 ""));
+        ProfileLabel = new QPushButton(LobbyWidget);
+        ProfileLabel->setObjectName("ProfileLabel");
+        ProfileLabel->setGeometry(QRect(40, 20, 130, 130));
 
         retranslateUi(LobbyWidget);
 
@@ -111,7 +110,6 @@ public:
     void retranslateUi(QWidget *LobbyWidget)
     {
         LobbyWidget->setWindowTitle(QCoreApplication::translate("LobbyWidget", "Form", nullptr));
-        ProfileLabel->setText(QString());
         UsernameLabel->setText(QCoreApplication::translate("LobbyWidget", "Username", nullptr));
         UidLabel->setText(QCoreApplication::translate("LobbyWidget", "Uid", nullptr));
         SettingBtn->setText(QString());
@@ -128,6 +126,7 @@ public:
         GifLabel->setText(QCoreApplication::translate("LobbyWidget", "giflabel", nullptr));
         JoinRoomBtn->setText(QCoreApplication::translate("LobbyWidget", "\345\212\240\345\205\245\346\210\277\351\227\264", nullptr));
         RoomId->setText(QCoreApplication::translate("LobbyWidget", "000000", nullptr));
+        ProfileLabel->setText(QString());
     } // retranslateUi
 
 };

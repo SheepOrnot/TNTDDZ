@@ -52,6 +52,9 @@ public:
     QPushButton *DoubleBtn;
     QPushButton *UnDoubleBtn;
     QLabel *RoomId;
+    QLabel *MSGLabel1;
+    QLabel *MSGLabel2;
+    QLabel *MSGLabel3;
 
     void setupUi(QWidget *GameWidget)
     {
@@ -162,6 +165,15 @@ public:
         RoomId->setStyleSheet(QString::fromUtf8("font: 600 20pt \"Sitka Subheading Semibold\";\n"
 "border-color: rgb(0, 0, 0);\n"
 "border:1px solid;"));
+        MSGLabel1 = new QLabel(GameWidget);
+        MSGLabel1->setObjectName("MSGLabel1");
+        MSGLabel1->setGeometry(QRect(340, 360, 171, 41));
+        MSGLabel2 = new QLabel(GameWidget);
+        MSGLabel2->setObjectName("MSGLabel2");
+        MSGLabel2->setGeometry(QRect(1400, 340, 171, 41));
+        MSGLabel3 = new QLabel(GameWidget);
+        MSGLabel3->setObjectName("MSGLabel3");
+        MSGLabel3->setGeometry(QRect(820, 770, 171, 41));
         ClockImageLabel->raise();
         FinalCard1->raise();
         FinalCard2->raise();
@@ -192,6 +204,9 @@ public:
         DoubleBtn->raise();
         UnDoubleBtn->raise();
         RoomId->raise();
+        MSGLabel1->raise();
+        MSGLabel2->raise();
+        MSGLabel3->raise();
 
         retranslateUi(GameWidget);
 
@@ -231,6 +246,9 @@ public:
         DoubleBtn->setText(QCoreApplication::translate("GameWidget", "\345\212\240\345\200\215", nullptr));
         UnDoubleBtn->setText(QCoreApplication::translate("GameWidget", "\344\270\215\345\212\240\345\200\215", nullptr));
         RoomId->setText(QCoreApplication::translate("GameWidget", "123789", nullptr));
+        MSGLabel1->setText(QCoreApplication::translate("GameWidget", "\345\212\240\345\200\215", nullptr));
+        MSGLabel2->setText(QCoreApplication::translate("GameWidget", "\345\212\240\345\200\215", nullptr));
+        MSGLabel3->setText(QCoreApplication::translate("GameWidget", "\345\212\240\345\200\215", nullptr));
     } // retranslateUi
 
 };

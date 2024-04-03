@@ -7,6 +7,7 @@
 #include <QGraphicsOpacityEffect>
 #include"settingwidget.h"
 #include"gamewidget.h"
+#include"personalinfowidget.h"
 namespace Ui {
 class LobbyWidget;
 }
@@ -45,18 +46,20 @@ private:
     QMediaPlayer *BGMPlayer;
     QAudioOutput *BGMaudioOutput;
     QThread *BGMThread;
+    PersonalInfoWidget *personalInfoWidget;
 private:
     void ImportConfig();
-public slots:
+public Q_SLOTS:
     void ResolutionChanged(int _Width,int _Height);
     //void ProfileChanged(int _Width,int _Height);
-private slots:
+private Q_SLOTS:
     void onSettingBtnClicked();
     void onClassicModeBtnClicked();
     void onExitGameBtnClicked();
+    void onPersonalInfoBtnClicked();
     void RollImage();
 signals:
-    void ChangeResolutions(int _Width,int _Height);            //********测试用 ;
+
 
 };
 

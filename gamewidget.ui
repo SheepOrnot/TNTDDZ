@@ -439,6 +439,45 @@ border:1px solid;</string>
     <string>123789</string>
    </property>
   </widget>
+  <widget class="QLabel" name="MSGLabel1">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>360</y>
+     <width>171</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>加倍</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="MSGLabel2">
+   <property name="geometry">
+    <rect>
+     <x>1400</x>
+     <y>340</y>
+     <width>171</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>加倍</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="MSGLabel3">
+   <property name="geometry">
+    <rect>
+     <x>820</x>
+     <y>770</y>
+     <width>171</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>加倍</string>
+   </property>
+  </widget>
   <zorder>ClockImageLabel</zorder>
   <zorder>FinalCard1</zorder>
   <zorder>FinalCard2</zorder>
@@ -469,6 +508,9 @@ border:1px solid;</string>
   <zorder>DoubleBtn</zorder>
   <zorder>UnDoubleBtn</zorder>
   <zorder>RoomId</zorder>
+  <zorder>MSGLabel1</zorder>
+  <zorder>MSGLabel2</zorder>
+  <zorder>MSGLabel3</zorder>
  </widget>
  <resources/>
  <connections/>

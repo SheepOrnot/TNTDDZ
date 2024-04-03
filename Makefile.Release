@@ -168,13 +168,13 @@ release/qrc_resource.cpp: resource.qrc \
 		../../6.7.0/mingw_64/bin/rcc.exe \
 		image/mjqyjb.gif \
 		image/RC.gif \
-		image/Profile/dcx.jpg \
-		image/Profile/yhx.jpg \
-		image/Profile/zzy.jpg \
-		image/Profile/hjl.jpg \
-		image/Profile/syx.jpg \
-		image/Profile/mjq.jpg \
-		image/Profile/lyw.jpg \
+		image/Profile/0.jpg \
+		image/Profile/4.jpg \
+		image/Profile/6.jpg \
+		image/Profile/3.jpg \
+		image/Profile/5.jpg \
+		image/Profile/2.jpg \
+		image/Profile/1.jpg \
 		image/Icon/mail.png \
 		image/Icon/diamond.png \
 		image/Icon/password.png \
@@ -300,7 +300,66 @@ release/qrc_resource.cpp: resource.qrc \
 		image/Cards_0/8_of_diamonds.png \
 		image/Cards_0/black_of_joker.png \
 		image/Cards_0/6_of_clubs.png \
+		sound/Sound_effects/bujiao.m4a \
+		sound/Sound_effects/Single_6.m4a \
+		sound/Sound_effects/Pair_ace.m4a \
+		sound/Sound_effects/ThreePair_queen.m4a \
+		sound/Sound_effects/Pair_3.m4a \
+		sound/Sound_effects/Single_7.m4a \
+		sound/Sound_effects/Single_king.m4a \
+		sound/Sound_effects/KingBomb.m4a \
+		sound/Sound_effects/Bomb_with_Pair.m4a \
+		sound/Sound_effects/Pair_4.m4a \
+		sound/Sound_effects/qiangdizhu0.m4a \
+		sound/Sound_effects/Single_5.m4a \
+		sound/Sound_effects/Single_10.m4a \
 		sound/Sound_effects/lobbybgm.mp3 \
+		sound/Sound_effects/ThreePair_4.m4a \
+		sound/Sound_effects/Single_ace.m4a \
+		sound/Sound_effects/jiaodizhu.m4a \
+		sound/Sound_effects/black_of_joker.m4a \
+		sound/Sound_effects/ThreePair_7.m4a \
+		sound/Sound_effects/Bomb.m4a \
+		sound/Sound_effects/ThreePair_8.m4a \
+		sound/Sound_effects/red_of_joker.m4a \
+		sound/Sound_effects/ThreePair_5.m4a \
+		sound/Sound_effects/bujiabei.m4a \
+		sound/Sound_effects/ThreePair_with_Pair.m4a \
+		sound/Sound_effects/ThreePair_2.m4a \
+		sound/Sound_effects/Pair_7.m4a \
+		sound/Sound_effects/qiangdizhu2.m4a \
+		sound/Sound_effects/Single_8.m4a \
+		sound/Sound_effects/Single_jack.m4a \
+		sound/Sound_effects/buqiang.m4a \
+		sound/Sound_effects/Single_3.m4a \
+		sound/Sound_effects/Straight.m4a \
+		sound/Sound_effects/ThreePair_jack.m4a \
+		sound/Sound_effects/Bomb_with_Single.m4a \
+		sound/Sound_effects/Single_9.m4a \
+		sound/Sound_effects/ThreePair_9.m4a \
+		sound/Sound_effects/Single_queen.m4a \
+		sound/Sound_effects/jiabei.m4a \
+		sound/Sound_effects/Pair_2.m4a \
+		sound/Sound_effects/ThreePair_ace.m4a \
+		sound/Sound_effects/ThreePair_Straight.m4a \
+		sound/Sound_effects/Pair_9.m4a \
+		sound/Sound_effects/Pair_king.m4a \
+		sound/Sound_effects/ThreePair_king.m4a \
+		sound/Sound_effects/ThreePair_3.m4a \
+		sound/Sound_effects/ThreePair_6.m4a \
+		sound/Sound_effects/Pair_Straight.m4a \
+		sound/Sound_effects/Pair_6.m4a \
+		sound/Sound_effects/Pair_8.m4a \
+		sound/Sound_effects/Pair_queen.m4a \
+		sound/Sound_effects/buyao.m4a \
+		sound/Sound_effects/Pair_10.m4a \
+		sound/Sound_effects/Single_2.m4a \
+		sound/Sound_effects/ThreePair_10.m4a \
+		sound/Sound_effects/qiangdizhu1.m4a \
+		sound/Sound_effects/Single_4.m4a \
+		sound/Sound_effects/Pair_jack.m4a \
+		sound/Sound_effects/ThreePair_with_Single.m4a \
+		sound/Sound_effects/Pair_5.m4a \
 		sound/BGM/lobbybgm.mp3 \
 		sound/BGM/gamebgm.mp3
 	D:\Qt\6.7.0\mingw_64\bin\rcc.exe -name resource --no-zstd resource.qrc -o release\qrc_resource.cpp
@@ -1159,6 +1218,10 @@ release/moc_gamewidget.cpp: gamewidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
+		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
+		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
 		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
@@ -1425,6 +1488,10 @@ release/moc_lobbywidget.cpp: lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
+		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
+		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
 		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
@@ -1438,6 +1505,11 @@ release/moc_lobbywidget.cpp: lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtCore/QThread \
 		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
 		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
+		personalinfowidget.h \
+		../../6.7.0/mingw_64/include/QtGui/QPainter \
+		../../6.7.0/mingw_64/include/QtGui/qpainter.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextoption.h \
+		../../6.7.0/mingw_64/include/QtGui/qpen.h \
 		release/moc_predefs.h \
 		../../6.7.0/mingw_64/bin/moc.exe
 	D:\Qt\6.7.0\mingw_64\bin\moc.exe $(DEFINES) --include D:/Qt/projects/TNTDDZ/release/moc_predefs.h -ID:/Qt/6.7.0/mingw_64/mkspecs/win32-g++ -ID:/Qt/projects/TNTDDZ -ID:/Qt/6.7.0/mingw_64/include -ID:/Qt/6.7.0/mingw_64/include/QtMultimedia -ID:/Qt/6.7.0/mingw_64/include/QtWidgets -ID:/Qt/6.7.0/mingw_64/include/QtGui -ID:/Qt/6.7.0/mingw_64/include/QtNetwork -ID:/Qt/6.7.0/mingw_64/include/QtCore5Compat -ID:/Qt/6.7.0/mingw_64/include/QtCore -I"D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE" -I"D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE" -I"D:\Windows Kits\10\include\10.0.22000.0\ucrt" -I"D:\Windows Kits\10\include\10.0.22000.0\shared" -I"D:\Windows Kits\10\include\10.0.22000.0\um" -I"D:\Windows Kits\10\include\10.0.22000.0\winrt" lobbywidget.h -o release\moc_lobbywidget.cpp
@@ -1709,6 +1781,10 @@ release/moc_mainwindow.cpp: mainwindow.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qstyle.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
+		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
+		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
 		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
@@ -1722,19 +1798,16 @@ release/moc_mainwindow.cpp: mainwindow.h \
 		../../6.7.0/mingw_64/include/QtCore/QThread \
 		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
 		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
+		personalinfowidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QCheckBox \
 		../../6.7.0/mingw_64/include/QtWidgets/qcheckbox.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QLineEdit \
 		../../6.7.0/mingw_64/include/QtWidgets/qlineedit.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextcursor.h \
-		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextformat.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QHBoxLayout \
 		../../6.7.0/mingw_64/include/QtWidgets/QStackedWidget \
 		../../6.7.0/mingw_64/include/QtWidgets/qstackedwidget.h \
-		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
-		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
-		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QSpacerItem \
 		release/moc_predefs.h \
 		../../6.7.0/mingw_64/bin/moc.exe
@@ -1927,6 +2000,10 @@ release/moc_personalinfowidget.cpp: personalinfowidget.h \
 		../../6.7.0/mingw_64/include/QtGui/qinputmethod.h \
 		../../6.7.0/mingw_64/include/QtCore/qlocale.h \
 		../../6.7.0/mingw_64/include/QtGui/qguiapplication_platform.h \
+		../../6.7.0/mingw_64/include/QtGui/QPainter \
+		../../6.7.0/mingw_64/include/QtGui/qpainter.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextoption.h \
+		../../6.7.0/mingw_64/include/QtGui/qpen.h \
 		release/moc_predefs.h \
 		../../6.7.0/mingw_64/bin/moc.exe
 	D:\Qt\6.7.0\mingw_64\bin\moc.exe $(DEFINES) --include D:/Qt/projects/TNTDDZ/release/moc_predefs.h -ID:/Qt/6.7.0/mingw_64/mkspecs/win32-g++ -ID:/Qt/projects/TNTDDZ -ID:/Qt/6.7.0/mingw_64/include -ID:/Qt/6.7.0/mingw_64/include/QtMultimedia -ID:/Qt/6.7.0/mingw_64/include/QtWidgets -ID:/Qt/6.7.0/mingw_64/include/QtGui -ID:/Qt/6.7.0/mingw_64/include/QtNetwork -ID:/Qt/6.7.0/mingw_64/include/QtCore5Compat -ID:/Qt/6.7.0/mingw_64/include/QtCore -I"D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE" -I"D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE" -I"D:\Windows Kits\10\include\10.0.22000.0\ucrt" -I"D:\Windows Kits\10\include\10.0.22000.0\shared" -I"D:\Windows Kits\10\include\10.0.22000.0\um" -I"D:\Windows Kits\10\include\10.0.22000.0\winrt" personalinfowidget.h -o release\moc_personalinfowidget.cpp
@@ -3063,6 +3140,10 @@ release/gamewidget.o: gamewidget.cpp gamewidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
+		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
+		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
 		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
@@ -3082,10 +3163,6 @@ release/gamewidget.o: gamewidget.cpp gamewidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qapplication.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QComboBox \
 		../../6.7.0/mingw_64/include/QtWidgets/qcombobox.h \
-		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
-		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
-		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
-		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QLineEdit \
 		../../6.7.0/mingw_64/include/QtWidgets/qlineedit.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextcursor.h \
@@ -3343,6 +3420,10 @@ release/lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabwidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
+		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
+		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
 		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
@@ -3356,20 +3437,19 @@ release/lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtCore/QThread \
 		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
 		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
+		personalinfowidget.h \
+		../../6.7.0/mingw_64/include/QtGui/QPainter \
+		../../6.7.0/mingw_64/include/QtGui/qpainter.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextoption.h \
+		../../6.7.0/mingw_64/include/QtGui/qpen.h \
 		ui_lobbywidget.h \
 		../../6.7.0/mingw_64/include/QtCore/QVariant \
 		../../6.7.0/mingw_64/include/QtWidgets/QApplication \
 		../../6.7.0/mingw_64/include/QtWidgets/qapplication.h \
-		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
-		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
-		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
-		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QLineEdit \
 		../../6.7.0/mingw_64/include/QtWidgets/qlineedit.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextcursor.h \
-		../../6.7.0/mingw_64/include/QtGui/qtextformat.h \
-		../../6.7.0/mingw_64/include/QtGui/qpen.h \
-		../../6.7.0/mingw_64/include/QtGui/qtextoption.h
+		../../6.7.0/mingw_64/include/QtGui/qtextformat.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\lobbywidget.o lobbywidget.cpp
 
 release/main.o: main.cpp mainwindow.h \
@@ -3639,6 +3719,10 @@ release/main.o: main.cpp mainwindow.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qstyle.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
+		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
+		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
 		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
@@ -3652,19 +3736,16 @@ release/main.o: main.cpp mainwindow.h \
 		../../6.7.0/mingw_64/include/QtCore/QThread \
 		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
 		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
+		personalinfowidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QCheckBox \
 		../../6.7.0/mingw_64/include/QtWidgets/qcheckbox.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QLineEdit \
 		../../6.7.0/mingw_64/include/QtWidgets/qlineedit.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextcursor.h \
-		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextformat.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QHBoxLayout \
 		../../6.7.0/mingw_64/include/QtWidgets/QStackedWidget \
 		../../6.7.0/mingw_64/include/QtWidgets/qstackedwidget.h \
-		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
-		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
-		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QSpacerItem \
 		../../6.7.0/mingw_64/include/QtWidgets/QApplication \
 		../../6.7.0/mingw_64/include/QtWidgets/qapplication.h
@@ -3937,6 +4018,10 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qstyle.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
 		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
+		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
+		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/QMediaPlayer \
 		../../6.7.0/mingw_64/include/QtMultimedia/qmediaplayer.h \
 		../../6.7.0/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
@@ -3950,19 +4035,16 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../6.7.0/mingw_64/include/QtCore/QThread \
 		../../6.7.0/mingw_64/include/QtMultimedia/QAudioOutput \
 		../../6.7.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
+		personalinfowidget.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QCheckBox \
 		../../6.7.0/mingw_64/include/QtWidgets/qcheckbox.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QLineEdit \
 		../../6.7.0/mingw_64/include/QtWidgets/qlineedit.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextcursor.h \
-		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
 		../../6.7.0/mingw_64/include/QtGui/qtextformat.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QHBoxLayout \
 		../../6.7.0/mingw_64/include/QtWidgets/QStackedWidget \
 		../../6.7.0/mingw_64/include/QtWidgets/qstackedwidget.h \
-		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
-		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
-		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
 		../../6.7.0/mingw_64/include/QtWidgets/QSpacerItem \
 		ui_mainwindow.h \
 		../../6.7.0/mingw_64/include/QtCore/QVariant \
@@ -4163,10 +4245,39 @@ release/personalinfowidget.o: personalinfowidget.cpp personalinfowidget.h \
 		../../6.7.0/mingw_64/include/QtGui/qinputmethod.h \
 		../../6.7.0/mingw_64/include/QtCore/qlocale.h \
 		../../6.7.0/mingw_64/include/QtGui/qguiapplication_platform.h \
+		../../6.7.0/mingw_64/include/QtGui/QPainter \
+		../../6.7.0/mingw_64/include/QtGui/qpainter.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextoption.h \
+		../../6.7.0/mingw_64/include/QtGui/qpen.h \
 		ui_personalinfowidget.h \
 		../../6.7.0/mingw_64/include/QtCore/QVariant \
 		../../6.7.0/mingw_64/include/QtWidgets/QApplication \
-		../../6.7.0/mingw_64/include/QtWidgets/qapplication.h
+		../../6.7.0/mingw_64/include/QtWidgets/qapplication.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QComboBox \
+		../../6.7.0/mingw_64/include/QtWidgets/qcombobox.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qabstractitemdelegate.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qstyleoption.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qabstractspinbox.h \
+		../../6.7.0/mingw_64/include/QtGui/qvalidator.h \
+		../../6.7.0/mingw_64/include/QtCore/qregularexpression.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qslider.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qabstractslider.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qstyle.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qtabbar.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qtabwidget.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qrubberband.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qframe.h \
+		../../6.7.0/mingw_64/include/QtCore/qabstractitemmodel.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QLabel \
+		../../6.7.0/mingw_64/include/QtWidgets/qlabel.h \
+		../../6.7.0/mingw_64/include/QtGui/qpicture.h \
+		../../6.7.0/mingw_64/include/QtGui/qtextdocument.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QPushButton \
+		../../6.7.0/mingw_64/include/QtWidgets/qpushbutton.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qabstractbutton.h \
+		../../6.7.0/mingw_64/include/QtWidgets/QScrollArea \
+		../../6.7.0/mingw_64/include/QtWidgets/qscrollarea.h \
+		../../6.7.0/mingw_64/include/QtWidgets/qabstractscrollarea.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\personalinfowidget.o personalinfowidget.cpp
 
 release/settingwidget.o: settingwidget.cpp settingwidget.h \

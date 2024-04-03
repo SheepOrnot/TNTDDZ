@@ -7,8 +7,8 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     ui(new Ui::GameWidget)
 {
     ui->setupUi(this);
-    this->setFixedSize(Width,Height);
     ImportConfig();
+    this->setFixedSize(Width,Height);
     InitAllCards();
 
     BGMPlayer = new QMediaPlayer();
@@ -23,6 +23,13 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     BGMThread->start();
     connect(qApp, &QCoreApplication::aboutToQuit,BGMThread, &QThread::quit);
 
+    CardBackPixmap = QPixmap(":/image/image/Cards_"+QString::number(CardStyle)+"/back.png");
+    CardBackPixmap = CardBackPixmap.scaled(0.040*Width,0.070*Height, Qt::KeepAspectRatio, Qt::SmoothTransformation); // 将图片缩放到QLabel的尺寸
+
+    PreviousCardsNumLabel = new QLabel(this);
+    NextCardsNumLabel = new QLabel(this);
+    RoomIdFontSize = 0.02*Height;
+
 //****** 测试******
     //std::bitset<54> BitsetCards(std::string("111000111000000000110011001100110011101000000010001110"));
     QPushButton *GameOverbtn = new QPushButton(this);
@@ -33,12 +40,12 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
         gameoverWidget->show();
     });
 
-    std::bitset<54> BitsetCards(std::string("111111111111111111110000000000000000000000000000000000"));
+    std::bitset<54>BitsetCards(std::string("111111111111111111110000000000000000000000000000000000"));
     std::bitset<54>previousBitset(std::string("111111111111111111110000000000000000000000000000000000"));
     std::bitset<54>nextBitset(std::string("000000000000000000001111111111111111111100000000000000"));
     std::bitset<54>playerBitset(std::string("000000000000000000001111111110000000000000000000000000"));
-
-    PlayerProfileNum = 0; PreviousProfileNum = 3; NextProfileNum = 4;
+    PreviousCardsNumber = 15; NextCardsNumber = 5;
+    PlayerProfileIndex = 0; PreviousProfileIndex = 3; NextProfileIndex = 4;
     PreviousIdentity = "landlord"; NextIdentity = "farmer"; PlayerIdentity = "farmer";
     PreviousBeanNum = "5.68W ";  NextBeanNum = "3266";  PlayerBeanNum = "359.62Y ";
 
@@ -52,6 +59,9 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     placeHandCards();
     placeOutCards(1);
     placeOutCards(2);
+
+    PlacePreviousHandCards();
+    PlaceNextHandCards();
     //placeOutCards(3);
 
 //******end******
@@ -87,6 +97,9 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     ui->UnDoubleBtn        ->setGeometry( 0.520*Width,  0.680*Height,  0.083*Width,   0.047*Height);    ui->UnDoubleBtn         ->hide();
     ui->ChatComboBox       ->setGeometry( 0.885*Width,  0.785*Height,  0.104*Width,   0.028*Height);
     ui->RoomId             ->setGeometry( 0.830*Width,  0.020*Height,  0.070*Width,   0.048*Height);
+    ui->MSGLabel1          ->setGeometry( 0.198*Width,  0.287*Height,  0.090*Width,   0.048*Height);    ui->MSGLabel1->hide();
+    ui->MSGLabel1          ->setGeometry( 0.712*Width,  0.287*Height,  0.090*Width,   0.048*Height);    ui->MSGLabel2->hide();
+    ui->MSGLabel3          ->setGeometry( 0.445*Width,  0.680*Height,  0.090*Width,   0.048*Height);    ui->MSGLabel3->hide();
 
     ui->SettingBtn->setIcon(QIcon(":/image/image/Icon/setting.png"));
     ui->SettingBtn->setStyleSheet("QPushButton { background-color: transparent; }");
@@ -114,17 +127,17 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     ui->BeansLineEdit3->addAction(BeanIcon, QLineEdit::LeadingPosition); // 添加图标（LeadingPosition为左侧位置）
     ui->BeansLineEdit3->setText(PlayerBeanNum);
 
-    ProfilePixmap1 = QPixmap(ProfilePathIndex[PreviousProfileNum]);
+    ProfilePixmap1 = QPixmap(":/image/image/Profile/"+QString::number(PreviousProfileIndex)+".jpg");
     ProfilePixmap1 = ProfilePixmap1.scaled(ui->ProfileLabel1->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation); // 将图片缩放到QLabel的尺寸
     ui->ProfileLabel1->setPixmap(ProfilePixmap1);
     ui->ProfileLabel1->setScaledContents(true);
 
-    ProfilePixmap2 = QPixmap(ProfilePathIndex[NextProfileNum]);
+    ProfilePixmap2 = QPixmap(":/image/image/Profile/"+QString::number(NextProfileIndex)+".jpg");
     ProfilePixmap2 = ProfilePixmap2.scaled(ui->ProfileLabel2->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->ProfileLabel2->setPixmap(ProfilePixmap2);
     ui->ProfileLabel2->setScaledContents(true);
 
-    ProfilePixmap3 = QPixmap(ProfilePathIndex[PlayerProfileNum]);
+    ProfilePixmap3 = QPixmap(":/image/image/Profile/"+QString::number(PlayerProfileIndex)+".jpg");
     ProfilePixmap3 = ProfilePixmap3.scaled(ui->ProfileLabel3->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->ProfileLabel3->setPixmap(ProfilePixmap3);
     ui->ProfileLabel3->setScaledContents(true);
@@ -144,6 +157,12 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     ui->ChatComboBox->addItem("Option 6");
     ui->ChatComboBox->addItem("Option 7");
     ui->ChatComboBox->setMaxVisibleItems(5);
+
+    QString roomIDstylesheet = QString("QLabel{font: 600 %1pt Sitka Subheading Semibold;border:1px solid;"
+                                       " background-color: qradialgradient(cx:0.5, cy:0.5, radius: 1.4, fx:0.5, fy:0.5, stop:0 #fafafa, stop:1 #f4f4f4); "
+                                       "box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);}").arg(RoomIdFontSize);
+    ui->RoomId->setStyleSheet(roomIDstylesheet);
+    ui->RoomId->setAlignment(Qt::AlignCenter);
 
     connect(ui->PlayCardBtn,&QPushButton::clicked,this,&GameWidget::onPlayCardsClicked);
     qDebug()<<"Build GameWidget Completely";
@@ -207,7 +226,6 @@ std::bitset<54> GameWidget::Transform_To_Bitset(std::vector<WidgetCard> VectorCa
     return TempBits;
 }
 
-
 void GameWidget::ShowIdentityIcon()
 {
     IdentityPixmap1 = QPixmap(":/image/image/Icon/"+PreviousIdentity+".png");
@@ -240,7 +258,7 @@ void GameWidget::placeHandCards()
         PlayerHandCards[i].btn = new QPushButton(this);
         PlayerHandCards[i].btn->setIcon(QIcon(PlayerHandCards[i].ImagePath));
         PlayerHandCards[i].btn->setStyleSheet("QPushButton { background-color: transparent; }");
-        PlayerHandCards[i].btn->setStyleSheet("QPushButton:disabled{color: black;}");
+        //PlayerHandCards[i].btn->setStyleSheet("QPushButton:disabled{color: black;}");
         PlayerHandCards[i].btn->setGeometry((0.198+0.03*i)*Width,0.796*Height,0.06*Width,0.148*Height);
         PlayerHandCards[i].btn->setIconSize(PlayerHandCards[i].btn->size());
         PlayerHandCards[i].btn->show();
@@ -411,6 +429,7 @@ void GameWidget::onPlayCardsClicked()
     placeOutCards(3);
     std::cout<<SelectedCards<<"\n";
     std::flush(std::cout);
+
 }
 
 void GameWidget::ConnectHandCards()
@@ -418,15 +437,15 @@ void GameWidget::ConnectHandCards()
     for (int i = 0;i < PlayerHandCards.size();i++)
     {
         int index = i;
-        connect(PlayerHandCards[i].btn,&QPushButton::clicked,[&,index]()
+        connect(PlayerHandCards[i].btn,&QPushButton::pressed,[&,index]()
                 {
-            if (!PlayerHandCards[index].isUp) {qDebug()<<"movecard"<<PlayerHandCards[index].Index;
-                AnimateMove(PlayerHandCards[index].btn->pos(), PlayerHandCards[index].btn->pos() - QPoint(0, 50), PlayerHandCards[index].btn);
-            } else {
-                AnimateMove(PlayerHandCards[index].btn->pos(), PlayerHandCards[index].btn->pos() + QPoint(0, 50), PlayerHandCards[index].btn);
-            }
-            PlayerHandCards[index].isUp = !PlayerHandCards[index].isUp;
-        });
+                    if (!PlayerHandCards[index].isUp) {qDebug()<<"movecard"<<PlayerHandCards[index].Index;
+                        AnimateMove(PlayerHandCards[index].btn->pos(), PlayerHandCards[index].btn->pos() - QPoint(0, 0.02*Height), PlayerHandCards[index].btn);
+                    } else {
+                        AnimateMove(PlayerHandCards[index].btn->pos(), PlayerHandCards[index].btn->pos() + QPoint(0, 0.02*Height), PlayerHandCards[index].btn);
+                    }
+                    PlayerHandCards[index].isUp = !PlayerHandCards[index].isUp;
+                });
     }
 }
 
@@ -437,6 +456,7 @@ void GameWidget::DisconnectHandCards()
         disconnect(PlayerHandCards[i].btn,0,0,0);
     }
 }
+
 void GameWidget::AnimateMove(const QPoint& startPos, const QPoint& endPos,QPushButton *btn)
 {
     QPropertyAnimation* animation = new QPropertyAnimation(btn, "pos");
@@ -462,20 +482,67 @@ void GameWidget::AnimateMoveLeft(QPushButton* btn, int distance)
     animation->start();
     btn->setGeometry(btn->x()-distance,btn->y(),btn->width(),btn->height());
 }
+
+void GameWidget::PlacePreviousHandCards()
+{
+    for(int i = 0;i<PreviousCardsNumber;i++)
+    {
+        QLabel *backlabel = new QLabel(this);
+        backlabel->setGeometry(0.119*Width,(0.138+(0.026*i))*Height,0.040*Width,0.070*Height);
+        backlabel->setPixmap(CardBackPixmap);
+        backlabel->setScaledContents(true);
+        backlabel->show();
+    }
+    PreviousCardsNumLabel->setGeometry(0.135*Width,(0.143+0.026*PreviousCardsNumber)*Height,0.010*Width,0.019*Height);
+    PreviousCardsNumLabel->setStyleSheet("background-color: gold;");
+    PreviousCardsNumLabel->setText(QString::number(PreviousCardsNumber));
+    PreviousCardsNumLabel->raise();
+    PreviousCardsNumLabel->show();
+
+}
+void GameWidget::PlaceNextHandCards()
+{
+    for(int i = 0;i<NextCardsNumber;i++)
+    {
+        QLabel *backlabel = new QLabel(this);
+        backlabel->setGeometry(0.831*Width,(0.138+(0.026*i))*Height,0.040*Width,0.070*Height);
+        backlabel->setPixmap(CardBackPixmap);
+        backlabel->setScaledContents(true);
+        backlabel->show();
+    }
+    NextCardsNumLabel->setGeometry(0.848*Width,(0.143+0.026*NextCardsNumber)*Height,0.010*Width,0.019*Height);
+    NextCardsNumLabel->setStyleSheet("background-color: gold;");
+    NextCardsNumLabel->setText(QString::number(NextCardsNumber));
+    NextCardsNumLabel->raise();
+    NextCardsNumLabel->show();
+}
 //没写呢
-void GameWidget::DestroyOutCards(int pos)
+void GameWidget::DestroyOutCards(int pos)          //清空出牌显示区  1->上家    2->下家   3->自己
 {
     if(pos==1)
     {
-        ;
+        for(unsigned i = 0 ;i<PreviousPlayerOutCards.size();i++)
+        {
+            delete PreviousPlayerOutCards[i].btn;
+        }
+            PreviousPlayerOutCards.clear();
+
     }
     if(pos==2)
     {
-        ;
+        for(unsigned i = 0 ;i<NextPlayerOutCards.size();i++)
+        {
+            delete NextPlayerOutCards[i].btn;
+        }
+        NextPlayerOutCards.clear();
     }
     if(pos==3)
     {
-        ;
+        for(unsigned i = 0 ;i<PlayerOutCards.size();i++)
+        {
+            delete PlayerOutCards[i].btn;
+        }
+        PlayerOutCards.clear();
     }
 }
 
