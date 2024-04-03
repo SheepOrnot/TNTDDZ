@@ -152,6 +152,7 @@ void LobbyWidget::onSettingBtnClicked()
 }
 void LobbyWidget::onClassicModeBtnClicked()            //创建房间按钮
 {
+    qDebug() << "Classic Mode";
     gameWidget = new GameWidget(Width,Height);
     this->hide();
     gameWidget->show();

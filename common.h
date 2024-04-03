@@ -27,34 +27,36 @@ const std::string SERVER_IP = "127.0.0.1";
 const std::string SERVER_PORT = "22222";
 
 enum class WIDGET_ARG_TYPE {
-    LOGIN = 1,
+    ACCOUNT = 1,
     PLAYER = 2,
     CARD = 3,
     ROOM = 4,
     STATUS = 5, //server -> widget
-    VERIFY = 6,  //widget -> server
-    REGISTER,
-    FORGET_PASSWORD
+    VERIFY = 6  //widget -> server
 };
-enum class LOGIN_OPCODE {
+enum class ACCOUNT_OPCODE {
     LOGIN = 1,
     REGISTER_MAIL = 2,
     REGISTER = 3,
     FORGET_PASSWORD_MAIL = 4,
-    FORGET_PASSWORD = 5
+    FORGET_PASSWORD = 5,
+    REGISTER_MAIL_CODE_VERIFY = 6,
+    FORGET_PASSWORD_MAIL_CODE_VERIFY = 7
 };
 enum class MESSAGE_TYPE {
-    LOGIN = 1,
+    ACCOUNT = 1,
     PLAYER = 2,
     CARD = 3,
     ROOM = 4,
     STATUS = 5,
-    VERIFY = 6
+    VERIFY = 6,
 };
 enum class VERIFY_TYPE {
     LOGIN = 1,
     REGISTER = 2,
-    FORGET_PASSWORD = 3
+    FORGET_PASSWORD = 3,
+    REGISTER_MAIL = 4,
+    FORGET_PASSWORD_MAIL = 5
 };
 enum class NETWORK
 {
@@ -66,8 +68,8 @@ enum class NETWORK
     LEAVE_ROOM = 6,
     READY = 7,
     SEND_CARD = 8,
-    REGISTER_CODE_VERIFY = 9,
-    FORGET_PASSWORD_CODE_VERIFY = 10
+    REGISTER_MAIL_CODE_VERIFY = 9,
+    FORGET_PASSWORD_MAIL_CODE_VERIFY = 10
 };
 enum class ROOM_OPCODE {
     CREATE_ROOM = 1,

@@ -4,3 +4,4 @@ release/
 moc*
 *.o
 *.user
+Makefile*

@@ -23,17 +23,17 @@ public:
     void WidgetsendMessage(WidgetArgPackage* current_widget_arg)
     {
         MessagePackage *msg_ptr = new MessagePackage;
-
+        WidgetArgAccount *account_package;
         //发送包到消息中心
         std::cout << "recv package: " << (int)msg_ptr->message_type << std::endl;
         std::flush(std::cout);
         switch (current_widget_arg->widget_arg_type)
         {
-        case WIDGET_ARG_TYPE::LOGIN:
+        case WIDGET_ARG_TYPE::ACCOUNT:
         {
-            //login
-            WidgetArgLogin *login_package = static_cast<WidgetArgLogin*>(current_widget_arg->package);
-            msg_ptr->packMessage<MessageLogin>(LOGIN_OPCODE::LOGIN, login_package->mail, login_package->accout, login_package->password, login_package->code);
+            //account
+            account_package = static_cast<WidgetArgAccount*>(current_widget_arg->package);
+            msg_ptr->packMessage<MessageAccount>(account_package->opcode, account_package->mail, account_package->accout, account_package->password, account_package->username, account_package->code);
             break;
         }
         case WIDGET_ARG_TYPE::ROOM:

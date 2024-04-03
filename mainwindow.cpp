@@ -129,13 +129,21 @@ MainWindow::MainWindow(QWidget *parent)
 }
 void MainWindow::onForgetPasswordButtonClicked()
 {
-    FindAndSignUpWidget *FindWidget = new FindAndSignUpWidget(1);        //mode1 -> 忘记密码
+    FindAndSignUpWidget *FindWidget = new FindAndSignUpWidget(1,message_center,widget_rev_packer);        //mode1 -> 忘记密码
     FindWidget->show();
+
+    WidgetArgPackage* forgetPassword_submit = new WidgetArgPackage();
+    forgetPassword_submit->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::FORGET_PASSWORD, EmailOrUid.toStdString(), EmailOrUid.toStdString(), "", "", "");
+    widget_rev_packer->WidgetsendMessage(forgetPassword_submit);
 }
 void MainWindow::onRegisterButtonClicked()
 {
-    FindAndSignUpWidget *SignUPWidget = new FindAndSignUpWidget(0);         //mode0 -> 注册
+    FindAndSignUpWidget *SignUPWidget = new FindAndSignUpWidget(0,message_center,widget_rev_packer);         //mode0 -> 注册
     SignUPWidget->show();
+
+    WidgetArgPackage* register_submit = new WidgetArgPackage();
+    register_submit->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::REGISTER, EmailOrUid.toStdString(), EmailOrUid.toStdString(), Password.toStdString(), "", "");
+    widget_rev_packer->WidgetsendMessage(register_submit);
 }
 void MainWindow::onShowPasswordClicked()
 {
@@ -153,7 +161,7 @@ void MainWindow::onLoginButtonClicked()
     Password = passwordLineEdit->text();
 
     WidgetArgPackage* login_submit = new WidgetArgPackage();
-    login_submit->packMessage<WidgetArgLogin>(LOGIN_OPCODE::LOGIN, EmailOrUid.toStdString(), EmailOrUid.toStdString(), Password.toStdString(), "");
+    login_submit->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::LOGIN, EmailOrUid.toStdString(), EmailOrUid.toStdString(), Password.toStdString(), "");
     widget_rev_packer->WidgetsendMessage(login_submit);
 }
 

@@ -1,9 +1,11 @@
 #include "findandsignupwidget.h"
 #include "ui_findandsignupwidget.h"
 #include <QDebug>
-FindAndSignUpWidget::FindAndSignUpWidget(int _mode,QWidget *parent):
+FindAndSignUpWidget::FindAndSignUpWidget(int _mode,MessageCenter *_message_center,WidgetRevPacker *_widget_rev_packer,QWidget *parent):
     QWidget(parent),
     mode(_mode),
+    message_center(_message_center),
+    widget_rev_packer(_widget_rev_packer),
     ui(new Ui::FindAndSignUpWidget)
 {
     ui->setupUi(this);
@@ -84,6 +86,17 @@ FindAndSignUpWidget::FindAndSignUpWidget(int _mode,QWidget *parent):
 
     connect(ui->SendKeyPushButton,&QPushButton::clicked,this,&FindAndSignUpWidget::onSendKeyPushButtonclicked);
     connect(ui->EnterKeyPushButton,&QPushButton::clicked,this,&FindAndSignUpWidget::onEnterKeyPushButtonclicked);
+    connect(ui->EnterPushButton,&QPushButton::clicked,this,&FindAndSignUpWidget::onEnterPushButtonclicked);
+
+    message_center->loadInterface("interfaceForgetPasswordSuccess", std::bind(&FindAndSignUpWidget::interfaceForgetPasswordSuccess, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceForgetPasswordFail",    std::bind(&FindAndSignUpWidget::interfaceForgetPasswordFail, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceRegisterSuccess", std::bind(&FindAndSignUpWidget::interfaceRegisterSuccess, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceForgetPasswordMailFail",    std::bind(&FindAndSignUpWidget::interfaceForgetPasswordMailFail, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceRegisterMailFail",    std::bind(&FindAndSignUpWidget::interfaceRegisterMailFail, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceForgetPasswordMailSuccess",    std::bind(&FindAndSignUpWidget::interfaceForgetPasswordMailSuccess, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceRegisterMailSuccess",    std::bind(&FindAndSignUpWidget::interfaceRegisterMailSuccess, this, std::placeholders::_1));
+
+
 }
 
 FindAndSignUpWidget::~FindAndSignUpWidget()
@@ -92,34 +105,7 @@ FindAndSignUpWidget::~FindAndSignUpWidget()
 
 
 }
-//确定验证码按钮点击，修改界面尺寸，显示其它输入框，删除按钮
-void FindAndSignUpWidget::onEnterKeyPushButtonclicked()
-{
-    if(mode==0)
-    {
-        this->setFixedSize(600,900);
-        ui->EnterKeyPushButton->hide();
-        ui->UsernameLineEdit->show();
-        ui->Password1LineEdit->show();
-        ui->Password2LineEdit->show();
-        ui->EnterPushButton->show();
-    }
-    else
-    {
-        this->setFixedSize(600,750);
-        ui->EnterKeyPushButton->hide();
-        ui->Password1LineEdit->setGeometry(150,330,300,70);
-        ui->Password1LineEdit->show();
-        ui->Password2LineEdit->setGeometry(150,460,300,70);
-        ui->Password2LineEdit->show();
-        ui->EnterPushButton->setGeometry(180,590,240,60);
-        ui->EnterPushButton->show();
-        ShowPassword1->setGeometry(ui->Password1LineEdit->x()+275,ui->Password1LineEdit->y()+25,20,20);
-        ShowPassword2->setGeometry(ui->Password2LineEdit->x()+275,ui->Password2LineEdit->y()+25,20,20);
-        HidePassword1->setGeometry(ui->Password1LineEdit->x()+275,ui->Password1LineEdit->y()+25,20,20);
-        HidePassword2->setGeometry(ui->Password2LineEdit->x()+275,ui->Password2LineEdit->y()+25,20,20);
-    }
-}
+
 void FindAndSignUpWidget::onShowPassword1clicked()
 {
     ShowPassword1->hide(); HidePassword1->show();
@@ -143,7 +129,145 @@ void FindAndSignUpWidget::onHidePassword2clicked()
     ShowPassword2->show(); HidePassword2->hide();
     ui->Password2LineEdit->setEchoMode(QLineEdit::Password);
 }
+
 void FindAndSignUpWidget::onSendKeyPushButtonclicked()
 {
     qDebug()<<"Send Verify Code";
+    Email = ui->MailLineEdit->text();
+    VerificationCode = ui->KeyLineEdit->text();
+    Username = ui->UsernameLineEdit->text();
+    Password1 = ui->Password1LineEdit->text();
+    Password2 = ui->Password2LineEdit->text();
+    if(mode==0) //find password
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::REGISTER_MAIL, Email.toStdString(), "", "", "", VerificationCode.toStdString());
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else    //register
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL, Email.toStdString(), "", "", "", VerificationCode.toStdString());
+        widget_rev_packer->WidgetsendMessage(package);
+    }
 }
+
+
+void FindAndSignUpWidget::onEnterPushButtonclicked() //send infomation
+{
+    qDebug() << "send infomation";
+    Email = ui->MailLineEdit->text();
+    VerificationCode = ui->KeyLineEdit->text();
+    Username = ui->UsernameLineEdit->text();
+    Password1 = ui->Password1LineEdit->text();
+    Password2 = ui->Password2LineEdit->text();
+    if(Password1 != Password2)
+    {
+        qDebug() << "两次密码不相同";
+        return;
+    }
+    if(mode==0) //register
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::REGISTER, Email.toStdString(), "", Password1.toStdString(), Username.toStdString(), VerificationCode.toStdString());
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else    //findpassword
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::FORGET_PASSWORD, Email.toStdString(), "", Password1.toStdString(), Username.toStdString(), VerificationCode.toStdString());
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+}
+
+//确定验证码按钮点击，修改界面尺寸，显示其它输入框，删除按钮
+void FindAndSignUpWidget::onEnterKeyPushButtonclicked() //verify code
+{
+    qDebug() << "verify code";
+    Email = ui->MailLineEdit->text();
+    VerificationCode = ui->KeyLineEdit->text();
+    Username = ui->UsernameLineEdit->text();
+    Password1 = ui->Password1LineEdit->text();
+    Password2 = ui->Password2LineEdit->text();
+    if(mode==0) //register
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::REGISTER_MAIL_CODE_VERIFY, Email.toStdString(), "", "", "", VerificationCode.toStdString());
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else    //findpassword
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL_CODE_VERIFY, Email.toStdString(), "", "", "", VerificationCode.toStdString());
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+}
+
+//***********************************INTERFACE********************************************
+void FindAndSignUpWidget::interfaceForgetPasswordMailFail(WidgetArgPackage* arg)
+{
+    qDebug() << "验证码错误";
+    WidgetArgStatus *status = static_cast<WidgetArgStatus*>(arg->package);
+    std::cout << "ForgetPasswordMail Fail, code: " << status->status << std::endl;
+
+    delete arg;
+}
+void FindAndSignUpWidget::interfaceRegisterMailFail(WidgetArgPackage* arg)
+{
+    qDebug() << "验证码错误";
+    WidgetArgStatus *status = static_cast<WidgetArgStatus*>(arg->package);
+    std::cout << "RegisterMail Fail, code: " << status->status << std::endl;
+
+    delete arg;
+}
+void FindAndSignUpWidget::interfaceForgetPasswordMailSuccess(WidgetArgPackage* arg)
+{
+    qDebug() << "验证码正确";
+    this->setFixedSize(600,750);
+    ui->EnterKeyPushButton->hide();
+    ui->Password1LineEdit->setGeometry(150,330,300,70);
+    ui->Password1LineEdit->show();
+    ui->Password2LineEdit->setGeometry(150,460,300,70);
+    ui->Password2LineEdit->show();
+    ui->EnterPushButton->setGeometry(180,590,240,60);
+    ui->EnterPushButton->show();
+    ShowPassword1->setGeometry(ui->Password1LineEdit->x()+275,ui->Password1LineEdit->y()+25,20,20);
+    ShowPassword2->setGeometry(ui->Password2LineEdit->x()+275,ui->Password2LineEdit->y()+25,20,20);
+    HidePassword1->setGeometry(ui->Password1LineEdit->x()+275,ui->Password1LineEdit->y()+25,20,20);
+    HidePassword2->setGeometry(ui->Password2LineEdit->x()+275,ui->Password2LineEdit->y()+25,20,20);
+}
+void FindAndSignUpWidget::interfaceRegisterMailSuccess(WidgetArgPackage* arg)
+{
+    qDebug() << "验证码正确";
+    this->setFixedSize(600,900);
+    ui->EnterKeyPushButton->hide();
+    ui->UsernameLineEdit->show();
+    ui->Password1LineEdit->show();
+    ui->Password2LineEdit->show();
+    ui->EnterPushButton->show();
+}
+void FindAndSignUpWidget::interfaceForgetPasswordSuccess(WidgetArgPackage* arg)
+{
+    qDebug() << "密码重设成功";
+    this->close();
+}
+void FindAndSignUpWidget::interfaceForgetPasswordFail(WidgetArgPackage* arg)
+{
+    WidgetArgStatus *status = static_cast<WidgetArgStatus*>(arg->package);
+    std::cout << "ForgetPassword Fail, code: " << status->status << std::endl;
+
+    delete arg;
+}
+void FindAndSignUpWidget::interfaceRegisterSuccess(WidgetArgPackage* arg)
+{
+    qDebug() << "注册成功";
+    this->close();
+}
+void FindAndSignUpWidget::interfaceRegisterFail(WidgetArgPackage* arg)
+{
+    WidgetArgStatus *status = static_cast<WidgetArgStatus*>(arg->package);
+    std::cout << "Register Fail, code: " << status->status << std::endl;
+
+    delete arg;
+}
+//*****************************************************************************************
