@@ -20,18 +20,18 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     UID = "00000000000";
 //*******************end**************************
 
-    BGMPlayer = new QMediaPlayer(this);
+    BGMPlayer = new QMediaPlayer();
     BGMPlayer->setSource(QUrl("qrc:/sound/sound/BGM/lobbybgm.mp3"));
     BGMPlayer->setLoops(-1);
-    BGMaudioOutput = new QAudioOutput(this);
+    BGMaudioOutput = new QAudioOutput();
     BGMaudioOutput->setVolume(0.5);
     BGMPlayer->setAudioOutput(BGMaudioOutput);
-    if(BGMState)BGMPlayer->play();
+    if(BGMState) BGMPlayer->play();
     BGMThread = new QThread;
+    BGMPlayer->moveToThread(BGMThread);
     BGMThread->start();
 
     connect(qApp, &QCoreApplication::aboutToQuit,BGMThread, &QThread::quit);
-
     RollImageIndex = 0;
 
     this->setFixedSize(Width,Height);
@@ -51,6 +51,7 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui->ClassicModeBtn->setGeometry(0.682*Width,0.652*Height,0.161*Width,0.084*Height);
     ui->ExitGameBtn   ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
     ui->JoinRoomBtn   ->setGeometry(0.682*Width,0.874*Height,0.161*Width,0.084*Height);
+    ui->RoomId        ->setGeometry(0.560*Width,0.876*Height,0.120*Width,0.080*Height);
 
 
     ui->SettingBtn->setIcon(QIcon(":/image/image/Icon/setting.png"));
@@ -107,7 +108,9 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui->UidLabel->setStyleSheet("QLabel {font: 12pt Segoe Script; background-color: yellow}");
     ui->UidLabel->setText(UID);
 
+    qDebug() << "connecting";
     connect(ui->ClassicModeBtn,&QPushButton::clicked,this,&LobbyWidget::onClassicModeBtnClicked);
+
 
 }
 
@@ -136,9 +139,12 @@ void LobbyWidget::ResolutionChanged(int _Width,int _Height)
     ui->ClassicModeBtn->setGeometry(0.682*Width,0.652*Height,0.161*Width,0.084*Height);
     ui->ExitGameBtn   ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
     ui->JoinRoomBtn   ->setGeometry(0.682*Width,0.874*Height,0.161*Width,0.084*Height);
+    ui->RoomId        ->setGeometry(0.600*Width,0.876*Height,0.080*Width,0.080*Height);
+
     ui->BeanEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
     ui->DiamondEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
     update();
+
 }
 void LobbyWidget::onSettingBtnClicked()
 {

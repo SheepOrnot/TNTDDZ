@@ -4185,8 +4185,13 @@ moc_gamewidget.cpp: gamewidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QPushButton \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QPropertyAnimation \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpropertyanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvariantanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qabstractanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qeasingcurve.h \
 		settingwidget.h \
-		gameoverwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QFile \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfile.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfiledevice.h \
@@ -4201,6 +4206,18 @@ moc_gamewidget.cpp: gamewidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/quuid.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonObject \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsonobject.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/QRegExp \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qregexp.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qcore5global.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qtcore5compat-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QDialog \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qdialog.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QVBoxLayout \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
+		gameoverwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QListView \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlistview.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractitemview.h \
@@ -4430,13 +4447,7 @@ moc_lobbywidget.cpp: lobbywidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QThread \
 		settingwidget.h \
-		gamewidget.h \
-		widgetcard.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QString \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QPushButton \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
-		gameoverwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonDocument \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsondocument.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsonvalue.h \
@@ -4448,6 +4459,29 @@ moc_lobbywidget.cpp: lobbywidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/quuid.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonObject \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsonobject.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/QRegExp \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qregexp.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qcore5global.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qtcore5compat-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QDialog \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qdialog.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QVBoxLayout \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
+		gamewidget.h \
+		widgetcard.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QString \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QPushButton \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QPropertyAnimation \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpropertyanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvariantanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qabstractanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qeasingcurve.h \
+		gameoverwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QListView \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlistview.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractitemview.h \
@@ -6824,13 +6858,29 @@ moc_mainwindow.cpp: mainwindow.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QThread \
 		settingwidget.h \
-		gamewidget.h \
-		widgetcard.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QString \
-		gameoverwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonDocument \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsondocument.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonObject \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/QRegExp \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qregexp.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qcore5global.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qtcore5compat-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QDialog \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QVBoxLayout \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
+		gamewidget.h \
+		widgetcard.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QString \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QPropertyAnimation \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpropertyanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvariantanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qabstractanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qeasingcurve.h \
+		gameoverwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QListView \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlistview.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractitemview.h \
@@ -6854,10 +6904,6 @@ moc_mainwindow.cpp: mainwindow.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextformat.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QHBoxLayout \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qboxlayout.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QStackedWidget \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qstackedwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLabel \
@@ -7244,6 +7290,32 @@ moc_settingwidget.cpp: settingwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qinputmethod.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlocale.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qguiapplication_platform.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QFile \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfile.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfiledevice.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonDocument \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsondocument.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsonvalue.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcborvalue.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdatetime.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcalendar.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcborcommon.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qregularexpression.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/quuid.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonObject \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsonobject.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/QRegExp \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qregexp.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qcore5global.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qtcore5compat-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QDialog \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qdialog.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QVBoxLayout \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
 		moc_predefs.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/moc
 	/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/program/boost_1_84_0 -I/media/fish/Data2/QT6/6.7.0/gcc_64/include -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtNetwork -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' settingwidget.h -o moc_settingwidget.cpp
@@ -10219,8 +10291,13 @@ gamewidget.o: gamewidget.cpp gamewidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QPushButton \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QPropertyAnimation \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpropertyanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvariantanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qabstractanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qeasingcurve.h \
 		settingwidget.h \
-		gameoverwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QFile \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfile.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfiledevice.h \
@@ -10235,6 +10312,18 @@ gamewidget.o: gamewidget.cpp gamewidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/quuid.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonObject \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsonobject.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/QRegExp \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qregexp.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qcore5global.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qtcore5compat-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QDialog \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qdialog.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QVBoxLayout \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
+		gameoverwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QListView \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlistview.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractitemview.h \
@@ -10267,8 +10356,7 @@ gamewidget.o: gamewidget.cpp gamewidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextcursor.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextformat.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpen.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextoption.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextoption.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gamewidget.o gamewidget.cpp
 
 lobbywidget.o: lobbywidget.cpp lobbywidget.h \
@@ -10479,13 +10567,7 @@ lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QThread \
 		settingwidget.h \
-		gamewidget.h \
-		widgetcard.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QString \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QPushButton \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
-		gameoverwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonDocument \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsondocument.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsonvalue.h \
@@ -10497,6 +10579,29 @@ lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/quuid.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonObject \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsonobject.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/QRegExp \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qregexp.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qcore5global.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qtcore5compat-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QDialog \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qdialog.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QVBoxLayout \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
+		gamewidget.h \
+		widgetcard.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QString \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QPushButton \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QPropertyAnimation \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpropertyanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvariantanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qabstractanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qeasingcurve.h \
+		gameoverwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QListView \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlistview.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractitemview.h \
@@ -10527,13 +10632,7 @@ lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextcursor.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextformat.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpen.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextoption.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QPropertyAnimation \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpropertyanimation.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvariantanimation.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qabstractanimation.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qeasingcurve.h
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextoption.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lobbywidget.o lobbywidget.cpp
 
 main.o: main.cpp mainwindow.h \
@@ -12891,13 +12990,29 @@ main.o: main.cpp mainwindow.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QThread \
 		settingwidget.h \
-		gamewidget.h \
-		widgetcard.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QString \
-		gameoverwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonDocument \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsondocument.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonObject \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/QRegExp \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qregexp.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qcore5global.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qtcore5compat-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QDialog \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QVBoxLayout \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
+		gamewidget.h \
+		widgetcard.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QString \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QPropertyAnimation \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpropertyanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvariantanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qabstractanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qeasingcurve.h \
+		gameoverwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QListView \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlistview.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractitemview.h \
@@ -12921,10 +13036,6 @@ main.o: main.cpp mainwindow.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextformat.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QHBoxLayout \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qboxlayout.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QStackedWidget \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qstackedwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLabel \
@@ -15290,13 +15401,29 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QThread \
 		settingwidget.h \
-		gamewidget.h \
-		widgetcard.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QString \
-		gameoverwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonDocument \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsondocument.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonObject \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/QRegExp \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qregexp.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qcore5global.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qtcore5compat-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QDialog \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QVBoxLayout \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
+		gamewidget.h \
+		widgetcard.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QString \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QPropertyAnimation \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpropertyanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvariantanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qabstractanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qeasingcurve.h \
+		gameoverwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QListView \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlistview.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractitemview.h \
@@ -15320,10 +15447,6 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextformat.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QHBoxLayout \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qboxlayout.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QStackedWidget \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qstackedwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLabel \
@@ -15720,13 +15843,60 @@ settingwidget.o: settingwidget.cpp settingwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qinputmethod.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlocale.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qguiapplication_platform.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QFile \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfile.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfiledevice.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonDocument \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsondocument.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsonvalue.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcborvalue.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdatetime.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcalendar.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcborcommon.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qregularexpression.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/quuid.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QJsonObject \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qjsonobject.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/QRegExp \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qregexp.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qcore5global.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat/qtcore5compat-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QDialog \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qdialog.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QVBoxLayout \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
 		ui_settingwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QCheckBox \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qcheckbox.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QComboBox \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qcombobox.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qstyleoption.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qvalidator.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qslider.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractslider.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qstyle.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtabbar.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtabwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qrubberband.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qframe.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLabel \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QPushButton \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QSlider
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settingwidget.o settingwidget.cpp
 
 widgetcard.o: widgetcard.cpp widgetcard.h \
@@ -15917,7 +16087,12 @@ widgetcard.o: widgetcard.cpp widgetcard.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpromise.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qinputmethod.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlocale.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qguiapplication_platform.h
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qguiapplication_platform.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QPropertyAnimation \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpropertyanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvariantanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qabstractanimation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qeasingcurve.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o widgetcard.o widgetcard.cpp
 
 qrc_resource.o: qrc_resource.cpp 

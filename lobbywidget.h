@@ -9,6 +9,7 @@
 #include <QCoreApplication>
 #include <QAudioOutput>
 #include <QThread>
+
 #include"settingwidget.h"
 #include"gamewidget.h"
 namespace Ui {
@@ -24,7 +25,7 @@ public:
     ~LobbyWidget();
 private:
     Ui::LobbyWidget *ui;
-    int Width=1920,Height=1080;     //用于修改分辨率&实例化新的窗口时的参数。
+    int Width,Height;     //用于修改分辨率&实例化新的窗口时的参数。
     int radius;
     bool BGMState;
     QString ProfileImagePath;        //头像图片(服务器获取)
@@ -51,10 +52,10 @@ private:
     QThread *BGMThread;
 private:
     void ImportConfig();
-public slots:
+public Q_SLOTS:
     void ResolutionChanged(int _Width,int _Height);
     //void ProfileChanged(int _Width,int _Height);
-private slots:
+private Q_SLOTS:
     void onSettingBtnClicked();
     void onClassicModeBtnClicked();
     void onExitGameBtnClicked();

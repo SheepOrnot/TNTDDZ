@@ -234,6 +234,23 @@ font: 9pt &quot;华文新魏&quot;;</string>
     <string>加入房间</string>
    </property>
   </widget>
+  <widget class="QLineEdit" name="RoomId">
+   <property name="geometry">
+    <rect>
+     <x>1140</x>
+     <y>910</y>
+     <width>141</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 36pt &quot;Microsoft YaHei UI&quot;;
+</string>
+   </property>
+   <property name="text">
+    <string>000000</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

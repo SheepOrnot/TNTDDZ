@@ -2,7 +2,13 @@
 #define SETTINGWIDGET_H
 
 #include <QWidget>
-
+#include <QDebug>
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QRegExp>
+#include <QDialog>
+#include <QVBoxLayout>
 namespace Ui {
 class SettingWidget;
 }
@@ -18,6 +24,32 @@ public:
     int Height;
 private:
     Ui::SettingWidget *ui;
+    bool GameBGMState,LobbyBGMState,GameEffectState;
+    double GameBGMVolume,GameEffectVolume;
+    int ResolutionIndex,CardStyleIndex;
+    QString NewGameBGMVolume,NewGameEffectVolume;
+    QString NewGameBGM,NewGameEffect;
+    QString NewLobbyBGM;
+    QString NewWidth,NewHeight;
+    QString NewCardStyleIndex;
+    QString NewResolutionIndex;
+
+    QPixmap CardFrontPixmap,CardBackPixmap;
+private:
+    void WriteBackConfig();
+    void ImportConfig();
+
+private slots:
+    void onBasicBtnClicked();
+    void onFrameBtnClicked();
+    void onSoundEffectBtnClicked();
+    void onApplyBtnClicked();
+    void onBGMVolumeChanged();
+    void onEffectVolumeChanged();
+    void onBGMCheckChanged();
+    void onEffectCheckChanged();
+    void onCardStyleChanged(int index);
+
 };
 
 #endif // SETTINGWIDGET_H
