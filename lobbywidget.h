@@ -9,6 +9,7 @@
 #include <QCoreApplication>
 #include <QAudioOutput>
 #include <QThread>
+
 #include"settingwidget.h"
 #include"gamewidget.h"
 namespace Ui {

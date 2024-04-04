@@ -6,6 +6,7 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     QWidget(parent),Width(_Width),Height(_Height),
     ui(new Ui::GameWidget)
 {
+    qDebug()<<"Ready to Build GameWidget";
     ui->setupUi(this);
     this->setFixedSize(Width,Height);
     ImportConfig();
@@ -40,6 +41,7 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     placeOutCards(2);
     //placeOutCards(3);
 
+    qDebug()<<"Build GameWidget checkpount1";
 //******end******
 
     //上家(previous)->1     下家(next)->2      自己->3

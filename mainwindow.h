@@ -14,6 +14,7 @@
 #include <QLabel>
 #include<QSpacerItem>
 #include<QRegularExpressionValidator>
+#include<QThread>
 
 #include "widgetrevpacker.h"
 
@@ -63,6 +64,7 @@ private:
 
     MessageCenter   *message_center;
     WidgetRevPacker *widget_rev_packer;
+    LobbyWidget *lobbyWidget;
     QString CiphertextPwd;         //需要记住账号密码时，在返回登录成功后写入json
 private:
     bool RemUser;

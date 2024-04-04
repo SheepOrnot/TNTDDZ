@@ -30,8 +30,8 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     BGMThread = new QThread;
     BGMPlayer->moveToThread(BGMThread);
     BGMThread->start();
-
     connect(qApp, &QCoreApplication::aboutToQuit,BGMThread, &QThread::quit);
+
 
     RollImageIndex = 0;
 
@@ -54,8 +54,6 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui->ExitGameBtn   ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
     ui->JoinRoomBtn   ->setGeometry(0.682*Width,0.874*Height,0.161*Width,0.084*Height);
     ui->RoomId        ->setGeometry(0.560*Width,0.876*Height,0.120*Width,0.080*Height);
-
-
     ui->SettingBtn->setIcon(QIcon(":/image/image/Icon/setting.png"));
     ui->SettingBtn->setStyleSheet("QPushButton { background-color: transparent; }");
     connect(ui->SettingBtn,&QPushButton::clicked,this,&LobbyWidget::onSettingBtnClicked);
@@ -81,9 +79,10 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
 
 
     //QPropertyAnimation *animation = new QPropertyAnimation(ui->RollLabel, "pixmap");
-    RollImageTimer = new QTimer(this);
+    RollImageTimer = new QTimer();
     connect(RollImageTimer, &QTimer::timeout, this, &LobbyWidget::RollImage);
-    RollImageTimer->start(3000);
+    RollImageTimer->start(3000);    //QObject::startTimer: Timers can only be used with threads started with QThread
+
     QPixmap RollPixmap0(RollPixmapsPath[RollImageIndex++]);
     RollPixmap0 = RollPixmap0.scaled(ui->RollLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation); // 将图片缩放到QLabel的尺寸
     ui->RollLabel->setPixmap(RollPixmap0);
@@ -110,7 +109,9 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui->UidLabel->setStyleSheet("QLabel {font: 12pt Segoe Script; background-color: yellow}");
     ui->UidLabel->setText(UID);
 
+    qDebug() << "connecting";
     connect(ui->ClassicModeBtn,&QPushButton::clicked,this,&LobbyWidget::onClassicModeBtnClicked);
+
 
 }
 
@@ -144,6 +145,7 @@ void LobbyWidget::ResolutionChanged(int _Width,int _Height)
     ui->BeanEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
     ui->DiamondEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
     update();
+
 }
 void LobbyWidget::onSettingBtnClicked()
 {
