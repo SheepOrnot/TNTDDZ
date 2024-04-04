@@ -30,8 +30,9 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     BGMThread = new QThread;
     BGMPlayer->moveToThread(BGMThread);
     BGMThread->start();
-
     connect(qApp, &QCoreApplication::aboutToQuit,BGMThread, &QThread::quit);
+
+
     RollImageIndex = 0;
 
     this->setFixedSize(Width,Height);
@@ -52,8 +53,6 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui->ExitGameBtn   ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
     ui->JoinRoomBtn   ->setGeometry(0.682*Width,0.874*Height,0.161*Width,0.084*Height);
     ui->RoomId        ->setGeometry(0.560*Width,0.876*Height,0.120*Width,0.080*Height);
-
-
     ui->SettingBtn->setIcon(QIcon(":/image/image/Icon/setting.png"));
     ui->SettingBtn->setStyleSheet("QPushButton { background-color: transparent; }");
     connect(ui->SettingBtn,&QPushButton::clicked,this,&LobbyWidget::onSettingBtnClicked);
@@ -79,9 +78,10 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
 
 
     //QPropertyAnimation *animation = new QPropertyAnimation(ui->RollLabel, "pixmap");
-    RollImageTimer = new QTimer(this);
+    RollImageTimer = new QTimer();
     connect(RollImageTimer, &QTimer::timeout, this, &LobbyWidget::RollImage);
-    RollImageTimer->start(3000);
+    RollImageTimer->start(3000);    //QObject::startTimer: Timers can only be used with threads started with QThread
+
     QPixmap RollPixmap0(RollPixmapsPath[RollImageIndex++]);
     RollPixmap0 = RollPixmap0.scaled(ui->RollLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation); // 将图片缩放到QLabel的尺寸
     ui->RollLabel->setPixmap(RollPixmap0);

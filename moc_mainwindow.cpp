@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created by: The Qt Meta Object Compiler version 68 (Qt 6.7.0)
+** Created by: The Qt Meta Object Compiler version 68 (Qt 6.5.3)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -10,16 +10,19 @@
 #include <QtGui/qtextcursor.h>
 #include <QtCore/qmetatype.h>
 
+#if __has_include(<QtCore/qtmochelpers.h>)
 #include <QtCore/qtmochelpers.h>
+#else
+QT_BEGIN_MOC_NAMESPACE
+#endif
+
 
 #include <memory>
 
-
-#include <QtCore/qxptype_traits.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'mainwindow.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 68
-#error "This file was generated using the moc from 6.7.0. It"
+#error "This file was generated using the moc from 6.5.3. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -35,7 +38,7 @@ namespace {
 
 #ifdef QT_MOC_HAS_STRINGDATA
 struct qt_meta_stringdata_CLASSMainWindowENDCLASS_t {};
-constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers::stringData(
+static constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers::stringData(
     "MainWindow",
     "onLoginButtonClicked",
     "",
@@ -44,15 +47,45 @@ constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers::string
     "onShowPasswordClicked",
     "onHidePasswordClicked"
 );
-#else  // !QT_MOC_HAS_STRINGDATA
-#error "qtmochelpers.h not found or too old."
-#endif // !QT_MOC_HAS_STRINGDATA
+#else  // !QT_MOC_HAS_STRING_DATA
+struct qt_meta_stringdata_CLASSMainWindowENDCLASS_t {
+    uint offsetsAndSizes[14];
+    char stringdata0[11];
+    char stringdata1[21];
+    char stringdata2[1];
+    char stringdata3[30];
+    char stringdata4[24];
+    char stringdata5[22];
+    char stringdata6[22];
+};
+#define QT_MOC_LITERAL(ofs, len) \
+    uint(sizeof(qt_meta_stringdata_CLASSMainWindowENDCLASS_t::offsetsAndSizes) + ofs), len 
+Q_CONSTINIT static const qt_meta_stringdata_CLASSMainWindowENDCLASS_t qt_meta_stringdata_CLASSMainWindowENDCLASS = {
+    {
+        QT_MOC_LITERAL(0, 10),  // "MainWindow"
+        QT_MOC_LITERAL(11, 20),  // "onLoginButtonClicked"
+        QT_MOC_LITERAL(32, 0),  // ""
+        QT_MOC_LITERAL(33, 29),  // "onForgetPasswordButtonClicked"
+        QT_MOC_LITERAL(63, 23),  // "onRegisterButtonClicked"
+        QT_MOC_LITERAL(87, 21),  // "onShowPasswordClicked"
+        QT_MOC_LITERAL(109, 21)   // "onHidePasswordClicked"
+    },
+    "MainWindow",
+    "onLoginButtonClicked",
+    "",
+    "onForgetPasswordButtonClicked",
+    "onRegisterButtonClicked",
+    "onShowPasswordClicked",
+    "onHidePasswordClicked"
+};
+#undef QT_MOC_LITERAL
+#endif // !QT_MOC_HAS_STRING_DATA
 } // unnamed namespace
 
 Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
 
  // content:
-      12,       // revision
+      11,       // revision
        0,       // classname
        0,    0, // classinfo
        5,   14, // methods
