@@ -41,6 +41,7 @@ private Q_SLOTS:
     void onRegisterButtonClicked();
     void onShowPasswordClicked();
     void onHidePasswordClicked();
+    void EnterLobby();
 
 private:
     Ui::MainWindow *ui;

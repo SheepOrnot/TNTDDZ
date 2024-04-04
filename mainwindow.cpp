@@ -118,7 +118,6 @@ MainWindow::MainWindow(QWidget *parent)
     //***********************need global********************************
     message_center = new MessageCenter();
     widget_rev_packer = new WidgetRevPacker(message_center);
-    lobbyWidget = new LobbyWidget();
     message_center->loadInterface("interfaceLoginSuccess", std::bind(&MainWindow::interfaceLoginSuccess, this, std::placeholders::_1));
     message_center->loadInterface("interfaceLoginFail",    std::bind(&MainWindow::interfaceLoginFail, this, std::placeholders::_1));
 
@@ -167,15 +166,23 @@ void MainWindow::onLoginButtonClicked()
 
 
 //********************INTERFACE****************************
-void MainWindow::interfaceLoginSuccess(WidgetArgPackage* arg)
+void MainWindow::EnterLobby()
 {
     EmailOrUid = usernameLineEdit->text();
     Password = passwordLineEdit->text();
+    lobbyWidget = new LobbyWidget();
     lobbyWidget->show();
-             //改为delete，先delete所有成员指针
+        //改为delete，先delete所有成员指针
     CiphertextPwd = Encryption();
     RestoreConfig();
     this->close();
+}
+
+void MainWindow::interfaceLoginSuccess(WidgetArgPackage* arg)
+{
+    QThread *lobbyThread = new QThread();
+    connect(lobbyThread, SIGNAL(started()), this, SLOT(EnterLobby()));
+    lobbyThread->start();
 }
 
 void MainWindow::interfaceLoginFail(WidgetArgPackage* arg)
