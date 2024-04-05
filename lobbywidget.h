@@ -12,6 +12,9 @@
 
 #include"settingwidget.h"
 #include"gamewidget.h"
+#include "messagecenter.h"
+#include "widgetrevpacker.h"
+
 namespace Ui {
 class LobbyWidget;
 }
@@ -23,6 +26,10 @@ class LobbyWidget : public QWidget
 public:
     explicit LobbyWidget(QWidget *parent = nullptr);
     ~LobbyWidget();
+    void interfaceEnterRoomSuccess(WidgetArgPackage* arg);
+    void interfaceEnterRoomFail(WidgetArgPackage* arg);
+    void interfaceExitRoom(WidgetArgPackage* arg);
+
 private:
     Ui::LobbyWidget *ui;
     int Width,Height;     //用于修改分辨率&实例化新的窗口时的参数。
@@ -50,6 +57,10 @@ private:
     QMediaPlayer *BGMPlayer;
     QAudioOutput *BGMaudioOutput;
     QThread *BGMThread;
+
+    std::shared_ptr<MessageCenter> message_center;
+    std::shared_ptr<WidgetRevPacker> widget_rev_packer;
+
 private:
     void ImportConfig();
 public Q_SLOTS:
@@ -58,8 +69,10 @@ public Q_SLOTS:
 private Q_SLOTS:
     void onSettingBtnClicked();
     void onClassicModeBtnClicked();
+    void onJoinRoomBtnClicked();
     void onExitGameBtnClicked();
     void RollImage();
+    void EnterGame();
 Q_SIGNALS:
     void ChangeResolutions(int _Width,int _Height);            //********测试用 ;
 

@@ -115,7 +115,6 @@ MainWindow::MainWindow(QWidget *parent)
     GridLayout->setRowStretch(3,1);
     GridLayout->setRowStretch(4,0);
 
-    //***********************need global********************************
     message_center = MessageCenter::getInstance();
     widget_rev_packer = WidgetRevPacker::getInstance();
     

@@ -110,8 +110,15 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui->UidLabel->setText(UID);
 
     connect(ui->ClassicModeBtn,&QPushButton::clicked,this,&LobbyWidget::onClassicModeBtnClicked);
-    connect(ui->ClassicModeBtn,&QPushButton::clicked,this,&LobbyWidget::onClassicModeBtnClicked);
-    connect(ui->ClassicModeBtn,&QPushButton::clicked,this,&LobbyWidget::onClassicModeBtnClicked);
+    connect(ui->JoinRoomBtn,&QPushButton::clicked,this,&LobbyWidget::onJoinRoomBtnClicked);
+    connect(ui->ExitGameBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
+
+    message_center = MessageCenter::getInstance();
+    widget_rev_packer = WidgetRevPacker::getInstance();
+    
+    message_center->loadInterface("interfaceEnterRoomSuccess", std::bind(&LobbyWidget::interfaceEnterRoomSuccess, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceEnterRoomFail",    std::bind(&LobbyWidget::interfaceEnterRoomFail,    this, std::placeholders::_1));
+    message_center->loadInterface("interfaceExitRoom",         std::bind(&LobbyWidget::interfaceExitRoom,         this, std::placeholders::_1));
 
 }
 
@@ -151,21 +158,6 @@ void LobbyWidget::onSettingBtnClicked()
 {
     settingWidget = new SettingWidget(Width,Height);
     settingWidget->show();
-}
-void LobbyWidget::onClassicModeBtnClicked()            //创建房间按钮
-{
-    qDebug() << "Classic Mode";
-    gameWidget = new GameWidget(Width,Height);
-    this->hide();
-    gameWidget->show();
-    GameExitBtn = new QPushButton(gameWidget);
-    GameExitBtn->setGeometry(0.010*Width,  0.018*Height,  0.042*Width,   0.075*Height);
-    GameExitBtn->setIcon(QIcon(":/image/image/Icon/quitgame.png"));
-    GameExitBtn->setStyleSheet("QPushButton { background-color: transparent; }");
-    GameExitBtn->setIconSize(GameExitBtn->size());
-    GameExitBtn->show();
-    BGMPlayer->stop();
-    connect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
 }
 void LobbyWidget::RollImage()
 {
@@ -219,32 +211,54 @@ void LobbyWidget::ImportConfig()
 }
 
 
-void LobbyWidget::onExitGameBtnClicked()
+void LobbyWidget::onClassicModeBtnClicked()            //创建房间按钮
 {
-    //TODO
-    return;    
-}
-/*
-void LobbyWidget::onCreateRoomBtnClicked()
-{
-    //TODO
     WidgetArgPackage* create_room_submit = new WidgetArgPackage();
-    create_room_submit->packMessage<WidgetArgRoom>(ROOM_OPCODE::CREATE_ROOM, "00000000001", "");
+    create_room_submit->packMessage<WidgetArgRoom>(ROOM_OPCODE::CREATE_ROOM, UID.toStdString(), "");
     widget_rev_packer->WidgetsendMessage(create_room_submit);
 }
 void LobbyWidget::onJoinRoomBtnClicked()
 {
-    //TODO
-    
+    WidgetArgPackage* join_room_submit = new WidgetArgPackage();
+    join_room_submit->packMessage<WidgetArgRoom>(ROOM_OPCODE::JOIN_ROOM, UID.toStdString(), ui->RoomId->text().toStdString());
+    widget_rev_packer->WidgetsendMessage(join_room_submit);
+}
+void LobbyWidget::onExitGameBtnClicked()
+{
+    WidgetArgPackage* exit_room_submit = new WidgetArgPackage();
+    exit_room_submit->packMessage<WidgetArgRoom>(ROOM_OPCODE::LEAVE_ROOM, UID.toStdString(), ui->RoomId->text().toStdString());
+    widget_rev_packer->WidgetsendMessage(exit_room_submit);
 }
 //********************INTERFACE****************************
+void LobbyWidget::EnterGame()
+{
+    qDebug() << "Classic Mode";
+    gameWidget = new GameWidget(Width,Height);
+    this->hide();
+    gameWidget->show();
+    GameExitBtn = new QPushButton(gameWidget);
+    GameExitBtn->setGeometry(0.010*Width,  0.018*Height,  0.042*Width,   0.075*Height);
+    GameExitBtn->setIcon(QIcon(":/image/image/Icon/quitgame.png"));
+    GameExitBtn->setStyleSheet("QPushButton { background-color: transparent; }");
+    GameExitBtn->setIconSize(GameExitBtn->size());
+    GameExitBtn->show();
+    BGMPlayer->stop();
+    connect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
+}
 void LobbyWidget::interfaceEnterRoomSuccess(WidgetArgPackage* arg)
 {
-
+    QThread *gameThread = new QThread();
+    connect(gameThread, SIGNAL(started()), this, SLOT(EnterGame()));
+    gameThread->start();
+    
+    delete arg;
 }
 void LobbyWidget::interfaceEnterRoomFail(WidgetArgPackage* arg)
 {
-    
+    WidgetArgStatus *status = static_cast<WidgetArgStatus*>(arg->package);
+    std::cout << "EnterRoom Fail, code: " << status->status << std::endl;
+
+    delete arg;
 }
 void LobbyWidget::interfaceExitRoom(WidgetArgPackage* arg)
 {
@@ -253,6 +267,7 @@ void LobbyWidget::interfaceExitRoom(WidgetArgPackage* arg)
     delete GameExitBtn;
     delete gameWidget;
     if(BGMState) BGMPlayer->play();
+
+    delete arg;
 }
 //*********************************************************
-*/

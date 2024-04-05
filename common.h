@@ -54,13 +54,18 @@ enum class MESSAGE_TYPE {
     ROOM = 4,
     STATUS = 5,
     VERIFY = 6,
+    MessageRoomVerifyStatus = 7
 };
 enum class VERIFY_TYPE {
     LOGIN = 1,
     REGISTER = 2,
     FORGET_PASSWORD = 3,
     REGISTER_MAIL = 4,
-    FORGET_PASSWORD_MAIL = 5
+    FORGET_PASSWORD_MAIL = 5,
+    CREATE_ROOM,
+    JOIN_ROOM,
+    LEAVE_ROOM,
+    READY
 };
 enum class NETWORK
 {

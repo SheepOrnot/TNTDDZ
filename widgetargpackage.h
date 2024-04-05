@@ -68,19 +68,16 @@ public:
 class WidgetArgRoom : public WidgetArg
 {
 public:
-    //WidgetArgRoom(ROOM_OPCODE _opcode, std::vector<int> _addition_data)
     WidgetArgRoom(ROOM_OPCODE _opcode, std::string _account, std::string _roomid)
         : WidgetArg(WIDGET_ARG_TYPE::ROOM),
         opcode(_opcode),
         account(_account),
         roomid(_roomid)
-        //addition_data(_addition_data)
     {}
 
     ROOM_OPCODE opcode;
     std::string account;
     std::string roomid;
-    //std::vector<int> addition_data;
 };
 
 class WidgetArgStatus : public WidgetArg

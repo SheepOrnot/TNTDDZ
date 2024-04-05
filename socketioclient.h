@@ -54,6 +54,14 @@ public:
         current_socket->emit("leave_room", data);
     }
 
+    void ready(std::string account, std::string roomid)
+    {
+        std::string data_json = "{\"account\":\"" + account + "\","
+                                + "\"roomid\":\""  + roomid  + "\"}";
+        message::list data(data_json);
+        current_socket->emit("ready", data);
+    }
+
     void connect()
     {
         h.connect("http://" + SERVER_IP + ":" + SERVER_PORT);

@@ -33,7 +33,7 @@ public:
                                                 + " \"account\":\""  + package->accout + "\","
                                                 + " \"password\":\"" + package->password + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/login", login_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        current_center->MessageSubmit(rev_from_svr);
                         break;
                     }
                     case ACCOUNT_OPCODE::REGISTER_MAIL:
@@ -41,7 +41,7 @@ public:
                         //register_mail
                         std::string register_mail_json = "{\"mail\":\""     + package->mail + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/signupmail", register_mail_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        current_center->MessageSubmit(rev_from_svr);
                         break;
                     }
                     case ACCOUNT_OPCODE::REGISTER:
@@ -53,7 +53,7 @@ public:
                                                 + " \"username\":\"" + package->username + "\","
                                                 + " \"code\":\""     + package->code     + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/signup", register_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        current_center->MessageSubmit(rev_from_svr);
                         break;
                     }
                     case ACCOUNT_OPCODE::REGISTER_MAIL_CODE_VERIFY:
@@ -62,7 +62,7 @@ public:
                         std::string register_mail_verify_json = "{\"mail\":\""   + package->mail     + "\","
                                                                 + " \"code\":\""     + package->code     + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/signup_code_verify", register_mail_verify_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        current_center->MessageSubmit(rev_from_svr);
                         break;
                     }
                     case ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL:
@@ -70,7 +70,7 @@ public:
                         //forget_mail
                         std::string forget_password_mail_json = "{\"mail\":\""     + package->mail + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforgetmail", forget_password_mail_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        current_center->MessageSubmit(rev_from_svr);
                         break;
                     }
                     case ACCOUNT_OPCODE::FORGET_PASSWORD:
@@ -80,7 +80,7 @@ public:
                                                 + " \"password\":\"" + package->password + "\","
                                                 + " \"code\":\""     + package->code     + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforget", forget_password_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        current_center->MessageSubmit(rev_from_svr);
                         break;
                     }
                     case ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL_CODE_VERIFY:
@@ -89,7 +89,7 @@ public:
                         std::string forget_mail_verify_json = "{\"mail\":\""   + package->mail     + "\","
                                                           + " \"code\":\""     + package->code     + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforget_code_verify", forget_mail_verify_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        current_center->MessageSubmit(rev_from_svr);
                         break;
                     }
                 }
@@ -161,6 +161,47 @@ public:
                             current_center->WidgetInterface["interfaceForgetPasswordMailFail"](arg);
                         break;
                     }
+                    case VERIFY_TYPE::CREATE_ROOM:
+                    {
+                        std::cout << "create room" << std::endl;
+                        std::flush(std::cout);
+                        WidgetArgPackage *arg = new WidgetArgPackage();
+                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ROOM, status->code);
+                        
+                        std::cout << "createRoomStatus: " << status->code << std::endl;
+                        if(status->code == 1)
+                            current_center->WidgetInterface["interfaceEnterRoomSuccess"](arg);
+                        else
+                            current_center->WidgetInterface["interfaceEnterRoomFail"](arg);
+                        break;
+                    }
+                    case VERIFY_TYPE::JOIN_ROOM:
+                    {
+                        std::cout << "join room" << std::endl;
+                        std::flush(std::cout);
+                        WidgetArgPackage *arg = new WidgetArgPackage();
+                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ROOM, status->code);
+                        
+                        std::cout << "joinRoomStatus: " << status->code << std::endl;
+                        if(status->code == 1)
+                            current_center->WidgetInterface["interfaceEnterRoomSuccess"](arg);
+                        else
+                            current_center->WidgetInterface["interfaceEnterRoomFail"](arg);
+                        break;
+                    }
+                    case VERIFY_TYPE::LEAVE_ROOM:
+                    {
+                        std::cout << "leave room" << std::endl;
+                        std::flush(std::cout);
+                        WidgetArgPackage *arg = new WidgetArgPackage();
+                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ROOM, status->code);
+                        
+                        std::cout << "leaveRoomStatus: " << status->code << std::endl;
+                        if(status->code == 1)
+                            current_center->WidgetInterface["interfaceExitRoom"](arg);
+                        break;
+                    }
+                
                 }
                 break;
             }
@@ -192,9 +233,16 @@ public:
                 }
                 case ROOM_OPCODE::READY:
                 {
+                    current_center->socketio_client->ready(package->account, package->roomid);
                     break;
                 }
                 }
+                break;
+            }
+            default:
+            {
+                std::cout << "unknown message package" << std::endl;
+                std::flush(std::cout);
                 break;
             }
         }
@@ -204,7 +252,13 @@ public:
 
     void MessageSubmit(MessagePackage* current_message)
     {
-        threadpool_ptr->submit(MessageProcessing, current_message, this);
+        if(current_message)
+            threadpool_ptr->submit(MessageProcessing, current_message, this);
+        else
+        {
+            std::cout << "ERROR: try to submit null message" << std::endl;
+            std::flush(std::cout);
+        }
     }
 
     void loadInterface(std::string key, WidgetInterfacePtr func_ptr)
@@ -223,7 +277,7 @@ public:
         std::cout << message_received[0]->get_string() << std::endl;
 
         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(message_received[0]->get_string());
-        threadpool_ptr->submit(MessageProcessing, rev_from_svr, this);
+        MessageSubmit(rev_from_svr);
     }
 
 private:
