@@ -9901,17 +9901,6 @@ findandsignupwidget.o: findandsignupwidget.cpp findandsignupwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qdialog.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
 		ui_findandsignupwidget.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLineEdit \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlineedit.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qframe.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextcursor.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextformat.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpen.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextoption.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o findandsignupwidget.o findandsignupwidget.cpp
 
@@ -10102,17 +10091,6 @@ gameoverwidget.o: gameoverwidget.cpp gameoverwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlocale.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qguiapplication_platform.h \
 		ui_gameoverwidget.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLabel \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qframe.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QPushButton \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gameoverwidget.o gameoverwidget.cpp
 
@@ -10357,22 +10335,7 @@ gamewidget.o: gamewidget.cpp gamewidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtabbar.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtabwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qrubberband.h \
-		ui_gamewidget.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QComboBox \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qcombobox.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLabel \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLineEdit \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlineedit.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextcursor.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextformat.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpen.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextoption.h
+		ui_gamewidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gamewidget.o gamewidget.cpp
 
 lobbywidget.o: lobbywidget.cpp lobbywidget.h \
@@ -10635,20 +10598,7 @@ lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtabbar.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtabwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qrubberband.h \
-		ui_lobbywidget.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLabel \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLineEdit \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlineedit.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextcursor.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextformat.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpen.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextoption.h
+		ui_lobbywidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lobbywidget.o lobbywidget.cpp
 
 main.o: main.cpp mainwindow.h \
@@ -15477,16 +15427,7 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QSpacerItem \
-		ui_mainwindow.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QGridLayout \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QMenuBar \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qmenubar.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qmenu.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QStatusBar \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qstatusbar.h
+		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
 personalinfowidget.o: personalinfowidget.cpp personalinfowidget.h \
@@ -15675,10 +15616,7 @@ personalinfowidget.o: personalinfowidget.cpp personalinfowidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qinputmethod.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlocale.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qguiapplication_platform.h \
-		ui_personalinfowidget.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h
+		ui_personalinfowidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o personalinfowidget.o personalinfowidget.cpp
 
 settingwidget.o: settingwidget.cpp settingwidget.h \
@@ -15893,34 +15831,7 @@ settingwidget.o: settingwidget.cpp settingwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
-		ui_settingwidget.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QCheckBox \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qcheckbox.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QComboBox \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qcombobox.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qstyleoption.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractspinbox.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qvalidator.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qslider.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractslider.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qstyle.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtabbar.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtabwidget.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qrubberband.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qframe.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qabstractitemmodel.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLabel \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QPushButton \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QSlider
+		ui_settingwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settingwidget.o settingwidget.cpp
 
 socketioclient.o: socketioclient.cpp socketioclient.h \

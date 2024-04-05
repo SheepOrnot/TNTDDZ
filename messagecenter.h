@@ -14,12 +14,8 @@ typedef std::function<void(WidgetArgPackage*)> WidgetInterfacePtr;
 class MessageCenter
 {
 public:
-    MessageCenter()
-    {
-        PluginFuncVector = nullptr;
-        socketio_client = new socketIOClient();
-        threadpool_ptr = new ThreadPool(10);
-    }
+    static std::shared_ptr<MessageCenter> getInstance() {return instance;}
+    static void destoryInstance(MessageCenter* x) {delete x;}
     void loadLib();
     void static MessageProcessing(MessagePackage* current_message, MessageCenter* current_center)
     {
@@ -231,6 +227,15 @@ public:
     }
 
 private:
+    MessageCenter()
+    {
+        PluginFuncVector = nullptr;
+        socketio_client = new socketIOClient();
+        threadpool_ptr = new ThreadPool(10);
+    }
+    ~MessageCenter() {};
+
+private:
     /*插件函数注册表*/
     const std::vector<PluginFuncPtr>* PluginFuncVector;
     /*线程池*/
@@ -241,6 +246,9 @@ private:
     std::map<std::string, WidgetInterfacePtr> WidgetInterface;
     /*SocketIO客户端指针*/
     socketIOClient* socketio_client;
+
+    static std::shared_ptr<MessageCenter> instance;
+    //std::mutex _mutex;
 };
 
 #endif // MESSAGECENTER_H

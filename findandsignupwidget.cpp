@@ -1,11 +1,9 @@
 #include "findandsignupwidget.h"
 #include "ui_findandsignupwidget.h"
 #include <QDebug>
-FindAndSignUpWidget::FindAndSignUpWidget(int _mode,MessageCenter *_message_center,WidgetRevPacker *_widget_rev_packer,QWidget *parent):
+FindAndSignUpWidget::FindAndSignUpWidget(int _mode, QWidget *parent):
     QWidget(parent),
     mode(_mode),
-    message_center(_message_center),
-    widget_rev_packer(_widget_rev_packer),
     ui(new Ui::FindAndSignUpWidget)
 {
     ui->setupUi(this);
@@ -87,6 +85,9 @@ FindAndSignUpWidget::FindAndSignUpWidget(int _mode,MessageCenter *_message_cente
     connect(ui->SendKeyPushButton,&QPushButton::clicked,this,&FindAndSignUpWidget::onSendKeyPushButtonclicked);
     connect(ui->EnterKeyPushButton,&QPushButton::clicked,this,&FindAndSignUpWidget::onEnterKeyPushButtonclicked);
     connect(ui->EnterPushButton,&QPushButton::clicked,this,&FindAndSignUpWidget::onEnterPushButtonclicked);
+
+    message_center = MessageCenter::getInstance();
+    widget_rev_packer = WidgetRevPacker::getInstance();
 
     message_center->loadInterface("interfaceForgetPasswordSuccess", std::bind(&FindAndSignUpWidget::interfaceForgetPasswordSuccess, this, std::placeholders::_1));
     message_center->loadInterface("interfaceForgetPasswordFail",    std::bind(&FindAndSignUpWidget::interfaceForgetPasswordFail, this, std::placeholders::_1));

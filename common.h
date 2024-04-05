@@ -12,6 +12,10 @@
 #include <sio_client.h>
 #include <sio_message.h>
 #include <sio_socket.h>
+
+#include <mutex>
+#include <memory>
+#include <thread>
 /*
 BOOST_DATE_TIME_NO_LIB
 BOOST_REGEX_NO_LIB

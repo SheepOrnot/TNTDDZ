@@ -10,14 +10,11 @@
 class WidgetRevPacker
 {
 public:
-    WidgetRevPacker(MessageCenter* _message_center)
-    {
-        message_center = _message_center;
-    };
-    ~WidgetRevPacker();
+    static std::shared_ptr<WidgetRevPacker> getInstance() {return instance;}
+    static void destoryInstance(WidgetRevPacker* x) {delete x;}
 
     /*消息中心指针*//*message_center->submit(MessagePackage)*/
-    MessageCenter *message_center;
+    std::shared_ptr<MessageCenter> message_center;
 
     /*消息打包，压入消息中心*/
     void WidgetsendMessage(WidgetArgPackage* current_widget_arg)
@@ -44,15 +41,22 @@ public:
         }
         }
 
-
         message_center->MessageSubmit(msg_ptr);
         delete current_widget_arg;
     }
 
-    void test()
+private:
+    WidgetRevPacker()
     {
-        std::cout << "界面消息发送 测试完毕" << std::endl;
-    }
+        message_center = MessageCenter::getInstance();
+    };
+    ~WidgetRevPacker()
+    {
+
+    };
+
+    static std::shared_ptr<WidgetRevPacker> instance;
+    std::mutex _mutex;
 };
 
 

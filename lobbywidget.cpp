@@ -109,9 +109,9 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui->UidLabel->setStyleSheet("QLabel {font: 12pt Segoe Script; background-color: yellow}");
     ui->UidLabel->setText(UID);
 
-    qDebug() << "connecting";
     connect(ui->ClassicModeBtn,&QPushButton::clicked,this,&LobbyWidget::onClassicModeBtnClicked);
-
+    connect(ui->ClassicModeBtn,&QPushButton::clicked,this,&LobbyWidget::onClassicModeBtnClicked);
+    connect(ui->ClassicModeBtn,&QPushButton::clicked,this,&LobbyWidget::onClassicModeBtnClicked);
 
 }
 
@@ -183,15 +183,6 @@ void LobbyWidget::RollImage()
     RollImageIndex = (RollImageIndex + 1) % 7;
 }
 
-void LobbyWidget::onExitGameBtnClicked()
-{
-    this->show();
-    disconnect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
-    delete GameExitBtn;
-    delete gameWidget;
-    if(BGMState) BGMPlayer->play();
-}
-
 void LobbyWidget::ImportConfig()
 {
     QString filePath = "./config/config.json";
@@ -226,3 +217,42 @@ void LobbyWidget::ImportConfig()
         }
     }
 }
+
+
+void LobbyWidget::onExitGameBtnClicked()
+{
+    //TODO
+    return;    
+}
+/*
+void LobbyWidget::onCreateRoomBtnClicked()
+{
+    //TODO
+    WidgetArgPackage* create_room_submit = new WidgetArgPackage();
+    create_room_submit->packMessage<WidgetArgRoom>(ROOM_OPCODE::CREATE_ROOM, "00000000001", "");
+    widget_rev_packer->WidgetsendMessage(create_room_submit);
+}
+void LobbyWidget::onJoinRoomBtnClicked()
+{
+    //TODO
+    
+}
+//********************INTERFACE****************************
+void LobbyWidget::interfaceEnterRoomSuccess(WidgetArgPackage* arg)
+{
+
+}
+void LobbyWidget::interfaceEnterRoomFail(WidgetArgPackage* arg)
+{
+    
+}
+void LobbyWidget::interfaceExitRoom(WidgetArgPackage* arg)
+{
+    this->show();
+    disconnect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
+    delete GameExitBtn;
+    delete gameWidget;
+    if(BGMState) BGMPlayer->play();
+}
+//*********************************************************
+*/

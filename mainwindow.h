@@ -63,9 +63,8 @@ private:
     QRegularExpressionValidator *PasswordValidator = nullptr;
     QRegularExpressionValidator *UsernameValidator = nullptr;
 
-    MessageCenter   *message_center;
-    WidgetRevPacker *widget_rev_packer;
-    LobbyWidget *lobbyWidget;
+    std::shared_ptr<MessageCenter> message_center;
+    std::shared_ptr<WidgetRevPacker> widget_rev_packer;
     QString CiphertextPwd;         //需要记住账号密码时，在返回登录成功后写入json
 private:
     bool RemUser;

@@ -116,19 +116,16 @@ MainWindow::MainWindow(QWidget *parent)
     GridLayout->setRowStretch(4,0);
 
     //***********************need global********************************
-    message_center = new MessageCenter();
-    widget_rev_packer = new WidgetRevPacker(message_center);
+    message_center = MessageCenter::getInstance();
+    widget_rev_packer = WidgetRevPacker::getInstance();
+    
     message_center->loadInterface("interfaceLoginSuccess", std::bind(&MainWindow::interfaceLoginSuccess, this, std::placeholders::_1));
     message_center->loadInterface("interfaceLoginFail",    std::bind(&MainWindow::interfaceLoginFail, this, std::placeholders::_1));
 
-    //****************test socketIO client******************************
-    WidgetArgPackage* create_room_submit = new WidgetArgPackage();
-    create_room_submit->packMessage<WidgetArgRoom>(ROOM_OPCODE::CREATE_ROOM, "00000000001", "");
-    widget_rev_packer->WidgetsendMessage(create_room_submit);
 }
 void MainWindow::onForgetPasswordButtonClicked()
 {
-    FindAndSignUpWidget *FindWidget = new FindAndSignUpWidget(1,message_center,widget_rev_packer);        //mode1 -> 忘记密码
+    FindAndSignUpWidget *FindWidget = new FindAndSignUpWidget(1);        //mode1 -> 忘记密码
     FindWidget->show();
 
     WidgetArgPackage* forgetPassword_submit = new WidgetArgPackage();
@@ -137,7 +134,7 @@ void MainWindow::onForgetPasswordButtonClicked()
 }
 void MainWindow::onRegisterButtonClicked()
 {
-    FindAndSignUpWidget *SignUPWidget = new FindAndSignUpWidget(0,message_center,widget_rev_packer);         //mode0 -> 注册
+    FindAndSignUpWidget *SignUPWidget = new FindAndSignUpWidget(0);         //mode0 -> 注册
     SignUPWidget->show();
 
     WidgetArgPackage* register_submit = new WidgetArgPackage();
@@ -170,7 +167,7 @@ void MainWindow::EnterLobby()
 {
     EmailOrUid = usernameLineEdit->text();
     Password = passwordLineEdit->text();
-    lobbyWidget = new LobbyWidget();
+    LobbyWidget *lobbyWidget = new LobbyWidget();
     lobbyWidget->show();
         //改为delete，先delete所有成员指针
     CiphertextPwd = Encryption();
@@ -192,7 +189,7 @@ void MainWindow::interfaceLoginFail(WidgetArgPackage* arg)
 
     delete arg;
 }
-//********************************************************
+//*********************************************************
 
 void MainWindow::ImportConfig()
 {
