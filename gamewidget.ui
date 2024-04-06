@@ -478,6 +478,71 @@ border:1px solid;</string>
     <string>加倍</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="ReadyBtn">
+   <property name="geometry">
+    <rect>
+     <x>810</x>
+     <y>740</y>
+     <width>161</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>准备</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="ReadyLabel3">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>880</y>
+     <width>61</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="ReadyLabel1">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>260</y>
+     <width>61</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="ReadyLabel2">
+   <property name="geometry">
+    <rect>
+     <x>1770</x>
+     <y>290</y>
+     <width>61</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="UnReadyBtn">
+   <property name="geometry">
+    <rect>
+     <x>810</x>
+     <y>730</y>
+     <width>161</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>取消准备</string>
+   </property>
+  </widget>
   <zorder>ClockImageLabel</zorder>
   <zorder>FinalCard1</zorder>
   <zorder>FinalCard2</zorder>
@@ -511,6 +576,11 @@ border:1px solid;</string>
   <zorder>MSGLabel1</zorder>
   <zorder>MSGLabel2</zorder>
   <zorder>MSGLabel3</zorder>
+  <zorder>ReadyBtn</zorder>
+  <zorder>ReadyLabel3</zorder>
+  <zorder>ReadyLabel1</zorder>
+  <zorder>ReadyLabel2</zorder>
+  <zorder>UnReadyBtn</zorder>
  </widget>
  <resources/>
  <connections/>

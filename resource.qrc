@@ -134,11 +134,13 @@
         <file>image/Cards_1/queen_of_spades.png</file>
         <file>image/Cards_1/red_of_joker.png</file>
         <file>image/Cards_1/10_of_diamonds.png</file>
+        <file>image/Icon/ready.png</file>
+        <file>image/Profile/default.jpg</file>
     </qresource>
     <qresource prefix="/sound">
         <file>sound/BGM/lobbybgm.mp3</file>
         <file>sound/BGM/gamebgm.mp3</file>
-        <file>sound/Sound_effects/black_of_joker.m4a</file>
+        <file>sound/Sound_effects/Single_black.m4a</file>
         <file>sound/Sound_effects/Bomb.m4a</file>
         <file>sound/Sound_effects/Bomb_with_Pair.m4a</file>
         <file>sound/Sound_effects/Bomb_with_Single.m4a</file>
@@ -166,7 +168,7 @@
         <file>sound/Sound_effects/qiangdizhu0.m4a</file>
         <file>sound/Sound_effects/qiangdizhu1.m4a</file>
         <file>sound/Sound_effects/qiangdizhu2.m4a</file>
-        <file>sound/Sound_effects/red_of_joker.m4a</file>
+        <file>sound/Sound_effects/Single_red.m4a</file>
         <file>sound/Sound_effects/Single_2.m4a</file>
         <file>sound/Sound_effects/Single_3.m4a</file>
         <file>sound/Sound_effects/Single_4.m4a</file>
@@ -198,5 +200,6 @@
         <file>sound/Sound_effects/ThreePair_jack.m4a</file>
         <file>sound/Sound_effects/ThreePair_king.m4a</file>
         <file>sound/Sound_effects/ThreePair_queen.m4a</file>
+        <file>sound/Sound_effects/warning.mp3</file>
     </qresource>
 </RCC>

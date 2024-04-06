@@ -11,6 +11,7 @@ CONFIG += c++17
 
 SOURCES += \
     backgroundwidget.cpp \
+    effectplayer.cpp \
     findandsignupwidget.cpp \
     gameoverwidget.cpp \
     gamewidget.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 
 HEADERS += \
     backgroundwidget.h \
+    effectplayer.h \
     findandsignupwidget.h \
     gameoverwidget.h \
     gamewidget.h \
