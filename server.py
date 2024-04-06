@@ -106,7 +106,7 @@ def Create_room(data):
         value = redis_data.redis_db.get(key)
         print(key.decode(), "->", value.decode())
 #################################################################
-    emit('server_response',jsonify(type = 4,roomid = data_room_id,seat = roomhost.seat).data.decode(),room = data_account)
+    emit('server_response',jsonify(type = 4,status = 1, roomid = data_room_id,seat = roomhost.seat).data.decode(),room = data_account)
     
     
     battlestatus.room_id = battlestatus.room_id+1

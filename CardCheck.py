@@ -93,15 +93,16 @@ def CardTypeCheck(Card):
                     succThreeCount += 1
 
             #print(f"succThreeCount:{succThreeCount}, ThreePairCount:{ThreePairCount}, PairCount:{PairCount}, SingleCount:{SingleCount}")
-            if(succThreeCount == ThreePairCount):
-                if(ThreePairCount == PairCount):
-                    CardTypeResult.append([CardType['ThreePair_Straight_with_Pair'],bukket[0][1]])
-                elif(ThreePairCount == SingleCount or ThreePairCount == PairCount*2 + SingleCount):
+            if(succThreeCount >= 2):
+                if(succThreeCount == ThreePairCount):
+                    if(ThreePairCount == PairCount and SingleCount == 0):
+                        CardTypeResult.append([CardType['ThreePair_Straight_with_Pair'],bukket[0][1]])
+                    elif(ThreePairCount == SingleCount or ThreePairCount == PairCount*2 + SingleCount):
+                        CardTypeResult.append([CardType['ThreePair_Straight_with_Single'],bukket[0][1]])
+                    elif(PairCount == 0 and SingleCount == 0):
+                        CardTypeResult.append([CardType['ThreePair_Straight'],bukket[0][1]])
+                elif(succThreeCount == (ThreePairCount - succThreeCount)*3 + PairCount*2 + SingleCount):
                     CardTypeResult.append([CardType['ThreePair_Straight_with_Single'],bukket[0][1]])
-                elif(PairCount == 0 and SingleCount == 0):
-                    CardTypeResult.append([CardType['ThreePair_Straight'],bukket[0][1]])
-            elif(succThreeCount == (ThreePairCount - succThreeCount)*3 + PairCount*2 + SingleCount):
-                CardTypeResult.append([CardType['ThreePair_Straight_with_Single'],bukket[0][1]])
 
     #消除3
     for i in range(len(bukket)):
@@ -135,7 +136,7 @@ def CardTypeCheck(Card):
                 if(bukket[i+1][0] == 2 and bukket[i][1] == bukket[i+1][1] + 1):
                     succPairCount += 1
 
-            if(succPairCount == PairCount and SingleCount == 0):
+            if(succPairCount >= 3 and succPairCount == PairCount and SingleCount == 0):
                 CardTypeResult.append([CardType['Pair_Straight'],bukket[0][1]])
     
     #消除2
@@ -161,7 +162,7 @@ def CardTypeCheck(Card):
                 if(bukket[i+1][0] == 1 and bukket[i][1] == bukket[i+1][1] + 1):
                     succSingleCount += 1
 
-            if(succSingleCount == SingleCount):
+            if(succSingleCount >= 5 and succSingleCount == SingleCount):
                 CardTypeResult.append([CardType['Straight'],bukket[0][1]])
 
     if(len(CardTypeResult) == 0):
@@ -201,6 +202,9 @@ if __name__ == "__main__":
     testOutCard.append(int('000111011100111100000000000000000000000000000000000000', 2))    #32 3a 2k 2q
     testOutCard.append(int('000001111111100000000000000000000000000000000000000000', 2))    #12 4a 3k
     testOutCard.append(int('000000001101111110000000000000000000000000000000000000', 2))    #2a 3k 3q
+    testOutCard.append(int('111111001100101000100000000000000000000000000000000000', 2))
+    testOutCard.append(int('111100001110111101100000000000000000000000000000000000', 2))
+    
 
     testPreCard = int('000000000000000000000000000000000000000000000000000000', 2)
 
