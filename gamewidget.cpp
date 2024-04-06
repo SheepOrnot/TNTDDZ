@@ -796,18 +796,18 @@ QString GameWidget::Transform_To_String(int Num)
 
 void GameWidget::ShowIdentityIcon(std::string identity1,std::string identity2,std::string identity3)  //"farmer" "landlord"
 {
-    PreviousIdentity = QString::fromStdString(identity1); NextIdentity = QString::fromStdString(identity2); PlayerIdentity = QString::fromStdString(identity3);
-    IdentityPixmap1 = QPixmap(":/image/image/Icon/"+PreviousIdentity+".png");
+    PreviousIdentityString = QString::fromStdString(identity1); NextIdentityString = QString::fromStdString(identity2); PlayerIdentityString = QString::fromStdString(identity3);
+    IdentityPixmap1 = QPixmap(":/image/image/Icon/"+PreviousIdentityString+".png");
     IdentityPixmap1 = IdentityPixmap1.scaled(ui->IdentityLabel1->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->IdentityLabel1->setPixmap(IdentityPixmap1);
     ui->IdentityLabel1->setScaledContents(true);
 
-    IdentityPixmap2 = QPixmap(":/image/image/Icon/"+NextIdentity+".png");
+    IdentityPixmap2 = QPixmap(":/image/image/Icon/"+NextIdentityString+".png");
     IdentityPixmap2 = IdentityPixmap2.scaled(ui->IdentityLabel1->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->IdentityLabel2->setPixmap(IdentityPixmap2);
     ui->IdentityLabel2->setScaledContents(true);
 
-    IdentityPixmap3 = QPixmap(":/image/image/Icon/"+PlayerIdentity+".png");
+    IdentityPixmap3 = QPixmap(":/image/image/Icon/"+PlayerIdentityString+".png");
     IdentityPixmap3 = IdentityPixmap3.scaled(ui->IdentityLabel3->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->IdentityLabel3->setPixmap(IdentityPixmap3);
     ui->IdentityLabel3->setScaledContents(true);
@@ -1314,8 +1314,12 @@ void GameWidget::StartGame(std::string identity1,std::string identity2,std::stri
     ui->MSGLabel3->clear();
     ShowIdentityIcon(identity1,identity2,identity3);
     int cardnum1,cardnum2;
-    if(identity1=="farmer") cardnum1 = 17; else cardnum1 = 20;
-    if(identity2=="farmer") cardnum2 = 17; else cardnum2 = 20;
+    if(identity1=="farmer") { cardnum1 = 17; PreviousIdentity = 0;}
+    else { cardnum1 = 20; PreviousIdentity = 1;}
+    if(identity2=="farmer") {cardnum2 = 17; NextIdentity = 0;}
+    else { cardnum2 = 20; NextIdentity = 1;}
+    if(identity3=="farmer") {PlayerIdentity = 0;}
+    else {PlayerIdentity = 1;}
     DisconnectHandCards();
     for(int i = 0;i<PlayerHandCards.size();i++)
     {

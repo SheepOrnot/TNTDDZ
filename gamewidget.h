@@ -43,7 +43,7 @@ public:
     int Width,Height;
     std::vector<WidgetCard> PreviousPlayerOutCards,NextPlayerOutCards,PlayerOutCards,PlayerHandCards,FinalCards;    //   PlayerOutCards-> 返回的合法的牌
     std::bitset<54> SelectedCards = 0;//点击出牌时选中的牌（不知道合不合法）
-    QString PreviousIdentity,NextIdentity,PlayerIdentity;
+    QString PreviousIdentityString,NextIdentityString,PlayerIdentityString;
     QString PreviousBeanNum,NextBeanNum,PlayerBeanNum;
     QMediaPlayer *BGMPlayer,*EffectPlayer;
 
@@ -92,6 +92,8 @@ private:
     int PreviousCardsNumber,NextCardsNumber;
     int PreviousProfileIndex,NextProfileIndex,PlayerProfileIndex;
     int PreviousOutCradsType,NextOutCradsType,PlayerOutCradsType;
+    bool PreviousDouble,NextDouble,PlayerDouble;
+    bool PreviousIdentity,NextIdentity,PlayerIdentity;
     QTimer *timer;
     int remainingTime;
     const QString TypeIndex[6] = { "",
