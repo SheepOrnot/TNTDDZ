@@ -238,11 +238,28 @@ CompareResult CardProcess::CardCheck(long OutCard, long PreOutCard) {
     if(OutCardType[0].first == CardType::KingBomb)
         return std::make_pair(OutCardType, 1);
     
-    if(OutCardType[0].first == PreOutCardType[0].first and OutCardType[0].second > PreOutCardType[0].second)
+    if(OutCardType[0].first == PreOutCardType[0].first && OutCardType[0].second > PreOutCardType[0].second)
         return std::make_pair(OutCardType, 1);
     
     return std::make_pair(OutCardType, 0);
 
+}
+
+bool CardProcess::CardCheck_tiny(CardTypeStruct Card, CardTypeStruct CardPre)
+{
+    if(Card.first == CardType::None)
+        return 0;
+    
+    if(CardPre.first == CardType::None)
+        return 1;
+    
+    if(Card.first == CardType::KingBomb)
+        return 1;
+    
+    if(Card.first == CardPre.first && Card.second > CardPre.second)
+        return 1;
+    
+    return 0;
 }
 
 ActionVector CardProcess::EnumerateCardOutAction(std::bitset<54> Card)

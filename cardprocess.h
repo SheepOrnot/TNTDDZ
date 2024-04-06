@@ -45,9 +45,10 @@ public:
     CardProcess() = delete;
     static CompareResult CardCheck(long OutCard, long PreOutCard);
     static ActionVector EnumerateCardOutAction(std::bitset<54> Card);
+    static CardTypeVector CardTypeCheck(std::bitset<54> Card);
+    static CardCheck_tiny(CardTypeStruct Card, CardTypeStruct CardPre);
 private:
     static void PringBukket(std::vector<std::pair<int, int>>& bukket);
-    static CardTypeVector CardTypeCheck(std::bitset<54> Card);
 };
 
 #endif // CARDPROCESS_H

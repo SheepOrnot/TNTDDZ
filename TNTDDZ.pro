@@ -26,6 +26,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     personalinfowidget.cpp \
+    robot.cpp \
     settingwidget.cpp \
     socketioclient.cpp \
     widgetcard.cpp
@@ -45,6 +46,7 @@ HEADERS += \
     messagecenter.h \
     messagepackage.h \
     networkrevpacker.h \
+    robot.h \
     settingwidget.h \
     socketioclient.h \
     threadpool.h \
