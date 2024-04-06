@@ -1,4 +1,5 @@
 #include "cardprocess.h"
+//#define debug
 
 void CardProcess::PringBukket(std::vector<std::pair<int, int>>& bukket)
 {
@@ -10,21 +11,21 @@ void CardProcess::PringBukket(std::vector<std::pair<int, int>>& bukket)
 }
 
 CardTypeVector CardProcess::CardTypeCheck(std::bitset<54> Card) {
-#define CARD_STRUCT(type, point) std::make_pair(type, point)
-#define INSERT_RESULT(type) CardTypeResult.push_back(CARD_STRUCT(CardType::type, bukket[0].second))
-#define LEN(v) v.size()
-
+    #define CARD_STRUCT(type, point) std::make_pair(type, point)
+    #define INSERT_RESULT(type) CardTypeResult.push_back(CARD_STRUCT(CardType::type, bukket[0].second))
+    #define LEN(v) v.size()    
+    
     CardTypeVector CardTypeResult;
     if(Card.to_ulong() == 0)
     {
         CardTypeResult.push_back(CARD_STRUCT(CardType::None, 0));
         return CardTypeResult;
     }
-
+ 
     std::vector<std::pair<int, int>> bukket;    //(count, point)
     std::vector<int> count(16, 0);
 
-    for (int i = 0; i < Card.size(); ++i)
+    for (int i = 0; i < Card.size(); ++i) 
     {
         if (Card[i] == 0) continue;
         if (i >= 48 && i <= 51) count[13] += 1;
@@ -33,15 +34,18 @@ CardTypeVector CardProcess::CardTypeCheck(std::bitset<54> Card) {
         else count[i / 4] += 1;
     }
 
-    for (int i = 0; i < count.size(); ++i)
+    for (int i = 0; i < count.size(); ++i) 
     {
         if (count[i] != 0)
             bukket.push_back({count[i], i});
     }
 
     std::sort(bukket.rbegin(), bukket.rend());
+
+#ifdef debug
     std::cout << "4 bukket: ";
     PringBukket(bukket);
+#endif
 
     //王炸判断
     if(LEN(bukket) == 2 && bukket[0] == std::make_pair(1, 15) && bukket[1] == std::make_pair(1, 14))
@@ -77,8 +81,10 @@ CardTypeVector CardProcess::CardTypeCheck(std::bitset<54> Card) {
     }
     std::sort(bukket.rbegin(), bukket.rend());
 
+#ifdef debug
     std::cout << "3 bukket: ";
     PringBukket(bukket);
+#endif
 
     //关键3判断
     if(bukket[0].first >= 3)
@@ -100,25 +106,31 @@ CardTypeVector CardProcess::CardTypeCheck(std::bitset<54> Card) {
             int ThreePairCount = std::count(CountList.begin(), CountList.end(), 3);
             int PairCount = std::count(CountList.begin(), CountList.end(), 2);
             int SingleCount = std::count(CountList.begin(), CountList.end(), 1);
-
+            
             //连号检查
             int succThreeCount = 1;
             for(int i = 0; i < LEN(bukket)-1; i ++ )
                 if(bukket[i+1].first == 3 and bukket[i].second == bukket[i+1].second + 1)
                     succThreeCount += 1;
 
-            //print(f"succThreeCount:{succThreeCount}, ThreePairCount:{ThreePairCount}, PairCount:{PairCount}, SingleCount:{SingleCount}")
-            if(succThreeCount == ThreePairCount)
+            #ifdef debug
+            printf("succThreeCount:%d, ThreePairCount:%d, PairCount:%d, SingleCount:%d\n", succThreeCount, ThreePairCount, PairCount, SingleCount);
+            #endif
+
+            if(succThreeCount != 1)
             {
-                if(ThreePairCount == PairCount)
-                    INSERT_RESULT(ThreePair_Straight_with_Pair);
-                else if(ThreePairCount == SingleCount || ThreePairCount == PairCount*2 + SingleCount)
+                if(succThreeCount == ThreePairCount)
+                {
+                    if(ThreePairCount == PairCount && SingleCount == 0)
+                        INSERT_RESULT(ThreePair_Straight_with_Pair);
+                    else if(ThreePairCount == PairCount*2 + SingleCount)
+                        INSERT_RESULT(ThreePair_Straight_with_Single);
+                    else if(PairCount == 0 && SingleCount == 0)
+                        INSERT_RESULT(ThreePair_Straight);
+                }
+                else if(succThreeCount == (ThreePairCount - succThreeCount)*3 + PairCount*2 + SingleCount)
                     INSERT_RESULT(ThreePair_Straight_with_Single);
-                else if(PairCount == 0 && SingleCount == 0)
-                    INSERT_RESULT(ThreePair_Straight);
             }
-            else if(succThreeCount == (ThreePairCount - succThreeCount)*3 + PairCount*2 + SingleCount)
-                INSERT_RESULT(ThreePair_Straight_with_Single);
         }
     }
 
@@ -141,8 +153,11 @@ CardTypeVector CardProcess::CardTypeCheck(std::bitset<54> Card) {
         }
     }
     std::sort(bukket.rbegin(), bukket.rend());
+
+#ifdef debug
     std::cout << "2 bukket: ";
     PringBukket(bukket);
+#endif
 
     //关键2判断
     if(bukket[0].first >= 2)
@@ -163,11 +178,11 @@ CardTypeVector CardProcess::CardTypeCheck(std::bitset<54> Card) {
                 if(bukket[i+1].first == 2 and bukket[i].second == bukket[i+1].second + 1)
                     succPairCount += 1;
 
-            if(succPairCount == PairCount && SingleCount == 0)
+            if(succPairCount >= 3 && succPairCount == PairCount && SingleCount == 0)
                 INSERT_RESULT(Pair_Straight);
         }
     }
-
+    
     //消除2
     for(int i = 0; i < LEN(bukket); i ++)
     {
@@ -176,8 +191,11 @@ CardTypeVector CardProcess::CardTypeCheck(std::bitset<54> Card) {
         bukket.push_back({1, bukket[i].second});
     }
     std::sort(bukket.rbegin(), bukket.rend());
+
+#ifdef debug
     std::cout << "1 bukket: ";
     PringBukket(bukket);
+#endif
 
     //关键1判断
     if(bukket[0].first >= 1)
@@ -197,7 +215,7 @@ CardTypeVector CardProcess::CardTypeCheck(std::bitset<54> Card) {
                 if(bukket[i+1].first == 1 and bukket[i].second == bukket[i+1].second + 1)
                     succSingleCount += 1;
 
-            if(succSingleCount == SingleCount)
+            if(succSingleCount >= 5 && succSingleCount == SingleCount)
                 INSERT_RESULT(Straight);
         }
     }
@@ -213,18 +231,60 @@ CompareResult CardProcess::CardCheck(long OutCard, long PreOutCard) {
 
     if(OutCardType[0].first == CardType::None)
         return std::make_pair(OutCardType, 0);
-
+    
     if(PreOutCardType[0].first == CardType::None)
         return std::make_pair(OutCardType, 1);
-
+    
     if(OutCardType[0].first == CardType::KingBomb)
         return std::make_pair(OutCardType, 1);
-
+    
     if(OutCardType[0].first == PreOutCardType[0].first and OutCardType[0].second > PreOutCardType[0].second)
         return std::make_pair(OutCardType, 1);
-
+    
     return std::make_pair(OutCardType, 0);
 
+}
+
+ActionVector CardProcess::EnumerateCardOutAction(std::bitset<54> Card)
+{
+    ActionVector Action;
+    unsigned long Count = Card.count();
+    
+    //build mapping: 
+    std::vector<int> mapping;
+    for(int i = 0; i < 54; i ++)
+    {
+        if(Card[i] == 1) mapping.push_back(i);
+    }
+
+    for(unsigned long i = 0; i < (1<<mapping.size()); i ++)
+    {
+        std::bitset<54> selected;
+        unsigned long x = i;
+        int j = 0;
+        while(x)
+        {
+            if(x&1) selected[mapping[j]] = 1;
+            j ++;
+            x >>= 1;
+        }
+
+        CardTypeVector results = CardTypeCheck(selected);
+        for(auto& result : results)
+        {
+            if(result.first == 0) continue;
+            CardAction action = {result.first, result.second, selected};
+            Action.push_back(action);
+        }
+    }
+
+    if(Action.size() == 0)
+    {
+        CardAction action = {CardType::None, 0, 0};
+        Action.push_back(action);
+    }
+
+    return Action;
 }
 
 /*
@@ -238,8 +298,9 @@ int main() {
     testOutCard.push_back(0b000111011100111100000000000000000000000000000000000000);    //32 3a 2k 2q
     testOutCard.push_back(0b000001111111100000000000000000000000000000000000000000);    //12 4a 3k
     testOutCard.push_back(0b000000001101111110000000000000000000000000000000000000);    //2a 3k 3q
-
-    long testPreCard = 0b000000000000000000000000000000000000000000000000000000;
+    testOutCard.push_back(0b111111001100101000100000000000000000000000000000000000);
+    testOutCard.push_back(0b111100001110111101100000000000000000000000000000000000);
+    long testPreCard    = 0b000000000000000000000000000000000000000000000000000000;
 
     std::vector<CompareResult> result;
     for (long test : testOutCard) {
@@ -252,6 +313,14 @@ int main() {
         }
         std::cout << (result_i.second ? "true" : "false") << std::endl;
     }
+
+#ifndef debug
+    ActionVector Action = CardProcess::EnumerateCardOutAction(0b111111111111111111110000000000000000000000000000000000);
+    for(auto k : Action)
+    {
+        std::cout << "(" << k.cardtype << "," << k.point << ") " << k.action.to_string() << std::endl;
+    }
+#endif
 
     return 0;
 }
