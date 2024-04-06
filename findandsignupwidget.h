@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPushButton>
+#include <QTimer>
 #include<QRegularExpressionValidator>
 namespace Ui {
 class FindAndSignUpWidget;
@@ -28,7 +29,10 @@ private:
     QRegularExpressionValidator *EmailValidator = nullptr;
     QRegularExpressionValidator *VerificationCodeValidator = nullptr;
     QRegularExpressionValidator *UsernameValidator = nullptr;
-
+    QTimer *timer;
+    int remainingTime;
+    void StartCountDown();
+    void updateCountDown();
 private slots:
     void onEnterKeyPushButtonclicked();
     void onShowPassword1clicked();

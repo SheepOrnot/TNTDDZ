@@ -55,6 +55,11 @@ public:
     QLabel *MSGLabel1;
     QLabel *MSGLabel2;
     QLabel *MSGLabel3;
+    QPushButton *ReadyBtn;
+    QLabel *ReadyLabel3;
+    QLabel *ReadyLabel1;
+    QLabel *ReadyLabel2;
+    QPushButton *UnReadyBtn;
 
     void setupUi(QWidget *GameWidget)
     {
@@ -174,6 +179,21 @@ public:
         MSGLabel3 = new QLabel(GameWidget);
         MSGLabel3->setObjectName("MSGLabel3");
         MSGLabel3->setGeometry(QRect(820, 770, 171, 41));
+        ReadyBtn = new QPushButton(GameWidget);
+        ReadyBtn->setObjectName("ReadyBtn");
+        ReadyBtn->setGeometry(QRect(810, 740, 161, 51));
+        ReadyLabel3 = new QLabel(GameWidget);
+        ReadyLabel3->setObjectName("ReadyLabel3");
+        ReadyLabel3->setGeometry(QRect(150, 880, 61, 51));
+        ReadyLabel1 = new QLabel(GameWidget);
+        ReadyLabel1->setObjectName("ReadyLabel1");
+        ReadyLabel1->setGeometry(QRect(70, 260, 61, 51));
+        ReadyLabel2 = new QLabel(GameWidget);
+        ReadyLabel2->setObjectName("ReadyLabel2");
+        ReadyLabel2->setGeometry(QRect(1770, 290, 61, 51));
+        UnReadyBtn = new QPushButton(GameWidget);
+        UnReadyBtn->setObjectName("UnReadyBtn");
+        UnReadyBtn->setGeometry(QRect(810, 730, 161, 51));
         ClockImageLabel->raise();
         FinalCard1->raise();
         FinalCard2->raise();
@@ -207,6 +227,11 @@ public:
         MSGLabel1->raise();
         MSGLabel2->raise();
         MSGLabel3->raise();
+        ReadyBtn->raise();
+        ReadyLabel3->raise();
+        ReadyLabel1->raise();
+        ReadyLabel2->raise();
+        UnReadyBtn->raise();
 
         retranslateUi(GameWidget);
 
@@ -249,6 +274,11 @@ public:
         MSGLabel1->setText(QCoreApplication::translate("GameWidget", "\345\212\240\345\200\215", nullptr));
         MSGLabel2->setText(QCoreApplication::translate("GameWidget", "\345\212\240\345\200\215", nullptr));
         MSGLabel3->setText(QCoreApplication::translate("GameWidget", "\345\212\240\345\200\215", nullptr));
+        ReadyBtn->setText(QCoreApplication::translate("GameWidget", "\345\207\206\345\244\207", nullptr));
+        ReadyLabel3->setText(QCoreApplication::translate("GameWidget", "TextLabel", nullptr));
+        ReadyLabel1->setText(QCoreApplication::translate("GameWidget", "TextLabel", nullptr));
+        ReadyLabel2->setText(QCoreApplication::translate("GameWidget", "TextLabel", nullptr));
+        UnReadyBtn->setText(QCoreApplication::translate("GameWidget", "\345\217\226\346\266\210\345\207\206\345\244\207", nullptr));
     } // retranslateUi
 
 };

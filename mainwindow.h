@@ -60,6 +60,9 @@ private:
     QString Encryption();
     QString Decryption();
     void RestoreConfig();
+    void CheckConfigFile();
+    void fillDefaultValues(QJsonObject& jsonObj);
+    QJsonObject fillDefaultValuesRecursive(const QJsonObject& defaultValues, const QJsonObject& jsonObj);
 };
 
 #endif // MAINWINDOW_H

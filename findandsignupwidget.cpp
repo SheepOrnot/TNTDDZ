@@ -146,4 +146,27 @@ void FindAndSignUpWidget::onHidePassword2clicked()
 void FindAndSignUpWidget::onSendKeyPushButtonclicked()
 {
     qDebug()<<"Send Verify Code";
+    StartCountDown();
+}
+
+void FindAndSignUpWidget::StartCountDown()
+{
+    ui->SendKeyPushButton->setEnabled(false); // 禁用按钮
+    remainingTime = 60;
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &FindAndSignUpWidget::updateCountDown);
+    timer->start(1000); // 每秒触发一次timeout()信号
+    updateCountDown(); // 更新显示剩余秒数
+}
+
+void FindAndSignUpWidget::updateCountDown()
+{
+    if (remainingTime > 0) {
+        ui->SendKeyPushButton->setText(QString("%1秒可后重发").arg(remainingTime));
+        remainingTime--;
+    } else {
+        ui->SendKeyPushButton->setEnabled(true); // 倒计时结束后，启用按钮
+        ui->SendKeyPushButton->setText("发送验证码");
+        timer->stop(); // 停止计时器
+    }
 }
