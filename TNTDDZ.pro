@@ -17,6 +17,8 @@ QMAKE_CXXFLAGS += -lboost_date_time
 
 SOURCES += \
     backgroundwidget.cpp \
+    effectplayer.cpp \
+    cardprocess.cpp \
     findandsignupwidget.cpp \
     gameoverwidget.cpp \
     gamewidget.cpp \
@@ -31,6 +33,8 @@ SOURCES += \
 HEADERS += \
     HTTPJSONSender.h \
     backgroundwidget.h \
+    effectplayer.h \
+    cardprocess.h \
     common.h \
     findandsignupwidget.h \
     gameoverwidget.h \

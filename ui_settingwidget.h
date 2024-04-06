@@ -99,14 +99,14 @@ public:
         CardStyleWord = new QLabel(SettingWidget);
         CardStyleWord->setObjectName("CardStyleWord");
         CardStyleWord->setGeometry(QRect(530, 140, 81, 31));
-        CardStyleWord->setStyleSheet(QString::fromUtf8("background-color: rgb(93, 255, 131);"));
+        CardStyleWord->setStyleSheet(QString::fromUtf8(""));
         ResolutionComboBox = new QComboBox(SettingWidget);
         ResolutionComboBox->setObjectName("ResolutionComboBox");
         ResolutionComboBox->setGeometry(QRect(620, 180, 231, 31));
         ResolutionWord = new QLabel(SettingWidget);
         ResolutionWord->setObjectName("ResolutionWord");
         ResolutionWord->setGeometry(QRect(530, 180, 81, 31));
-        ResolutionWord->setStyleSheet(QString::fromUtf8("background-color: rgb(93, 255, 131);"));
+        ResolutionWord->setStyleSheet(QString::fromUtf8(""));
         BGMVolume = new QSlider(SettingWidget);
         BGMVolume->setObjectName("BGMVolume");
         BGMVolume->setGeometry(QRect(550, 420, 311, 22));

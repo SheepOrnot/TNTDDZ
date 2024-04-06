@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPushButton>
+#include <QTimer>
 #include<QRegularExpressionValidator>
 #include "messagecenter.h"
 #include "widgetrevpacker.h"
@@ -42,7 +43,10 @@ private:
     QRegularExpressionValidator *EmailValidator = nullptr;
     QRegularExpressionValidator *VerificationCodeValidator = nullptr;
     QRegularExpressionValidator *UsernameValidator = nullptr;
-
+    QTimer *timer;
+    int remainingTime;
+    void StartCountDown();
+    void updateCountDown();
     std::shared_ptr<MessageCenter> message_center;
     std::shared_ptr<WidgetRevPacker> widget_rev_packer;
 

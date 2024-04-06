@@ -81,17 +81,18 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     //QPropertyAnimation *animation = new QPropertyAnimation(ui->RollLabel, "pixmap");
     RollImageTimer = new QTimer();
     connect(RollImageTimer, &QTimer::timeout, this, &LobbyWidget::RollImage);
-    RollImageTimer->start(3000);    //QObject::startTimer: Timers can only be used with threads started with QThread
+    RollImageTimer->start(3000);
 
     QPixmap RollPixmap0(RollPixmapsPath[RollImageIndex++]);
     RollPixmap0 = RollPixmap0.scaled(ui->RollLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation); // 将图片缩放到QLabel的尺寸
     ui->RollLabel->setPixmap(RollPixmap0);
     ui->RollLabel->setScaledContents(true);
 
-    ProfilePixmap = QPixmap(ProfileImagePath);
-    ProfilePixmap = ProfilePixmap.scaled(ui->ProfileLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation); // 将图片缩放到QLabel的尺寸
-    ui->ProfileLabel->setPixmap(ProfilePixmap);
-    ui->ProfileLabel->setScaledContents(true);
+    ui->ProfileLabel->setIcon(QIcon(":/image/image/Profile/0.jpg"));
+    ui->ProfileLabel->setStyleSheet("QPushButton { background-color: transparent; }");
+    ui->ProfileLabel->setIconSize(ui->ProfileLabel->size());
+    connect(ui->ProfileLabel,&QPushButton::clicked,this,&LobbyWidget::onPersonalInfoBtnClicked);
+
 
     ui->BeanEdit->setText(BeanNum);
     ui->BeanEdit->setReadOnly(true);
@@ -108,6 +109,10 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
 
     ui->UidLabel->setStyleSheet("QLabel {font: 12pt Segoe Script; background-color: yellow}");
     ui->UidLabel->setText(UID);
+
+    QString roomidstyle = QString("font: %1pt Microsoft YaHei UI").arg(Width*0.02);
+    ui->RoomId->setStyleSheet(roomidstyle);
+    ui->RoomId->setAlignment(Qt::AlignCenter);
 
     connect(ui->ClassicModeBtn,&QPushButton::clicked,this,&LobbyWidget::onClassicModeBtnClicked);
     connect(ui->JoinRoomBtn,&QPushButton::clicked,this,&LobbyWidget::onJoinRoomBtnClicked);
@@ -210,6 +215,12 @@ void LobbyWidget::ImportConfig()
     }
 }
 
+void LobbyWidget::onPersonalInfoBtnClicked()
+{
+    personalInfoWidget = new PersonalInfoWidget(Width,Height);
+    personalInfoWidget->show();
+}
+
 
 void LobbyWidget::onClassicModeBtnClicked()            //创建房间按钮
 {
@@ -266,6 +277,7 @@ void LobbyWidget::interfaceExitRoom(WidgetArgPackage* arg)
     disconnect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
     delete GameExitBtn;
     delete gameWidget;
+    gameWidget->BGMPlayer->stop();
     if(BGMState) BGMPlayer->play();
 
     delete arg;

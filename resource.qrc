@@ -60,16 +60,16 @@
         <file>image/Cards_0/queen_of_diamonds.png</file>
         <file>image/Cards_0/queen_of_hearts.png</file>
         <file>image/Cards_0/queen_of_spades.png</file>
-        <file>image/Profile/mjq.jpg</file>
+        <file>image/Profile/0.jpg</file>
         <file>image/Icon/buy.png</file>
         <file>image/Icon/diamond.png</file>
         <file>image/Icon/happybean.png</file>
-        <file>image/Profile/dcx.jpg</file>
-        <file>image/Profile/hjl.jpg</file>
-        <file>image/Profile/lyw.jpg</file>
-        <file>image/Profile/syx.jpg</file>
-        <file>image/Profile/yhx.jpg</file>
-        <file>image/Profile/zzy.jpg</file>
+        <file>image/Profile/1.jpg</file>
+        <file>image/Profile/6.jpg</file>
+        <file>image/Profile/3.jpg</file>
+        <file>image/Profile/2.jpg</file>
+        <file>image/Profile/5.jpg</file>
+        <file>image/Profile/4.jpg</file>
         <file>image/Icon/rule.png</file>
         <file>image/Icon/setting.png</file>
         <file>image/Cards_0/black_of_joker.png</file>
@@ -134,9 +134,72 @@
         <file>image/Cards_1/queen_of_spades.png</file>
         <file>image/Cards_1/red_of_joker.png</file>
         <file>image/Cards_1/10_of_diamonds.png</file>
+        <file>image/Icon/ready.png</file>
+        <file>image/Profile/default.jpg</file>
     </qresource>
     <qresource prefix="/sound">
-        <file>sound/Sound_effects/lobbybgm.mp3</file>
         <file>sound/BGM/lobbybgm.mp3</file>
+        <file>sound/BGM/gamebgm.mp3</file>
+        <file>sound/Sound_effects/Single_black.m4a</file>
+        <file>sound/Sound_effects/Bomb.m4a</file>
+        <file>sound/Sound_effects/Bomb_with_Pair.m4a</file>
+        <file>sound/Sound_effects/Bomb_with_Single.m4a</file>
+        <file>sound/Sound_effects/bujiabei.m4a</file>
+        <file>sound/Sound_effects/bujiao.m4a</file>
+        <file>sound/Sound_effects/buqiang.m4a</file>
+        <file>sound/Sound_effects/buyao.m4a</file>
+        <file>sound/Sound_effects/jiabei.m4a</file>
+        <file>sound/Sound_effects/jiaodizhu.m4a</file>
+        <file>sound/Sound_effects/KingBomb.m4a</file>
+        <file>sound/Sound_effects/Pair_2.m4a</file>
+        <file>sound/Sound_effects/Pair_3.m4a</file>
+        <file>sound/Sound_effects/Pair_4.m4a</file>
+        <file>sound/Sound_effects/Pair_5.m4a</file>
+        <file>sound/Sound_effects/Pair_6.m4a</file>
+        <file>sound/Sound_effects/Pair_7.m4a</file>
+        <file>sound/Sound_effects/Pair_8.m4a</file>
+        <file>sound/Sound_effects/Pair_9.m4a</file>
+        <file>sound/Sound_effects/Pair_10.m4a</file>
+        <file>sound/Sound_effects/Pair_ace.m4a</file>
+        <file>sound/Sound_effects/Pair_jack.m4a</file>
+        <file>sound/Sound_effects/Pair_king.m4a</file>
+        <file>sound/Sound_effects/Pair_queen.m4a</file>
+        <file>sound/Sound_effects/Pair_Straight.m4a</file>
+        <file>sound/Sound_effects/qiangdizhu0.m4a</file>
+        <file>sound/Sound_effects/qiangdizhu1.m4a</file>
+        <file>sound/Sound_effects/qiangdizhu2.m4a</file>
+        <file>sound/Sound_effects/Single_red.m4a</file>
+        <file>sound/Sound_effects/Single_2.m4a</file>
+        <file>sound/Sound_effects/Single_3.m4a</file>
+        <file>sound/Sound_effects/Single_4.m4a</file>
+        <file>sound/Sound_effects/Single_5.m4a</file>
+        <file>sound/Sound_effects/Single_6.m4a</file>
+        <file>sound/Sound_effects/Single_7.m4a</file>
+        <file>sound/Sound_effects/Single_8.m4a</file>
+        <file>sound/Sound_effects/Single_9.m4a</file>
+        <file>sound/Sound_effects/Single_10.m4a</file>
+        <file>sound/Sound_effects/Single_ace.m4a</file>
+        <file>sound/Sound_effects/Single_jack.m4a</file>
+        <file>sound/Sound_effects/Single_king.m4a</file>
+        <file>sound/Sound_effects/Single_queen.m4a</file>
+        <file>sound/Sound_effects/Straight.m4a</file>
+        <file>sound/Sound_effects/ThreePair_Straight.m4a</file>
+        <file>sound/Sound_effects/ThreePair_with_Pair.m4a</file>
+        <file>sound/Sound_effects/ThreePair_with_Single.m4a</file>
+        <file>sound/Sound_effects/lobbybgm.mp3</file>
+        <file>sound/Sound_effects/ThreePair_2.m4a</file>
+        <file>sound/Sound_effects/ThreePair_3.m4a</file>
+        <file>sound/Sound_effects/ThreePair_4.m4a</file>
+        <file>sound/Sound_effects/ThreePair_5.m4a</file>
+        <file>sound/Sound_effects/ThreePair_6.m4a</file>
+        <file>sound/Sound_effects/ThreePair_7.m4a</file>
+        <file>sound/Sound_effects/ThreePair_8.m4a</file>
+        <file>sound/Sound_effects/ThreePair_9.m4a</file>
+        <file>sound/Sound_effects/ThreePair_10.m4a</file>
+        <file>sound/Sound_effects/ThreePair_ace.m4a</file>
+        <file>sound/Sound_effects/ThreePair_jack.m4a</file>
+        <file>sound/Sound_effects/ThreePair_king.m4a</file>
+        <file>sound/Sound_effects/ThreePair_queen.m4a</file>
+        <file>sound/Sound_effects/warning.mp3</file>
     </qresource>
 </RCC>

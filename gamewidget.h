@@ -10,6 +10,13 @@
 #include <QPropertyAnimation>
 #include <QJsonObject>
 #include <QListView>
+#include <QLabel>
+#include <QTimer>
+#include <QMediaPlayer>
+#include <QCoreApplication>
+#include <QThread>
+#include <iostream>
+#include <QAudioOutput>
 #include <bitset>
 namespace Ui {
 class GameWidget;
@@ -22,24 +29,71 @@ class GameWidget : public QWidget
 public:
     explicit GameWidget(int _Width,int _Height,QWidget *parent = nullptr);
     ~GameWidget();
+//*******test********
+    int TestStage = 0;
+    std::bitset<54> previousBitset;
+    std::bitset<54> nextBitset;
+    std::bitset<54> playerBitset;
+    std::bitset<54> finalBitset;
+    std::bitset<54> playeroutBitset;
+    std::bitset<54> previousoutBitset;
+    std::bitset<54> nextoutBitset;
+//*******end*********
+
     int Width,Height;
-    std::vector<WidgetCard> PreviousPlayerOutCards,NextPlayerOutCards,PlayerOutCards,PlayerHandCards,FinalCards;
-    std::bitset<54> SelectedCards = 0;
-    int PreviousProfileNum,NextProfileNum,PlayerProfileNum;
+    std::vector<WidgetCard> PreviousPlayerOutCards,NextPlayerOutCards,PlayerOutCards,PlayerHandCards,FinalCards;    //   PlayerOutCards-> 返回的合法的牌
+    std::bitset<54> SelectedCards = 0;//点击出牌时选中的牌（不知道合不合法）
     QString PreviousIdentity,NextIdentity,PlayerIdentity;
     QString PreviousBeanNum,NextBeanNum,PlayerBeanNum;
+    QMediaPlayer *BGMPlayer,*EffectPlayer;
+
+    void ShowIdentityIcon(std::string identity1,std::string identity2,std::string identity3);
+    void placeHandCards();
+    void placeOutCards(int Pos);
+    void somebodyCallLandlordRound(int Pos);
+    void somebodyBidForLandlordRound(int Pos);
+    void somebodyDoubleRound();
+    void somebodyPlayCardRound(int Pos);
+
+    void somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,int Cardtype,std::bitset<54> handcards = 0);
+    void somebodyNotOutCard(int Pos,int Leftcards,std::bitset<54> handcards = 0);
+    void somebodyReady(int Pos);
+    void somebodyUnReady(int Pos);
+    void somebodyCallLandlord(int Pos);
+    void somebodyNotCallLandlord(int Pos);
+    void somebodyBidForLandlord(int Pos);
+    void somebodyNotBidForLandlord(int Pos);
+    void somebodyDouble(int Pos);
+    void somebodyNotDouble(int Pos);
+    void somebodyEnterRoom(int Pos,int ProfileIndex,int Beans);
+    void somebodyLeaveRoom(int Pos);
+    void Dealingcards(std::bitset<54> handcards,int cardnum1 = 17,int cardnum2 = 17);
+    void StartGame(std::string identity1,std::string identity2,std::string identity3,std::bitset<54> handcards,std::bitset<54> finalcards);
 private:
     Ui::GameWidget *ui;
     int CardStyle;
     WidgetCard AllCards[54];
     QPixmap ProfilePixmap1,ProfilePixmap2,ProfilePixmap3,
         IdentityPixmap1,IdentityPixmap2,IdentityPixmap3,
-        ClockPixmap;
+        FinalCardPixmap1,FinalCardPixmap2,FinalCardPixmap3,
+        ReadyPixmap,ClockPixmap;
+    std::vector<QLabel*> backlabel1;
+    std::vector<QLabel*> backlabel2;
+    QAudioOutput *BGMaudioOutput,*EffectaudioOutput;
+    QThread *BGMThread,*EffectThread;
     SettingWidget *settingWidget;
     GameOverWidget *gameoverWidget;
     QIcon BeanIcon;
+    QPixmap CardBackPixmap;
+    QLabel *PreviousCardsNumLabel, *NextCardsNumLabel;
     bool BGMState,EffectState;
-    int radius;
+    int radius,RoomIdFontSize;
+    double BGMVolume,EffectVolume;
+    int PreviousCardsNumber,NextCardsNumber;
+    int PreviousProfileIndex,NextProfileIndex,PlayerProfileIndex;
+    int PreviousOutCradsType,NextOutCradsType,PlayerOutCradsType;
+    QTimer *timer;
+    int remainingTime;
     const QString TypeIndex[6] = { "",
         "spades",
         "hearts",
@@ -65,28 +119,47 @@ private:
         "red"
     };
     const QString ProfilePathIndex[7] = {
-        ":/image/image/Profile/mjq.jpg",
-        ":/image/image/Profile/syx.jpg",
-        ":/image/image/Profile/lyw.jpg",
-        ":/image/image/Profile/dcx.jpg",
-        ":/image/image/Profile/zzy.jpg",
-        ":/image/image/Profile/yhx.jpg",
-        ":/image/image/Profile/hjl.jpg"
+        ":/image/image/Profile/0.jpg",
+        ":/image/image/Profile/1.jpg",
+        ":/image/image/Profile/2.jpg",
+        ":/image/image/Profile/3.jpg",
+        ":/image/image/Profile/4.jpg",
+        ":/image/image/Profile/5.jpg",
+        ":/image/image/Profile/6.jpg"
+    };
+    const QString CardTypeIndex[15] = {
+        "None","Single","Pair","ThreePair","ThreePair_with_Single",
+        "ThreePair_with_Pair",
+        "Straight",
+        "Pair_Straight",
+        "Bomb",
+        "Bomb_with_Single",
+        "Bomb_with_Pair",
+        "ThreePair_Straight",
+        "ThreePair_Straight_with_Single",
+        "ThreePair_Straight_with_Pair",
+        "KingBomb"
     };
 private:
     void InitAllCards();
     std::vector<WidgetCard> Transform_To_Vector(std::bitset<54> BitsetCards); //将CardArg中的OutCard和HandCard译成vector<WidgetCard>对象，包含Point Type Path
     std::bitset<54> Transform_To_Bitset(std::vector<WidgetCard> VectorCards); //将PreviousPlayerOutCards等译成Bitset对象，包含HandCard和OutCard
-    void ShowIdentityIcon();
-    void placeHandCards();
-    void placeOutCards(int Pos);
+
     void DestroyOutCards(int pos);
     void ImportConfig();
     void ConnectHandCards();
     void DisconnectHandCards();
     void AnimateMove(const QPoint& startPos, const QPoint& endPos,QPushButton *btn);
     void AnimateMoveLeft(QPushButton* btn, int distance);
-    
+    void PlacePreviousHandCards();
+    void PlaceNextHandCards();
+    void MakeSoundEffect(int Type); //0:叫地主  1：不叫  2：加倍  3：不加倍   4：抢地主   5：不抢    6：不出
+                                    //7：上家出牌    8：下家出牌   9：自己出牌    10：游戏胜利    11：游戏失败
+    void ShowFinalCards();
+    void ShowProfiles(int Pos);
+    void StartCountDown(int time,int pos);
+    void updateCountDown();
+    QString Transform_To_String(int Num);
 private Q_SLOTS:
     void onSettingBtnClicked();
     void onPlayCardsClicked();    //点击出牌按钮，判断牌型和管牌逻辑；
