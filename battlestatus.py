@@ -108,7 +108,27 @@ class BattleStatus(threading.local):
         self.player_1.seat = battle_status.get("player_1_seat")
         self.player_2.seat = battle_status.get("player_2_seat")
         self.player_3.seat = battle_status.get("player_3_seat")
-
+    def find_lord_account(self):
+        if self.player_1.lord == 1:
+            return self.player_1.account
+        elif self.player_2.lord == 1:
+            return self.player_2.account
+        elif self.player_3.lord == 1:
+            return self.player_3.account
+    def find_handcards(self,seat):
+        if int(seat) == 1:
+            return self.player_1.handcards
+        elif int(seat) == 2:
+            return self.player_2.handcards
+        elif int(seat) == 3:
+            return self.player_3.handcards
+    def renew_handcards(self,seat,updated_handcards):
+        if int(seat) == 1:
+            self.player_1.handcards = updated_handcards
+        elif int(seat) == 2:
+            self.player_2.handcards = updated_handcards
+        elif int(seat) == 3:
+            self.player_3.handcards = updated_handcards
 
 class ReadyPlayer(threading.local):
     def __init__(self):

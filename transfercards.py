@@ -1,5 +1,5 @@
 import sendcard
-def transfer_int_to_str(cards):
+def transfer_int_to_str(cards):#对于整数的牌进行解码，返回值为01字符串
     print("--------------",cards)
     # 首先将整数转换为二进制字符串  
     binary_str = bin(cards)
@@ -13,7 +13,7 @@ def transfer_int_to_str(cards):
         binary_str = '0' * (54 - length) + binary_str  
       
     return binary_str  
-def add_cards(str1,str2):
+def add_cards(str1,str2):#传入两个字符串，对其进行与操作
         # 确保两个字符串长度相同  
     if len(str1) != len(str2):  
         raise ValueError("The strings must be of the same length.")  
@@ -27,3 +27,8 @@ def add_cards(str1,str2):
         result += str(int(char1) | int(char2))  
       
     return result  
+def xor_cards(s1, s2):
+    if len(s1) != len(s2):
+        raise ValueError('Strings must have equal length.')
+    result = ''.join([str(int(char1) ^ int(char2)) for char1, char2 in zip(s1, s2)])
+    return result

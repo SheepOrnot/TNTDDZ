@@ -15,6 +15,9 @@ import random
 import lordevent
 import time
 import redis_data
+import transfercards
+import eventlet
+import countdown
 
 db = 'room_dbase'
 
@@ -24,7 +27,7 @@ socketio = SocketIO()
 socketio.init_app(app, cors_allowed_origins='*')
 
 
-UserData = sl.connect('D:\\server\\userdata.db',check_same_thread=False)
+UserData = sl.connect('userdata.db',check_same_thread=False)
 
 
 def inform_room_status(relink_account,seat,room_id):
@@ -285,6 +288,7 @@ def ready(data):
     data = json.loads(data)
     data_account = data.get("account")
     data_room_id = data.get("roomid")
+    redis_data.redis_db.set(str(data_room_id)+"_double_num",0)
     redis_data.count_value(data_room_id+"_ready_count")
 
     room_now = data_room_id
@@ -373,18 +377,72 @@ def double(data):
     battle_data.room_id = data_room_id
     battle_status = redis_data.redis_db.get(key).decode()
     battle_status = json.loads(battle_status)
-
     battle_data.get_battle_status(battle_status)
+
+    redis_data.redis_db.set(str(data_room_id)+str(data_seat)+"_output_handcards_signal",0)
+    redis_data.count_value(str(data_room_id)+"_double_num")
     if int(data_seat) == 1:
         battle_data.player_1.double = int(data_double)
+
         emit('server_response',jsonify(seat = data_seat,double = int(data_double),account = battle_data.player_1.account,type = 1).data.decode(),room = data_room_id)
     elif int(data_seat) == 2:
         battle_data.player_2.double = int(data_double)
+
         emit('server_response',jsonify(seat = data_seat,double = int(data_double),account = battle_data.player_2.account,type = 1).data.decode(),room = data_room_id)
     elif int(data_seat) == 3:
         battle_data.player_3.double = int(data_double)
+
         emit('server_response',jsonify(seat = data_seat,double = int(data_double),account = battle_data.player_3.account,type = 1).data.decode(),room = data_room_id)
     redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+    #当服务器收到了三条加倍后通知地主进行出牌
+
+    print("========================",redis_data.redis_db.get(str(data_room_id)+"_double_num").decode())
+    if int(redis_data.redis_db.get(str(data_room_id)+"_double_num").decode()) == 3:
+        emit('server_response',jsonify(type = 1).data.decode(),room = battle_data.find_lord_account())
+        timer = eventlet.Timeout(10)
+        try:
+            while True:
+                if int(redis_data.redis_db.get(str(data_room_id)+str(data_seat)+"_output_handcards_signal").decode()) == 0:
+
+                    eventlet.sleep(1)
+                    print("11111s")
+                elif int(redis_data.redis_db.get(str(data_room_id)+str(data_seat)+"_output_handcards_signal").decode()) == 1:
+                    timer.cancel()
+                    break  
+        except eventlet.timeout.Timeout:
+            print("-----------------------",redis_data.redis_db.get(str(data_room_id)+"_double_num").decode())
+            countdown.timeout_handler(lordevent.find_next_seat(data_seat),data_room_id)
+        finally:
+            timer.cancel()
+
+
+@socketio.on('output_handcards')
+def output_handcards(data):
+    data = json.loads(data)
+    data_room_id = data.get("roomid")
+    data_seat = data.get("seat")
+    data_output_cards = int(data.get("outputcards"))        
+
+
+    redis_data.redis_db.set(str(data_room_id)+str(data_seat)+"_output_handcards_signal",1)
+
+    key = data_room_id+"_battle_data"
+    battle_data = battlestatus.BattleStatus()
+    battle_data.room_id = data_room_id
+    battle_status = redis_data.redis_db.get(key).decode()
+    battle_status = json.loads(battle_status)
+    battle_data.get_battle_status(battle_status)
+    handcards = battle_data.find_handcards(data_seat)
+    bitsite_handcards = transfercards.transfer_int_to_str(int(handcards))
+    bitsite_output_cards = transfercards.transfer_int_to_str(int(data_output_cards))
+    updated_handcards = transfercards.xor_cards(bitsite_handcards,bitsite_output_cards)
+    int_updated_handcards = int(updated_handcards,2)
+    battle_data.renew_handcards(data_seat,int_updated_handcards)
+    redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+    emit('server_response',jsonify(type = 1,tablecards = data_output_cards).data.decode(),room = data_room_id)
+    redis_data.redis_db.set(str(data_room_id)+str(data_seat)+"_output_handcards_signal",0)
+
+
 
 @socketio.on('ask_for_lord')
 def ask_for_lord(data):
@@ -463,9 +521,9 @@ def SignupPost():
         global UserData
         UserData.commit()
         #UserData.close()
-        return jsonify(upsignresult = True)
+        return jsonify(signupresult = 1)
     else :
-        return jsonify(upsignresult = False)
+        return jsonify(signupresult = 0)
 
 
 @app.route('/login',methods = ["POST"])#存储登录信息
@@ -538,10 +596,10 @@ def PasswordForgetPost():
     check_code =redis_data.redis_db.get(str(Findingmail)+'_passwordforgetmail')
     print(" str(Findingcode):", str(Findingcode),"check_code:",check_code.decode())
     if len(queryresult) != 0 and str(Findingcode) == check_code.decode():
-        Findingresult = True
+        Findingresult = 1
     else:
-        Findingresult = False
-    if Findingresult == True:
+        Findingresult = 0
+    if Findingresult == 1:
         ChangeLanguage = '''UPDATE UserTable SET Upassword = ? WHERE Umail like ?'''
         FindingNewpassword = hashlib.md5(FindingNewpassword.encode()).digest().hex()
         cursor.execute(ChangeLanguage,[FindingNewpassword,Findingmail])

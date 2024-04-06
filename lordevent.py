@@ -37,8 +37,8 @@ def find_next_seat(data_seat):
     return next_seat
 def find_seat_fit_account(data_seat,data_room_id):
 
-    key = data_room_id+"_battle_data"
-
+    key = str(data_room_id)+"_battle_data"
+    print("key",key)
     battle_data = battlestatus.BattleStatus()
     battle_status = redis_data.redis_db.get(key).decode()
     battle_status = json.loads(battle_status)

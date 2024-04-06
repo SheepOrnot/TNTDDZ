@@ -31,81 +31,14 @@
     为了叫地主的开始的随机性，计划在叫地主的前一步中服务器回复给客户端的json中添加一个决定谁先开始叫地主的key，目前拟定叫“firstlord”，这个key为1的时候，就由这台客户端向服务器发出叫地主请求，然后对于叫地主请求，准备一个first_lord接口
     叫地主，叫地主第一个人
             下一个叫地主，线性局部变量
-            room
-            {
-                room_id
-                room_count
-                player
-                {   
-                    handcards,
-                    lord,
-                    next_player,
-                    previous_player,
-                    account，
-                    double
-                }    
-            }
 
-
-
-class Player(threading.local):
-    def __init__(self):
-        self.handcards = ""
-        self.lord = 0
-        self.account = ""
-        self.double = 0
-        self.next_player  = None
-        self.previous_player = None
-        self.handcards_num = 0
-    def setlord(self,becomelord):
-        self.lord = becomelord
-    def sethandcards(self,cards):
-        self.handcards = cards
-    def setdouble(self,becomedouble):
-        self.double = becomedouble
-    def setnext_player(self,becomenext_player):
-        self.next_player = becomenext_player
-    def setprevious_player(self,becomeprevious_player):
-        self.previous_player = becomeprevious_player
-    def sethandcards_num(self,becomehandcards_num):
-        self.handcards_num = becomehandcards_num
-    def find_next_player(self):
-        return self.next_player
-    def change_handcards(self,cards):
-        result = int(self.handcards, 2) ^ int(cards, 2)
-        binary_result = bin(result)[2:].zfill(max(len(self.handcards), len(cards)))
-        return binary_result
-
-class BattleStatus:
-    def __init__(self):
-        global room_id
-        self.room_id = room_id
-        self.room_count = 0
-        self.player_1 = None
-        self.player_2 = None
-        self.player_3 = None
-        self.account_list = []
-        self.room_status = 0 #房间当前状态号码，暂且定义1为游戏已经开始，0为游戏没有开始
-    def set_account_list(self,account):
-        self.account_list.append(account)
-    def someone_join_room(self):
-        self.room_count += 1
-    def someone_leave_room(self):
-        self.room_count -= 1
-
-    {
-        roomid:room_id
-        
-    }
 
 游戏是否开局
 游戏阶段
 时钟
 <!-- 房间满了没告诉我
 房间不存在没告诉我 -->
-{
-    account
-}
+
 叫地主
     客户端传入account roomid seat lord的包
 确认地主：
@@ -139,3 +72,14 @@ class BattleStatus:
                         询问下一家是否抢地主
                     不抢
                         继续询问下一家是否进行抢地主
+
+    出牌
+        分为自己主动出牌
+            客户端给服务器传送json包，包含出的牌
+                对于牌进行解码
+                取出存储于redis的对应的玩家手牌并对其进行解码
+                对于出去的牌和对应的玩家手牌进行异或得到更新的手牌
+                对于客户端给玩家发送的牌进行广播
+                给下一个玩家进行是否进行管牌的单播
+        
+        管别人的牌
