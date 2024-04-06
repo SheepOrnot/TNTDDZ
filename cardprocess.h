@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <bitset>
 #include <set>
+#include <random>
 
 enum CardType {
     None,
@@ -32,6 +33,11 @@ typedef struct CardAction
     std::bitset<54> action;
 }CardAction;
 
+typedef struct SendCardPackage
+{
+    std::bitset<54> p1, p2, p3, finalcard;
+}SendCardPackage;
+
 typedef std::pair<CardType, int> CardTypeStruct;
 typedef std::vector<CardTypeStruct> CardTypeVector;
 typedef std::pair<CardTypeVector, int> CompareResult;
@@ -46,7 +52,8 @@ public:
     static CompareResult CardCheck(long OutCard, long PreOutCard);
     static ActionVector EnumerateCardOutAction(std::bitset<54> Card);
     static CardTypeVector CardTypeCheck(std::bitset<54> Card);
-    static CardCheck_tiny(CardTypeStruct Card, CardTypeStruct CardPre);
+    static int CardCheck_tiny(CardTypeStruct Card, CardTypeStruct CardPre);
+    static SendCardPackage SendCard();
 private:
     static void PringBukket(std::vector<std::pair<int, int>>& bukket);
 };

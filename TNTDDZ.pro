@@ -28,6 +28,7 @@ SOURCES += \
     personalinfowidget.cpp \
     robot.cpp \
     settingwidget.cpp \
+    singlegame.cpp \
     socketioclient.cpp \
     widgetcard.cpp
 
@@ -48,6 +49,7 @@ HEADERS += \
     networkrevpacker.h \
     robot.h \
     settingwidget.h \
+    singlegame.h \
     socketioclient.h \
     threadpool.h \
     widgetargpackage.h \

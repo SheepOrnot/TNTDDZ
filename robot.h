@@ -11,7 +11,7 @@ public:
     robot();
     std::bitset<54> OutCardAction(CardTypeStruct PreOutCardType);  //return CardAction;
     void sethandcard(std::bitset<54> _handcard);
-    void Getlandlord();
+    int GetlandlordAction();
 private:
     std::bitset<54> handcard;
 };

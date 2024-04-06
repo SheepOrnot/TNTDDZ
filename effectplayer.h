@@ -23,7 +23,7 @@ public:
         m_thread->wait();
     }
 
-public slots:
+public Q_SLOTS:
     void playSound(const QString& soundFilePath)
     {
         QSoundEffect soundEffect;
@@ -35,10 +35,10 @@ public slots:
         QThread::sleep(500);
 
         // 发送信号告知音效播放完成
-        emit soundFinished();
+        Q_EMIT soundFinished();
     }
 
-signals:
+Q_SIGNALS:
     void soundFinished();
 
 private:

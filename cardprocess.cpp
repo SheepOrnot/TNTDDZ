@@ -245,7 +245,7 @@ CompareResult CardProcess::CardCheck(long OutCard, long PreOutCard) {
 
 }
 
-bool CardProcess::CardCheck_tiny(CardTypeStruct Card, CardTypeStruct CardPre)
+int CardProcess::CardCheck_tiny(CardTypeStruct Card, CardTypeStruct CardPre)
 {
     if(Card.first == CardType::None)
         return 0;
@@ -302,6 +302,37 @@ ActionVector CardProcess::EnumerateCardOutAction(std::bitset<54> Card)
     }
 
     return Action;
+}
+
+SendCardPackage SendCard()
+{
+    int card[54];
+    for(int i = 0; i < 54; i ++ ) card[i] = i;
+
+    std::random_device rd;
+    std::default_random_engine rng(rd());
+
+    // 使用 std::shuffle 打乱数组
+    std::shuffle(card, card + 54, rng);
+
+    SendCardPackage package;
+    std::bitset<54> someone_card;
+    for(int i = 0; i < 17; i ++) someone_card[card[17*0 + i]] = 1;
+    package.p1 = someone_card;
+
+    someone_card = 0;
+    for(int i = 0; i < 17; i ++) someone_card[card[17*1 + i]] = 1;
+    package.p2 = someone_card;
+
+    someone_card = 0;
+    for(int i = 0; i < 17; i ++) someone_card[card[17*2 + i]] = 1;
+    package.p3 = someone_card;
+    
+    someone_card = 0;
+    for(int i = 0; i < 3; i ++) someone_card[card[17*3 + i]] = 1;
+    package.finalcard = someone_card;
+
+    return package;
 }
 
 /*
