@@ -1,8 +1,12 @@
+.qtc_clangd/*
 .qtc_clangd/
+debug/*
 debug/
+release/*
 release/
 moc*
 Makefile*
 *.o
 *.user
 qrc_resource.cpp
+TNTDDZ

@@ -1,7 +1,7 @@
 #include "gamewidget.h"
 #include "ui_gamewidget.h"
 #include<QDebug>
-#include<windows.h>
+
 GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     QWidget(parent),Width(_Width),Height(_Height),
     ui(new Ui::GameWidget)
