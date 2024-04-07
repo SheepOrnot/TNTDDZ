@@ -14,6 +14,7 @@
 #include <QTimer>
 #include <QMediaPlayer>
 #include <QCoreApplication>
+#include <QRandomGenerator>
 #include <QThread>
 #include <iostream>
 #include <QAudioOutput>
@@ -27,7 +28,7 @@ class GameWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit GameWidget(int _Width,int _Height,QWidget *parent = nullptr);
+    explicit GameWidget(int _Width,int _Height,int _mode,QWidget *parent = nullptr);
     ~GameWidget();
 //*******test********
     int TestStage = 0;
@@ -46,7 +47,8 @@ public:
     QString PreviousIdentityString,NextIdentityString,PlayerIdentityString;
     QString PreviousBeanNum,NextBeanNum,PlayerBeanNum;
     QMediaPlayer *BGMPlayer,*EffectPlayer;
-
+    int Times = 1;
+    int mode;
     void ShowIdentityIcon(std::string identity1,std::string identity2,std::string identity3);
     void placeHandCards();
     void placeOutCards(int Pos);
@@ -69,6 +71,7 @@ public:
     void somebodyLeaveRoom(int Pos);
     void Dealingcards(std::bitset<54> handcards,int cardnum1 = 17,int cardnum2 = 17);
     void StartGame(std::string identity1,std::string identity2,std::string identity3,std::bitset<54> handcards,std::bitset<54> finalcards);
+    void AddTimes(int newTimes);
 private:
     Ui::GameWidget *ui;
     int CardStyle;
@@ -141,7 +144,7 @@ private:
         "ThreePair_Straight_with_Single",
         "ThreePair_Straight_with_Pair",
         "KingBomb"
-    };
+    };  
 private:
     void InitAllCards();
     std::vector<WidgetCard> Transform_To_Vector(std::bitset<54> BitsetCards); //将CardArg中的OutCard和HandCard译成vector<WidgetCard>对象，包含Point Type Path

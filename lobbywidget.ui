@@ -179,7 +179,7 @@ font: 9pt &quot;华文新魏&quot;;</string>
     <string>经典模式</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="ExitGameBtn">
+  <widget class="QPushButton" name="SingleModeBtn">
    <property name="geometry">
     <rect>
      <x>1310</x>

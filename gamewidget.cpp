@@ -2,8 +2,8 @@
 #include "ui_gamewidget.h"
 #include<QDebug>
 
-GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
-    QWidget(parent),Width(_Width),Height(_Height),
+GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
+    QWidget(parent),Width(_Width),Height(_Height),mode(_mode),
     ui(new Ui::GameWidget)
 {
     ui->setupUi(this);
@@ -83,6 +83,24 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
                 }
         case 22:{somebodyPlayCardRound(1);break;};
         case 23:{somebodyNotOutCard(1,17);break;}
+        case 24:{somebodyPlayCardRound(3); break;}
+        case 25:
+        {
+            playeroutBitset = std::bitset<54>(std::string("001100000000000000000000000000000000000000000000000000"));
+            playerBitset= std::bitset<54>    (std::string("110010000000011111111100000000000001001100000000000001"));
+            somebodyOutCard(3,playeroutBitset,16,2,playerBitset);
+        }
+        case 26:{somebodyPlayCardRound(2);break;}
+        case 27:{somebodyNotOutCard(2,15);break;}
+        case 28:{somebodyPlayCardRound(1);break;}
+        case 29:{somebodyNotOutCard(1,17);break;}
+        case 30:{somebodyPlayCardRound(3);break;}
+        case 31:
+        {
+            playeroutBitset = std::bitset<54>(std::string("110000000000000000000000000000000000000000000000000000"));
+            playerBitset= std::bitset<54>    (std::string("000010000000011111111100000000000001001100000000000001"));
+            somebodyOutCard(3,playeroutBitset,14,14,playerBitset);
+        }
         default: qDebug()<<"done!";
         }
         qDebug()<<TestStage;
@@ -232,6 +250,8 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     ui->MSGLabel1->setAlignment(Qt::AlignCenter);
     ui->MSGLabel2->setAlignment(Qt::AlignCenter);
     ui->MSGLabel3->setAlignment(Qt::AlignCenter);
+
+    ui->MultiplierLabel->setText("倍数\n⨉"+QString::number(Times));
 
     connect(ui->PlayCardBtn,&QPushButton::clicked,this,&GameWidget::onPlayCardsClicked);
     qDebug()<<"Build GameWidget Completely";
@@ -558,6 +578,13 @@ void GameWidget::AnimateMoveLeft(QPushButton* btn, int distance)
 
 void GameWidget::PlacePreviousHandCards()
 {
+    for(int i = 0;i<backlabel1.size();i++)
+    {
+        if(backlabel1[i])
+        {
+            delete backlabel1[i];
+        }
+    }
     backlabel1.clear();
     for(int i = 0;i<PreviousCardsNumber;i++)
     {
@@ -577,9 +604,15 @@ void GameWidget::PlacePreviousHandCards()
 }
 void GameWidget::PlaceNextHandCards()
 {
-
+    for(int i = 0;i<backlabel2.size();i++)
+    {
+        if(backlabel2[i])
+        {
+            delete backlabel2[i];
+        }
+    }
     backlabel2.clear();
-    for(int i = 0;i<PreviousCardsNumber;i++)
+    for(int i = 0;i<NextCardsNumber;i++)
     {
         QLabel *tmp = new QLabel(this);
         tmp->setGeometry(0.841*Width,(0.138+(0.026*i))*Height,0.040*Width,0.070*Height);
@@ -651,7 +684,9 @@ void GameWidget::MakeSoundEffect(int Type)  //0:叫地主  1：不叫  2：加�
         }
         case 4:
         {
-            EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/qiangdizhu0.m4a"));  //***********
+
+            int rand = QRandomGenerator::global()->generate()%3;
+            EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/qiangdizhu"+QString::number(rand)+".m4a"));  //***********
             break;
         }
         case 5:
@@ -1186,6 +1221,7 @@ void GameWidget::somebodyDouble(int Pos)
             ui->MSGLabel1->setText("加倍");
             ui->MSGLabel1->show();
             //ui->DoubleLabel1->setPixmap();
+            ui->DoubleLabel1->setText("加倍");
             ui->DoubleLabel1->show();
             break;
         }
@@ -1194,6 +1230,7 @@ void GameWidget::somebodyDouble(int Pos)
             ui->MSGLabel2->setText("加倍");
             ui->MSGLabel2->show();
             //ui->DoubleLabel2->setPixmap();
+            ui->DoubleLabel2->setText("加倍");
             ui->DoubleLabel2->show();
             break;
         }
@@ -1204,6 +1241,7 @@ void GameWidget::somebodyDouble(int Pos)
             ui->UnDoubleBtn->hide();
             ui->MSGLabel3->show();
             //ui->DoubleLabel3->setPixmap();
+            ui->DoubleLabel3->setText("加倍");
             ui->DoubleLabel3->show();
             timer->stop();
             disconnect(timer, nullptr, this, nullptr);
@@ -1223,6 +1261,7 @@ void GameWidget::somebodyNotDouble(int Pos)
             ui->MSGLabel1->setText("不加倍");
             ui->MSGLabel1->show();
             //ui->DoubleLabel1->setPixmap();
+            ui->DoubleLabel1->setText("不加倍");
             ui->DoubleLabel1->show();
             break;
         }
@@ -1231,6 +1270,7 @@ void GameWidget::somebodyNotDouble(int Pos)
             ui->MSGLabel2->setText("不加倍");
             ui->MSGLabel2->show();
             //ui->DoubleLabel2->setPixmap();
+            ui->DoubleLabel2->setText("不加倍");
             ui->DoubleLabel2->show();
             break;
         }
@@ -1241,6 +1281,7 @@ void GameWidget::somebodyNotDouble(int Pos)
             ui->UnDoubleBtn->hide();
             ui->MSGLabel3->show();
             //ui->DoubleLabel3->setPixmap();
+            ui->DoubleLabel3->setText("不加倍");
             ui->DoubleLabel3->show();
             timer->stop();
             disconnect(timer, nullptr, this, nullptr);
@@ -1329,7 +1370,11 @@ void GameWidget::StartGame(std::string identity1,std::string identity2,std::stri
     FinalCards = Transform_To_Vector(finalcards);
     ShowFinalCards();
 }
-
+void GameWidget::AddTimes(int newTimes)
+{
+    Times = newTimes;
+    ui->MultiplierLabel->setText("倍数\n⨉"+QString::number(Times));
+}
 // void onSkipTurnBtnClicked()   //点击不出按钮；
 // {
 

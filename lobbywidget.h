@@ -58,6 +58,7 @@ private Q_SLOTS:
     void onExitGameBtnClicked();
     void onPersonalInfoBtnClicked();
     void RollImage();
+    void onSingleModeBtnClicked();
 signals:
 
 
