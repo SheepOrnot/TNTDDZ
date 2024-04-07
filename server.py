@@ -28,6 +28,7 @@ socketio.init_app(app, cors_allowed_origins='*')
 
 
 UserData = sl.connect('userdata.db',check_same_thread=False)
+UserData = sl.connect('userdata.db',check_same_thread=False)
 
 
 def inform_room_status(relink_account,seat,room_id):
@@ -109,7 +110,7 @@ def Create_room(data):
         value = redis_data.redis_db.get(key)
         print(key.decode(), "->", value.decode())
 #################################################################
-    emit('server_response',jsonify(type = 4,roomid = data_room_id,seat = roomhost.seat).data.decode(),room = data_account)
+    emit('server_response',jsonify(type = 4,status = 1, roomid = data_room_id,seat = roomhost.seat).data.decode(),room = data_account)
     
     
     battlestatus.room_id = battlestatus.room_id+1
@@ -541,9 +542,9 @@ def SignupPost():
         global UserData
         UserData.commit()
         #UserData.close()
-        return jsonify(signupresult = 1)
+        return jsonify(type = 2, signupresult = 1)
     else :
-        return jsonify(signupresult = 0)
+        return jsonify(type = 2, signupresult = 0)
 
 
 @app.route('/login',methods = ["POST"])#存储登录信息
@@ -631,7 +632,7 @@ def PasswordForgetPost():
         print("您的验证码错误或者邮箱不存在")
 
 
-    return jsonify(result = Findingresult)
+    return jsonify(type = 3,result = Findingresult)
 
 @app.route('/passwordforgetmail',methods = ["POST"])#发送找回密码的验证码
 def PasswordForgetMailPost():
