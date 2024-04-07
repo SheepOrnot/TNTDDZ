@@ -417,6 +417,18 @@ def double(data):
             timer.cancel()
 
 
+@socketio.on('')
+def 管牌(data):
+    data = json.loads(data)
+    
+    data_tablecards = data.get("tablecards")
+    data_can_cannot = data.get("canorcannot")
+    data_seat = data.get("seat")
+    if int(data_can_cannot) == 1:
+        data_outputcards = data.get("outputcards")
+        
+
+
 @socketio.on('output_handcards')
 def output_handcards(data):
     data = json.loads(data)
