@@ -71,6 +71,7 @@ private Q_SLOTS:
     void onExitGameBtnClicked();
     void onPersonalInfoBtnClicked();
     void RollImage();
+    void onSingleModeBtnClicked();
     void EnterGame();
 Q_SIGNALS:
     void ChangeResolutions(int _Width,int _Height);            //********测试用 ;

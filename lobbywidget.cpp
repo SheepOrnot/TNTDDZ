@@ -51,7 +51,7 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui->SettingBtn    ->setGeometry(0.963*Width,0.018*Height,0.026*Width,0.047*Height);
     ui->RollLabel     ->setGeometry(0.604*Width,0.166*Height,0.328*Width,0.463*Height);
     ui->ClassicModeBtn->setGeometry(0.682*Width,0.652*Height,0.161*Width,0.084*Height);
-    ui->ExitGameBtn   ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
+    ui->SingleModeBtn ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
     ui->JoinRoomBtn   ->setGeometry(0.682*Width,0.874*Height,0.161*Width,0.084*Height);
     ui->RoomId        ->setGeometry(0.560*Width,0.876*Height,0.120*Width,0.080*Height);
     ui->SettingBtn->setIcon(QIcon(":/image/image/Icon/setting.png"));
@@ -101,7 +101,8 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
 
     ui->DiamondEdit->setText(DiamondNum);
     ui->DiamondEdit->setReadOnly(true);
-    ui->DiamondEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
+    ui->DiamondEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; bac "
+                                                                                                                        "kground-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
     ui->DiamondEdit->setAlignment(Qt::AlignHCenter);
 
     ui->UsernameLabel->setStyleSheet("QLabel {font: 12pt 华文新魏; background-color: yellow}");
@@ -114,9 +115,10 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui->RoomId->setStyleSheet(roomidstyle);
     ui->RoomId->setAlignment(Qt::AlignCenter);
 
+    ui->SingleModeBtn->setText("单机模式");
     connect(ui->ClassicModeBtn,&QPushButton::clicked,this,&LobbyWidget::onClassicModeBtnClicked);
+    connect(ui->SingleModeBtn,&QPushButton::clicked,this,&LobbyWidget::onSingleModeBtnClicked);
     connect(ui->JoinRoomBtn,&QPushButton::clicked,this,&LobbyWidget::onJoinRoomBtnClicked);
-    connect(ui->ExitGameBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
 
     message_center = MessageCenter::getInstance();
     widget_rev_packer = WidgetRevPacker::getInstance();
@@ -150,7 +152,7 @@ void LobbyWidget::ResolutionChanged(int _Width,int _Height)
     ui->SettingBtn    ->setGeometry(0.963*Width,0.018*Height,0.026*Width,0.047*Height);
     ui->RollLabel     ->setGeometry(0.604*Width,0.166*Height,0.328*Width,0.463*Height);
     ui->ClassicModeBtn->setGeometry(0.682*Width,0.652*Height,0.161*Width,0.084*Height);
-    ui->ExitGameBtn   ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
+    ui->SingleModeBtn   ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
     ui->JoinRoomBtn   ->setGeometry(0.682*Width,0.874*Height,0.161*Width,0.084*Height);
     ui->RoomId        ->setGeometry(0.600*Width,0.876*Height,0.080*Width,0.080*Height);
 
@@ -163,6 +165,20 @@ void LobbyWidget::onSettingBtnClicked()
 {
     settingWidget = new SettingWidget(Width,Height);
     settingWidget->show();
+}
+void LobbyWidget::onClassicModeBtnClicked()            //创建房间按钮
+{
+    gameWidget = new GameWidget(Width,Height);
+    this->hide();
+    gameWidget->show();
+    GameExitBtn = new QPushButton(gameWidget);
+    GameExitBtn->setGeometry(0.010*Width,  0.018*Height,  0.042*Width,   0.075*Height);
+    GameExitBtn->setIcon(QIcon(":/image/image/Icon/quitgame.png"));
+    GameExitBtn->setStyleSheet("QPushButton { background-color: transparent; }");
+    GameExitBtn->setIconSize(GameExitBtn->size());
+    GameExitBtn->show();
+    BGMPlayer->stop();
+    connect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
 }
 void LobbyWidget::RollImage()
 {
@@ -221,6 +237,21 @@ void LobbyWidget::onPersonalInfoBtnClicked()
     personalInfoWidget->show();
 }
 
+void LobbyWidget::onSingleModeBtnClicked()
+{
+    gameWidget = new GameWidget(Width,Height,1);
+    this->hide();
+    gameWidget->show();
+    GameExitBtn = new QPushButton(gameWidget);
+    GameExitBtn->setGeometry(0.010*Width,  0.018*Height,  0.042*Width,   0.075*Height);
+    GameExitBtn->setIcon(QIcon(":/image/image/Icon/quitgame.png"));
+    GameExitBtn->setStyleSheet("QPushButton { background-color: transparent; }");
+    GameExitBtn->setIconSize(GameExitBtn->size());
+    GameExitBtn->show();
+    BGMPlayer->stop();
+    connect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
+}
+
 
 void LobbyWidget::onClassicModeBtnClicked()            //创建房间按钮
 {
@@ -244,7 +275,7 @@ void LobbyWidget::onExitGameBtnClicked()
 void LobbyWidget::EnterGame()
 {
     qDebug() << "Classic Mode";
-    gameWidget = new GameWidget(Width,Height);
+    gameWidget = new GameWidget(Width,Height,0);
     this->hide();
     gameWidget->show();
     GameExitBtn = new QPushButton(gameWidget);

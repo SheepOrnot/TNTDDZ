@@ -33,7 +33,7 @@ public:
     QLabel *DiamondLabel;
     QLabel *RollLabel;
     QPushButton *ClassicModeBtn;
-    QPushButton *ExitGameBtn;
+    QPushButton *SingleModeBtn;
     QLabel *GifLabel;
     QPushButton *JoinRoomBtn;
     QLineEdit *RoomId;
@@ -84,9 +84,9 @@ public:
         ClassicModeBtn = new QPushButton(LobbyWidget);
         ClassicModeBtn->setObjectName("ClassicModeBtn");
         ClassicModeBtn->setGeometry(QRect(1310, 640, 311, 91));
-        ExitGameBtn = new QPushButton(LobbyWidget);
-        ExitGameBtn->setObjectName("ExitGameBtn");
-        ExitGameBtn->setGeometry(QRect(1310, 760, 311, 91));
+        SingleModeBtn = new QPushButton(LobbyWidget);
+        SingleModeBtn->setObjectName("SingleModeBtn");
+        SingleModeBtn->setGeometry(QRect(1310, 760, 311, 91));
         GifLabel = new QLabel(LobbyWidget);
         GifLabel->setObjectName("GifLabel");
         GifLabel->setGeometry(QRect(110, 210, 461, 761));
@@ -122,7 +122,7 @@ public:
         DiamondLabel->setText(QCoreApplication::translate("LobbyWidget", "diamondimage", nullptr));
         RollLabel->setText(QString());
         ClassicModeBtn->setText(QCoreApplication::translate("LobbyWidget", "\347\273\217\345\205\270\346\250\241\345\274\217", nullptr));
-        ExitGameBtn->setText(QCoreApplication::translate("LobbyWidget", "\351\200\200\345\207\272\346\270\270\346\210\217", nullptr));
+        SingleModeBtn->setText(QCoreApplication::translate("LobbyWidget", "\351\200\200\345\207\272\346\270\270\346\210\217", nullptr));
         GifLabel->setText(QCoreApplication::translate("LobbyWidget", "giflabel", nullptr));
         JoinRoomBtn->setText(QCoreApplication::translate("LobbyWidget", "\345\212\240\345\205\245\346\210\277\351\227\264", nullptr));
         RoomId->setText(QCoreApplication::translate("LobbyWidget", "000000", nullptr));

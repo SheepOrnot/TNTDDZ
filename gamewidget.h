@@ -14,6 +14,7 @@
 #include <QTimer>
 #include <QMediaPlayer>
 #include <QCoreApplication>
+#include <QRandomGenerator>
 #include <QThread>
 #include <iostream>
 #include <QAudioOutput>
@@ -29,7 +30,7 @@ class GameWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit GameWidget(int _Width,int _Height,QWidget *parent = nullptr);
+    explicit GameWidget(int _Width,int _Height,int _mode,QWidget *parent = nullptr);
     ~GameWidget();
 //*******test********
     int TestStage = 0;
@@ -45,10 +46,11 @@ public:
     int Width,Height;
     std::vector<WidgetCard> PreviousPlayerOutCards,NextPlayerOutCards,PlayerOutCards,PlayerHandCards,FinalCards;    //   PlayerOutCards-> 返回的合法的牌
     std::bitset<54> SelectedCards = 0;//点击出牌时选中的牌（不知道合不合法）
-    QString PreviousIdentity,NextIdentity,PlayerIdentity;
+    QString PreviousIdentityString,NextIdentityString,PlayerIdentityString;
     QString PreviousBeanNum,NextBeanNum,PlayerBeanNum;
     QMediaPlayer *BGMPlayer,*EffectPlayer;
-
+    int Times = 1;
+    int mode;
     void ShowIdentityIcon(std::string identity1,std::string identity2,std::string identity3);
     void placeHandCards();
     void placeOutCards(int Pos);
@@ -71,6 +73,7 @@ public:
     void somebodyLeaveRoom(int Pos);
     void Dealingcards(std::bitset<54> handcards,int cardnum1 = 17,int cardnum2 = 17);
     void StartGame(std::string identity1,std::string identity2,std::string identity3,std::bitset<54> handcards,std::bitset<54> finalcards);
+    void AddTimes(int newTimes);
 
     void interfaceSomebodyEnterRoom(WidgetArgPackage* arg);
     void interfaceSomebodyReady(WidgetArgPackage* arg);
@@ -108,6 +111,8 @@ private:
     int PreviousCardsNumber,NextCardsNumber;
     int PreviousProfileIndex,NextProfileIndex,PlayerProfileIndex;
     int PreviousOutCradsType,NextOutCradsType,PlayerOutCradsType;
+    bool PreviousDouble,NextDouble,PlayerDouble;
+    bool PreviousIdentity,NextIdentity,PlayerIdentity;
     QTimer *timer;
     int remainingTime;
     const QString TypeIndex[6] = { "",
