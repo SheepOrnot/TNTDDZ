@@ -37,7 +37,8 @@ enum class WIDGET_ARG_TYPE {
     CARD = 3,
     ROOM = 4,
     STATUS = 5, //server -> widget
-    VERIFY = 6  //widget -> server
+    VERIFY = 6, //widget -> server
+    GAME_START
 };
 enum class ACCOUNT_OPCODE {
     LOGIN = 1,
@@ -55,14 +56,16 @@ enum class MESSAGE_TYPE {
     ROOM = 4,
     STATUS = 5,
     VERIFY = 6,
-    MessageRoomVerifyStatus = 7
+    MessageRoomVerifyStatus = 7,
+    GAME_START = 8,
+    GAME_END = 9
 };
 enum class VERIFY_TYPE {
-    LOGIN = 1,
-    REGISTER = 2,
-    FORGET_PASSWORD = 3,
-    REGISTER_MAIL = 4,
-    FORGET_PASSWORD_MAIL = 5,
+    LOGIN,
+    REGISTER,
+    FORGET_PASSWORD,
+    REGISTER_MAIL,
+    FORGET_PASSWORD_MAIL,
     CREATE_ROOM,
     JOIN_ROOM,
     LEAVE_ROOM,
@@ -81,11 +84,18 @@ enum class NETWORK
     REGISTER_MAIL_CODE_VERIFY = 9,
     FORGET_PASSWORD_MAIL_CODE_VERIFY = 10
 };
-enum class ROOM_OPCODE {
-    CREATE_ROOM = 1,
-    JOIN_ROOM = 2,
-    LEAVE_ROOM = 3,
-    READY = 4
+enum class CARD_OPCODE
+{
+    OUTCARD
 };
-
+enum class PLAYER_OPCODE
+{
+    ENTER,
+    CREATE_ROOM,
+    JOIN_ROOM,
+    LEAVE_ROOM,
+    READY,
+    LANDLORD,
+    PLAY
+};
 #endif // COMMON_H

@@ -8,6 +8,7 @@
 #include "networkrevpacker.h"
 #include "widgetargpackage.h"
 #include "socketioclient.h"
+#include "singlegame.h"
 
 typedef std::function<void(WidgetArgPackage*)> WidgetInterfacePtr;
 
@@ -205,38 +206,166 @@ public:
                 }
                 break;
             }
-            case MESSAGE_TYPE::ROOM:
+            case MESSAGE_TYPE::PLAYER:
             {
-                MessageRoom *package = static_cast<MessageRoom*>(current_message->package);
-                if(!current_center->socketio_client->checkConnection())
+                MessagePlayer *package = static_cast<MessagePlayer*>(current_message->package);
+                if(package->singlemode)
                 {
-                    current_center->socketio_client->connect();
-                    current_center->socketio_client->bindAction("server_response", std::bind(&MessageCenter::OnServerResponse,current_center,std::placeholders::_1));
-                }
+                    switch(package->opcode)
+                    {
+                        case PLAYER_OPCODE::CREATE_ROOM:
+                        {
+                            WidgetArgPackage *Robot1Arg = new WidgetArgPackage();
+                            Robot1Arg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER, 1, 0, 999, "机器人1", package->roomid, 0, 1);
+                            WidgetArgPackage *Robot2Arg = new WidgetArgPackage();
+                            Robot2Arg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER, 2, 0, 999, "机器人2", package->roomid, 0, 1);
 
-                switch(package->opcode)
+                            current_center->WidgetInterface["interfaceSomebodyEnterRoom"](Robot1Arg);
+                            current_center->WidgetInterface["interfaceSomebodyEnterRoom"](Robot2Arg);
+                            current_center->WidgetInterface["interfaceSomebodyReady"](Robot1Arg);
+                            current_center->WidgetInterface["interfaceSomebodyReady"](Robot2Arg);
+
+                            //singleCtrl -> newgame
+                            current_center->singleCtrl = new SingleGame();
+                            break;
+                        }
+                        case PLAYER_OPCODE::READY:
+                        {
+                            WidgetArgPackage *PlayerArg = new WidgetArgPackage();
+                            PlayerArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 3, package->profileindex, package->beannum, package->account, package->roomid);
+                            current_center->WidgetInterface["interfaceSomebodyReady"](PlayerArg);
+                            
+                            //singleCtrl -> SendCard
+                            current_center->singleCtrl->SendCard();
+                            WidgetArgPackage *PlayerCardArg = new WidgetArgPackage();
+                            PlayerCardArg->packMessage<WidgetArgCard>(CARD_OPCODE::OUTCARD, 3, 0, 0, 0, 0, current_center->singleCtrl->player_handcard, 1);
+                            current_center->WidgetInterface["interfaceDealingCards"](PlayerCardArg);
+
+                            //singleCtrl -> Ramdom start
+                            int thefirst = current_center->singleCtrl->SelectStart();
+                            WidgetArgPackage *CallLandlordArg = new WidgetArgPackage();
+                            CallLandlordArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, thefirst, package->profileindex, package->beannum, package->account, package->roomid);
+                            current_center->WidgetInterface["interfaceCallLandlordRound"](CallLandlordArg);
+
+                            current_center->MessageSubmit(current_center->singleCtrl->getnext(current_message));
+                            break;
+                        }
+                        case PLAYER_OPCODE::LANDLORD:
+                        {
+                            if(current_center->singleCtrl->EnterBidForLandlordRound())
+                            {
+                                WidgetArgPackage *CallLandlordArg = new WidgetArgPackage();
+                                CallLandlordArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, package->pos, package->profileindex, package->beannum, package->account, package->roomid, package->iscall);
+                                current_center->WidgetInterface["interfaceCallLandlord"](CallLandlordArg);
+                            }
+                            else
+                            {
+                                WidgetArgPackage *ForLandlordArg = new WidgetArgPackage();
+                                ForLandlordArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, package->pos, package->profileindex, package->beannum, package->account, package->roomid, package->iscall);
+                                
+                                current_center->WidgetInterface["interfaceBidForLandlord"](ForLandlordArg);
+                                current_center->MessageSubmit(current_center->singleCtrl->getnext(current_message));
+                            }
+
+                            //next one
+                            if(current_center->singleCtrl->isBidLandlordRound())
+                            {
+                                WidgetArgPackage *nextRound = new WidgetArgPackage();
+                                int nextone = package->pos == 1 ? 3 : (package->pos == 2 ? 1 : 2);
+                                nextRound->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, nextone, 0, 0, "", "", 0);
+                                current_center->WidgetInterface["interfaceBidForLandlordRound"](nextRound);
+                            }
+                            break;
+                        }
+                        break;
+                    }
+                }
+                else
                 {
-                case ROOM_OPCODE::CREATE_ROOM:
+                    if(!current_center->socketio_client->checkConnection())
+                    {
+                        current_center->socketio_client->connect();
+                        current_center->socketio_client->bindAction("server_response", std::bind(&MessageCenter::OnServerResponse,current_center,std::placeholders::_1));
+                    }
+
+                    switch(package->opcode)
+                    {
+                        case PLAYER_OPCODE::CREATE_ROOM:
+                        {
+                            current_center->socketio_client->create_room(package->account);
+                            break;
+                        }
+                        case PLAYER_OPCODE::JOIN_ROOM:
+                        {
+                            current_center->socketio_client->join_room(package->account, package->roomid);
+                            break;
+                        }
+                        case PLAYER_OPCODE::LEAVE_ROOM:
+                        {
+                            current_center->socketio_client->leave_room(package->account, package->roomid);
+                            break;
+                        }
+                        case PLAYER_OPCODE::READY:
+                        {
+                            current_center->socketio_client->ready(package->account, package->roomid);
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+            case MESSAGE_TYPE::CARD:
+            {
+                MessageCard *package = static_cast<MessageCard*>(current_message->package);
+                if(package->singlemode)
                 {
-                    current_center->socketio_client->create_room(package->account);
+                    switch(package->opcode)
+                    {
+                        case CARD_OPCODE::OUTCARD:
+                        {
+                            WidgetArgPackage *OutCardArg = new WidgetArgPackage();
+                            OutCardArg->packMessage<WidgetArgCard>(package->opcode, package->pos, package->leftcards, package->cardtype, package->point, package->OutCard, package->HandCard, 1);
+                            current_center->WidgetInterface["interfaceOutCard"](OutCardArg);
+
+                            current_center->MessageSubmit(current_center->singleCtrl->getnext(current_message));
+
+                            //next one
+                            if(!current_center->singleCtrl->isGameEnd())
+                            {
+                                WidgetArgPackage *nextRound = new WidgetArgPackage();
+                                int nextone = package->pos == 1 ? 3 : (package->pos == 2 ? 1 : 2);
+                                nextRound->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::PLAY, nextone, 0, 0, "", "", 0);
+                                current_center->WidgetInterface["interfacePlayCardRound"](nextRound);
+                            }
+                            break;
+                        }
+                    }
                     break;
                 }
-                case ROOM_OPCODE::JOIN_ROOM:
-                {
-                    current_center->socketio_client->join_room(package->account, package->roomid);
-                    break;
-                }
-                case ROOM_OPCODE::LEAVE_ROOM:
-                {
-                    current_center->socketio_client->leave_room(package->account, package->roomid);
-                    break;
-                }
-                case ROOM_OPCODE::READY:
-                {
-                    current_center->socketio_client->ready(package->account, package->roomid);
-                    break;
-                }
-                }
+            }
+            case MESSAGE_TYPE::GAME_START:
+            {
+                WidgetArgPackage *GameArg = new WidgetArgPackage();
+                GameArg->packMessage<WidgetArgStartGame>(
+                    current_center->singleCtrl->identity1,
+                    current_center->singleCtrl->identity2,
+                    current_center->singleCtrl->identity3,
+                    current_center->singleCtrl->player_handcard,
+                    current_center->singleCtrl->final_card
+                );
+                current_center->WidgetInterface["interfaceStartGame"](GameArg);
+
+                WidgetArgPackage *PlayCardRound = new WidgetArgPackage();
+                PlayCardRound->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::PLAY, current_center->singleCtrl->landlord, 0, 0, "", "", 0);
+                current_center->WidgetInterface["interfacePlayCardRound"](PlayCardRound);
+                
+                current_center->MessageSubmit(current_center->singleCtrl->getnext(current_message));
+                break;
+            }
+            case MESSAGE_TYPE::GAME_END:
+            {
+                WidgetArgPackage *GameEndArg = new WidgetArgPackage();
+                current_center->WidgetInterface["interfaceGameEnd"](GameEndArg);
                 break;
             }
             default:
@@ -303,6 +432,9 @@ private:
 
     static std::shared_ptr<MessageCenter> instance;
     //std::mutex _mutex;
+
+    /*单机模式*/
+    SingleGame* singleCtrl;
 };
 
 #endif // MESSAGECENTER_H

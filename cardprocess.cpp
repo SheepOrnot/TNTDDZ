@@ -304,7 +304,7 @@ ActionVector CardProcess::EnumerateCardOutAction(std::bitset<54> Card)
     return Action;
 }
 
-SendCardPackage SendCard()
+SendCardPackage CardProcess::SendCard()
 {
     int card[54];
     for(int i = 0; i < 54; i ++ ) card[i] = i;

@@ -33,10 +33,13 @@ public:
             msg_ptr->packMessage<MessageAccount>(account_package->opcode, account_package->mail, account_package->accout, account_package->password, account_package->username, account_package->code);
             break;
         }
-        case WIDGET_ARG_TYPE::ROOM:
+        case WIDGET_ARG_TYPE::PLAYER:
         {
-            WidgetArgRoom *room_package = static_cast<WidgetArgRoom*>(current_widget_arg->package);
-            msg_ptr->packMessage<MessageRoom>(room_package->opcode, room_package->account, room_package->roomid);
+            WidgetArgPlayer *player_package = static_cast<WidgetArgPlayer*>(current_widget_arg->package);
+            msg_ptr->packMessage<MessagePlayer>(player_package->opcode, player_package->pos,
+                                                player_package->profileindex, player_package->beannum,
+                                                player_package->account, player_package->roomid,
+                                                player_package->iscall, player_package->singlemode);
             break;
         }
         }

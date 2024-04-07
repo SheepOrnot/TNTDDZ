@@ -10,7 +10,7 @@ void robot::sethandcard(std::bitset<54> _handcard)
     handcard = _handcard;
 }
 
-std::bitset<54> robot::OutCardAction(CardTypeStruct PreOutCardType)
+std::pair<std::bitset<54>, CardTypeStruct> robot::OutCardAction(CardTypeStruct PreOutCardType)
 {
     ActionVector Action = CardProcess::EnumerateCardOutAction(handcard);
     for(auto& action : Action)
@@ -18,10 +18,11 @@ std::bitset<54> robot::OutCardAction(CardTypeStruct PreOutCardType)
         CardTypeStruct curCardType = {action.cardtype, action.point};
         if(CardProcess::CardCheck_tiny(curCardType, PreOutCardType))
         {
-            return action.action;
+            return std::make_pair(action.action, curCardType);
         }
     }
-    return 0;
+
+    return std::make_pair(0, CardTypeStruct(CardType::None, 0));
 }
 
 int robot::GetlandlordAction()

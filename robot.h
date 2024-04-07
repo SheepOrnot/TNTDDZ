@@ -2,14 +2,13 @@
 #define ROBOT_H
 
 #include "common.h"
-#include "messagecenter.h"
 #include "cardprocess.h"
 
 class robot
 {
 public:
     robot();
-    std::bitset<54> OutCardAction(CardTypeStruct PreOutCardType);  //return CardAction;
+    std::pair<std::bitset<54>, CardTypeStruct> OutCardAction(CardTypeStruct PreOutCardType);  //return CardAction;
     void sethandcard(std::bitset<54> _handcard);
     int GetlandlordAction();
 private:

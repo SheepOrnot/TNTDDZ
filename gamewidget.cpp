@@ -238,6 +238,21 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     qDebug()<<"Build GameWidget Completely";
 
 
+    message_center = MessageCenter::getInstance();
+    widget_rev_packer = WidgetRevPacker::getInstance();
+    
+    message_center->loadInterface("interfaceSomebodyEnterRoom",  std::bind(&GameWidget::interfaceSomebodyEnterRoom, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceSomebodyReady",      std::bind(&GameWidget::interfaceSomebodyReady, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceDealingCards",       std::bind(&GameWidget::interfaceDealingCards, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceCallLandlordRound",  std::bind(&GameWidget::interfaceCallLandlordRound, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceCallLandlord",       std::bind(&GameWidget::interfaceCallLandlord, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceBidForLandlordRound",std::bind(&GameWidget::interfaceBidForLandlordRound, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceBidForLandlord",     std::bind(&GameWidget::interfaceBidForLandlord, this, std::placeholders::_1));
+    message_center->loadInterface("interfacePlayCardRound",      std::bind(&GameWidget::interfacePlayCardRound, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceOutCard",            std::bind(&GameWidget::interfaceOutCard, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceGameEnd",            std::bind(&GameWidget::interfaceGameEnd, this, std::placeholders::_1));
+
+
 }
 
 GameWidget::~GameWidget()
@@ -1355,3 +1370,86 @@ void GameWidget::StartGame(std::string identity1,std::string identity2,std::stri
 // {
 
 // }
+
+
+//************************************INTERFACE*********************************
+void GameWidget::interfaceSomebodyEnterRoom(WidgetArgPackage* arg)
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
+    somebodyEnterRoom(player->pos, player->profileindex, player->beannum);
+    delete arg;
+}
+void GameWidget::interfaceSomebodyReady(WidgetArgPackage* arg)
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
+    somebodyReady(player->pos);
+    delete arg;
+}
+void GameWidget::interfaceDealingCards(WidgetArgPackage* arg)
+{
+    WidgetArgCard *card = static_cast<WidgetArgCard*>(arg->package);
+    Dealingcards(card->HandCard);
+    delete arg;
+}
+void GameWidget::interfaceCallLandlordRound(WidgetArgPackage* arg)
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
+    somebodyCallLandlordRound(player->pos);
+    delete arg;
+}
+void GameWidget::interfaceCallLandlord(WidgetArgPackage* arg)
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
+    if(player->iscall)
+    {
+        somebodyCallLandlord(player->pos);
+    }
+    else
+    {
+        somebodyNotCallLandlord(player->pos);
+    }
+    delete arg;
+}
+void GameWidget::interfaceBidForLandlordRound(WidgetArgPackage* arg)
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
+    somebodyBidForLandlordRound(player->pos);
+    delete arg;
+}
+void GameWidget::interfaceBidForLandlord(WidgetArgPackage* arg)
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
+    if(player->iscall)
+    {
+        somebodyBidForLandlord(player->pos);
+    }
+    else
+    {
+        somebodyNotBidForLandlord(player->pos);
+    }
+    delete arg;
+}
+void GameWidget::interfacePlayCardRound(WidgetArgPackage* arg)
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
+    somebodyPlayCardRound(player->pos);
+    delete arg;
+}
+void GameWidget::interfaceOutCard(WidgetArgPackage* arg)
+{
+    WidgetArgCard *card = static_cast<WidgetArgCard*>(arg->package);
+    somebodyOutCard(card->pos, card->OutCard, card->leftcards, card->cardtype, card->HandCard);
+    delete arg;
+}
+void GameWidget::interfaceStartGame(WidgetArgPackage* arg)
+{
+    WidgetArgStartGame *game = static_cast<WidgetArgStartGame*>(arg->package);
+    StartGame(game->identity1, game->identity2, game->identity3, game->handcards, game->finalcards);
+    delete arg;
+}
+void GameWidget::interfaceGameEnd(WidgetArgPackage* arg)
+{
+    qDebug() << "对局结束";
+    delete arg;
+}
+//******************************************************************************

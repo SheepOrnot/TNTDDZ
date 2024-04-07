@@ -10,10 +10,12 @@
 class WidgetArg
 {
 public:
-    WidgetArg(WIDGET_ARG_TYPE _widget_arg_type)
-        : widget_arg_type(_widget_arg_type)
+    WidgetArg(WIDGET_ARG_TYPE _widget_arg_type, int _singlemode = 0)
+        : widget_arg_type(_widget_arg_type),
+        singlemode(_singlemode)
     {}
     WIDGET_ARG_TYPE widget_arg_type;
+    int singlemode;
 };
 
 class WidgetArgAccount : public WidgetArg
@@ -39,45 +41,46 @@ public:
 class WidgetArgPlayer : public WidgetArg
 {
 public:
-    WidgetArgPlayer(int _opcode, int _addition_data)
-        : WidgetArg(WIDGET_ARG_TYPE::PLAYER),
+    WidgetArgPlayer(PLAYER_OPCODE _opcode, int _pos, int _profileindex, int _beannum, std::string _account, std::string _roomid, int _iscall = 0, int _singlemode = 0)
+        : WidgetArg(WIDGET_ARG_TYPE::PLAYER, _singlemode),
         opcode(_opcode),
-        addition_data(_addition_data)
+        pos(_pos),
+        profileindex(_profileindex),
+        beannum(_beannum),
+        account(_account),
+        roomid(_roomid),
+        iscall(_iscall)
     {}
 
-    int opcode;
-    int addition_data;
+    PLAYER_OPCODE opcode;
+    int pos;
+    int profileindex;
+    int beannum;
+    int iscall;
+    std::string account;
+    std::string roomid;
 };
 
 class WidgetArgCard : public WidgetArg
 {
 public:
-    WidgetArgCard(int _opcode, int _addition_data, std::bitset<54> _OutCard, std::bitset<54> _HandCard)
-        : WidgetArg(WIDGET_ARG_TYPE::CARD),
+    WidgetArgCard(CARD_OPCODE _opcode, int _pos, int _leftcards, int _cardtype, int _point, std::bitset<54> _OutCard, std::bitset<54> _HandCard, int _singlemode = 0)
+        : WidgetArg(WIDGET_ARG_TYPE::CARD, _singlemode),
         opcode(_opcode),
-        addition_data(_addition_data),
+        pos(_pos),
+        leftcards(_leftcards),
+        cardtype(_cardtype),
+        point(_point),
         OutCard(_OutCard),
         HandCard(_HandCard)
     {}
-    int opcode;
-    int addition_data;
+    CARD_OPCODE opcode;
+    int pos;
+    int leftcards;
+    int cardtype;
+    int point;
     std::bitset<54> OutCard;
     std::bitset<54> HandCard;
-};
-
-class WidgetArgRoom : public WidgetArg
-{
-public:
-    WidgetArgRoom(ROOM_OPCODE _opcode, std::string _account, std::string _roomid)
-        : WidgetArg(WIDGET_ARG_TYPE::ROOM),
-        opcode(_opcode),
-        account(_account),
-        roomid(_roomid)
-    {}
-
-    ROOM_OPCODE opcode;
-    std::string account;
-    std::string roomid;
 };
 
 class WidgetArgStatus : public WidgetArg
@@ -92,6 +95,25 @@ public:
     int status;
 };
 
+class WidgetArgStartGame : public WidgetArg
+{
+public:
+    WidgetArgStartGame(std::string _identity1,std::string _identity2,std::string _identity3,std::bitset<54> _handcards,std::bitset<54> _finalcards)
+        : WidgetArg(WIDGET_ARG_TYPE::GAME_START),
+        identity1(_identity1),
+        identity2(_identity2),
+        identity3(_identity3),
+        handcards(_handcards),
+        finalcards(_finalcards)
+    {}
+    
+    std::string identity1;
+    std::string identity2;
+    std::string identity3;
+
+    std::bitset<54> handcards;
+    std::bitset<54> finalcards;
+};
 
 class WidgetArgPackage
 {

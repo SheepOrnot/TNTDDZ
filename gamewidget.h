@@ -18,6 +18,8 @@
 #include <iostream>
 #include <QAudioOutput>
 #include <bitset>
+#include "messagecenter.h"
+#include "widgetrevpacker.h"
 namespace Ui {
 class GameWidget;
 }
@@ -69,6 +71,20 @@ public:
     void somebodyLeaveRoom(int Pos);
     void Dealingcards(std::bitset<54> handcards,int cardnum1 = 17,int cardnum2 = 17);
     void StartGame(std::string identity1,std::string identity2,std::string identity3,std::bitset<54> handcards,std::bitset<54> finalcards);
+
+    void interfaceSomebodyEnterRoom(WidgetArgPackage* arg);
+    void interfaceSomebodyReady(WidgetArgPackage* arg);
+    void interfaceDealingCards(WidgetArgPackage* arg);
+    void interfaceCallLandlordRound(WidgetArgPackage* arg);
+    void interfaceCallLandlord(WidgetArgPackage* arg);
+    void interfaceBidForLandlordRound(WidgetArgPackage* arg);
+    void interfaceBidForLandlord(WidgetArgPackage* arg);
+    void interfacePlayCardRound(WidgetArgPackage* arg);
+    void interfaceOutCard(WidgetArgPackage* arg);
+    void interfaceGameEnd(WidgetArgPackage* arg);
+    void interfaceStartGame(WidgetArgPackage* arg);
+
+
 private:
     Ui::GameWidget *ui;
     int CardStyle;
@@ -140,6 +156,9 @@ private:
         "ThreePair_Straight_with_Pair",
         "KingBomb"
     };
+
+    std::shared_ptr<MessageCenter> message_center;
+    std::shared_ptr<WidgetRevPacker> widget_rev_packer;
 private:
     void InitAllCards();
     std::vector<WidgetCard> Transform_To_Vector(std::bitset<54> BitsetCards); //将CardArg中的OutCard和HandCard译成vector<WidgetCard>对象，包含Point Type Path
