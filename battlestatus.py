@@ -115,6 +115,17 @@ class BattleStatus(threading.local):
             return self.player_2.account
         elif self.player_3.lord == 1:
             return self.player_3.account
+    
+    def find_farmer_account(self):
+        farmer_account = []
+        if self.player_1.lord == 0:
+            farmer_account.append(self.player_1.account)
+        if self.player_2.lord == 0:
+            farmer_account.append(self.player_2.account)
+        if self.player_3.lord == 0:
+            farmer_account.append(self.player_3.account)
+        return farmer_account
+
     def find_handcards(self,seat):
         if int(seat) == 1:
             return self.player_1.handcards
@@ -129,6 +140,13 @@ class BattleStatus(threading.local):
             self.player_2.handcards = updated_handcards
         elif int(seat) == 3:
             self.player_3.handcards = updated_handcards
+    def find_lord_num(self,seat):
+        if int(seat) == 1:
+            return int(self.player_1.lord)
+        elif int(seat) == 2:
+            return int(self.player_2.lord)
+        elif int(seat) == 3:
+            return int(self.player_3.lord)
 
 class ReadyPlayer(threading.local):
     def __init__(self):

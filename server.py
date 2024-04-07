@@ -18,6 +18,8 @@ import redis_data
 import transfercards
 import eventlet
 import countdown
+import CardCheck
+
 
 db = 'room_dbase'
 
@@ -418,16 +420,56 @@ def double(data):
             timer.cancel()
 
 
+
 @socketio.on('')
 def 管牌(data):
     data = json.loads(data)
-    
+    data_room_id = data.get("roomid")
     data_tablecards = data.get("tablecards")
     data_can_cannot = data.get("canorcannot")
     data_seat = data.get("seat")
+    data_account = data.get("account")
     if int(data_can_cannot) == 1:
         data_outputcards = data.get("outputcards")
-        
+        check_result = CardCheck.CardCheck(int(data_outputcards,data_tablecards))
+        if check_result[1] == False:
+            emit('server_response',jsonify(type = 1111,checkresult = 0).data.decode(),room = data_account)
+        else:
+            key = data_room_id+"_battle_data"
+            battle_data = battlestatus.BattleStatus()
+            battle_data.room_id = data_room_id
+            battle_status = redis_data.redis_db.get(key).decode()
+            battle_status = json.loads(battle_status)
+            battle_data.get_battle_status(battle_status)
+            
+            handcards = battle_data.find_handcards(data_seat)
+            bitsite_handcards = transfercards.transfer_int_to_str(int(handcards))
+            bitsite_output_cards = transfercards.transfer_int_to_str(int(data_outputcards))
+            updated_handcards = transfercards.xor_cards(bitsite_handcards,bitsite_output_cards)
+            int_updated_handcards = int(updated_handcards,2)
+
+            if int_updated_handcards == 0:
+                if battle_data.find_lord_num(data_seat) == 1:
+                    emit('server_response',jsonify(type = 1,win_result = 0).data.decode(),room = battle_data.find_farmer_account()[0])
+                    emit('server_response',jsonify(type = 1,win_result = 0).data.decode(),room = battle_data.find_farmer_account()[1])
+                    emit('server_response',jsonify(type = 1,win_result = 1).data.decode(),room = battle_data.find_lord_account())
+                elif battle_data.find_lord_num(data_seat) == 0:
+                    emit('server_response',jsonify(type = 1,win_result = 1).data.decode(),room = battle_data.find_farmer_account()[0])
+                    emit('server_response',jsonify(type = 1,win_result = 1).data.decode(),room = battle_data.find_farmer_account()[1])
+                    emit('server_response',jsonify(type = 1,win_result = 0).data.decode(),room = battle_data.find_lord_account())
+                return 0 
+            
+            
+            battle_data.renew_handcards(data_seat,int_updated_handcards)
+            redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+            emit('server_response',jsonify(type = 999,tablecards = data_outputcards,seat = data_seat).data.decode(),room = data_room_id)
+            time.sleep(1)
+            emit('server_response',jsonify(type = 999).data.decode(),room = lordevent.find_seat_fit_account(lordevent.find_next_seat(data_seat),data_room_id))
+    elif int(data_can_cannot) == 0:
+        emit('server_response',jsonify(type = 999).data.decode(),room = lordevent.find_seat_fit_account(lordevent.find_next_seat(data_seat),data_room_id))
+
+
+
 
 
 @socketio.on('output_handcards')
@@ -451,18 +493,22 @@ def output_handcards(data):
     bitsite_output_cards = transfercards.transfer_int_to_str(int(data_output_cards))
     updated_handcards = transfercards.xor_cards(bitsite_handcards,bitsite_output_cards)
     int_updated_handcards = int(updated_handcards,2)
+    
+
+
+    if int_updated_handcards == 0:
+        if battle_data.find_lord_num(data_seat) == 1:
+            emit('server_response',jsonify(type = 1,win_result = 0).data.decode(),room = battle_data.find_farmer_account()[0])
+            emit('server_response',jsonify(type = 1,win_result = 0).data.decode(),room = battle_data.find_farmer_account()[1])
+            emit('server_response',jsonify(type = 1,win_result = 1).data.decode(),room = battle_data.find_lord_account())
+        elif battle_data.find_lord_num(data_seat) == 0:
+            emit('server_response',jsonify(type = 1,win_result = 1).data.decode(),room = battle_data.find_farmer_account()[0])
+            emit('server_response',jsonify(type = 1,win_result = 1).data.decode(),room = battle_data.find_farmer_account()[1])
+            emit('server_response',jsonify(type = 1,win_result = 0).data.decode(),room = battle_data.find_lord_account())
+        return 0 
     battle_data.renew_handcards(data_seat,int_updated_handcards)
     redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
     emit('server_response',jsonify(type = 1,tablecards = data_output_cards).data.decode(),room = data_room_id)
-    #redis_data.redis_db.set(str(data_room_id)+'_'+str(data_seat)+"_output_handcards_signal",0)
-            #################################################################
-    keys = redis_data.redis_db.keys()
-
-    # 遍历每个键，并输出键和对应的值
-    for key in keys:
-        value = redis_data.redis_db.get(key)
-        print(key.decode(), "->", value.decode())
-#################################################################
 
 
 @socketio.on('ask_for_lord')
