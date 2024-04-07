@@ -1,10 +1,10 @@
 import sendcard
 def transfer_int_to_str(cards):#对于整数的牌进行解码，返回值为01字符串
-    print("--------------",cards)
+
     # 首先将整数转换为二进制字符串  
     binary_str = bin(cards)
     binary_str = binary_str.lstrip('0b')
-    print("--------------",binary_str)
+
     # 计算二进制字符串的长度  
     length = len(binary_str)  
       

@@ -10,7 +10,7 @@ def decide_lord(data_lord,data_account,data_room_id,data_seat):
     if data_lord == 1:
         lord_cards = redis_data.redis_db.get(str(data_room_id)+"_lord_cards").decode()
         #生成地主牌，并修改地主数据
-        print('lord_cards',lord_cards)
+        print('lord_cards-=-=-=--------=-=-=-=-=-',data_account)
         lord_handcards =  change_handcards_data(data_account,data_room_id,data_seat)
         change_lord_data(data_account,data_room_id,lord_handcards)
         print("叫地主！！！！",lord_handcards)
@@ -19,10 +19,13 @@ def decide_lord(data_lord,data_account,data_room_id,data_seat):
         #通知是否加倍
         sleep(3)
         emit('server_response',jsonify(type = 1).data.decode(),room = data_room_id)
+        return 0 
     elif data_lord == 0:
         #通知下一名玩家叫地主
         print("下一名玩家的座位号：",find_next_seat(data_seat))
         emit('server_response',jsonify(type = 1,lord = 1).data.decode(),room = next_account(data_seat,data_room_id))
+        return 0 
+
 def next_account(data_seat,data_room_id):
     return find_seat_fit_account(find_next_seat(data_seat),data_room_id)
 
@@ -67,7 +70,7 @@ def change_handcards_data(data_account,data_room_id,data_seat):
     transfered_lord_cards = transfercards.transfer_int_to_str(int(lord_cards))
     print(transfered_lord_cards)
     print(transfered_handcards)
-    lord_handcards = transfercards.add_cards(transfered_handcards,transfered_lord_cards)
+    lord_handcards = int(transfercards.add_cards(transfered_handcards,transfered_lord_cards),2)
 
     redis_data.redis_db.set(str(data_room_id)+"_"+str(data_account)+"_player_"+str(data_seat)+"_handcards",lord_handcards)
     return lord_handcards
@@ -84,7 +87,8 @@ def change_lord_data(data_account,data_room_id,lord_handcards):
     battle_data.get_battle_status(battle_status)
 
     seat = find_fit_seat(data_account,battle_data.player_1.account,battle_data.player_2.account,battle_data.player_3.account)
-
+    print("data_account",data_account)
+    print("___+===+_+_+_+_",seat)
     if seat == 1:
         battle_data.player_1.handcards = lord_handcards
         battle_data.player_1.lord = 1
@@ -94,8 +98,18 @@ def change_lord_data(data_account,data_room_id,lord_handcards):
     elif seat == 3:
         battle_data.player_3.handcards = lord_handcards
         battle_data.player_3.lord = 1
+    print("lord_----------------",battle_data.player_1.lord)
+    print("lord_----------------",battle_data.player_2.lord)
+    print("lord_----------------",battle_data.player_3.lord)
+    redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+            #################################################################
+    keys = redis_data.redis_db.keys()
 
-        redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+    # 遍历每个键，并输出键和对应的值
+    for key in keys:
+        value = redis_data.redis_db.get(key)
+        print(key.decode(), "->", value.decode())
+#################################################################
 
 
 

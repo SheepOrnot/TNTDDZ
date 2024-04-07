@@ -78,15 +78,15 @@ class BattleStatus(threading.local):
             return 3
 
     def to_dict(self):
-        return {'roomid':self.room_id,'player_1_account':self.player_1.account,
-                'player_2_account':self.player_2.account,'player_3_account':self.player_3.account,
-                'player_1_handcards':self.player_1.handcards,'player_2_handcards':self.player_2.handcards,
-                'player_3_handcards':self.player_3.handcards,'room_status':self.room_status,
-                'player_1_lord':self.player_1.lord,'player_2_lord':self.player_2.lord,
-                'player_3_lord':self.player_2.lord,'room_status':self.room_status,
-                'player_1_leavetimes':self.player_1.leaveroomtimes,'player_2_leavetimes':self.player_2.leaveroomtimes,
-                'player_3_leavetimes':self.player_3.leaveroomtimes,'room_count':self.room_count,
-                'player_1_seat':self.player_1.seat,'player_2_seat':self.player_2.seat,
+        return {'roomid':self.room_id,                              'player_1_account':self.player_1.account,
+                'player_2_account':self.player_2.account,           'player_3_account':self.player_3.account,
+                'player_1_handcards':self.player_1.handcards,       'player_2_handcards':self.player_2.handcards,
+                'player_3_handcards':self.player_3.handcards,       'room_status':self.room_status,
+                'player_1_lord':self.player_1.lord,                 'player_2_lord':self.player_2.lord,
+                'player_3_lord':self.player_3.lord,                 'room_status':self.room_status,
+                'player_1_leavetimes':self.player_1.leaveroomtimes, 'player_2_leavetimes':self.player_2.leaveroomtimes,
+                'player_3_leavetimes':self.player_3.leaveroomtimes, 'room_count':self.room_count,
+                'player_1_seat':self.player_1.seat,                 'player_2_seat':self.player_2.seat,
                 'player_3_seat':self.player_3.seat
                 }
     def get_battle_status(self,battle_status):
