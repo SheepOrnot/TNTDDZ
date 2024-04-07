@@ -67,11 +67,12 @@ public:
     void somebodyNotBidForLandlord(int Pos);
     void somebodyDouble(int Pos);
     void somebodyNotDouble(int Pos);
-    void somebodyEnterRoom(int Pos,int ProfileIndex,int Beans);
+    void somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int Beans);
     void somebodyLeaveRoom(int Pos);
     void Dealingcards(std::bitset<54> handcards,int cardnum1 = 17,int cardnum2 = 17);
     void StartGame(std::string identity1,std::string identity2,std::string identity3,std::bitset<54> handcards,std::bitset<54> finalcards);
     void AddTimes(int newTimes);
+    void GameOver(int Result,int times,int Score1,int Score2,int Score3);
 private:
     Ui::GameWidget *ui;
     int CardStyle;
@@ -89,6 +90,7 @@ private:
     QIcon BeanIcon;
     QPixmap CardBackPixmap;
     QLabel *PreviousCardsNumLabel, *NextCardsNumLabel;
+    QString PreviousName,NextName,PlayerName;
     bool BGMState,EffectState;
     int radius,RoomIdFontSize;
     double BGMVolume,EffectVolume;

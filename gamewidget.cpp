@@ -51,10 +51,10 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
     connect(Testbtn,&QPushButton::clicked,[&](){
         switch(TestStage)
         {
-            case 0:{somebodyEnterRoom(3,0,66999); break;}
-            case 1:{somebodyEnterRoom(1,1,652);  break;}
+            case 0:{somebodyEnterRoom(3,0,"玩家3",66999); break;}
+            case 1:{somebodyEnterRoom(1,1,"玩家1",652);  break;}
             case 2:{somebodyReady(3);break;}
-            case 3:{somebodyEnterRoom(2,3,777777777);break;}
+            case 3:{somebodyEnterRoom(2,3,"玩家2",777777777);break;}
             case 4:{somebodyReady(2);break;}
             case 5:{somebodyUnReady(3);break;}
             case 6:{somebodyReady(3);break;}
@@ -1296,7 +1296,7 @@ void GameWidget::somebodyNotDouble(int Pos)
     }
     MakeSoundEffect(2);
 }
-void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,int Beans)  //有人加入房间，创建房间初始调用参数3，加入房间调用1/2显示已经在房间中的人，后加入房间正常调用
+void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int Beans)  //有人加入房间，创建房间初始调用参数3，加入房间调用1/2显示已经在房间中的人，后加入房间正常调用
 {
     switch(Pos)
     {
@@ -1305,6 +1305,7 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,int Beans)  //有人
             PreviousProfileIndex = ProfileIndex;
             PreviousBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit1->setText(PreviousBeanNum);
+            PreviousName = QString::fromStdString(Name);
             break;
         }
         case 2:
@@ -1312,6 +1313,7 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,int Beans)  //有人
             NextProfileIndex = ProfileIndex;
             NextBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit2->setText(NextBeanNum);
+            NextName = QString::fromStdString(Name);
             break;
         }
         case 3:
@@ -1319,6 +1321,7 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,int Beans)  //有人
             PlayerProfileIndex = ProfileIndex;
             PlayerBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit3->setText(PlayerBeanNum);
+            PlayerName = QString::fromStdString(Name);
             break;
         }
     }
@@ -1379,6 +1382,13 @@ void GameWidget::AddTimes(int newTimes)
     Times = newTimes;
     ui->MultiplierLabel->setText("倍数\n⨉"+QString::number(Times));
 }
+void GameWidget::GameOver(int Result,int times,int Score1,int Score2,int Score3)
+{
+    gameoverWidget = new GameOverWidget(Width,Height,Result,times,PreviousIdentity,NextIdentity,PlayerIdentity,PreviousName,NextName,PlayerName,PreviousDouble
+                                        ,NextDouble,PlayerDouble,Score1,Score2,Score3);
+}
+
+
 // void onSkipTurnBtnClicked()   //点击不出按钮；
 // {
 
