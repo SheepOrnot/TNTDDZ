@@ -51,61 +51,64 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
     connect(Testbtn,&QPushButton::clicked,[&](){
         switch(TestStage)
         {
-        case 0:{somebodyEnterRoom(3,0,66999); break;}
-        case 1:{somebodyEnterRoom(1,1,652);  break;}
-        case 2:{somebodyReady(3);break;}
-        case 3:{somebodyEnterRoom(2,3,777777777);break;}
-        case 4:{somebodyReady(2);break;}
-        case 5:{somebodyUnReady(3);break;}
-        case 6:{somebodyReady(3);break;}
-        case 7:{somebodyReady(1);break;}
-        case 8:{Dealingcards(playerBitset);break;}
-        case 9:{somebodyCallLandlordRound(1);break;}
-        case 10:{somebodyNotCallLandlord(1);break;}
-        case 11:{somebodyCallLandlordRound(3);break;}
-        case 12:{somebodyCallLandlord(3);break;}
-        case 13:{somebodyBidForLandlordRound(2);break;}
-        case 14:{somebodyBidForLandlord(2);break;}
-        case 15:{somebodyBidForLandlordRound(3);break;}
-        case 16:{somebodyBidForLandlord(3);break;}
-        case 17:{StartGame("farmer","farmer","landlord",finalBitset|playerBitset,finalBitset);break;}  //111110000000011111111100000000000001001100000000110001
-        case 18:{somebodyPlayCardRound(3);break;};
-        case 19:{
-                playeroutBitset = std::bitset<54>(std::string("000000000000000000000000000000000000000000000000110000"));
-                playerBitset= std::bitset<54>    (std::string("111110000000011111111100000000000001001100000000000001"));
-                somebodyOutCard(3,playeroutBitset,18,2,playerBitset);
-                }
-        case 20:{somebodyPlayCardRound(2);break;};
-        case 21:{
-                nextoutBitset =  std::bitset<54>  (std::string("000000000000000000000000000000110000000000000000000000"));
-                //nextBitset    = std::bitset<54> (std::string("000000000000000000000000000000001010110011111111001110"));
-                somebodyOutCard(2,nextoutBitset,15,2);
-                }
-        case 22:{somebodyPlayCardRound(1);break;};
-        case 23:{somebodyNotOutCard(1,17);break;}
-        case 24:{somebodyPlayCardRound(3); break;}
-        case 25:
-        {
-            playeroutBitset = std::bitset<54>(std::string("001100000000000000000000000000000000000000000000000000"));
-            playerBitset= std::bitset<54>    (std::string("110010000000011111111100000000000001001100000000000001"));
-            somebodyOutCard(3,playeroutBitset,16,2,playerBitset);
-        }
-        case 26:{somebodyPlayCardRound(2);break;}
-        case 27:{somebodyNotOutCard(2,15);break;}
-        case 28:{somebodyPlayCardRound(1);break;}
-        case 29:{somebodyNotOutCard(1,17);break;}
-        case 30:{somebodyPlayCardRound(3);break;}
-        case 31:
-        {
-            playeroutBitset = std::bitset<54>(std::string("110000000000000000000000000000000000000000000000000000"));
-            playerBitset= std::bitset<54>    (std::string("000010000000011111111100000000000001001100000000000001"));
-            somebodyOutCard(3,playeroutBitset,14,14,playerBitset);
-        }
-        default: qDebug()<<"done!";
+            case 0:{somebodyEnterRoom(3,0,66999); break;}
+            case 1:{somebodyEnterRoom(1,1,652);  break;}
+            case 2:{somebodyReady(3);break;}
+            case 3:{somebodyEnterRoom(2,3,777777777);break;}
+            case 4:{somebodyReady(2);break;}
+            case 5:{somebodyUnReady(3);break;}
+            case 6:{somebodyReady(3);break;}
+            case 7:{somebodyReady(1);break;}
+            case 8:{Dealingcards(playerBitset);break;}
+            case 9:{somebodyCallLandlordRound(1);break;}
+            case 10:{somebodyNotCallLandlord(1);break;}
+            case 11:{somebodyCallLandlordRound(3);break;}
+            case 12:{somebodyCallLandlord(3);break;}
+            case 13:{somebodyBidForLandlordRound(2);break;}
+            case 14:{somebodyBidForLandlord(2);break;}
+            case 15:{somebodyBidForLandlordRound(3);break;}
+            case 16:{somebodyBidForLandlord(3);break;}
+            case 17:{StartGame("farmer","farmer","landlord",finalBitset|playerBitset,finalBitset);break;}  //111110000000011111111100000000000001001100000000110001
+            case 18:{somebodyPlayCardRound(3);break;};
+            case 19:{
+                    playeroutBitset = std::bitset<54>(std::string("000000000000000000000000000000000000000000000000110000"));
+                    playerBitset    = std::bitset<54>(std::string("111110000000011111111100000000000001001100000000000001"));
+                    somebodyOutCard(3,playeroutBitset,18,2,playerBitset);
+                    break;
+                    }
+            case 20:{somebodyPlayCardRound(2);break;};
+            case 21:{
+                    nextoutBitset =  std::bitset<54>  (std::string("000000000000000000000000000000110000000000000000000000"));
+                    //nextBitset    = std::bitset<54> (std::string("000000000000000000000000000000001010110011111111001110"));
+                    somebodyOutCard(2,nextoutBitset,15,2);
+                    break;
+                    }
+            case 22:{somebodyPlayCardRound(1);break;};
+            case 23:{somebodyNotOutCard(1,17);break;}
+            case 24:{somebodyPlayCardRound(3); break;}
+            case 25:
+            {
+                playeroutBitset = std::bitset<54>(std::string("001100000000000000000000000000000000000000000000000000"));
+                playerBitset= std::bitset<54>    (std::string("110010000000011111111100000000000001001100000000000001"));
+                somebodyOutCard(3,playeroutBitset,16,2,playerBitset);
+                break;
+            }
+            case 26:{somebodyPlayCardRound(2);break;}
+            case 27:{somebodyNotOutCard(2,15);break;}
+            case 28:{somebodyPlayCardRound(1);break;}
+            case 29:{somebodyNotOutCard(1,17);break;}
+            case 30:{somebodyPlayCardRound(3);break;}
+            case 31:
+            {
+                playeroutBitset = std::bitset<54>(std::string("110000000000000000000000000000000000000000000000000000"));
+                playerBitset= std::bitset<54>    (std::string("000010000000011111111100000000000001001100000000000001"));
+                somebodyOutCard(3,playeroutBitset,14,14,playerBitset);
+                break;
+            }
+            default: qDebug()<<"done!";
         }
         qDebug()<<TestStage;
         TestStage++;
-
     });
 
 
@@ -727,7 +730,6 @@ void GameWidget::MakeSoundEffect(int Type)  //0:叫地主  1：不叫  2：加�
         }
         case 9:
         {
-            qDebug()<<PlayerOutCradsType;
             if(PlayerOutCradsType > 3)
             {
                 EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/"+CardTypeIndex[PlayerOutCradsType]+".m4a"));
@@ -782,6 +784,7 @@ void GameWidget::ShowProfiles(int Pos)
 }
 void GameWidget::StartCountDown(int time,int pos)
 {
+    qDebug()<<"start timer";
     ui->ClockImageLabel->show();
     ui->ClockNum->show();
     if(pos==1) {ui->ClockImageLabel->setGeometry(0.177*Width,  0.222*Height,  0.021*Width,   0.037*Height);
@@ -808,6 +811,7 @@ void GameWidget::updateCountDown()
         remainingTime--;
     } else {
         timer->stop(); // 停止计时器
+        qDebug()<<"stop Timer";
     }
 }
 
@@ -933,6 +937,7 @@ void GameWidget::somebodyPlayCardRound(int Pos)    //出牌回合
             ui->SkipTurnBtn->show();
             ui->MSGLabel3->clear();
             StartCountDown(30,3);
+            break;
         }
     }
         DestroyOutCards(Pos);
@@ -1009,7 +1014,7 @@ void GameWidget::somebodyCallLandlord(int Pos)       //有人叫地主
         }
     }
     MakeSoundEffect(0);
-    timer->stop();
+    timer->stop();qDebug()<<"stop Timer";
     disconnect(timer, nullptr, this, nullptr);
     ui->ClockImageLabel->hide();
     ui->ClockNum->hide();
@@ -1048,7 +1053,7 @@ void GameWidget::somebodyNotOutCard(int Pos,int Leftcards,std::bitset<54> handca
             break;
         }
     }
-        timer->stop();
+        timer->stop();qDebug()<<"stop Timer";
         disconnect(timer, nullptr, this, nullptr);
         ui->ClockImageLabel->hide();
         ui->ClockNum->hide();
@@ -1088,9 +1093,7 @@ void GameWidget::somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,in
             {
                 if(PlayerHandCards[i].isUp==false)
                 {
-                    qDebug()<<"移动前"<<PlayerHandCards[i].btn->x();
                     AnimateMoveLeft(PlayerHandCards[i].btn,0.03*Width*(i-HeadUnselectedCount++));
-                    qDebug()<<"移动后"<<PlayerHandCards[i].btn->x();
                     continue;
                 }
                 SelectedCards[PlayerHandCards[i].Index] = 1;
@@ -1112,12 +1115,13 @@ void GameWidget::somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,in
             break;
         }
     }
-    timer->stop();
+    placeOutCards(Pos);
+    MakeSoundEffect(Pos+6);
+    timer->stop();  qDebug()<<"stop Timer";
     disconnect(timer, nullptr, this, nullptr);
     ui->ClockImageLabel->hide();
     ui->ClockNum->hide();
-    placeOutCards(Pos);
-    MakeSoundEffect(Pos+6);
+
 }
 void GameWidget::somebodyNotCallLandlord(int Pos)     //有人不叫
 {
@@ -1144,7 +1148,7 @@ void GameWidget::somebodyNotCallLandlord(int Pos)     //有人不叫
             break;
         }
     }
-        timer->stop();
+        timer->stop();qDebug()<<"stop Timer";
         disconnect(timer, nullptr, this, nullptr);
         ui->ClockImageLabel->hide();
         ui->ClockNum->hide();
@@ -1175,7 +1179,7 @@ void GameWidget::somebodyBidForLandlord(int Pos)     //有人抢地主    ----�
             break;
         }
     }
-        timer->stop();
+        timer->stop();qDebug()<<"stop Timer";
         disconnect(timer, nullptr, this, nullptr);
         ui->ClockImageLabel->hide();
         ui->ClockNum->hide();
@@ -1206,7 +1210,7 @@ void GameWidget::somebodyNotBidForLandlord(int Pos)
             break;
         }
     }
-        timer->stop();
+        timer->stop();qDebug()<<"stop Timer";
         disconnect(timer, nullptr, this, nullptr);
         ui->ClockImageLabel->hide();
         ui->ClockNum->hide();
@@ -1243,7 +1247,7 @@ void GameWidget::somebodyDouble(int Pos)
             //ui->DoubleLabel3->setPixmap();
             ui->DoubleLabel3->setText("加倍");
             ui->DoubleLabel3->show();
-            timer->stop();
+            timer->stop();qDebug()<<"stop Timer";
             disconnect(timer, nullptr, this, nullptr);
             ui->ClockImageLabel->hide();
             ui->ClockNum->hide();
@@ -1283,7 +1287,7 @@ void GameWidget::somebodyNotDouble(int Pos)
             //ui->DoubleLabel3->setPixmap();
             ui->DoubleLabel3->setText("不加倍");
             ui->DoubleLabel3->show();
-            timer->stop();
+            timer->stop();qDebug()<<"stop Timer";
             disconnect(timer, nullptr, this, nullptr);
             ui->ClockImageLabel->hide();
             ui->ClockNum->hide();
