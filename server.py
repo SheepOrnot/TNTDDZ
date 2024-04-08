@@ -409,7 +409,7 @@ def double(data):
 
 
 
-@socketio.on('')
+@socketio.on('bigger_cards')
 def 管牌(data):
     data = json.loads(data)
     data_room_id = data.get("roomid")
