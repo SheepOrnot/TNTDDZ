@@ -147,6 +147,13 @@ class BattleStatus(threading.local):
             return int(self.player_2.lord)
         elif int(seat) == 3:
             return int(self.player_3.lord)
+    def find_account(self,seat):
+        if int(seat) == 1:
+            return self.player_1.account
+        elif int(seat) == 2:
+            return self.player_2.account
+        elif int(seat) == 3:
+            return self.player_3.account
 
 class ReadyPlayer(threading.local):
     def __init__(self):

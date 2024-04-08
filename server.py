@@ -403,21 +403,9 @@ def double(data):
     if int(redis_data.redis_db.get(str(data_room_id)+"_double_num").decode()) == 3:
         emit('server_response',jsonify(type = 1000000).data.decode(),room = battle_data.find_lord_account())
         print("叫地主的账户是：",battle_data.find_lord_account())
-        timer = eventlet.Timeout(15)
-        try:
-            while True:
-                if int(redis_data.redis_db.get(str(data_room_id)+'_'+str(data_seat)+"_output_handcards_signal").decode()) == 0:
-                    print("redis_data",int(redis_data.redis_db.get(str(data_room_id)+'_'+str(data_seat)+"_output_handcards_signal").decode()))
-                    eventlet.sleep(1)
-                    print("11111s")
-                elif int(redis_data.redis_db.get(str(data_room_id)+'_'+str(data_seat)+"_output_handcards_signal").decode()) == 1:
-                    timer.cancel()
-                    break  
-        except eventlet.timeout.Timeout:
-            print("-----------------------",redis_data.redis_db.get(str(data_room_id)+"_double_num").decode())
-            countdown.timeout_handler(data_seat,data_room_id)
-        finally:
-            timer.cancel()
+
+
+
 
 
 
@@ -480,7 +468,7 @@ def output_handcards(data):
     data_output_cards = int(data.get("outputcards"))        
 
 
-    redis_data.redis_db.set(str(data_room_id)+'_'+str(data_seat)+"_output_handcards_signal",1)
+
 
     key = data_room_id+"_battle_data"
     battle_data = battlestatus.BattleStatus()
@@ -509,6 +497,8 @@ def output_handcards(data):
     battle_data.renew_handcards(data_seat,int_updated_handcards)
     redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
     emit('server_response',jsonify(type = 1,tablecards = data_output_cards).data.decode(),room = data_room_id)
+    time.sleep(0.5)
+    emit('server_response',jsonify(type = 900).data.decode(),room = battle_data.find_account(lordevent.find_next_seat(data_seat)))#通知下家进行管牌操作
 
 
 @socketio.on('ask_for_lord')
