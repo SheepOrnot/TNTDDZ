@@ -55,19 +55,21 @@ public:
 class MessageCard : public Message
 {
 public:
-    MessageCard(CARD_OPCODE _opcode, int _pos, int _leftcards, int _cardtype, int _point, std::bitset<54> _OutCard, std::bitset<54> _HandCard, int _singlemode = 0)
+    MessageCard(CARD_OPCODE _opcode, int _pos, int _leftcards, int _cardtype, int _point, int _succ, std::bitset<54> _OutCard, std::bitset<54> _HandCard, int _singlemode)
         : Message(MESSAGE_TYPE::CARD, _singlemode),
         opcode(_opcode),
         pos(_pos),
         leftcards(_leftcards),
         cardtype(_cardtype),
         point(_point),
+        succ(_succ),
         OutCard(_OutCard),
         HandCard(_HandCard)
     {}
     CARD_OPCODE opcode;
     int pos;
     int point;
+    int succ;
     int leftcards;
     int cardtype;
     std::bitset<54> OutCard;

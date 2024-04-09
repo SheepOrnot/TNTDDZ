@@ -48,6 +48,7 @@ constexpr auto qt_meta_stringdata_CLASSLobbyWidgetENDCLASS = QtMocHelpers::strin
     "onExitGameBtnClicked",
     "onPersonalInfoBtnClicked",
     "RollImage",
+    "onSingleModeBtnClicked",
     "EnterGame"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
@@ -61,7 +62,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSLobbyWidgetENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -69,23 +70,25 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSLobbyWidgetENDCLASS[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    2,   68,    2, 0x06,    1 /* Public */,
+       1,    2,   74,    2, 0x06,    1 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       5,    2,   73,    2, 0x0a,    4 /* Public */,
-       6,    0,   78,    2, 0x08,    7 /* Private */,
-       7,    0,   79,    2, 0x08,    8 /* Private */,
-       8,    0,   80,    2, 0x08,    9 /* Private */,
-       9,    0,   81,    2, 0x08,   10 /* Private */,
-      10,    0,   82,    2, 0x08,   11 /* Private */,
-      11,    0,   83,    2, 0x08,   12 /* Private */,
-      12,    0,   84,    2, 0x08,   13 /* Private */,
+       5,    2,   79,    2, 0x0a,    4 /* Public */,
+       6,    0,   84,    2, 0x08,    7 /* Private */,
+       7,    0,   85,    2, 0x08,    8 /* Private */,
+       8,    0,   86,    2, 0x08,    9 /* Private */,
+       9,    0,   87,    2, 0x08,   10 /* Private */,
+      10,    0,   88,    2, 0x08,   11 /* Private */,
+      11,    0,   89,    2, 0x08,   12 /* Private */,
+      12,    0,   90,    2, 0x08,   13 /* Private */,
+      13,    0,   91,    2, 0x08,   14 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int, QMetaType::Int,    3,    4,
 
  // slots: parameters
     QMetaType::Void, QMetaType::Int, QMetaType::Int,    3,    4,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -126,6 +129,8 @@ Q_CONSTINIT const QMetaObject LobbyWidget::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'RollImage'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onSingleModeBtnClicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'EnterGame'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
@@ -146,7 +151,8 @@ void LobbyWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 5: _t->onExitGameBtnClicked(); break;
         case 6: _t->onPersonalInfoBtnClicked(); break;
         case 7: _t->RollImage(); break;
-        case 8: _t->EnterGame(); break;
+        case 8: _t->onSingleModeBtnClicked(); break;
+        case 9: _t->EnterGame(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -180,13 +186,13 @@ int LobbyWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 10;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 10)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 9;
+        _id -= 10;
     }
     return _id;
 }

@@ -17,13 +17,12 @@
 #include <mutex>
 #include <memory>
 #include <thread>
-/*
-BOOST_DATE_TIME_NO_LIB
-BOOST_REGEX_NO_LIB
-ASIO_STANDALONE
-_WEBSOCKETPP_CPP11_STL_
-_WEBSOCKETPP_CPP11_FUNCTIONAL_
-*/
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif // _WIN32
 
 // 定义函数指针类型
 typedef void (*PluginFuncPtr)();

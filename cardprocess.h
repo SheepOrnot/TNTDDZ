@@ -26,19 +26,36 @@ enum CardType {
     KingBomb
 };
 
-typedef struct CardAction
+class CardTypeStruct
 {
+public:
+    CardTypeStruct(CardType _cardtype, int _point, int _succ) :
+        cardtype(_cardtype),
+        point(_point),
+        succ(_succ)
+    {}
     CardType cardtype;
     int point;
+    int succ;
+};
+
+class CardAction : public CardTypeStruct
+{
+public:
+    CardAction(CardType _cardtype, int _point, int _succ, std::bitset<54> _action) :
+        CardTypeStruct(_cardtype, _point, _succ),
+        action(_action)
+    {}
     std::bitset<54> action;
-}CardAction;
+};
 
 typedef struct SendCardPackage
 {
     std::bitset<54> p1, p2, p3, finalcard;
 }SendCardPackage;
 
-typedef std::pair<CardType, int> CardTypeStruct;
+
+
 typedef std::vector<CardTypeStruct> CardTypeVector;
 typedef std::pair<CardTypeVector, int> CompareResult;
 

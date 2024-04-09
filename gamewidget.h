@@ -21,6 +21,7 @@
 #include <bitset>
 #include "messagecenter.h"
 #include "widgetrevpacker.h"
+#include "cardprocess.h"
 namespace Ui {
 class GameWidget;
 }
@@ -87,7 +88,6 @@ public:
     void interfaceGameEnd(WidgetArgPackage* arg);
     void interfaceStartGame(WidgetArgPackage* arg);
 
-
 private:
     Ui::GameWidget *ui;
     int CardStyle;
@@ -115,6 +115,9 @@ private:
     bool PreviousIdentity,NextIdentity,PlayerIdentity;
     QTimer *timer;
     int remainingTime;
+    std::bitset<54> handcards;
+
+    WidgetArgPackage* InterfaceArg[10];
     const QString TypeIndex[6] = { "",
         "spades",
         "hearts",
@@ -187,13 +190,24 @@ private:
 private Q_SLOTS:
     void onSettingBtnClicked();
     void onPlayCardsClicked();    //点击出牌按钮，判断牌型和管牌逻辑；
-    // void onSkipTurnBtnClicked();    //点击不出按钮；
-    // void onCallLandlordBtnClicked();    //点击叫地主按钮
-    // void onSkipCallLandlordBtnClicked();//点击不叫按钮
-    // void onBidForLandlordBtnClicked();   //点击抢地主按钮
-    // void onSkipLandlordBidBtnClicked();  //点击不抢按钮
-    // void onDoubleBtnClicked();          //点击加倍按钮
-    // void onUnDoubleBtnClicked();        //点击不加倍按钮
+    void onSkipTurnBtnClicked();    //点击不出按钮；
+    void onCallLandlordBtnClicked();    //点击叫地主按钮
+    void onSkipCallLandlordBtnClicked();//点击不叫按钮
+    void onBidForLandlordBtnClicked();   //点击抢地主按钮
+    void onSkipLandlordBidBtnClicked();  //点击不抢按钮
+    void onDoubleBtnClicked();          //点击加倍按钮
+    void onUnDoubleBtnClicked();        //点击不加倍按钮
+    void onReadyBtnClicked();
+    void onUnreadyBtnClicked();
+
+    void doDealingCards();
+    void doCallLandlordRound();
+    void doCallLandlord();
+    void doBidForLandlordRound();
+    void doBidForLandlord();
+    void doPlayCardRound();
+    void doOutCard();
+    void doStartGame();
 Q_SIGNALS:
     void HaveNoHandCard();
 };

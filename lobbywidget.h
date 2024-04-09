@@ -59,6 +59,8 @@ private:
     std::shared_ptr<MessageCenter> message_center;
     std::shared_ptr<WidgetRevPacker> widget_rev_packer;
 
+    int signlemode = 0;
+
 private:
     void ImportConfig();
 public Q_SLOTS:

@@ -11,14 +11,15 @@ void CardProcess::PringBukket(std::vector<std::pair<int, int>>& bukket)
 }
 
 CardTypeVector CardProcess::CardTypeCheck(std::bitset<54> Card) {
-    #define CARD_STRUCT(type, point) std::make_pair(type, point)
-    #define INSERT_RESULT(type) CardTypeResult.push_back(CARD_STRUCT(CardType::type, bukket[0].second))
+    #define CARD_STRUCT(type, point, succ) CardTypeStruct(type, point, succ)
+    #define INSERT_RESULT(type) CardTypeResult.push_back(CARD_STRUCT(CardType::type, bukket[0].second, 1))
+    #define INSERT_RESULT_SUCC(type, succ) CardTypeResult.push_back(CARD_STRUCT(CardType::type, bukket[0].second, succ))
     #define LEN(v) v.size()    
     
     CardTypeVector CardTypeResult;
     if(Card.to_ulong() == 0)
     {
-        CardTypeResult.push_back(CARD_STRUCT(CardType::None, 0));
+        CardTypeResult.push_back(CARD_STRUCT(CardType::None, 0, 1));
         return CardTypeResult;
     }
  
@@ -122,14 +123,14 @@ CardTypeVector CardProcess::CardTypeCheck(std::bitset<54> Card) {
                 if(succThreeCount == ThreePairCount)
                 {
                     if(ThreePairCount == PairCount && SingleCount == 0)
-                        INSERT_RESULT(ThreePair_Straight_with_Pair);
+                        INSERT_RESULT_SUCC(ThreePair_Straight_with_Pair, succThreeCount);
                     else if(ThreePairCount == PairCount*2 + SingleCount)
-                        INSERT_RESULT(ThreePair_Straight_with_Single);
+                        INSERT_RESULT_SUCC(ThreePair_Straight_with_Single, succThreeCount);
                     else if(PairCount == 0 && SingleCount == 0)
-                        INSERT_RESULT(ThreePair_Straight);
+                        INSERT_RESULT_SUCC(ThreePair_Straight, succThreeCount);
                 }
                 else if(succThreeCount == (ThreePairCount - succThreeCount)*3 + PairCount*2 + SingleCount)
-                    INSERT_RESULT(ThreePair_Straight_with_Single);
+                    INSERT_RESULT_SUCC(ThreePair_Straight_with_Single, succThreeCount);
             }
         }
     }
@@ -179,7 +180,7 @@ CardTypeVector CardProcess::CardTypeCheck(std::bitset<54> Card) {
                     succPairCount += 1;
 
             if(succPairCount >= 3 && succPairCount == PairCount && SingleCount == 0)
-                INSERT_RESULT(Pair_Straight);
+                INSERT_RESULT_SUCC(Pair_Straight, succPairCount);
         }
     }
     
@@ -216,12 +217,12 @@ CardTypeVector CardProcess::CardTypeCheck(std::bitset<54> Card) {
                     succSingleCount += 1;
 
             if(succSingleCount >= 5 && succSingleCount == SingleCount)
-                INSERT_RESULT(Straight);
+                INSERT_RESULT_SUCC(Straight, succSingleCount);
         }
     }
 
     if(LEN(CardTypeResult) == 0)
-        CardTypeResult.push_back(CARD_STRUCT(CardType::None, 0));
+        CardTypeResult.push_back(CARD_STRUCT(CardType::None, 0, 1));
     return CardTypeResult;
 }
 
@@ -229,16 +230,21 @@ CompareResult CardProcess::CardCheck(long OutCard, long PreOutCard) {
     CardTypeVector OutCardType = CardTypeCheck(std::bitset<54>(OutCard));
     CardTypeVector PreOutCardType = CardTypeCheck(std::bitset<54>(PreOutCard));
 
-    if(OutCardType[0].first == CardType::None)
+    if(OutCardType[0].cardtype == CardType::None)
         return std::make_pair(OutCardType, 0);
     
-    if(PreOutCardType[0].first == CardType::None)
+    if(PreOutCardType[0].cardtype == CardType::None)
         return std::make_pair(OutCardType, 1);
     
-    if(OutCardType[0].first == CardType::KingBomb)
+    if(OutCardType[0].cardtype == CardType::KingBomb)
         return std::make_pair(OutCardType, 1);
+
+    if(OutCardType[0].cardtype == CardType::Bomb)
+        return std::make_pair(OutCardType, !(PreOutCardType[0].cardtype == CardType::Bomb && PreOutCardType[0].point > OutCardType[0].point));
     
-    if(OutCardType[0].first == PreOutCardType[0].first && OutCardType[0].second > PreOutCardType[0].second)
+    if(OutCardType[0].cardtype == PreOutCardType[0].cardtype &&
+       OutCardType[0].succ  == PreOutCardType[0].succ  && 
+       OutCardType[0].point > PreOutCardType[0].point)
         return std::make_pair(OutCardType, 1);
     
     return std::make_pair(OutCardType, 0);
@@ -247,16 +253,21 @@ CompareResult CardProcess::CardCheck(long OutCard, long PreOutCard) {
 
 int CardProcess::CardCheck_tiny(CardTypeStruct Card, CardTypeStruct CardPre)
 {
-    if(Card.first == CardType::None)
+    if(Card.cardtype == CardType::None)
         return 0;
     
-    if(CardPre.first == CardType::None)
+    if(CardPre.cardtype == CardType::None)
         return 1;
     
-    if(Card.first == CardType::KingBomb)
+    if(Card.cardtype == CardType::KingBomb)
         return 1;
     
-    if(Card.first == CardPre.first && Card.second > CardPre.second)
+    if(Card.cardtype == CardType::Bomb)
+        return !(CardPre.cardtype == CardType::Bomb && CardPre.point > Card.point);
+
+    if(Card.cardtype == CardPre.cardtype &&
+       Card.succ  == CardPre.succ  && 
+       Card.point > CardPre.point)
         return 1;
     
     return 0;
@@ -289,15 +300,15 @@ ActionVector CardProcess::EnumerateCardOutAction(std::bitset<54> Card)
         CardTypeVector results = CardTypeCheck(selected);
         for(auto& result : results)
         {
-            if(result.first == 0) continue;
-            CardAction action = {result.first, result.second, selected};
+            //if(result.first == 0) continue;
+            CardAction action(result.cardtype, result.point, result.succ, selected);
             Action.push_back(action);
         }
     }
 
     if(Action.size() == 0)
     {
-        CardAction action = {CardType::None, 0, 0};
+        CardAction action = {CardType::None, 0, 1, 0};
         Action.push_back(action);
     }
 

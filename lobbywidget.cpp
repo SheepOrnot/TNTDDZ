@@ -166,20 +166,6 @@ void LobbyWidget::onSettingBtnClicked()
     settingWidget = new SettingWidget(Width,Height);
     settingWidget->show();
 }
-void LobbyWidget::onClassicModeBtnClicked()            //创建房间按钮
-{
-    gameWidget = new GameWidget(Width,Height);
-    this->hide();
-    gameWidget->show();
-    GameExitBtn = new QPushButton(gameWidget);
-    GameExitBtn->setGeometry(0.010*Width,  0.018*Height,  0.042*Width,   0.075*Height);
-    GameExitBtn->setIcon(QIcon(":/image/image/Icon/quitgame.png"));
-    GameExitBtn->setStyleSheet("QPushButton { background-color: transparent; }");
-    GameExitBtn->setIconSize(GameExitBtn->size());
-    GameExitBtn->show();
-    BGMPlayer->stop();
-    connect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
-}
 void LobbyWidget::RollImage()
 {
 
@@ -237,22 +223,6 @@ void LobbyWidget::onPersonalInfoBtnClicked()
     personalInfoWidget->show();
 }
 
-void LobbyWidget::onSingleModeBtnClicked()
-{
-    gameWidget = new GameWidget(Width,Height,1);
-    this->hide();
-    gameWidget->show();
-    GameExitBtn = new QPushButton(gameWidget);
-    GameExitBtn->setGeometry(0.010*Width,  0.018*Height,  0.042*Width,   0.075*Height);
-    GameExitBtn->setIcon(QIcon(":/image/image/Icon/quitgame.png"));
-    GameExitBtn->setStyleSheet("QPushButton { background-color: transparent; }");
-    GameExitBtn->setIconSize(GameExitBtn->size());
-    GameExitBtn->show();
-    BGMPlayer->stop();
-    connect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
-}
-
-
 void LobbyWidget::onClassicModeBtnClicked()            //创建房间按钮
 {
     WidgetArgPackage* create_room_submit = new WidgetArgPackage();
@@ -271,11 +241,18 @@ void LobbyWidget::onExitGameBtnClicked()
     exit_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LEAVE_ROOM, 0, 0, 0, UID.toStdString(), ui->RoomId->text().toStdString(), 0);
     widget_rev_packer->WidgetsendMessage(exit_room_submit);
 }
+void LobbyWidget::onSingleModeBtnClicked()
+{
+    qDebug() << "Play Single";
+    WidgetArgPackage* create_room_submit = new WidgetArgPackage();
+    create_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::CREATE_ROOM, 0, 0, 0, UID.toStdString(), "", 0, 1);
+    widget_rev_packer->WidgetsendMessage(create_room_submit);
+}
 //********************INTERFACE****************************
 void LobbyWidget::EnterGame()
 {
-    qDebug() << "Classic Mode";
-    gameWidget = new GameWidget(Width,Height,0);
+    qDebug() << "Classic Mode" << signlemode;
+    gameWidget = new GameWidget(Width,Height,signlemode);
     this->hide();
     gameWidget->show();
     GameExitBtn = new QPushButton(gameWidget);
@@ -289,6 +266,9 @@ void LobbyWidget::EnterGame()
 }
 void LobbyWidget::interfaceEnterRoomSuccess(WidgetArgPackage* arg)
 {
+    WidgetArgStatus *status = static_cast<WidgetArgStatus*>(arg->package);
+    signlemode = status->status == -1;
+
     QThread *gameThread = new QThread();
     connect(gameThread, SIGNAL(started()), this, SLOT(EnterGame()));
     gameThread->start();

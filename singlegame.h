@@ -11,10 +11,24 @@ class SingleGame
 public:
     SingleGame()
     {
+        robot::init();
+        bot1.setname("bot1");
+        bot2.setname("bot2");
+        init();
+    }
+    void init()
+    {
         state = 0;
         thefirst = 0;
         landlordRound_final = 0;
         landlord = 0;
+        cardtype = 0;
+        point = 0;
+        succ = 0;
+        preout = 0;
+        someonecall = 0;
+        callCount = 0;
+        preout_cards = 0;
     }
     void SendCard()
     {
@@ -26,6 +40,9 @@ public:
 
         bot1.sethandcard(robot1_handcard);
         bot2.sethandcard(robot2_handcard);
+
+        std::cout << "发牌完毕" << std::endl;
+        std::flush(std::cout);
     }
     int SelectStart()
     {
@@ -36,7 +53,66 @@ public:
         state = 1;
         thefirst = distribution(gen);
         
+        std::cout << "先手叫地主: " << thefirst << std::endl;
+        std::flush(std::cout);
+
         return thefirst;
+    }
+    void getnext_prepare(MessagePackage* current_message)
+    {
+        MessagePackage *msg = new MessagePackage();
+        switch(current_message->message_type)
+        {
+            case MESSAGE_TYPE::PLAYER:
+            {
+                MessagePlayer *package = static_cast<MessagePlayer*>(current_message->package);
+                switch(package->opcode)
+                {
+                    case PLAYER_OPCODE::LANDLORD:
+                    {
+                        callCount ++;
+                        if(isCallLandlordRound()) 
+                        {
+                            if(package->iscall)
+                                state ++;
+                        }
+                        else state ++;
+
+                        std::cout << "someone want landlord prepare: " << package->pos << " call:" << package->iscall << std::endl; std::flush(std::cout);
+                        landlord = package->iscall ? package->pos : landlord;
+                        someonecall = !someonecall && package->iscall ? package->pos : someonecall;
+                        break;
+                    }
+                }
+                break;
+            }
+            case MESSAGE_TYPE::CARD:
+            {
+                MessageCard *package = static_cast<MessageCard*>(current_message->package);
+                switch(package->opcode)
+                {
+                    case CARD_OPCODE::OUTCARD:
+                    {
+                        if(package->OutCard.count())
+                        {
+                            cardtype = package->cardtype;
+                            point = package->point;
+                            succ = package->succ;
+                            preout = package->pos;
+                            preout_cards = package->OutCard;
+                            std::cout << "set1: " << cardtype << " " << point << " " << succ << " " << preout << std::endl; std::flush(std::cout);
+                        }
+                        if(package->pos == 3)
+                        {
+                            player_leftcards -= package->OutCard.count();
+                            player_handcard ^= package->OutCard;
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+        }
     }
     MessagePackage* getnext(MessagePackage* current_message)
     {
@@ -51,26 +127,31 @@ public:
                 {
                     case PLAYER_OPCODE::READY:
                     {
+                        int iscall = 0;
                         //预备叫地主
                         if(thefirst == 1)
                         {
-                            int iscall = bot1.GetlandlordAction();
+                            iscall = bot1.GetlandlordAction();
                             landlord = iscall ? 1 : landlord;
-                            msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 1, 0, 999, "机器人1", package->roomid, iscall);
+                            std::cout << "robot1: calllandlord: " << iscall << std::endl; std::flush(std::cout);
+                            msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 1, 0, 999, "机器人1", package->roomid, iscall, 1);
                         }
                         else if(thefirst == 2)
                         {
-                            int iscall = bot2.GetlandlordAction();
+                            iscall = bot2.GetlandlordAction();
                             landlord = iscall ? 2 : landlord;
-                            msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 2, 0, 999, "机器人2", package->roomid, iscall);
+                            std::cout << "robot2: calllandlord: " << iscall << std::endl; std::flush(std::cout);
+                            msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 2, 0, 999, "机器人2", package->roomid, iscall, 1);
                         }
-                        state ++;
                         break;
                     }
                     case PLAYER_OPCODE::LANDLORD:
                     {
+                        std::cout << "someone want landlord: " << package->pos << " call:" << package->iscall << std::endl; std::flush(std::cout);
                         landlord = package->iscall ? package->pos : landlord;
-                        if(state == 5)
+                        someonecall = !someonecall && package->iscall ? package->pos : someonecall;
+
+                        if(!isBidLandlordRound())
                         {
                             landlordRound_final = 1;
                             identity1 = landlord == 1 ? "landlord" : "farmer";
@@ -97,23 +178,54 @@ public:
                                 player_leftcards += 3;
                                 player_handcard |= final_card;
                             }
+                            std::cout << "the landlord: " << landlord << std::endl; std::flush(std::cout);
 
                             msg->packMessage<MessageGameStart>();
                             break;
                         }
+                            
+                        if(isCallLandlordRound())
+                        {
+                            //叫地主
+                            //if no one call landlord
+                            if(callCount == 3)
+                            {
+                                std::cout << "no one call landlord" << std::endl; std::flush(std::cout);
+                                init();
+                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::READY, 3, 0, 0, "", package->roomid, 0, 1);
+                                break;
+                            }
 
-                        //抢地主
-                        if(package->pos == 2)
-                        {
-                            int iscall = bot1.GetlandlordAction();
-                            msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 1, 0, 999, "机器人1", package->roomid, iscall);
+                            int iscall = 0;
+                            if(package->pos == 2)
+                            {
+                                iscall = bot1.GetlandlordAction();
+                                std::cout << "robot2: calllandlord: " << iscall << std::endl; std::flush(std::cout);
+                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 1, 0, 999, "机器人1", package->roomid, iscall, 1);
+                            }
+                            else if(package->pos == 3)
+                            {
+                                iscall = bot2.GetlandlordAction();
+                                std::cout << "robot2: calllandlord: " << iscall << std::endl; std::flush(std::cout);
+                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 2, 0, 999, "机器人2", package->roomid, iscall, 1);
+                            }
                         }
-                        else if(package->pos == 3)
+                        else
                         {
-                            int iscall = bot2.GetlandlordAction();
-                            msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 2, 0, 999, "机器人2", package->roomid, iscall);
+                            //抢地主
+                            if(package->pos == 2)
+                            {
+                                int iscall = bot1.GetlandlordAction();
+                                std::cout << "robot2: bidlandlord: " << iscall << std::endl; std::flush(std::cout);
+                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 1, 0, 999, "机器人1", package->roomid, iscall, 1);
+                            }
+                            else if(package->pos == 3)
+                            {
+                                int iscall = bot2.GetlandlordAction();
+                                std::cout << "robot2: bidlandlord: " << iscall << std::endl; std::flush(std::cout);
+                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 2, 0, 999, "机器人2", package->roomid, iscall, 1);
+                            }
                         }
-                        state ++;
                         break;
                     }
                 }
@@ -123,15 +235,19 @@ public:
             {
                 if(landlord == 1)
                 {
-                    std::pair<std::bitset<54>, CardTypeStruct> robotOutCard = bot1.OutCardAction(std::make_pair(CardType::None, 0));
+                    std::pair<std::bitset<54>, CardTypeStruct> robotOutCard = bot1.OutCardAction(CardTypeStruct(CardType::None, 0, 1), isTheLandlordFirst(1));
                     bot1_leftcards -= robotOutCard.first.count();
-                    msg->packMessage<MessageCard>(CARD_OPCODE::OUTCARD, 1, bot1_leftcards, (int)robotOutCard.second.first, robotOutCard.second.second, robotOutCard.first, 0, 1);
+                    robot1_handcard ^= robotOutCard.first;
+                    bot1.sethandcard(robot1_handcard);
+                    msg->packMessage<MessageCard>(CARD_OPCODE::OUTCARD, 1, bot1_leftcards, (int)robotOutCard.second.cardtype, robotOutCard.second.point, robotOutCard.second.succ, robotOutCard.first, 0, 1);
                 }
                 else if(landlord == 2)
                 {
-                    std::pair<std::bitset<54>, CardTypeStruct> robotOutCard = bot2.OutCardAction(std::make_pair(CardType::None, 0));
+                    std::pair<std::bitset<54>, CardTypeStruct> robotOutCard = bot2.OutCardAction(CardTypeStruct(CardType::None, 0, 1), isTheLandlordFirst(2));
                     bot2_leftcards -= robotOutCard.first.count();
-                    msg->packMessage<MessageCard>(CARD_OPCODE::OUTCARD, 2, bot2_leftcards, (int)robotOutCard.second.first, robotOutCard.second.second, robotOutCard.first, 0, 1);
+                    robot2_handcard ^= robotOutCard.first;
+                    bot2.sethandcard(robot2_handcard);
+                    msg->packMessage<MessageCard>(CARD_OPCODE::OUTCARD, 2, bot2_leftcards, (int)robotOutCard.second.cardtype, robotOutCard.second.point, robotOutCard.second.succ, robotOutCard.first, 0, 1);
                 }
                 break;
             }
@@ -142,30 +258,39 @@ public:
                 {
                     case CARD_OPCODE::OUTCARD:
                     {
-                        if(package->leftcards == 0)
+                        if(isGameEnd())
                         {
                             std::cout << "对局结束" << std::endl;
                             std::flush(std::cout);
                             msg->packMessage<MessageGameEnd>();
                             break;
                         }
-
                         if(package->pos == 1)
                         {
-                            //pass
+                            if(preout == 3 && !package->OutCard.count()) {preout_cards = cardtype = point = 0; succ = 1; std::cout << "player set2: " << cardtype << " " << point << " " << succ << " " << preout << std::endl; std::flush(std::cout);}
                         }
                         else if(package->pos == 2)
                         {
-                            std::pair<std::bitset<54>, CardTypeStruct> robotOutCard = bot1.OutCardAction(std::make_pair((CardType)package->cardtype, package->point));
+                            if(preout == 1 && !package->OutCard.count()) {preout_cards = cardtype = point = 0; succ = 1; std::cout << "bot1 set2: " << cardtype << " " << point << " " << succ << " " << preout << std::endl; std::flush(std::cout);}
+                            std::pair<std::bitset<54>, CardTypeStruct> robotOutCard = bot1.OutCardAction(CardTypeStruct((CardType)cardtype, point, succ), 0);
                             bot1_leftcards -= robotOutCard.first.count();
-                            msg->packMessage<MessageCard>(CARD_OPCODE::OUTCARD, 1, bot1_leftcards, (int)robotOutCard.second.first, robotOutCard.second.second, robotOutCard.first, 0, 1);
+                            robot1_handcard ^= robotOutCard.first;
+                            bot1.sethandcard(robot1_handcard);
+
+                            std::cout << "bot1 out: " << robotOutCard.second.cardtype << " " << robotOutCard.second.point << " " << robotOutCard.second.succ << " " << robotOutCard.first.to_string() << std::endl; std::flush(std::cout);
+                            msg->packMessage<MessageCard>(CARD_OPCODE::OUTCARD, 1, bot1_leftcards, (int)robotOutCard.second.cardtype, robotOutCard.second.point, robotOutCard.second.succ, robotOutCard.first, 0, 1);
                         }
                         else if(package->pos == 3)
                         {
-                            player_leftcards -= package->OutCard.count();
-                            std::pair<std::bitset<54>, CardTypeStruct> robotOutCard = bot2.OutCardAction(std::make_pair((CardType)package->cardtype, package->point));
+                            //2
+                            if(preout == 2 && !package->OutCard.count()) {preout_cards = cardtype = point = 0; succ = 1; std::cout << "bot2 set2: " << cardtype << " " << point << " " << succ << " " << preout << std::endl; std::flush(std::cout);}
+                            std::pair<std::bitset<54>, CardTypeStruct> robotOutCard = bot2.OutCardAction(CardTypeStruct((CardType)cardtype, point, succ), 0);
                             bot2_leftcards -= robotOutCard.first.count();
-                            msg->packMessage<MessageCard>(CARD_OPCODE::OUTCARD, 2, bot2_leftcards, (int)robotOutCard.second.first, robotOutCard.second.second, robotOutCard.first, 0, 1);
+                            robot2_handcard ^= robotOutCard.first;
+                            bot2.sethandcard(robot2_handcard);
+
+                            std::cout << "bot2 out: " << robotOutCard.second.cardtype << " " << robotOutCard.second.point << " " << robotOutCard.second.succ << " " << " " << robotOutCard.first.to_string() << std::endl; std::flush(std::cout);
+                            msg->packMessage<MessageCard>(CARD_OPCODE::OUTCARD, 2, bot2_leftcards, (int)robotOutCard.second.cardtype, robotOutCard.second.point, robotOutCard.second.succ, robotOutCard.first, 0, 1);
                         }
 
                         break;
@@ -183,27 +308,49 @@ public:
         return msg;
     }
 
-    int EnterBidForLandlordRound()
-    {
-        return state == 2;
-    }
     int isCallForLandlordRound()
     {
         return state == 2;
     }
     int isBidLandlordRound()
     {
-        return state < 5;
+        return state <= 4;
+    }
+    int isCallLandlordRound()
+    {
+        return state <= 1;
     }
     int isGameEnd()
     {
         return bot1_leftcards == 0 || bot2_leftcards == 0 || player_leftcards == 0;
+    }
+    int isTheLandlordFirst(int pos)
+    {
+        int result = pos == landlord && state == 5;
+        state ++;
+        return result;
+    }
+    int PlayerCardOutCheck(std::bitset<54> outcards)
+    {
+        std::cout << "PlayerCardOutCheck: "     << std::endl;
+        std::cout << outcards.to_string()       << std::endl;
+        std::cout << preout_cards.to_string()   << std::endl;
+        std::flush(std::cout);
+
+        if(!outcards.count())
+        {
+            return !(isTheLandlordFirst(3) || !preout_cards.count());
+        }
+
+        std::pair<CardTypeVector, int> result = CardProcess::CardCheck(outcards.to_ulong(), preout_cards.to_ulong());
+        return result.second;
     }
 
     int state;
     int landlordRound_final;
     int thefirst;
     int landlord;
+    int callCount;
 
     std::string identity1;
     std::string identity2;
@@ -215,6 +362,14 @@ public:
     int bot1_leftcards;
     int bot2_leftcards;
     int player_leftcards;
+
+    int cardtype;
+    int point;
+    int preout;
+    int succ;
+    std::bitset<54> preout_cards;
+
+    int someonecall;
 
     std::bitset<54> robot1_handcard;
     std::bitset<54> robot2_handcard;

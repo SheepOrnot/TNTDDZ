@@ -64,13 +64,14 @@ public:
 class WidgetArgCard : public WidgetArg
 {
 public:
-    WidgetArgCard(CARD_OPCODE _opcode, int _pos, int _leftcards, int _cardtype, int _point, std::bitset<54> _OutCard, std::bitset<54> _HandCard, int _singlemode = 0)
+    WidgetArgCard(CARD_OPCODE _opcode, int _pos, int _leftcards, int _cardtype, int _point, int _succ, std::bitset<54> _OutCard, std::bitset<54> _HandCard, int _singlemode)
         : WidgetArg(WIDGET_ARG_TYPE::CARD, _singlemode),
         opcode(_opcode),
         pos(_pos),
         leftcards(_leftcards),
         cardtype(_cardtype),
         point(_point),
+        succ(_succ),
         OutCard(_OutCard),
         HandCard(_HandCard)
     {}
@@ -79,6 +80,7 @@ public:
     int leftcards;
     int cardtype;
     int point;
+    int succ;
     std::bitset<54> OutCard;
     std::bitset<54> HandCard;
 };

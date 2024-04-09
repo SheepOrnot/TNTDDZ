@@ -258,12 +258,22 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
     ui->MultiplierLabel->setText("倍数\n⨉"+QString::number(Times));
 
     connect(ui->PlayCardBtn,&QPushButton::clicked,this,&GameWidget::onPlayCardsClicked);
+    connect(ui->SkipTurnBtn,&QPushButton::clicked,this,&GameWidget::onSkipTurnBtnClicked);
+    connect(ui->CallLandlordBtn,&QPushButton::clicked,this,&GameWidget::onCallLandlordBtnClicked);
+    connect(ui->SkipCallLandlordBtn,&QPushButton::clicked,this,&GameWidget::onSkipCallLandlordBtnClicked);
+    connect(ui->BidForLandlordBtn,&QPushButton::clicked,this,&GameWidget::onBidForLandlordBtnClicked);
+    connect(ui->SkipCallLandlordBtn,&QPushButton::clicked,this,&GameWidget::onSkipLandlordBidBtnClicked);
+    connect(ui->DoubleBtn,&QPushButton::clicked,this,&GameWidget::onDoubleBtnClicked);
+    connect(ui->UnDoubleBtn,&QPushButton::clicked,this,&GameWidget::onUnDoubleBtnClicked);
+    connect(ui->ReadyBtn,&QPushButton::clicked,this,&GameWidget::onReadyBtnClicked);
+    connect(ui->UnReadyBtn,&QPushButton::clicked,this,&GameWidget::onUnreadyBtnClicked);
+
     qDebug()<<"Build GameWidget Completely";
 
 
     message_center = MessageCenter::getInstance();
     widget_rev_packer = WidgetRevPacker::getInstance();
-    
+
     message_center->loadInterface("interfaceSomebodyEnterRoom",  std::bind(&GameWidget::interfaceSomebodyEnterRoom, this, std::placeholders::_1));
     message_center->loadInterface("interfaceSomebodyReady",      std::bind(&GameWidget::interfaceSomebodyReady, this, std::placeholders::_1));
     message_center->loadInterface("interfaceDealingCards",       std::bind(&GameWidget::interfaceDealingCards, this, std::placeholders::_1));
@@ -271,6 +281,7 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
     message_center->loadInterface("interfaceCallLandlord",       std::bind(&GameWidget::interfaceCallLandlord, this, std::placeholders::_1));
     message_center->loadInterface("interfaceBidForLandlordRound",std::bind(&GameWidget::interfaceBidForLandlordRound, this, std::placeholders::_1));
     message_center->loadInterface("interfaceBidForLandlord",     std::bind(&GameWidget::interfaceBidForLandlord, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceStartGame",          std::bind(&GameWidget::interfaceStartGame, this, std::placeholders::_1));
     message_center->loadInterface("interfacePlayCardRound",      std::bind(&GameWidget::interfacePlayCardRound, this, std::placeholders::_1));
     message_center->loadInterface("interfaceOutCard",            std::bind(&GameWidget::interfaceOutCard, this, std::placeholders::_1));
     message_center->loadInterface("interfaceGameEnd",            std::bind(&GameWidget::interfaceGameEnd, this, std::placeholders::_1));
@@ -500,42 +511,22 @@ void GameWidget::ImportConfig()
 void GameWidget::onPlayCardsClicked()
 {
     SelectedCards = 0;
-    int HeadUnselectedCount = 0;
-    DisconnectHandCards();
-    //*********test**********
-    PlayerOutCards.clear();
-    //*********end **********
     for(unsigned i = 0;i < PlayerHandCards.size();i++)
     {
-        if(PlayerHandCards[i].isUp==false)
+        if(PlayerHandCards[i].isUp==true)
         {
-            qDebug()<<"移动前"<<PlayerHandCards[i].btn->x();
-            AnimateMoveLeft(PlayerHandCards[i].btn,0.03*Width*(i-HeadUnselectedCount++));
-            qDebug()<<"移动后"<<PlayerHandCards[i].btn->x();
-            continue;
-        }
-        SelectedCards[PlayerHandCards[i].Index] = 1;
-        //点击出牌后,更新playeroutcards
-        delete PlayerHandCards[i].btn;
-        PlayerOutCards.push_back(AllCards[PlayerHandCards[i].Index]);
-    }
-    for(unsigned i = 0; i<PlayerHandCards.size();i++)
-    {
-        if(PlayerHandCards[i].isUp==false)
-        {
-            PlayerHandCards.erase(std::remove_if(PlayerHandCards.begin(), PlayerHandCards.end(), [](const WidgetCard& card) {
-                            return card.isUp;
-                        }), PlayerHandCards.end());
+            SelectedCards[PlayerHandCards[i].Index] = 1;
         }
     }
-    ConnectHandCards();
-    std::bitset<54> test = 0;
-    test = Transform_To_Bitset(PlayerHandCards);
-    std::cout<<"new handcards  "<<test<<"\n";  std::flush(std::cout);
 
-    placeOutCards(3);
-    std::cout<<SelectedCards<<"\n";
-    std::flush(std::cout);
+    CardTypeVector result = CardProcess::CardTypeCheck(SelectedCards);
+    if(result[0].cardtype != CardType::None)
+    {
+        qDebug() << "Selected: " << SelectedCards.to_string();
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgCard>(CARD_OPCODE::OUTCARD, 3, (int)PlayerHandCards.size(), (int)result[0].cardtype, result[0].point, result[0].succ, SelectedCards,Transform_To_Bitset(PlayerHandCards), 1);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
 
 }
 
@@ -1060,7 +1051,7 @@ void GameWidget::somebodyNotOutCard(int Pos,int Leftcards,std::bitset<54> handca
         case 3:
         {
             PlayerOutCards.clear();
-            PlayerHandCards = Transform_To_Vector(handcards);
+           //PlayerHandCards = Transform_To_Vector(handcards);
             PlayerOutCradsType = 0;
             ui->MSGLabel3->setText("不出");
             ui->MSGLabel3->show();
@@ -1172,6 +1163,7 @@ void GameWidget::somebodyNotCallLandlord(int Pos)     //有人不叫
 }
 void GameWidget::somebodyBidForLandlord(int Pos)     //有人抢地主    ----》服务器端关联翻倍
 {
+    qDebug() << "抢地主 UI pos:" << Pos;
     switch(Pos)
     {
         case 1:
@@ -1203,6 +1195,7 @@ void GameWidget::somebodyBidForLandlord(int Pos)     //有人抢地主    ----�
 }
 void GameWidget::somebodyNotBidForLandlord(int Pos)
 {
+    qDebug() << "不抢 UI pos:" << Pos;
     switch(Pos)
     {
         case 1:
@@ -1395,39 +1388,62 @@ void GameWidget::AddTimes(int newTimes)
     Times = newTimes;
     ui->MultiplierLabel->setText("倍数\n⨉"+QString::number(Times));
 }
-// void onSkipTurnBtnClicked()   //点击不出按钮；
-// {
 
-// }
-// void onCallLandlordBtnClicked()    //点击叫地主按钮
-// {
+void GameWidget::onSkipTurnBtnClicked()   //点击不出按钮；
+{
+    WidgetArgPackage* package = new WidgetArgPackage();
+    package->packMessage<WidgetArgCard>(CARD_OPCODE::OUTCARD, 3, PlayerHandCards.size(), 0, 0, 0, 0, Transform_To_Bitset(PlayerHandCards), 1);
+    widget_rev_packer->WidgetsendMessage(package);
+}
+void GameWidget::onCallLandlordBtnClicked()    //点击叫地主按钮
+{
+    WidgetArgPackage* package = new WidgetArgPackage();
+    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", 1, 1);
+    widget_rev_packer->WidgetsendMessage(package);
+}
+void GameWidget::onSkipCallLandlordBtnClicked()//点击不叫按钮
+{
+    WidgetArgPackage* package = new WidgetArgPackage();
+    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", 0, 1);
+    widget_rev_packer->WidgetsendMessage(package);
+}
+void GameWidget::onBidForLandlordBtnClicked()   //点击抢地主按钮
+{
+    WidgetArgPackage* package = new WidgetArgPackage();
+    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", 1, 1);
+    widget_rev_packer->WidgetsendMessage(package);
+}
+void GameWidget::onSkipLandlordBidBtnClicked()  //点击不抢按钮
+{
+    qDebug() << "UI Btn: no bid";
+    WidgetArgPackage* package = new WidgetArgPackage();
+    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", 0, 1);
+    widget_rev_packer->WidgetsendMessage(package);
+}
+void GameWidget::onDoubleBtnClicked()          //点击加倍按钮
+{
 
-// }
-// void onSkipCallLandlordBtnClicked()//点击不叫按钮
-// {
+}
+void GameWidget::onUnDoubleBtnClicked()        //点击不加倍按钮
+{
 
-// }
-// void onBidForLandlordBtnClicked()   //点击抢地主按钮
-// {
+}
+void GameWidget::onReadyBtnClicked()
+{
+    WidgetArgPackage* package = new WidgetArgPackage();
+    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 3, 0, 0, "", "", 0, 1);
+    widget_rev_packer->WidgetsendMessage(package);
+}
+void GameWidget::onUnreadyBtnClicked()
 
-// }
-// void onSkipLandlordBidBtnClicked()  //点击不抢按钮
-// {
+{
 
-// }
-// void onDoubleBtnClicked()          //点击加倍按钮
-// {
-
-// }
-// void onUnDoubleBtnClicked()        //点击不加倍按钮
-// {
-
-// }
-
+}
 
 //************************************INTERFACE*********************************
 void GameWidget::interfaceSomebodyEnterRoom(WidgetArgPackage* arg)
 {
+    qDebug() << "进入房间";
     WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
     somebodyEnterRoom(player->pos, player->profileindex, player->beannum);
     delete arg;
@@ -1435,24 +1451,46 @@ void GameWidget::interfaceSomebodyEnterRoom(WidgetArgPackage* arg)
 void GameWidget::interfaceSomebodyReady(WidgetArgPackage* arg)
 {
     WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
+    qDebug() << "接口：准备" << player->pos;
     somebodyReady(player->pos);
     delete arg;
 }
+void GameWidget::doDealingCards()
+{
+    Dealingcards(handcards);
+}
 void GameWidget::interfaceDealingCards(WidgetArgPackage* arg)
 {
+
     WidgetArgCard *card = static_cast<WidgetArgCard*>(arg->package);
-    Dealingcards(card->HandCard);
+    handcards = card->HandCard;
+    qDebug() << "接口：发牌" << handcards.to_string();
+
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doDealingCards()));
+    qThread->start();
+
     delete arg;
+}
+void GameWidget::doCallLandlordRound()
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(InterfaceArg[0]->package);
+    qDebug() << "接口：叫地主回合" << player->pos;
+    somebodyCallLandlordRound(player->pos);
+    delete InterfaceArg[0];
 }
 void GameWidget::interfaceCallLandlordRound(WidgetArgPackage* arg)
 {
-    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
-    somebodyCallLandlordRound(player->pos);
-    delete arg;
+    InterfaceArg[0] = arg;
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doCallLandlordRound()));
+    qThread->start();
+
 }
-void GameWidget::interfaceCallLandlord(WidgetArgPackage* arg)
+void GameWidget::doCallLandlord()
 {
-    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(InterfaceArg[1]->package);
+    qDebug() << "接口：叫地主 call:" << player->iscall << " pos: " << player->pos;
     if(player->iscall)
     {
         somebodyCallLandlord(player->pos);
@@ -1461,17 +1499,33 @@ void GameWidget::interfaceCallLandlord(WidgetArgPackage* arg)
     {
         somebodyNotCallLandlord(player->pos);
     }
-    delete arg;
+    delete InterfaceArg[1];
+}
+void GameWidget::interfaceCallLandlord(WidgetArgPackage* arg)
+{
+    InterfaceArg[1] = arg;
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doCallLandlord()));
+    qThread->start();
+}
+void GameWidget::doBidForLandlordRound()
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(InterfaceArg[2]->package);
+    qDebug() << "接口：抢地主回合" << player->pos;
+    somebodyBidForLandlordRound(player->pos);
+    delete InterfaceArg[2];
 }
 void GameWidget::interfaceBidForLandlordRound(WidgetArgPackage* arg)
 {
-    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
-    somebodyBidForLandlordRound(player->pos);
-    delete arg;
+    InterfaceArg[2] = arg;
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doBidForLandlordRound()));
+    qThread->start();
 }
-void GameWidget::interfaceBidForLandlord(WidgetArgPackage* arg)
+void GameWidget::doBidForLandlord()
 {
-    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(InterfaceArg[3]->package);
+    qDebug() << "接口：抢地主" << player->pos << " call: " << player->iscall;
     if(player->iscall)
     {
         somebodyBidForLandlord(player->pos);
@@ -1480,25 +1534,65 @@ void GameWidget::interfaceBidForLandlord(WidgetArgPackage* arg)
     {
         somebodyNotBidForLandlord(player->pos);
     }
-    delete arg;
+    delete InterfaceArg[3];
+}
+void GameWidget::interfaceBidForLandlord(WidgetArgPackage* arg)
+{
+    InterfaceArg[3] = arg;
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doBidForLandlord()));
+    qThread->start();
+}
+void GameWidget::doPlayCardRound()
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(InterfaceArg[4]->package);
+    qDebug() << "接口：出牌回合" << player->pos;
+    somebodyPlayCardRound(player->pos);
+    delete InterfaceArg[4];
 }
 void GameWidget::interfacePlayCardRound(WidgetArgPackage* arg)
 {
-    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
-    somebodyPlayCardRound(player->pos);
-    delete arg;
+    InterfaceArg[4] = arg;
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doPlayCardRound()));
+    qThread->start();
+}
+void GameWidget::doOutCard()
+{
+    WidgetArgCard *card = static_cast<WidgetArgCard*>(InterfaceArg[5]->package);
+    if(card->OutCard.count())
+        somebodyOutCard(card->pos, card->OutCard, card->leftcards, card->cardtype, card->HandCard);
+    else
+    {
+        qDebug() << "Not Out Card" << card->pos << " " << card->leftcards << " " << card->HandCard.to_string();
+        somebodyNotOutCard(card->pos, card->leftcards, card->HandCard);
+    }
+
+    delete InterfaceArg[5];
 }
 void GameWidget::interfaceOutCard(WidgetArgPackage* arg)
 {
-    WidgetArgCard *card = static_cast<WidgetArgCard*>(arg->package);
-    somebodyOutCard(card->pos, card->OutCard, card->leftcards, card->cardtype, card->HandCard);
-    delete arg;
+    qDebug() << "接口：出牌";
+    InterfaceArg[5] = arg;
+
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doOutCard()));
+    qThread->start();
+}
+void GameWidget::doStartGame()
+{
+    WidgetArgStartGame *game = static_cast<WidgetArgStartGame*>(InterfaceArg[6]->package);
+    StartGame(game->identity1, game->identity2, game->identity3, game->handcards, game->finalcards);
+    delete InterfaceArg[6];
 }
 void GameWidget::interfaceStartGame(WidgetArgPackage* arg)
 {
-    WidgetArgStartGame *game = static_cast<WidgetArgStartGame*>(arg->package);
-    StartGame(game->identity1, game->identity2, game->identity3, game->handcards, game->finalcards);
-    delete arg;
+    qDebug() << "接口：游戏开始";
+    InterfaceArg[6] = arg;
+
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doStartGame()));
+    qThread->start();
 }
 void GameWidget::interfaceGameEnd(WidgetArgPackage* arg)
 {

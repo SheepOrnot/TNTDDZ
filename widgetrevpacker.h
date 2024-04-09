@@ -42,6 +42,16 @@ public:
                                                 player_package->iscall, player_package->singlemode);
             break;
         }
+        case WIDGET_ARG_TYPE::CARD:
+        {
+            WidgetArgCard *player_package = static_cast<WidgetArgCard*>(current_widget_arg->package);
+            msg_ptr->packMessage<MessageCard>(player_package->opcode, player_package->pos,
+                                                player_package->leftcards, player_package->cardtype,
+                                                player_package->point, player_package->succ,
+                                                player_package->OutCard,
+                                                player_package->HandCard, player_package->singlemode);
+            break;
+        }
         }
 
         message_center->MessageSubmit(msg_ptr);
