@@ -17,7 +17,7 @@ CardTypeVector CardProcess::CardTypeCheck(std::bitset<54> Card) {
     #define LEN(v) v.size()    
     
     CardTypeVector CardTypeResult;
-    if(Card.to_ulong() == 0)
+    if(Card.to_ullong() == 0)
     {
         CardTypeResult.push_back(CARD_STRUCT(CardType::None, 0, 1));
         return CardTypeResult;
@@ -226,7 +226,7 @@ CardTypeVector CardProcess::CardTypeCheck(std::bitset<54> Card) {
     return CardTypeResult;
 }
 
-CompareResult CardProcess::CardCheck(long OutCard, long PreOutCard) {
+CompareResult CardProcess::CardCheck(long long OutCard, long long PreOutCard) {
     CardTypeVector OutCardType = CardTypeCheck(std::bitset<54>(OutCard));
     CardTypeVector PreOutCardType = CardTypeCheck(std::bitset<54>(PreOutCard));
 
@@ -276,7 +276,7 @@ int CardProcess::CardCheck_tiny(CardTypeStruct Card, CardTypeStruct CardPre)
 ActionVector CardProcess::EnumerateCardOutAction(std::bitset<54> Card)
 {
     ActionVector Action;
-    unsigned long Count = Card.count();
+    unsigned long long Count = Card.count();
     
     //build mapping: 
     std::vector<int> mapping;
@@ -285,10 +285,10 @@ ActionVector CardProcess::EnumerateCardOutAction(std::bitset<54> Card)
         if(Card[i] == 1) mapping.push_back(i);
     }
 
-    for(unsigned long i = 0; i < (1<<mapping.size()); i ++)
+    for(unsigned long long i = 0; i < (1<<mapping.size()); i ++)
     {
         std::bitset<54> selected;
-        unsigned long x = i;
+        unsigned long long x = i;
         int j = 0;
         while(x)
         {
@@ -348,7 +348,7 @@ SendCardPackage CardProcess::SendCard()
 
 /*
 int main() {
-    std::vector<long> testOutCard;
+    std::vector<long long> testOutCard;
     testOutCard.push_back(0b110000000000000000000000000000000000000000000000000000);    //2w
     testOutCard.push_back(0b000000000011111111000000000000000000000000000000000000);    //4.k 4.q
     testOutCard.push_back(0b110000111001111110100000000000000000000000000000000000);    //2w 3a 3k 3q 1j
@@ -359,10 +359,10 @@ int main() {
     testOutCard.push_back(0b000000001101111110000000000000000000000000000000000000);    //2a 3k 3q
     testOutCard.push_back(0b111111001100101000100000000000000000000000000000000000);
     testOutCard.push_back(0b111100001110111101100000000000000000000000000000000000);
-    long testPreCard    = 0b000000000000000000000000000000000000000000000000000000;
+    long long testPreCard    = 0b000000000000000000000000000000000000000000000000000000;
 
     std::vector<CompareResult> result;
-    for (long test : testOutCard) {
+    for (long long test : testOutCard) {
         result.push_back(CardProcess::CardCheck(test, testPreCard));
     }
 

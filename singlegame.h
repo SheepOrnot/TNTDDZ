@@ -372,7 +372,7 @@ public:
             return !(isTheLandlordFirst(3) || !preout_cards.count());
         }
 
-        std::pair<CardTypeVector, int> result = CardProcess::CardCheck(outcards.to_ulong(), preout_cards.to_ulong());
+        std::pair<CardTypeVector, int> result = CardProcess::CardCheck(outcards.to_ullong(), preout_cards.to_ullong());
         return result.second;
     }
     int nextone()

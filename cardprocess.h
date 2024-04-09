@@ -66,7 +66,7 @@ class CardProcess
 {
 public:
     CardProcess() = delete;
-    static CompareResult CardCheck(long OutCard, long PreOutCard);
+    static CompareResult CardCheck(long long OutCard, long long PreOutCard);
     static ActionVector EnumerateCardOutAction(std::bitset<54> Card);
     static CardTypeVector CardTypeCheck(std::bitset<54> Card);
     static int CardCheck_tiny(CardTypeStruct Card, CardTypeStruct CardPre);
