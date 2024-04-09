@@ -18,12 +18,12 @@ def decide_lord(data_lord,data_account,data_room_id,data_seat):
         broadcast_information(data_account,data_room_id,data_seat,int(lord_cards))
         #通知是否加倍
         sleep(3)
-        emit('server_response',jsonify(type = 1).data.decode(),room = data_room_id)
+        emit('server_response',jsonify(type = 14).data.decode(),room = data_room_id)
         return 0 
     elif data_lord == 0:
         #通知下一名玩家叫地主
         print("下一名玩家的座位号：",find_next_seat(data_seat))
-        emit('server_response',jsonify(type = 1,lord = 1).data.decode(),room = next_account(data_seat,data_room_id))
+        emit('server_response',jsonify(type = 15).data.decode(),room = next_account(data_seat,data_room_id))
         return 0 
 
 def next_account(data_seat,data_room_id):
@@ -59,7 +59,7 @@ def find_seat_fit_account(data_seat,data_room_id):
     
 def broadcast_information(data_account,data_room_id,data_seat,data_lord_cards):
 
-    emit('server_response',jsonify(seat = data_seat,account =data_account,lord_cards = data_lord_cards).data.decode(),room = data_room_id)
+    emit('server_response',jsonify(type = 13,seat = data_seat,account =data_account,lord_cards = data_lord_cards).data.decode(),room = data_room_id)
 
 def change_handcards_data(data_account,data_room_id,data_seat):
     print(str(data_room_id)+"_"+str(data_account)+"_player_"+str(data_seat)+"_handcards")
