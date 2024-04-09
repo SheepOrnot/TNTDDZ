@@ -306,7 +306,8 @@ public:
                             if(current_center->singleCtrl->isBidLandlordRound())
                             {
                                 WidgetArgPackage *nextRound = new WidgetArgPackage();
-                                int nextone = package->pos == 1 ? 3 : (package->pos == 2 ? 1 : 2);
+                                //int nextone = package->pos == 1 ? 3 : (package->pos == 2 ? 1 : 2);
+                                int nextone = current_center->singleCtrl->nextone();
                                 nextRound->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, nextone, 0, 0, "", "", 0);
                                 if(current_center->singleCtrl->isCallLandlordRound())
                                     current_center->WidgetInterface["interfaceCallLandlordRound"](nextRound);

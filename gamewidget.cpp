@@ -262,7 +262,7 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
     connect(ui->CallLandlordBtn,&QPushButton::clicked,this,&GameWidget::onCallLandlordBtnClicked);
     connect(ui->SkipCallLandlordBtn,&QPushButton::clicked,this,&GameWidget::onSkipCallLandlordBtnClicked);
     connect(ui->BidForLandlordBtn,&QPushButton::clicked,this,&GameWidget::onBidForLandlordBtnClicked);
-    connect(ui->SkipCallLandlordBtn,&QPushButton::clicked,this,&GameWidget::onSkipLandlordBidBtnClicked);
+    connect(ui->SkipLandlordBidBtn,&QPushButton::clicked,this,&GameWidget::onSkipLandlordBidBtnClicked);
     connect(ui->DoubleBtn,&QPushButton::clicked,this,&GameWidget::onDoubleBtnClicked);
     connect(ui->UnDoubleBtn,&QPushButton::clicked,this,&GameWidget::onUnDoubleBtnClicked);
     connect(ui->ReadyBtn,&QPushButton::clicked,this,&GameWidget::onReadyBtnClicked);

@@ -131,6 +131,9 @@ public:
                         //预备叫地主
                         if(thefirst == 1)
                         {
+                            //landlordQueue.push(1);
+                            landlordQueue.push(3);
+                            landlordQueue.push(2);
                             iscall = bot1.GetlandlordAction();
                             landlord = iscall ? 1 : landlord;
                             std::cout << "robot1: calllandlord: " << iscall << std::endl; std::flush(std::cout);
@@ -138,11 +141,20 @@ public:
                         }
                         else if(thefirst == 2)
                         {
+                            //landlordQueue.push(2);
+                            landlordQueue.push(1);
+                            landlordQueue.push(3);
                             iscall = bot2.GetlandlordAction();
                             landlord = iscall ? 2 : landlord;
                             std::cout << "robot2: calllandlord: " << iscall << std::endl; std::flush(std::cout);
                             msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 2, 0, 999, "机器人2", package->roomid, iscall, 1);
                         }
+                        else if(thefirst == 3)
+                        {
+                            landlordQueue.push(2);
+                            landlordQueue.push(1);
+                        }
+                        printLandlordQueue();
                         break;
                     }
                     case PLAYER_OPCODE::LANDLORD:
@@ -183,7 +195,7 @@ public:
                             msg->packMessage<MessageGameStart>();
                             break;
                         }
-                            
+                        
                         if(isCallLandlordRound())
                         {
                             //叫地主
@@ -197,6 +209,7 @@ public:
                             }
 
                             int iscall = 0;
+                            
                             if(package->pos == 2)
                             {
                                 iscall = bot1.GetlandlordAction();
@@ -209,23 +222,39 @@ public:
                                 std::cout << "robot2: calllandlord: " << iscall << std::endl; std::flush(std::cout);
                                 msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 2, 0, 999, "机器人2", package->roomid, iscall, 1);
                             }
+                            landlordQueue.pop();
                         }
                         else
                         {
-                            //抢地主
-                            if(package->pos == 2)
+                            if(state == 2)
                             {
-                                int iscall = bot1.GetlandlordAction();
-                                std::cout << "robot2: bidlandlord: " << iscall << std::endl; std::flush(std::cout);
+                                landlordQueue.push(package->pos);
+                            }
+                            //抢地主
+                            //if(package->pos == 2)
+                            int iscall = 0;
+                            if(landlordQueue.front() == 1)
+                            {
+                                iscall = bot1.GetlandlordAction();
+                                std::cout << "robot1: bidlandlord: " << iscall << std::endl; std::flush(std::cout);
                                 msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 1, 0, 999, "机器人1", package->roomid, iscall, 1);
                             }
-                            else if(package->pos == 3)
+                            else if(landlordQueue.front() == 2)
                             {
-                                int iscall = bot2.GetlandlordAction();
+                                iscall = bot2.GetlandlordAction();
                                 std::cout << "robot2: bidlandlord: " << iscall << std::endl; std::flush(std::cout);
                                 msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 2, 0, 999, "机器人2", package->roomid, iscall, 1);
                             }
+
+                            landlordQueue.pop();
+                            if(!iscall && landlordQueue.front() == landlord)
+                            {
+                                state ++;
+                                landlordQueue.pop();
+                            }
                         }
+
+                        printLandlordQueue();
                         break;
                     }
                 }
@@ -314,7 +343,8 @@ public:
     }
     int isBidLandlordRound()
     {
-        return state <= 4;
+        //return state <= 4;
+        return landlordQueue.size();
     }
     int isCallLandlordRound()
     {
@@ -345,12 +375,30 @@ public:
         std::pair<CardTypeVector, int> result = CardProcess::CardCheck(outcards.to_ulong(), preout_cards.to_ulong());
         return result.second;
     }
+    int nextone()
+    {
+        return landlordQueue.front();
+    }
+    void printLandlordQueue()
+    {
+        std::queue<int> tmp(landlordQueue);
+        int len = tmp.size();
+        std::cout << "LandlordQueue: ";
+        for(int i = 0; i < len; i ++ )
+        {
+            std::cout << tmp.front() << " ";
+            tmp.pop();
+        }
+        std::cout << std::endl;
+        std::flush(std::cout);
+    }
 
     int state;
     int landlordRound_final;
     int thefirst;
     int landlord;
     int callCount;
+    std::queue<int> landlordQueue;
 
     std::string identity1;
     std::string identity2;

@@ -18,6 +18,8 @@
 #include <memory>
 #include <thread>
 
+#include <queue>
+
 #ifdef _WIN32
 #include <windows.h>
 #else
