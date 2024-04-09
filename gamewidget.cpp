@@ -1498,26 +1498,26 @@ void GameWidget::onSkipTurnBtnClicked()   //点击不出按钮；
 void GameWidget::onCallLandlordBtnClicked()    //点击叫地主按钮
 {
     WidgetArgPackage* package = new WidgetArgPackage();
-    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", 1, 1);
+    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", "", 1, 1);
     widget_rev_packer->WidgetsendMessage(package);
 }
 void GameWidget::onSkipCallLandlordBtnClicked()//点击不叫按钮
 {
     WidgetArgPackage* package = new WidgetArgPackage();
-    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", 0, 1);
+    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", "", 0, 1);
     widget_rev_packer->WidgetsendMessage(package);
 }
 void GameWidget::onBidForLandlordBtnClicked()   //点击抢地主按钮
 {
     WidgetArgPackage* package = new WidgetArgPackage();
-    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", 1, 1);
+    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", "", 1, 1);
     widget_rev_packer->WidgetsendMessage(package);
 }
 void GameWidget::onSkipLandlordBidBtnClicked()  //点击不抢按钮
 {
     qDebug() << "UI Btn: no bid";
     WidgetArgPackage* package = new WidgetArgPackage();
-    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", 0, 1);
+    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", "", 0, 1);
     widget_rev_packer->WidgetsendMessage(package);
 }
 void GameWidget::onDoubleBtnClicked()          //点击加倍按钮
@@ -1531,7 +1531,7 @@ void GameWidget::onUnDoubleBtnClicked()        //点击不加倍按钮
 void GameWidget::onReadyBtnClicked()
 {
     WidgetArgPackage* package = new WidgetArgPackage();
-    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 3, 0, 0, "", "", 0, 1);
+    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 3, 0, 0, "", "", "", 0, 1);
     widget_rev_packer->WidgetsendMessage(package);
 }
 void GameWidget::onUnreadyBtnClicked()
@@ -1545,7 +1545,7 @@ void GameWidget::interfaceSomebodyEnterRoom(WidgetArgPackage* arg)
 {
     qDebug() << "进入房间";
     WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
-    somebodyEnterRoom(player->pos, player->profileindex, player->beannum);
+    somebodyEnterRoom(player->pos, player->profileindex, player->username, player->beannum, player->roomid);
     delete arg;
 }
 void GameWidget::interfaceSomebodyReady(WidgetArgPackage* arg)

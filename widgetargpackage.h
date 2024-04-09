@@ -41,12 +41,13 @@ public:
 class WidgetArgPlayer : public WidgetArg
 {
 public:
-    WidgetArgPlayer(PLAYER_OPCODE _opcode, int _pos, int _profileindex, int _beannum, std::string _account, std::string _roomid, int _iscall = 0, int _singlemode = 0)
+    WidgetArgPlayer(PLAYER_OPCODE _opcode, int _pos, int _profileindex, int _beannum, std::string _username, std::string _account, std::string _roomid, int _iscall = 0, int _singlemode = 0)
         : WidgetArg(WIDGET_ARG_TYPE::PLAYER, _singlemode),
         opcode(_opcode),
         pos(_pos),
         profileindex(_profileindex),
         beannum(_beannum),
+        username(_username),
         account(_account),
         roomid(_roomid),
         iscall(_iscall)
@@ -57,6 +58,7 @@ public:
     int profileindex;
     int beannum;
     int iscall;
+    std::string username;
     std::string account;
     std::string roomid;
 };

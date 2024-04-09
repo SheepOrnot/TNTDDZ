@@ -137,7 +137,7 @@ public:
                             iscall = bot1.GetlandlordAction();
                             landlord = iscall ? 1 : landlord;
                             std::cout << "robot1: calllandlord: " << iscall << std::endl; std::flush(std::cout);
-                            msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 1, 0, 999, "机器人1", package->roomid, iscall, 1);
+                            msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 1, 0, 999, "机器人1", "111", package->roomid, iscall, 1);
                         }
                         else if(thefirst == 2)
                         {
@@ -147,7 +147,7 @@ public:
                             iscall = bot2.GetlandlordAction();
                             landlord = iscall ? 2 : landlord;
                             std::cout << "robot2: calllandlord: " << iscall << std::endl; std::flush(std::cout);
-                            msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 2, 0, 999, "机器人2", package->roomid, iscall, 1);
+                            msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 2, 0, 999, "机器人2", "222", package->roomid, iscall, 1);
                         }
                         else if(thefirst == 3)
                         {
@@ -204,7 +204,7 @@ public:
                             {
                                 std::cout << "no one call landlord" << std::endl; std::flush(std::cout);
                                 init();
-                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::READY, 3, 0, 0, "", package->roomid, 0, 1);
+                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::READY, 3, 0, 0, "", "", package->roomid, 0, 1);
                                 break;
                             }
 
@@ -214,13 +214,13 @@ public:
                             {
                                 iscall = bot1.GetlandlordAction();
                                 std::cout << "robot2: calllandlord: " << iscall << std::endl; std::flush(std::cout);
-                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 1, 0, 999, "机器人1", package->roomid, iscall, 1);
+                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 1, 0, 999, "机器人1", "111", package->roomid, iscall, 1);
                             }
                             else if(package->pos == 3)
                             {
                                 iscall = bot2.GetlandlordAction();
                                 std::cout << "robot2: calllandlord: " << iscall << std::endl; std::flush(std::cout);
-                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 2, 0, 999, "机器人2", package->roomid, iscall, 1);
+                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 2, 0, 999, "机器人2", "222", package->roomid, iscall, 1);
                             }
                             landlordQueue.pop();
                         }
@@ -237,13 +237,13 @@ public:
                             {
                                 iscall = bot1.GetlandlordAction();
                                 std::cout << "robot1: bidlandlord: " << iscall << std::endl; std::flush(std::cout);
-                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 1, 0, 999, "机器人1", package->roomid, iscall, 1);
+                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 1, 0, 999, "机器人1", "111", package->roomid, iscall, 1);
                             }
                             else if(landlordQueue.front() == 2)
                             {
                                 iscall = bot2.GetlandlordAction();
                                 std::cout << "robot2: bidlandlord: " << iscall << std::endl; std::flush(std::cout);
-                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 2, 0, 999, "机器人2", package->roomid, iscall, 1);
+                                msg->packMessage<MessagePlayer>(PLAYER_OPCODE::LANDLORD, 2, 0, 999, "机器人2", "222", package->roomid, iscall, 1);
                             }
 
                             landlordQueue.pop();

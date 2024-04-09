@@ -229,26 +229,26 @@ void LobbyWidget::onPersonalInfoBtnClicked()
 void LobbyWidget::onClassicModeBtnClicked()            //创建房间按钮
 {
     WidgetArgPackage* create_room_submit = new WidgetArgPackage();
-    create_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::CREATE_ROOM, 0, 0, 0, UID.toStdString(), "", 0);
+    create_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::CREATE_ROOM, 0, 0, 0, Username.toStdString(), UID.toStdString(), "", 0);
     widget_rev_packer->WidgetsendMessage(create_room_submit);
 }
 void LobbyWidget::onJoinRoomBtnClicked()
 {
     WidgetArgPackage* join_room_submit = new WidgetArgPackage();
-    join_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::JOIN_ROOM, 0, 0, 0, UID.toStdString(), ui->RoomId->text().toStdString(), 0);
+    join_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::JOIN_ROOM, 0, 0, 0, Username.toStdString(), UID.toStdString(), ui->RoomId->text().toStdString(), 0);
     widget_rev_packer->WidgetsendMessage(join_room_submit);
 }
 void LobbyWidget::onExitGameBtnClicked()
 {
     WidgetArgPackage* exit_room_submit = new WidgetArgPackage();
-    exit_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LEAVE_ROOM, 0, 0, 0, UID.toStdString(), ui->RoomId->text().toStdString(), 0);
+    exit_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LEAVE_ROOM, 0, 0, 0, Username.toStdString(), UID.toStdString(), ui->RoomId->text().toStdString(), 0);
     widget_rev_packer->WidgetsendMessage(exit_room_submit);
 }
 void LobbyWidget::onSingleModeBtnClicked()
 {
     qDebug() << "Play Single";
     WidgetArgPackage* create_room_submit = new WidgetArgPackage();
-    create_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::CREATE_ROOM, 0, 0, 0, UID.toStdString(), "", 0, 1);
+    create_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::CREATE_ROOM, 0, 0, 0, Username.toStdString(), UID.toStdString(), "", 0, 1);
     widget_rev_packer->WidgetsendMessage(create_room_submit);
 }
 //********************INTERFACE****************************

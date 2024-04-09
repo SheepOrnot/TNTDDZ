@@ -37,7 +37,7 @@ public:
         {
             WidgetArgPlayer *player_package = static_cast<WidgetArgPlayer*>(current_widget_arg->package);
             msg_ptr->packMessage<MessagePlayer>(player_package->opcode, player_package->pos,
-                                                player_package->profileindex, player_package->beannum,
+                                                player_package->profileindex, player_package->beannum, player_package->username,
                                                 player_package->account, player_package->roomid,
                                                 player_package->iscall, player_package->singlemode);
             break;

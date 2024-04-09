@@ -238,9 +238,9 @@ public:
                             std::cout << "single Mode Create Room" << std::endl;
                             std::flush(std::cout);
                             WidgetArgPackage *Robot1Arg = new WidgetArgPackage();
-                            Robot1Arg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER, 1, 0, 999, "000", package->roomid, 0, 1);
+                            Robot1Arg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER, 1, 0, 999, "机器人1", "111", package->roomid, 0, 1);
                             WidgetArgPackage *Robot2Arg = new WidgetArgPackage();
-                            Robot2Arg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER, 2, 0, 999, "111", package->roomid, 0, 1);
+                            Robot2Arg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER, 2, 0, 999, "机器人2", "222", package->roomid, 0, 1);
 
                             WidgetArgPackage *CreateRoomArg = new WidgetArgPackage();
                             CreateRoomArg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ROOM, -1);
@@ -250,9 +250,9 @@ public:
                             current_center->WidgetInterface["interfaceSomebodyEnterRoom"](Robot1Arg);
                             current_center->WidgetInterface["interfaceSomebodyEnterRoom"](Robot2Arg);
                             WidgetArgPackage *Robot1Ready= new WidgetArgPackage();
-                            Robot1Ready->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 1, 0, 999, "000", package->roomid, 0, 1);
+                            Robot1Ready->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 1, 0, 999, "机器人1", "111", package->roomid, 0, 1);
                             WidgetArgPackage *Robot2Ready = new WidgetArgPackage();
-                            Robot2Ready->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 2, 0, 999, "111", package->roomid, 0, 1);
+                            Robot2Ready->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 2, 0, 999, "机器人2", "222", package->roomid, 0, 1);
                             current_center->WidgetInterface["interfaceSomebodyReady"](Robot1Ready);
                             current_center->WidgetInterface["interfaceSomebodyReady"](Robot2Ready);
 
@@ -265,7 +265,7 @@ public:
                             std::cout << "玩家准备" << std::endl;
                             std::flush(std::cout);
                             WidgetArgPackage *PlayerArg = new WidgetArgPackage();
-                            PlayerArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 3, package->profileindex, package->beannum, package->account, package->roomid);
+                            PlayerArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 3, package->profileindex, package->beannum, package->username, package->account, package->roomid);
                             current_center->WidgetInterface["interfaceSomebodyReady"](PlayerArg);
                             
                             std::cout << "Ready" << std::endl;
@@ -279,7 +279,7 @@ public:
                             //singleCtrl -> Ramdom start
                             int thefirst = current_center->singleCtrl->SelectStart();
                             WidgetArgPackage *CallLandlordArg = new WidgetArgPackage();
-                            CallLandlordArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, thefirst, package->profileindex, package->beannum, package->account, package->roomid);
+                            CallLandlordArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, thefirst, package->profileindex, package->beannum, package->username, package->account, package->roomid);
                             current_center->WidgetInterface["interfaceCallLandlordRound"](CallLandlordArg);
 
                             current_center->MessageSubmit(current_center->singleCtrl->getnext(current_message));
@@ -290,13 +290,13 @@ public:
                             if(current_center->singleCtrl->isCallLandlordRound())
                             {
                                 WidgetArgPackage *CallLandlordArg = new WidgetArgPackage();
-                                CallLandlordArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, package->pos, package->profileindex, package->beannum, package->account, package->roomid, package->iscall);
+                                CallLandlordArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, package->pos, package->profileindex, package->beannum, package->username, package->account, package->roomid, package->iscall);
                                 current_center->WidgetInterface["interfaceCallLandlord"](CallLandlordArg);
                             }
                             else
                             {
                                 WidgetArgPackage *BidLandlordArg = new WidgetArgPackage();
-                                BidLandlordArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, package->pos, package->profileindex, package->beannum, package->account, package->roomid, package->iscall);
+                                BidLandlordArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, package->pos, package->profileindex, package->beannum, package->username, package->account, package->roomid, package->iscall);
                                 current_center->WidgetInterface["interfaceBidForLandlord"](BidLandlordArg);
                             }
 
@@ -308,7 +308,7 @@ public:
                                 WidgetArgPackage *nextRound = new WidgetArgPackage();
                                 //int nextone = package->pos == 1 ? 3 : (package->pos == 2 ? 1 : 2);
                                 int nextone = current_center->singleCtrl->nextone();
-                                nextRound->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, nextone, 0, 0, "", "", 0);
+                                nextRound->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, nextone, 0, 0, "", "", "", 0);
                                 if(current_center->singleCtrl->isCallLandlordRound())
                                     current_center->WidgetInterface["interfaceCallLandlordRound"](nextRound);
                                 else
@@ -391,7 +391,7 @@ public:
                             {
                                 WidgetArgPackage *nextRound = new WidgetArgPackage();
                                 int nextone = package->pos == 1 ? 3 : (package->pos == 2 ? 1 : 2);
-                                nextRound->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::PLAY, nextone, 0, 0, "", "", 0);
+                                nextRound->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::PLAY, nextone, 0, 0, "", "", "", 0);
                                 current_center->WidgetInterface["interfacePlayCardRound"](nextRound);
                             }
                             sleepcp(1000);
@@ -418,7 +418,7 @@ public:
                 sleepcp(500);
 
                 WidgetArgPackage *PlayCardRound = new WidgetArgPackage();
-                PlayCardRound->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::PLAY, current_center->singleCtrl->landlord, 0, 0, "", "", 0);
+                PlayCardRound->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::PLAY, current_center->singleCtrl->landlord, 0, 0, "", "", "", 0);
                 current_center->WidgetInterface["interfacePlayCardRound"](PlayCardRound);
                 
                 current_center->MessageSubmit(current_center->singleCtrl->getnext(current_message));
