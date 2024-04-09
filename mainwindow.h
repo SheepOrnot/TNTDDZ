@@ -1,11 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "common.h"
-#include <QMainWindow>
 #include "backgroundwidget.h"
 #include "findandsignupwidget.h"
 #include "lobbywidget.h"
+#include "common.h"
+#include "widgetrevpacker.h"
+#include <QMainWindow>
+
 #include <QPushButton>
 #include <QCheckBox>
 #include <QLineEdit>
@@ -16,7 +18,7 @@
 #include<QRegularExpressionValidator>
 #include<QThread>
 
-#include "widgetrevpacker.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

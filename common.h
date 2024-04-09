@@ -1,6 +1,12 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#include <boost/beast.hpp>
+#include <boost/json.hpp>
+//#include <boost/json/src.hpp>
+#include <iostream>
+#include <boost/property_tree/json_parser.hpp>
+
 #include <iostream>
 #include <fstream>
 #include <string>

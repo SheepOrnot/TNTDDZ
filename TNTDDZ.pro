@@ -92,11 +92,11 @@ unix:!macx:DEPENDPATH += $$PWD/../LIB
 
 unix:!macx: PRE_TARGETDEPS += $$PWD/../LIB/libsioclient.a
 
-BOOST = D:\\Program\\library\\boost_1_84_0
+BOOST = E:\\tools\\boost_1_84_0
 win32: INCLUDEPATH += $$BOOST
 win32: LIBS += -L$$BOOST\\stage\\lib
 win32: LIBS += -lws2_32
-SOCKETIO = D:\\Program\\library\\socket.io-client-cpp
+SOCKETIO = E:\\tools\\socket.io-client-cpp
 win32: INCLUDEPATH += $$SOCKETIO\\lib\\asio\\asio\\include
 win32: INCLUDEPATH += $$SOCKETIO\\lib\\websocketpp
 win32: INCLUDEPATH += $$SOCKETIO\\lib\\rapidjson\\include

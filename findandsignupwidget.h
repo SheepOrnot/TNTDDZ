@@ -1,12 +1,13 @@
 #ifndef FINDANDSIGNUPWIDGET_H
 #define FINDANDSIGNUPWIDGET_H
 
+#include "messagecenter.h"
+#include "widgetrevpacker.h"
 #include <QWidget>
 #include <QPushButton>
 #include <QTimer>
 #include<QRegularExpressionValidator>
-#include "messagecenter.h"
-#include "widgetrevpacker.h"
+
 
 #include <QMessageBox>
 

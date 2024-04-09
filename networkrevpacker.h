@@ -1,11 +1,7 @@
 #ifndef NETWORKREVPACKER_H
 #define NETWORKREVPACKER_H
 
-#include <boost/beast.hpp>
-#include <boost/json.hpp>
-//#include <boost/json/src.hpp>
-#include <iostream>
-#include <boost/property_tree/json_parser.hpp>
+
 #include "messagepackage.h"
 
 namespace http = boost::beast::http;
