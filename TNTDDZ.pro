@@ -11,7 +11,6 @@ CONFIG += c++17
 
 SOURCES += \
     backgroundwidget.cpp \
-    effectplayer.cpp \
     cardprocess.cpp \
     findandsignupwidget.cpp \
     gameoverwidget.cpp \
@@ -21,11 +20,11 @@ SOURCES += \
     mainwindow.cpp \
     personalinfowidget.cpp \
     settingwidget.cpp \
+    supermarketwidget.cpp \
     widgetcard.cpp
 
 HEADERS += \
     backgroundwidget.h \
-    effectplayer.h \
     cardprocess.h \
     findandsignupwidget.h \
     gameoverwidget.h \
@@ -34,6 +33,7 @@ HEADERS += \
     mainwindow.h \
     personalinfowidget.h \
     settingwidget.h \
+    supermarketwidget.h \
     widgetcard.h
 
 FORMS += \
@@ -43,7 +43,8 @@ FORMS += \
     lobbywidget.ui \
     mainwindow.ui \
     personalinfowidget.ui \
-    settingwidget.ui
+    settingwidget.ui \
+    supermarketwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

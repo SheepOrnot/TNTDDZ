@@ -8,6 +8,7 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     ImportConfig();
+    this->setWindowTitle("TNT斗地主");
 //*****************本地获取的配置数据***************
     radius = Height*0.047*0.5;
 //********************end*************************
@@ -118,6 +119,8 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui->SingleModeBtn->setText("单机模式");
     connect(ui->ClassicModeBtn,&QPushButton::clicked,this,&LobbyWidget::onClassicModeBtnClicked);
     connect(ui->SingleModeBtn,&QPushButton::clicked,this,&LobbyWidget::onSingleModeBtnClicked);
+    connect(ui->AddDiamondBtn,&QPushButton::clicked,this,&LobbyWidget::onDiamondShopClicked);
+    connect(ui->AddBeanBtn,&QPushButton::clicked,this,&LobbyWidget::onBeanShopClicked);
 
 }
 
@@ -251,4 +254,14 @@ void LobbyWidget::onSingleModeBtnClicked()
     GameExitBtn->show();
     BGMPlayer->stop();
     connect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
+}
+void LobbyWidget::onDiamondShopClicked()
+{
+    SuperMarket = new SuperMarketWidget(Width,Height,0);
+    SuperMarket->show();
+}
+void LobbyWidget::onBeanShopClicked()
+{
+    SuperMarket = new SuperMarketWidget(Width,Height,1);
+    SuperMarket->show();
 }

@@ -23,11 +23,11 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);
+    <string notr="true">
 font: 72pt &quot;ZXF Small Pudding Trial&quot;;</string>
    </property>
    <property name="text">
-    <string>   胜利</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="Username3">

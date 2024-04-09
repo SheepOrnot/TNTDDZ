@@ -8,6 +8,7 @@
 #include"settingwidget.h"
 #include"gamewidget.h"
 #include"personalinfowidget.h"
+#include "supermarketwidget.h"
 namespace Ui {
 class LobbyWidget;
 }
@@ -47,6 +48,7 @@ private:
     QAudioOutput *BGMaudioOutput;
     QThread *BGMThread;
     PersonalInfoWidget *personalInfoWidget;
+    SuperMarketWidget *SuperMarket;
 private:
     void ImportConfig();
 public Q_SLOTS:
@@ -59,6 +61,8 @@ private Q_SLOTS:
     void onPersonalInfoBtnClicked();
     void RollImage();
     void onSingleModeBtnClicked();
+    void onDiamondShopClicked();
+    void onBeanShopClicked();
 signals:
 
 
