@@ -52,10 +52,10 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
     connect(Testbtn,&QPushButton::clicked,[&](){
         switch(TestStage)
         {
-            case 0:{somebodyEnterRoom(3,0,66999); break;}
-            case 1:{somebodyEnterRoom(1,1,652);  break;}
+            case 0:{somebodyEnterRoom(3,0,"冷锋",66999,"995664"); break;}
+            case 1:{somebodyEnterRoom(1,1,"玩家1",652);  break;}
             case 2:{somebodyReady(3);break;}
-            case 3:{somebodyEnterRoom(2,3,777777777);break;}
+            case 3:{somebodyEnterRoom(2,3,"玩家2",777777777);break;}
             case 4:{somebodyReady(2);break;}
             case 5:{somebodyUnReady(3);break;}
             case 6:{somebodyReady(3);break;}
@@ -106,6 +106,7 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
                 somebodyOutCard(3,playeroutBitset,14,14,playerBitset);
                 break;
             }
+            case 32:{GameOver(1,6,-4500,-4500,9000);break;}
             default: qDebug()<<"done!";
         }
         qDebug()<<TestStage;
@@ -145,9 +146,9 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
     ui->IdentityLabel3     ->setGeometry( 0.083*Width,  0.777*Height,  0.021*Width,   0.037*Height);
     ui->BeansLineEdit1     ->setGeometry( 0.026*Width,  0.388*Height,  0.063*Width,   0.028*Height);
     ui->BeansLineEdit2     ->setGeometry( 0.906*Width,  0.398*Height,  0.063*Width,   0.028*Height);
-    ui->BeansLineEdit3     ->setGeometry( 0.062*Width,  0.953*Height,  0.063*Width,   0.028*Height);
-    ui->DoubleLabel1       ->setGeometry( 0.062*Width,  0.425*Height,  0.026*Width,   0.017*Height);
-    ui->DoubleLabel2       ->setGeometry( 0.906*Width,  0.435*Height,  0.026*Width,   0.017*Height);
+    ui->BeansLineEdit3     ->setGeometry( 0.062*Width,  0.953*Height,  0.063*Width,   0.028*Height);    ui->DoubleLabel1->hide();
+    ui->DoubleLabel1       ->setGeometry( 0.062*Width,  0.425*Height,  0.026*Width,   0.017*Height);    ui->DoubleLabel2->hide();
+    ui->DoubleLabel2       ->setGeometry( 0.906*Width,  0.435*Height,  0.026*Width,   0.017*Height);    ui->DoubleLabel3->hide();
     ui->DoubleLabel3       ->setGeometry( 0.135*Width,  0.962*Height,  0.026*Width,   0.017*Height);
     ui->FinalCard1         ->setGeometry( 0.420*Width,  0.018*Height,  0.042*Width,   0.102*Height);
     ui->FinalCard2         ->setGeometry( 0.472*Width,  0.018*Height,  0.042*Width,   0.102*Height);
@@ -175,7 +176,7 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
     ui->ReadyLabel1        ->setGeometry( 0.038*Width,  0.240*Height,  0.025*Width,   0.035*Height);    ui->ReadyLabel1->hide();
     ui->ReadyLabel2        ->setGeometry( 0.918*Width,  0.240*Height,  0.025*Width,   0.035*Height);    ui->ReadyLabel2->hide();
     ui->ReadyLabel3        ->setGeometry( 0.078*Width,  0.814*Height,  0.025*Width,   0.035*Height);    ui->ReadyLabel3->hide();
-
+    ui->Recorder           ->setGeometry( 0.070*Width,  0.018*Height,  0.290*Width,   0.057*Height);    ui->Recorder->hide();
 
     ui->SettingBtn->setIcon(QIcon(":/image/image/Icon/setting.png"));
     ui->SettingBtn->setStyleSheet("QPushButton { background-color: transparent; }");
@@ -257,6 +258,27 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
 
     ui->MultiplierLabel->setText("倍数\n⨉"+QString::number(Times));
 
+
+    model = new QStandardItemModel(2,15);
+    for (int column = 0; column < 15; ++column) {
+        QStandardItem *item = new QStandardItem(PointIndex[column+3]);
+        model->setItem(0, column, item);
+    }
+    ui->Recorder->setModel(model);
+    ui->Recorder->resizeRowsToContents();
+    ui->Recorder->resizeColumnsToContents();
+    ui->Recorder->verticalHeader()->setVisible(false);
+    ui->Recorder->horizontalHeader()->setVisible(false);
+
+
+    ShowRecorderShortcut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Period), this);  //CTRL + .
+    QObject::connect(ShowRecorderShortcut, &QShortcut::activated, [&]() {
+        if(RecordOpen==false)
+            ui->Recorder->show();
+        if(RecordOpen==true)
+            ui->Recorder->hide();
+        RecordOpen = !RecordOpen;
+    });
     connect(ui->PlayCardBtn,&QPushButton::clicked,this,&GameWidget::onPlayCardsClicked);
     connect(ui->SkipTurnBtn,&QPushButton::clicked,this,&GameWidget::onSkipTurnBtnClicked);
     connect(ui->CallLandlordBtn,&QPushButton::clicked,this,&GameWidget::onCallLandlordBtnClicked);
@@ -353,7 +375,7 @@ void GameWidget::onSettingBtnClicked()
 
 void GameWidget::placeHandCards()
 {
-    for(int i = 0; i < PlayerHandCards.size(); i++)
+    for(unsigned i = 0; i < PlayerHandCards.size(); i++)
     {
         PlayerHandCards[i].btn = new QPushButton(this);
         PlayerHandCards[i].btn->setIcon(QIcon(PlayerHandCards[i].ImagePath));
@@ -365,7 +387,27 @@ void GameWidget::placeHandCards()
     }
     ConnectHandCards();
 }
+void GameWidget::replaceHandCards(std::bitset<54> handcrads)
+{
 
+    DisconnectHandCards();
+    for(unsigned i = 0; i<PlayerHandCards.size(); i++)
+    {
+        delete PlayerHandCards[i].btn;
+    }
+    PlayerHandCards = Transform_To_Vector(handcrads);
+    for(unsigned i = 0; i < PlayerHandCards.size(); i++)
+    {
+        PlayerHandCards[i].btn = new QPushButton(this);
+        PlayerHandCards[i].btn->setIcon(QIcon(PlayerHandCards[i].ImagePath));
+        PlayerHandCards[i].btn->setStyleSheet("QPushButton { background-color: transparent; }");
+        //PlayerHandCards[i].btn->setStyleSheet("QPushButton:disabled{color: black;}");
+        PlayerHandCards[i].btn->setGeometry((0.198+0.03*i)*Width,0.796*Height,0.06*Width,0.148*Height);
+        PlayerHandCards[i].btn->setIconSize(PlayerHandCards[i].btn->size());
+        PlayerHandCards[i].btn->show();
+    }
+    ConnectHandCards();
+}
 void GameWidget::placeOutCards(int pos)
 {
     if(pos == 1)
@@ -454,7 +496,6 @@ void GameWidget::placeOutCards(int pos)
         }
     }
 }
-
 void GameWidget::ShowFinalCards()
 {
     FinalCardPixmap1 = QPixmap(FinalCards[0].ImagePath);
@@ -472,7 +513,6 @@ void GameWidget::ShowFinalCards()
     ui->FinalCard3->setPixmap(FinalCardPixmap3);
     ui->FinalCard3->setScaledContents(true);
 }
-
 void GameWidget::ImportConfig()
 {
     QString filePath = "./config/config.json";
@@ -507,10 +547,10 @@ void GameWidget::ImportConfig()
         }
     }
 }
-
 void GameWidget::onPlayCardsClicked()
 {
     SelectedCards = 0;
+
     for(unsigned i = 0;i < PlayerHandCards.size();i++)
     {
         if(PlayerHandCards[i].isUp==true)
@@ -546,7 +586,6 @@ void GameWidget::ConnectHandCards()
                 });
     }
 }
-
 void GameWidget::DisconnectHandCards()
 {
     for (int i = 0;i < PlayerHandCards.size();i++)
@@ -554,7 +593,41 @@ void GameWidget::DisconnectHandCards()
         disconnect(PlayerHandCards[i].btn,0,0,0);
     }
 }
-
+void GameWidget::updateRecorder(int Pos)
+{
+    switch(Pos)
+    {
+        case 1:
+        {
+            for(unsigned i = 0;i<PreviousPlayerOutCards.size();i++)
+            {
+                Card_Recorder[PreviousPlayerOutCards[i].Point-3]--;
+            }
+            break;
+        }
+        case 2:
+        {
+            for(unsigned i = 0;i<NextPlayerOutCards.size();i++)
+            {
+                Card_Recorder[NextPlayerOutCards[i].Point-3]--;
+            }
+            break;
+        }
+        case 3:
+        {
+            for(unsigned i = 0;i< PlayerHandCards.size();i++)
+            {
+                Card_Recorder[PlayerHandCards[i].Point-3]--;
+            }
+            break;
+        }
+    }
+        for (int column = 0; column < 15; ++column) {
+        QStandardItem *item = new QStandardItem(QString::number(Card_Recorder[column]));
+            model->setItem(1, column, item);
+        }
+        ui->Recorder->setModel(model);
+}
 void GameWidget::AnimateMove(const QPoint& startPos, const QPoint& endPos,QPushButton *btn)
 {
     QPropertyAnimation* animation = new QPropertyAnimation(btn, "pos");
@@ -569,7 +642,6 @@ void GameWidget::AnimateMove(const QPoint& startPos, const QPoint& endPos,QPushB
         btn->setEnabled(true);
     });
 }
-
 void GameWidget::AnimateMoveLeft(QPushButton* btn, int distance)
 {
     QPropertyAnimation* animation = new QPropertyAnimation(btn, "geometry");
@@ -585,7 +657,6 @@ void GameWidget::AnimateMoveLeft(QPushButton* btn, int distance)
                 btn->setEnabled(true);
             });
 }
-
 void GameWidget::PlacePreviousHandCards()
 {
     for(int i = 0;i<backlabel1.size();i++)
@@ -637,7 +708,6 @@ void GameWidget::PlaceNextHandCards()
     NextCardsNumLabel->raise();
     NextCardsNumLabel->show();
 }
-//没写呢
 void GameWidget::DestroyOutCards(int pos)          //清空出牌显示区  1->上家    2->下家   3->自己
 {
     if(pos==1)
@@ -666,7 +736,6 @@ void GameWidget::DestroyOutCards(int pos)          //清空出牌显示区  1->�
         PlayerOutCards.clear();
     }
 }
-
 void GameWidget::MakeSoundEffect(int Type)  //0:叫地主  1：不叫  2：加倍  3：不加倍   4：抢地主   5：不抢    6：不出
 {                                           //7：上家出牌    8：下家出牌   9：自己出牌    10：游戏胜利    11：游戏失败  12：超时预警
     qDebug()<<"Make Effect"<<Type;
@@ -757,7 +826,6 @@ void GameWidget::MakeSoundEffect(int Type)  //0:叫地主  1：不叫  2：加�
     EffectPlayer->play();
 
 }
-
 void GameWidget::ShowProfiles(int Pos)
 {
     switch(Pos)
@@ -808,7 +876,6 @@ void GameWidget::StartCountDown(int time,int pos)
     timer->start(1000); // 每秒触发一次timeout()信号
     updateCountDown(); // 更新显示剩余秒数
 }
-
 void GameWidget::updateCountDown()
 {
     if(remainingTime==5) MakeSoundEffect(12);
@@ -821,7 +888,6 @@ void GameWidget::updateCountDown()
         qDebug()<<"stop Timer";
     }
 }
-
 QString GameWidget::Transform_To_String(int Num)
 {
     QString Str;
@@ -839,7 +905,6 @@ QString GameWidget::Transform_To_String(int Num)
     else Str = QString::number(Num);
     return Str;
 }
-
 void GameWidget::ShowIdentityIcon(std::string identity1,std::string identity2,std::string identity3)  //"farmer" "landlord"
 {
     PreviousIdentityString = QString::fromStdString(identity1); NextIdentityString = QString::fromStdString(identity2); PlayerIdentityString = QString::fromStdString(identity3);
@@ -1073,6 +1138,7 @@ void GameWidget::somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,in
         case 1:
         {
             PreviousPlayerOutCards = Transform_To_Vector(Bitset);
+            updateRecorder(Pos);
             PreviousCardsNumber = Leftcards;
             PreviousOutCradsType = Cardtype;
             PlacePreviousHandCards();
@@ -1081,6 +1147,7 @@ void GameWidget::somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,in
         case 2:
         {
             NextPlayerOutCards = Transform_To_Vector(Bitset);
+            updateRecorder(Pos);
             NextCardsNumber = Leftcards;
             NextOutCradsType = Cardtype;
             PlaceNextHandCards();
@@ -1091,10 +1158,19 @@ void GameWidget::somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,in
             PlayerOutCards = Transform_To_Vector(Bitset);
             PlayerOutCradsType = Cardtype;
             int HeadUnselectedCount = 0;
+            //std::vector<int> recovercards;
             DisconnectHandCards();
             for(unsigned i = 0;i < PlayerHandCards.size();i++)
             {
-                PlayerHandCards[i].isUp = (Bitset[PlayerHandCards[i].Index]==1) ? true : false;
+                if(Bitset[PlayerHandCards[i].Index]==1)
+                {
+                    PlayerHandCards[i].isUp = true;
+                }
+                else if(PlayerHandCards[i].isUp==true)
+                {
+                    PlayerHandCards[i].isUp = false;
+                    // recovercards.push_back(i);
+                }
             }
             for(unsigned i = 0;i < PlayerHandCards.size();i++)
             {
@@ -1116,6 +1192,14 @@ void GameWidget::somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,in
                                           }), PlayerHandCards.end());
                 }
             }
+            // for(int i = 0; i< PlayerHandCards.size();i++)
+            // {
+            //     for(int j = 0;j<recovercards.size();j++)
+            //     {
+            //         if(PlayerHandCards[i].Index==recovercards[j])
+            //             PlayerHandCards[i].isUp = true;
+            //     }
+            // }
             ConnectHandCards();
             ui->PlayCardBtn->hide();
             ui->SkipTurnBtn->hide();
@@ -1305,7 +1389,7 @@ void GameWidget::somebodyNotDouble(int Pos)
     }
     MakeSoundEffect(2);
 }
-void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,int Beans)  //有人加入房间，创建房间初始调用参数3，加入房间调用1/2显示已经在房间中的人，后加入房间正常调用
+void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int Beans,std::string _RoomId)  //有人加入房间，创建房间初始调用参数3，加入房间调用1/2显示已经在房间中的人，后加入房间正常调用
 {
     switch(Pos)
     {
@@ -1314,6 +1398,7 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,int Beans)  //有人
             PreviousProfileIndex = ProfileIndex;
             PreviousBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit1->setText(PreviousBeanNum);
+            PreviousName = QString::fromStdString(Name);
             break;
         }
         case 2:
@@ -1321,6 +1406,7 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,int Beans)  //有人
             NextProfileIndex = ProfileIndex;
             NextBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit2->setText(NextBeanNum);
+            NextName = QString::fromStdString(Name);
             break;
         }
         case 3:
@@ -1328,6 +1414,10 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,int Beans)  //有人
             PlayerProfileIndex = ProfileIndex;
             PlayerBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit3->setText(PlayerBeanNum);
+            PlayerName = QString::fromStdString(Name);
+            RoomId = QString::fromStdString(_RoomId);
+            ui->RoomId->setText(RoomId);
+            ui->RoomId->show();
             break;
         }
     }
@@ -1379,6 +1469,8 @@ void GameWidget::StartGame(std::string identity1,std::string identity2,std::stri
     {
         delete PlayerHandCards[i].btn;
     }
+    PlayerHandCards = Transform_To_Vector(handcards);
+    updateRecorder(3);
     Dealingcards(handcards,cardnum1,cardnum2);
     FinalCards = Transform_To_Vector(finalcards);
     ShowFinalCards();
@@ -1388,6 +1480,14 @@ void GameWidget::AddTimes(int newTimes)
     Times = newTimes;
     ui->MultiplierLabel->setText("倍数\n⨉"+QString::number(Times));
 }
+void GameWidget::GameOver(bool Result,int times,int Score1,int Score2,int Score3)
+{
+    gameoverWidget = new GameOverWidget(Width,Height,Result,times,PreviousIdentity,NextIdentity,PlayerIdentity,PreviousName,NextName,PlayerName,PreviousDouble
+                                        ,NextDouble,PlayerDouble,Score1,Score2,Score3);
+    gameoverWidget->show();
+}
+
+
 
 void GameWidget::onSkipTurnBtnClicked()   //点击不出按钮；
 {

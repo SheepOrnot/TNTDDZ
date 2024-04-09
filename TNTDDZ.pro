@@ -17,7 +17,6 @@ QMAKE_CXXFLAGS += -lboost_date_time
 
 SOURCES += \
     backgroundwidget.cpp \
-    effectplayer.cpp \
     cardprocess.cpp \
     findandsignupwidget.cpp \
     gameoverwidget.cpp \
@@ -28,6 +27,7 @@ SOURCES += \
     personalinfowidget.cpp \
     robot.cpp \
     settingwidget.cpp \
+    supermarketwidget.cpp \
     singlegame.cpp \
     socketioclient.cpp \
     widgetcard.cpp
@@ -35,7 +35,6 @@ SOURCES += \
 HEADERS += \
     HTTPJSONSender.h \
     backgroundwidget.h \
-    effectplayer.h \
     cardprocess.h \
     common.h \
     findandsignupwidget.h \
@@ -49,6 +48,7 @@ HEADERS += \
     networkrevpacker.h \
     robot.h \
     settingwidget.h \
+    supermarketwidget.h \
     singlegame.h \
     socketioclient.h \
     threadpool.h \
@@ -63,7 +63,8 @@ FORMS += \
     lobbywidget.ui \
     mainwindow.ui \
     personalinfowidget.ui \
-    settingwidget.ui
+    settingwidget.ui \
+    supermarketwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

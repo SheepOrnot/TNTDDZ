@@ -12,9 +12,11 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QTableView>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -60,6 +62,7 @@ public:
     QLabel *ReadyLabel1;
     QLabel *ReadyLabel2;
     QPushButton *UnReadyBtn;
+    QTableView *Recorder;
 
     void setupUi(QWidget *GameWidget)
     {
@@ -194,6 +197,9 @@ public:
         UnReadyBtn = new QPushButton(GameWidget);
         UnReadyBtn->setObjectName("UnReadyBtn");
         UnReadyBtn->setGeometry(QRect(810, 730, 161, 51));
+        Recorder = new QTableView(GameWidget);
+        Recorder->setObjectName("Recorder");
+        Recorder->setGeometry(QRect(310, 20, 401, 71));
         ClockImageLabel->raise();
         FinalCard1->raise();
         FinalCard2->raise();
@@ -232,6 +238,7 @@ public:
         ReadyLabel1->raise();
         ReadyLabel2->raise();
         UnReadyBtn->raise();
+        Recorder->raise();
 
         retranslateUi(GameWidget);
 
@@ -254,15 +261,15 @@ public:
         BeansLineEdit2->setText(QString());
         ClockNum->setText(QCoreApplication::translate("GameWidget", "30", nullptr));
         ClockImageLabel->setText(QCoreApplication::translate("GameWidget", "clock", nullptr));
-        DoubleLabel1->setText(QCoreApplication::translate("GameWidget", "\344\270\215\345\212\240\345\200\215", nullptr));
-        DoubleLabel2->setText(QCoreApplication::translate("GameWidget", "\345\212\240\345\200\215", nullptr));
-        IdentityLabel1->setText(QCoreApplication::translate("GameWidget", "Icon", nullptr));
-        IdentityLabel2->setText(QCoreApplication::translate("GameWidget", "Icon2", nullptr));
+        DoubleLabel1->setText(QString());
+        DoubleLabel2->setText(QString());
+        IdentityLabel1->setText(QString());
+        IdentityLabel2->setText(QString());
         PlayCardBtn->setText(QCoreApplication::translate("GameWidget", "\345\207\272\347\211\214", nullptr));
         ProfileLabel3->setText(QCoreApplication::translate("GameWidget", "Profile3", nullptr));
         BeansLineEdit3->setText(QString());
-        DoubleLabel3->setText(QCoreApplication::translate("GameWidget", "\344\270\215\345\212\240\345\200\215", nullptr));
-        IdentityLabel3->setText(QCoreApplication::translate("GameWidget", "Icon", nullptr));
+        DoubleLabel3->setText(QString());
+        IdentityLabel3->setText(QString());
         SkipTurnBtn->setText(QCoreApplication::translate("GameWidget", "\344\270\215\345\207\272", nullptr));
         CallLandlordBtn->setText(QCoreApplication::translate("GameWidget", "\345\217\253\345\234\260\344\270\273", nullptr));
         SkipCallLandlordBtn->setText(QCoreApplication::translate("GameWidget", "\344\270\215\345\217\253", nullptr));

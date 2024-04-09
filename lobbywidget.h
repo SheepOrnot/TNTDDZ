@@ -9,6 +9,7 @@
 #include"settingwidget.h"
 #include"gamewidget.h"
 #include"personalinfowidget.h"
+#include "supermarketwidget.h"
 #include "messagecenter.h"
 #include "widgetrevpacker.h"
 
@@ -55,6 +56,7 @@ private:
     QAudioOutput *BGMaudioOutput;
     QThread *BGMThread;
     PersonalInfoWidget *personalInfoWidget;
+    SuperMarketWidget *SuperMarket;
 
     std::shared_ptr<MessageCenter> message_center;
     std::shared_ptr<WidgetRevPacker> widget_rev_packer;
@@ -74,6 +76,8 @@ private Q_SLOTS:
     void onPersonalInfoBtnClicked();
     void RollImage();
     void onSingleModeBtnClicked();
+    void onDiamondShopClicked();
+    void onBeanShopClicked();
     void EnterGame();
 Q_SIGNALS:
     void ChangeResolutions(int _Width,int _Height);            //********测试用 ;

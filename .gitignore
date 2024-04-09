@@ -1,7 +1,7 @@
 .qtc_clangd/*
 .qtc_clangd/
-debug/*
-debug/
+./debug/*
+./debug/
 release/*
 release/
 moc*

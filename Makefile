@@ -53,7 +53,6 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = backgroundwidget.cpp \
-		effectplayer.cpp \
 		cardprocess.cpp \
 		findandsignupwidget.cpp \
 		gameoverwidget.cpp \
@@ -64,11 +63,11 @@ SOURCES       = backgroundwidget.cpp \
 		personalinfowidget.cpp \
 		robot.cpp \
 		settingwidget.cpp \
+		supermarketwidget.cpp \
 		singlegame.cpp \
 		socketioclient.cpp \
 		widgetcard.cpp qrc_resource.cpp \
 		moc_backgroundwidget.cpp \
-		moc_effectplayer.cpp \
 		moc_findandsignupwidget.cpp \
 		moc_gameoverwidget.cpp \
 		moc_gamewidget.cpp \
@@ -76,9 +75,9 @@ SOURCES       = backgroundwidget.cpp \
 		moc_mainwindow.cpp \
 		moc_personalinfowidget.cpp \
 		moc_messagecenter.cpp \
-		moc_settingwidget.cpp
+		moc_settingwidget.cpp \
+		moc_supermarketwidget.cpp
 OBJECTS       = backgroundwidget.o \
-		effectplayer.o \
 		cardprocess.o \
 		findandsignupwidget.o \
 		gameoverwidget.o \
@@ -89,12 +88,12 @@ OBJECTS       = backgroundwidget.o \
 		personalinfowidget.o \
 		robot.o \
 		settingwidget.o \
+		supermarketwidget.o \
 		singlegame.o \
 		socketioclient.o \
 		widgetcard.o \
 		qrc_resource.o \
 		moc_backgroundwidget.o \
-		moc_effectplayer.o \
 		moc_findandsignupwidget.o \
 		moc_gameoverwidget.o \
 		moc_gamewidget.o \
@@ -102,7 +101,8 @@ OBJECTS       = backgroundwidget.o \
 		moc_mainwindow.o \
 		moc_personalinfowidget.o \
 		moc_messagecenter.o \
-		moc_settingwidget.o
+		moc_settingwidget.o \
+		moc_supermarketwidget.o
 DIST          = /media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/features/spec_pre.prf \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/common/unix.conf \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/common/linux.conf \
@@ -419,7 +419,6 @@ DIST          = /media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/features/spec_pre.prf
 		/media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/features/lex.prf \
 		TNTDDZ.pro HTTPJSONSender.h \
 		backgroundwidget.h \
-		effectplayer.h \
 		cardprocess.h \
 		common.h \
 		findandsignupwidget.h \
@@ -433,13 +432,13 @@ DIST          = /media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/features/spec_pre.prf
 		networkrevpacker.h \
 		robot.h \
 		settingwidget.h \
+		supermarketwidget.h \
 		singlegame.h \
 		socketioclient.h \
 		threadpool.h \
 		widgetargpackage.h \
 		widgetcard.h \
 		widgetrevpacker.h backgroundwidget.cpp \
-		effectplayer.cpp \
 		cardprocess.cpp \
 		findandsignupwidget.cpp \
 		gameoverwidget.cpp \
@@ -450,6 +449,7 @@ DIST          = /media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/features/spec_pre.prf
 		personalinfowidget.cpp \
 		robot.cpp \
 		settingwidget.cpp \
+		supermarketwidget.cpp \
 		singlegame.cpp \
 		socketioclient.cpp \
 		widgetcard.cpp
@@ -461,7 +461,7 @@ TARGET        = TNTDDZ
 first: all
 ####### Build rules
 
-TNTDDZ: /home/fish/Desktop/Software_project/qt_project/TNTDDZ/../LIB/libsioclient.a ui_findandsignupwidget.h ui_gameoverwidget.h ui_gamewidget.h ui_lobbywidget.h ui_mainwindow.h ui_personalinfowidget.h ui_settingwidget.h $(OBJECTS)  
+TNTDDZ: /home/fish/Desktop/Software_project/qt_project/TNTDDZ/../LIB/libsioclient.a ui_findandsignupwidget.h ui_gameoverwidget.h ui_gamewidget.h ui_lobbywidget.h ui_mainwindow.h ui_personalinfowidget.h ui_settingwidget.h ui_supermarketwidget.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET)  $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: TNTDDZ.pro /media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/linux-g++/qmake.conf /media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/features/spec_pre.prf \
@@ -1125,9 +1125,9 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resource.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents HTTPJSONSender.h backgroundwidget.h effectplayer.h cardprocess.h common.h findandsignupwidget.h gameoverwidget.h gamewidget.h lobbywidget.h mainwindow.h personalinfowidget.h messagecenter.h messagepackage.h networkrevpacker.h robot.h settingwidget.h singlegame.h socketioclient.h threadpool.h widgetargpackage.h widgetcard.h widgetrevpacker.h $(DISTDIR)/
-	$(COPY_FILE) --parents backgroundwidget.cpp effectplayer.cpp cardprocess.cpp findandsignupwidget.cpp gameoverwidget.cpp gamewidget.cpp lobbywidget.cpp main.cpp mainwindow.cpp personalinfowidget.cpp robot.cpp settingwidget.cpp singlegame.cpp socketioclient.cpp widgetcard.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents findandsignupwidget.ui gameoverwidget.ui gamewidget.ui lobbywidget.ui mainwindow.ui personalinfowidget.ui settingwidget.ui $(DISTDIR)/
+	$(COPY_FILE) --parents HTTPJSONSender.h backgroundwidget.h cardprocess.h common.h findandsignupwidget.h gameoverwidget.h gamewidget.h lobbywidget.h mainwindow.h personalinfowidget.h messagecenter.h messagepackage.h networkrevpacker.h robot.h settingwidget.h supermarketwidget.h singlegame.h socketioclient.h threadpool.h widgetargpackage.h widgetcard.h widgetrevpacker.h $(DISTDIR)/
+	$(COPY_FILE) --parents backgroundwidget.cpp cardprocess.cpp findandsignupwidget.cpp gameoverwidget.cpp gamewidget.cpp lobbywidget.cpp main.cpp mainwindow.cpp personalinfowidget.cpp robot.cpp settingwidget.cpp supermarketwidget.cpp singlegame.cpp socketioclient.cpp widgetcard.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents findandsignupwidget.ui gameoverwidget.ui gamewidget.ui lobbywidget.ui mainwindow.ui personalinfowidget.ui settingwidget.ui supermarketwidget.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -1363,9 +1363,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/features/data/dummy.cpp
 	g++ -pipe -lsioclient -lboost_random -lboost_system -lboost_date_time -g -std=gnu++1z -Wall -Wextra -fPIC -dM -E -o moc_predefs.h /media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_backgroundwidget.cpp moc_effectplayer.cpp moc_findandsignupwidget.cpp moc_gameoverwidget.cpp moc_gamewidget.cpp moc_lobbywidget.cpp moc_mainwindow.cpp moc_personalinfowidget.cpp moc_messagecenter.cpp moc_settingwidget.cpp
+compiler_moc_header_make_all: moc_backgroundwidget.cpp moc_findandsignupwidget.cpp moc_gameoverwidget.cpp moc_gamewidget.cpp moc_lobbywidget.cpp moc_mainwindow.cpp moc_personalinfowidget.cpp moc_messagecenter.cpp moc_settingwidget.cpp moc_supermarketwidget.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_backgroundwidget.cpp moc_effectplayer.cpp moc_findandsignupwidget.cpp moc_gameoverwidget.cpp moc_gamewidget.cpp moc_lobbywidget.cpp moc_mainwindow.cpp moc_personalinfowidget.cpp moc_messagecenter.cpp moc_settingwidget.cpp
+	-$(DEL_FILE) moc_backgroundwidget.cpp moc_findandsignupwidget.cpp moc_gameoverwidget.cpp moc_gamewidget.cpp moc_lobbywidget.cpp moc_mainwindow.cpp moc_personalinfowidget.cpp moc_messagecenter.cpp moc_settingwidget.cpp moc_supermarketwidget.cpp
 moc_backgroundwidget.cpp: backgroundwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QWidget \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qwidget.h \
@@ -1578,153 +1578,6 @@ moc_backgroundwidget.cpp: backgroundwidget.h \
 		moc_predefs.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/moc
 	/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/media/fish/Data2/QT6/6.7.0/gcc_64/include -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtNetwork -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' backgroundwidget.h -o moc_backgroundwidget.cpp
-
-moc_effectplayer.cpp: effectplayer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QObject \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobject.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobjectdefs.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qnamespace.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qglobal.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtversionchecks.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtconfiginclude.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qconfig.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtcore-config.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtconfigmacros.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtcoreexports.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcompilerdetection.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsystemdetection.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qprocessordetection.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtdeprecationmarkers.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtpreprocessorsupport.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qassert.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtnoop.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtypes.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtversion.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtclasshelpermacros.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtypeinfo.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontainerfwd.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsysinfo.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlogging.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qflags.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcompare_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qatomic.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbasicatomic.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qgenericatomic.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qyieldcpu.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qconstructormacros.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdarwinhelpers.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qexceptionhandling.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qforeach.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qttypetraits.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfunctionpointer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qglobalstatic.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmalloc.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qminmax.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qnumeric.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qoverload.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qswap.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtenvironmentvariables.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtresource.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qttranslation.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qversiontagging.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtmetamacros.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfunctionaltools_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstring.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qchar.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringview.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearray.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrefcount.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qarraydata.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpair.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qarraydatapointer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qarraydataops.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontainertools_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qxptype_traits.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q20functional.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q20memory.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearrayalgorithms.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearrayview.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringfwd.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q20type_traits.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringliteral.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringalgorithms.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlatin1stringview.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qanystringview.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qutf8stringview.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringtokenizer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringbuilder.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringconverter.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringconverter_base.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlist.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qhashfunctions.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qiterator.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearraylist.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringlist.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qalgorithms.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringmatcher.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcoreevent.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qscopedpointer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmetatype.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcompare.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcomparehelpers.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdatastream.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qiodevicebase.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfloat16.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmath.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qiterable.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmetacontainer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontainerinfo.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtaggedpointer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qscopeguard.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobject_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbindingstorage.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QCoreApplication \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcoreapplication.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdeadlinetimer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qelapsedtimer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qeventloop.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qnativeinterface.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdebug.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtextstream.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontiguouscache.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsharedpointer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qshareddata.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmap.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qshareddata_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qset.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qhash.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvarlengtharray.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcoreapplication_platform.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfuture.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfutureinterface.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmutex.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtsan_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qresultstore.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfuture_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qthreadpool.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qthread.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrunnable.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qexception.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpromise.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvariant.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q23utility.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QSoundEffect \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qsoundeffect.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtguiglobal.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtgui-config.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtguiexports.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qtmultimedia-config.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qtmultimediaexports.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qaudio.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qurl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QThread \
-		moc_predefs.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/moc
-	/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/media/fish/Data2/QT6/6.7.0/gcc_64/include -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtNetwork -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' effectplayer.h -o moc_effectplayer.cpp
 
 moc_findandsignupwidget.cpp: findandsignupwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QWidget \
@@ -4487,6 +4340,8 @@ moc_gamewidget.cpp: gamewidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QTimer \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtimer.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbasictimer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QShortcut \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qshortcut.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QMediaPlayer \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qmediaplayer.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
@@ -4499,6 +4354,8 @@ moc_gamewidget.cpp: gamewidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QCoreApplication \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QRandomGenerator \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrandom.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QStandardItemModel \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qstandarditemmodel.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QThread \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QAudioOutput \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
@@ -6877,6 +6734,8 @@ moc_lobbywidget.cpp: lobbywidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QShortcut \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qshortcut.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QMediaPlayer \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qmediaplayer.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
@@ -6889,6 +6748,8 @@ moc_lobbywidget.cpp: lobbywidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QCoreApplication \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QRandomGenerator \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrandom.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QStandardItemModel \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qstandarditemmodel.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QAudioOutput \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
 		messagecenter.h \
@@ -9015,6 +8876,7 @@ moc_lobbywidget.cpp: lobbywidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpainter.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextoption.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpen.h \
+		supermarketwidget.h \
 		moc_predefs.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/moc
 	/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/media/fish/Data2/QT6/6.7.0/gcc_64/include -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtNetwork -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' lobbywidget.h -o moc_lobbywidget.cpp
@@ -11411,6 +11273,8 @@ moc_mainwindow.cpp: mainwindow.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QShortcut \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qshortcut.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QMediaPlayer \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qmediaplayer.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
@@ -11423,9 +11287,12 @@ moc_mainwindow.cpp: mainwindow.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QCoreApplication \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QRandomGenerator \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrandom.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QStandardItemModel \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qstandarditemmodel.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QAudioOutput \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
 		personalinfowidget.h \
+		supermarketwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QCheckBox \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qcheckbox.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLineEdit \
@@ -14075,13 +13942,203 @@ moc_settingwidget.cpp: settingwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/moc
 	/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/media/fish/Data2/QT6/6.7.0/gcc_64/include -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtNetwork -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' settingwidget.h -o moc_settingwidget.cpp
 
+moc_supermarketwidget.cpp: supermarketwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QWidget \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtguiglobal.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qglobal.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtversionchecks.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtconfiginclude.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qconfig.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtcore-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtconfigmacros.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtcoreexports.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcompilerdetection.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsystemdetection.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qprocessordetection.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qassert.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtnoop.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtypes.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtversion.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtypeinfo.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontainerfwd.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsysinfo.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlogging.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qflags.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcompare_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qatomic.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbasicatomic.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qgenericatomic.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qyieldcpu.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qconstructormacros.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qexceptionhandling.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qforeach.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qttypetraits.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfunctionpointer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qglobalstatic.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmalloc.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qminmax.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qnumeric.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qoverload.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qswap.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtresource.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qttranslation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qversiontagging.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtgui-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtguiexports.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtwidgetsexports.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qwindowdefs.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobjectdefs.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qnamespace.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtmetamacros.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobject.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstring.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qchar.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringview.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearray.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrefcount.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qarraydata.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpair.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qarraydatapointer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qarraydataops.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qxptype_traits.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q20functional.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q20memory.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearrayview.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringfwd.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q20type_traits.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringliteral.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringalgorithms.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlatin1stringview.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qanystringview.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qutf8stringview.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringtokenizer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringbuilder.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringconverter.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringconverter_base.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlist.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qhashfunctions.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qiterator.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearraylist.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringlist.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qalgorithms.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringmatcher.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcoreevent.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qscopedpointer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmetatype.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcompare.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcomparehelpers.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdatastream.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qiodevicebase.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfloat16.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmath.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qiterable.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmetacontainer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontainerinfo.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtaggedpointer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qscopeguard.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobject_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbindingstorage.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmargins.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q23utility.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qaction.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qkeysequence.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qicon.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsize.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpixmap.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpaintdevice.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrect.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpoint.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qcolor.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qrgb.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qrgba64.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qshareddata.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qimage.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpixelformat.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtransform.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpolygon.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qregion.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qline.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvariant.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdebug.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtextstream.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontiguouscache.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsharedpointer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmap.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qshareddata_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qset.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qhash.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvarlengtharray.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpalette.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qbrush.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qfont.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qendian.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qfontmetrics.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qfontinfo.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qcursor.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qbitmap.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qevent.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qiodevice.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qurl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qeventpoint.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qvector2d.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qvectornd.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpointingdevice.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qinputdevice.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qscreen.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QList \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QObject \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QRect \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QSize \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QSizeF \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QTransform \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qnativeinterface.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qscreen_platform.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qguiapplication.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcoreapplication.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdeadlinetimer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qelapsedtimer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qeventloop.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcoreapplication_platform.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfuture.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfutureinterface.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmutex.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtsan_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qresultstore.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfuture_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qthreadpool.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qthread.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrunnable.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qexception.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpromise.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qinputmethod.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlocale.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qguiapplication_platform.h \
+		moc_predefs.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/moc
+	/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/media/fish/Data2/QT6/6.7.0/gcc_64/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/media/fish/Data2/QT6/6.7.0/gcc_64/include -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtNetwork -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore5Compat -I/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' supermarketwidget.h -o moc_supermarketwidget.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_findandsignupwidget.h ui_gameoverwidget.h ui_gamewidget.h ui_lobbywidget.h ui_mainwindow.h ui_personalinfowidget.h ui_settingwidget.h
+compiler_uic_make_all: ui_findandsignupwidget.h ui_gameoverwidget.h ui_gamewidget.h ui_lobbywidget.h ui_mainwindow.h ui_personalinfowidget.h ui_settingwidget.h ui_supermarketwidget.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_findandsignupwidget.h ui_gameoverwidget.h ui_gamewidget.h ui_lobbywidget.h ui_mainwindow.h ui_personalinfowidget.h ui_settingwidget.h
+	-$(DEL_FILE) ui_findandsignupwidget.h ui_gameoverwidget.h ui_gamewidget.h ui_lobbywidget.h ui_mainwindow.h ui_personalinfowidget.h ui_settingwidget.h ui_supermarketwidget.h
 ui_findandsignupwidget.h: findandsignupwidget.ui \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/uic
 	/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/uic findandsignupwidget.ui -o ui_findandsignupwidget.h
@@ -14109,6 +14166,10 @@ ui_personalinfowidget.h: personalinfowidget.ui \
 ui_settingwidget.h: settingwidget.ui \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/uic
 	/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/uic settingwidget.ui -o ui_settingwidget.h
+
+ui_supermarketwidget.h: supermarketwidget.ui \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/uic
+	/media/fish/Data2/QT6/6.7.0/gcc_64/libexec/uic supermarketwidget.ui -o ui_supermarketwidget.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
@@ -14330,151 +14391,6 @@ backgroundwidget.o: backgroundwidget.cpp backgroundwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextoption.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o backgroundwidget.o backgroundwidget.cpp
-
-effectplayer.o: effectplayer.cpp effectplayer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QObject \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobject.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobjectdefs.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qnamespace.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qglobal.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtversionchecks.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtconfiginclude.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qconfig.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtcore-config.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtconfigmacros.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtcoreexports.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcompilerdetection.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsystemdetection.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qprocessordetection.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtdeprecationmarkers.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtpreprocessorsupport.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qassert.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtnoop.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtypes.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtversion.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtclasshelpermacros.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtypeinfo.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontainerfwd.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsysinfo.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlogging.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qflags.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcompare_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qatomic.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbasicatomic.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qgenericatomic.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qyieldcpu.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qconstructormacros.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdarwinhelpers.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qexceptionhandling.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qforeach.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qttypetraits.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfunctionpointer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qglobalstatic.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmalloc.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qminmax.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qnumeric.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qoverload.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qswap.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtenvironmentvariables.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtresource.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qttranslation.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qversiontagging.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtmetamacros.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfunctionaltools_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstring.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qchar.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringview.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearray.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrefcount.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qarraydata.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpair.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qarraydatapointer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qarraydataops.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontainertools_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qxptype_traits.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q20functional.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q20memory.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearrayalgorithms.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearrayview.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringfwd.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q20type_traits.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringliteral.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringalgorithms.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlatin1stringview.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qanystringview.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qutf8stringview.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringtokenizer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringbuilder.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringconverter.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringconverter_base.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlist.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qhashfunctions.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qiterator.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearraylist.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringlist.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qalgorithms.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringmatcher.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcoreevent.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qscopedpointer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmetatype.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcompare.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcomparehelpers.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdatastream.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qiodevicebase.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfloat16.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmath.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qiterable.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmetacontainer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontainerinfo.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtaggedpointer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qscopeguard.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobject_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbindingstorage.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QCoreApplication \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcoreapplication.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdeadlinetimer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qelapsedtimer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qeventloop.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qnativeinterface.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdebug.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtextstream.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontiguouscache.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsharedpointer.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qshareddata.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmap.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qshareddata_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qset.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qhash.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvarlengtharray.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcoreapplication_platform.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfuture.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfutureinterface.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmutex.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtsan_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qresultstore.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfuture_impl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qthreadpool.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qthread.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrunnable.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qexception.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpromise.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvariant.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q23utility.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QSoundEffect \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qsoundeffect.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtguiglobal.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtgui-config.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtguiexports.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qtmultimedia-config.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qtmultimediaexports.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qaudio.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qurl.h \
-		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QThread
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o effectplayer.o effectplayer.cpp
 
 cardprocess.o: cardprocess.cpp cardprocess.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o cardprocess.o cardprocess.cpp
@@ -16799,6 +16715,17 @@ findandsignupwidget.o: findandsignupwidget.cpp findandsignupwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qdialog.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
 		ui_findandsignupwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLineEdit \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlineedit.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qframe.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextcursor.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextformat.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpen.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextoption.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o findandsignupwidget.o findandsignupwidget.cpp
 
@@ -16989,6 +16916,17 @@ gameoverwidget.o: gameoverwidget.cpp gameoverwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlocale.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qguiapplication_platform.h \
 		ui_gameoverwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLabel \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qframe.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QPushButton \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gameoverwidget.o gameoverwidget.cpp
 
@@ -17240,6 +17178,8 @@ gamewidget.o: gamewidget.cpp gamewidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QTimer \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtimer.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbasictimer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QShortcut \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qshortcut.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QMediaPlayer \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qmediaplayer.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
@@ -17252,6 +17192,8 @@ gamewidget.o: gamewidget.cpp gamewidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QCoreApplication \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QRandomGenerator \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrandom.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QStandardItemModel \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qstandarditemmodel.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QThread \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QAudioOutput \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
@@ -19374,7 +19316,22 @@ gamewidget.o: gamewidget.cpp gamewidget.h \
 		robot.h \
 		cardprocess.h \
 		widgetrevpacker.h \
-		ui_gamewidget.h
+		ui_gamewidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QComboBox \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qcombobox.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QHeaderView \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qheaderview.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLineEdit \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlineedit.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextcursor.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextformat.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpen.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextoption.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QTableView \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtableview.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gamewidget.o gamewidget.cpp
 
 lobbywidget.o: lobbywidget.cpp lobbywidget.h \
@@ -19629,6 +19586,8 @@ lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QShortcut \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qshortcut.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QMediaPlayer \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qmediaplayer.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
@@ -19641,6 +19600,8 @@ lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QCoreApplication \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QRandomGenerator \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrandom.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QStandardItemModel \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qstandarditemmodel.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QAudioOutput \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
 		messagecenter.h \
@@ -21767,7 +21728,15 @@ lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpainter.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextoption.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpen.h \
-		ui_lobbywidget.h
+		supermarketwidget.h \
+		ui_lobbywidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLineEdit \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlineedit.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextcursor.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextformat.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lobbywidget.o lobbywidget.cpp
 
 main.o: main.cpp mainwindow.h \
@@ -24162,6 +24131,8 @@ main.o: main.cpp mainwindow.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QShortcut \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qshortcut.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QMediaPlayer \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qmediaplayer.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
@@ -24174,9 +24145,12 @@ main.o: main.cpp mainwindow.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QCoreApplication \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QRandomGenerator \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrandom.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QStandardItemModel \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qstandarditemmodel.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QAudioOutput \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
 		personalinfowidget.h \
+		supermarketwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QCheckBox \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qcheckbox.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLineEdit \
@@ -26583,6 +26557,8 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QShortcut \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qshortcut.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QMediaPlayer \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qmediaplayer.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
@@ -26595,9 +26571,12 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QCoreApplication \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QRandomGenerator \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrandom.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QStandardItemModel \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qstandarditemmodel.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/QAudioOutput \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
 		personalinfowidget.h \
+		supermarketwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QCheckBox \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qcheckbox.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLineEdit \
@@ -26608,7 +26587,16 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QStackedWidget \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qstackedwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QSpacerItem \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QGridLayout \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QMenuBar \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qmenubar.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qmenu.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QStatusBar \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qstatusbar.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
 personalinfowidget.o: personalinfowidget.cpp personalinfowidget.h \
@@ -26801,7 +26789,35 @@ personalinfowidget.o: personalinfowidget.cpp personalinfowidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpainter.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextoption.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpen.h \
-		ui_personalinfowidget.h
+		ui_personalinfowidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QComboBox \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qcombobox.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qstyleoption.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qvalidator.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qregularexpression.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qslider.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractslider.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qstyle.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtabbar.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtabwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qrubberband.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qframe.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLabel \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QPushButton \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QScrollArea \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qscrollarea.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractscrollarea.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o personalinfowidget.o personalinfowidget.cpp
 
 robot.o: robot.cpp robot.h \
@@ -27024,8 +27040,235 @@ settingwidget.o: settingwidget.cpp settingwidget.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
 		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
-		ui_settingwidget.h
+		ui_settingwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QCheckBox \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qcheckbox.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QComboBox \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qcombobox.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qstyleoption.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qvalidator.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qslider.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractslider.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qstyle.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtabbar.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtabwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qrubberband.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qframe.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLabel \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QPushButton \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QSlider
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settingwidget.o settingwidget.cpp
+
+supermarketwidget.o: supermarketwidget.cpp supermarketwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QWidget \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtguiglobal.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qglobal.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtversionchecks.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtconfiginclude.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qconfig.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtcore-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtconfigmacros.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtcoreexports.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcompilerdetection.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsystemdetection.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qprocessordetection.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qassert.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtnoop.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtypes.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtversion.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtypeinfo.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontainerfwd.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsysinfo.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlogging.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qflags.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcompare_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qatomic.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbasicatomic.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qgenericatomic.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qyieldcpu.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qconstructormacros.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qexceptionhandling.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qforeach.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qttypetraits.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfunctionpointer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qglobalstatic.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmalloc.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qminmax.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qnumeric.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qoverload.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qswap.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtresource.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qttranslation.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qversiontagging.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtgui-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtguiexports.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qtwidgetsexports.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qwindowdefs.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobjectdefs.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qnamespace.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtmetamacros.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobject.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstring.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qchar.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringview.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearray.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrefcount.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qarraydata.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpair.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qarraydatapointer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qarraydataops.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qxptype_traits.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q20functional.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q20memory.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearrayview.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringfwd.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q20type_traits.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringliteral.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringalgorithms.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlatin1stringview.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qanystringview.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qutf8stringview.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringtokenizer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringbuilder.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringconverter.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringconverter_base.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlist.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qhashfunctions.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qiterator.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbytearraylist.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringlist.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qalgorithms.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qstringmatcher.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcoreevent.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qscopedpointer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmetatype.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcompare.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcomparehelpers.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdatastream.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qiodevicebase.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfloat16.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmath.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qiterable.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmetacontainer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontainerinfo.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtaggedpointer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qscopeguard.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qobject_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qbindingstorage.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmargins.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/q23utility.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qaction.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qkeysequence.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qicon.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsize.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpixmap.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpaintdevice.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrect.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpoint.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qcolor.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qrgb.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qrgba64.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qshareddata.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qimage.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpixelformat.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtransform.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpolygon.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qregion.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qline.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvariant.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdebug.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtextstream.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcontiguouscache.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsharedpointer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmap.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qshareddata_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qset.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qhash.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qvarlengtharray.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpalette.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qbrush.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qfont.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qendian.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qfontmetrics.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qfontinfo.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qcursor.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qbitmap.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qevent.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qiodevice.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qurl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qeventpoint.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qvector2d.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qvectornd.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpointingdevice.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qinputdevice.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qscreen.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QList \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QObject \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QRect \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QSize \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QSizeF \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/QTransform \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qnativeinterface.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qscreen_platform.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qguiapplication.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcoreapplication.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qdeadlinetimer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qelapsedtimer.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qeventloop.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qcoreapplication_platform.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfuture.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfutureinterface.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qmutex.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qtsan_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qresultstore.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qfuture_impl.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qthreadpool.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qthread.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qrunnable.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qexception.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qpromise.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qinputmethod.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/qlocale.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qguiapplication_platform.h \
+		ui_supermarketwidget.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QLabel \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qframe.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qpicture.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/QPushButton \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		/media/fish/Data2/QT6/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o supermarketwidget.o supermarketwidget.cpp
 
 singlegame.o: singlegame.cpp singlegame.h \
 		common.h \
@@ -27246,9 +27489,6 @@ qrc_resource.o: qrc_resource.cpp
 moc_backgroundwidget.o: moc_backgroundwidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_backgroundwidget.o moc_backgroundwidget.cpp
 
-moc_effectplayer.o: moc_effectplayer.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_effectplayer.o moc_effectplayer.cpp
-
 moc_findandsignupwidget.o: moc_findandsignupwidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_findandsignupwidget.o moc_findandsignupwidget.cpp
 
@@ -27272,6 +27512,9 @@ moc_messagecenter.o: moc_messagecenter.cpp
 
 moc_settingwidget.o: moc_settingwidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_settingwidget.o moc_settingwidget.cpp
+
+moc_supermarketwidget.o: moc_supermarketwidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_supermarketwidget.o moc_supermarketwidget.cpp
 
 ####### Install
 

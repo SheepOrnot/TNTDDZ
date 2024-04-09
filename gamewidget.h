@@ -12,9 +12,11 @@
 #include <QListView>
 #include <QLabel>
 #include <QTimer>
+#include <QShortcut>
 #include <QMediaPlayer>
 #include <QCoreApplication>
 #include <QRandomGenerator>
+#include <QStandardItemModel>
 #include <QThread>
 #include <iostream>
 #include <QAudioOutput>
@@ -54,12 +56,12 @@ public:
     int mode;
     void ShowIdentityIcon(std::string identity1,std::string identity2,std::string identity3);
     void placeHandCards();
+    void replaceHandCards(std::bitset<54> handcrads);
     void placeOutCards(int Pos);
     void somebodyCallLandlordRound(int Pos);
     void somebodyBidForLandlordRound(int Pos);
     void somebodyDoubleRound();
     void somebodyPlayCardRound(int Pos);
-
     void somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,int Cardtype,std::bitset<54> handcards = 0);
     void somebodyNotOutCard(int Pos,int Leftcards,std::bitset<54> handcards = 0);
     void somebodyReady(int Pos);
@@ -70,11 +72,12 @@ public:
     void somebodyNotBidForLandlord(int Pos);
     void somebodyDouble(int Pos);
     void somebodyNotDouble(int Pos);
-    void somebodyEnterRoom(int Pos,int ProfileIndex,int Beans);
+    void somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int Beans,std::string _RoomId = "000000");
     void somebodyLeaveRoom(int Pos);
     void Dealingcards(std::bitset<54> handcards,int cardnum1 = 17,int cardnum2 = 17);
     void StartGame(std::string identity1,std::string identity2,std::string identity3,std::bitset<54> handcards,std::bitset<54> finalcards);
     void AddTimes(int newTimes);
+    void GameOver(bool Result,int times,int Score1,int Score2,int Score3);
 
     void interfaceSomebodyEnterRoom(WidgetArgPackage* arg);
     void interfaceSomebodyReady(WidgetArgPackage* arg);
@@ -105,7 +108,12 @@ private:
     QIcon BeanIcon;
     QPixmap CardBackPixmap;
     QLabel *PreviousCardsNumLabel, *NextCardsNumLabel;
+    QString PreviousName,NextName,PlayerName;
+    QString RoomId;
+    QStandardItemModel *model;
+    QShortcut *ShowRecorderShortcut;
     bool BGMState,EffectState;
+    bool RecordOpen = false;
     int radius,RoomIdFontSize;
     double BGMVolume,EffectVolume;
     int PreviousCardsNumber,NextCardsNumber;
@@ -115,6 +123,7 @@ private:
     bool PreviousIdentity,NextIdentity,PlayerIdentity;
     QTimer *timer;
     int remainingTime;
+    int Card_Recorder[15] = {4,4,4,4,4,4,4,4,4,4,4,4,4,1,1};
     std::bitset<54> handcards;
 
     WidgetArgPackage* InterfaceArg[10];
@@ -186,6 +195,7 @@ private:
     void ShowProfiles(int Pos);
     void StartCountDown(int time,int pos);
     void updateCountDown();
+    void updateRecorder(int pos);
     QString Transform_To_String(int Num);
 private Q_SLOTS:
     void onSettingBtnClicked();
