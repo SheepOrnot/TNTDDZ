@@ -60,7 +60,7 @@ def inform_room_status(relink_account,seat,room_id):
                                    handcards = int(relink_player.handcards),
                                    lord = relink_player.lord,double = relink_player.double).data.decode(),room = relink_account)
     time.sleep(0.5)
-    emit('server_response',jsonify(type = 9,account = relink_player.account,roomid = battle_data.room_id,seat = seat_new,
+    emit('server_response',jsonify(type = 27,account = relink_player.account,roomid = battle_data.room_id,seat = seat_new,
                                    lord = relink_player.lord,double = relink_player.double).data.decode(),room = room_id)
 
 
@@ -264,7 +264,7 @@ def Leave_room(data):
     battle_data.someone_leave_room()
     redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
 
-    emit('server_response',jsonify( type = 10,status = 1,account = data_account).data.decode(),room = data_room_id)
+    emit('server_response',jsonify( type = 28,status = 1,account = data_account).data.decode(),room = data_room_id)
    
     leave_room(data_room_id)
    
@@ -354,16 +354,19 @@ def ready(data):
         emit('server_response',jsonify(type = 12,first_lord = player_3_first_lord,handcards = battle_data.player_3.handcards,account = redis_data.redis_db.get(str(data_room_id)+"_3_ready_account").decode()).data.decode(),room = redis_data.redis_db.get(str(data_room_id)+"_3_ready_account").decode())
         redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
         redis_data.redis_db.set(str(battle_data.room_id)+'_lord_cards',package_cards(cards.lord_cards))
-        ######################################
-        # 获取所有键
-        keys = redis_data.redis_db.keys()
-        print("-----------------------")
-        # 遍历每个键，并输出键和对应的值
-        for key in keys:
-            value = redis_data.redis_db.get(key)
-            print(key.decode(), "->", value.decode())
-        print("------------------------")
-        ######################################
+        list_key = str(battle_data.room_id)+'_lord_list'
+        redis_data.redis_db.lpush(list_key,"__placeholder__")
+        redis_data.redis_db.set(str(battle_data.room_id)+'_lord_rob_times',0)
+        # ######################################
+        # # 获取所有键
+        # keys = redis_data.redis_db.keys()
+        # print("-----------------------")
+        # # 遍历每个键，并输出键和对应的值
+        # for key in keys:
+        #     value = redis_data.redis_db.get(key)
+        #     print(key.decode(), "->", value.decode())
+        # print("------------------------")
+        # ######################################
 
     return data_account + "已经准备" 
 
@@ -461,6 +464,22 @@ def 管牌(data):
         emit('server_response',jsonify(type = 20).data.decode(),room = lordevent.find_seat_fit_account(lordevent.find_next_seat(data_seat),data_room_id))
 
 
+@socketio.on('timeout')
+def timeout(data):
+    data = json.loads(data)
+    data_room_id = data.get("roomid")
+    data_seat = data.get("seat")
+    data_timeout_type = data.get("timeout")
+    data_account = data.get("account")
+    if int(data_timeout_type) == 1: #叫地主超时
+        emit('server_response',jsonify(type = 23,lord = 0).data.decode(),room = data_account)
+    elif int(data_timeout_type) == 2:#加倍超时
+        emit('server_response',jsonify(type = 24,double = 0).data.decode(),room = data_account)
+    elif int(data_timeout_type) == 3:#出牌超时
+        emit('server_response',jsonify(type = 25).data.decode(),room = data_account)
+    elif int(data_timeout_type) == 4:#管牌超时
+        emit('server_response',jsonify(type = 26).data.decode(),room = data_account)
+
 
 
 
@@ -470,9 +489,6 @@ def output_handcards(data):
     data_room_id = data.get("roomid")
     data_seat = data.get("seat")
     data_output_cards = int(data.get("outputcards"))        
-
-
-
 
     key = data_room_id+"_battle_data"
     battle_data = battlestatus.BattleStatus()
@@ -521,10 +537,27 @@ def ask_for_lord(data):
         lordevent.random_lord(data_room_id)
 
     return 0
+import withroblord
+@socketio.on('ask_for_lord_with_rob')
+def ask_for_lord_with_lord(data):
+    data = json.loads(data)
+    data_account = data.get("account")
+    data_room_id = data.get("roomid")
+    data_lord = data.get("lord")
+    data_seat = data.get("seat")
+    
+    withroblord.decide_lord(data_account,data_room_id,data_lord,data_seat)
 
+@socketio.on('rob_lord')
+def rob_lord(data):
+    data = json.loads(data)
+    data_account = data.get("account")
+    data_room_id = data.get("roomid")
+    data_rob = data.get("rob")
+    data_seat = data.get("seat")
 
-
-
+    withroblord.decide_rob(data_account,data_room_id,data_rob,data_seat)
+    
 @app.route('/battle',methods = ["POST"])#存储对战数据
 def BattlePost():
     BattleData = request.get_json()
@@ -574,10 +607,10 @@ def SignupPost():
     print("redis_data.redis_db.get(str(mailData)+_signupmail",check_code.decode())
     if str(codeData) == check_code.decode():
         passwordData = hashlib.md5(passwordData.encode()).digest().hex()
-        UserDataDB = [usernameData,accountData,mailData,passwordData]
+        UserDataDB = [usernameData,accountData,mailData,passwordData,str(100000),str(10000),str(0)]
         print(UserDataDB)
         
-        InsertLanguage = '''INSERT INTO UserTable values (?,?,?,?)'''
+        InsertLanguage = '''INSERT INTO UserTable values (?,?,?,?,?,?,?)'''
         cursor.execute(InsertLanguage,UserDataDB)
         global UserData
         UserData.commit()
@@ -592,6 +625,7 @@ def LoginPost():
     LoginData = request.get_json()
     print(LoginData)
     accountData = LoginData.get("account")
+    print(accountData)
     mailData = LoginData.get("mail")
     passwordData = LoginData.get("password")
     encryptPassword = hashlib.md5(passwordData.encode()).digest().hex()
@@ -605,7 +639,6 @@ def LoginPost():
     print("-----------------account_match_result",len(queryresult_account))
 
     SelectLanguage_mail = '''SELECT Uaccount,Upassword FROM UserTable WHERE Umail like ? AND Upassword like ?'''
-    print("")
     cursor.execute(SelectLanguage_mail,MailPassword)
     queryresult_mail = cursor.fetchall()
     print("-----------------mail_match_result",len(queryresult_mail))
@@ -613,7 +646,17 @@ def LoginPost():
     if len(queryresult_account) == 0 and len(queryresult_mail) == 0:
         return jsonify(type = 1,loginStatus = 0)    
     else:
-        return jsonify(type = 1,loginStatus = 1)
+        SelectUsernameLanguage = '''SELECT Uusername FROM UserTable WHERE Uaccount like ?'''
+        SelectDiamondLanguage  = '''SELECT Udiamond FROM UserTable WHERE Uaccount like ?'''
+        SelectPeasLanguage     = '''SELECT Upeas FROM UserTable WHERE Uaccount like ?'''
+        cursor.execute(SelectUsernameLanguage,[accountData])
+        data_username = cursor.fetchall()
+        print("========",data_username)
+        cursor.execute(SelectDiamondLanguage,[accountData])
+        data_diamond = cursor.fetchall()
+        cursor.execute(SelectPeasLanguage,[accountData])
+        data_peas = cursor.fetchall()
+        return jsonify(type = 1,loginStatus = 1,username = data_username[0][0],diamond = data_diamond[0][0],peas = data_peas[0][0])
 
 @app.route('/passwordforget_code_verify',methods = ["POST"])
 def PasswordForget_Code_Verify():
@@ -699,12 +742,19 @@ def PasswordForgetMailPost():
     
     return code 
 
+@app.route('/supermarket',methods = ["POST"])
+def SupermarketPost():
+    shoppingdata = request.get_json()
+    recharge_type = shoppingdata.get("recharge_type")
+    # if int(recharge_type) == 0:#充值钻石
+
+    # elif int(recharge_type) == 1:#钻石购买豆
 
 
 cursor = UserData.cursor()
 print("userdata")
-CreateTable = '''CREATE TABLE UserTable (Uusername char(20),Uaccount char(20),Umail char(50),Upassword char(20),primary key(Uaccount))'''
-
+CreateTable = '''CREATE TABLE UserTable (Uusername char(20),Uaccount char(20),Umail char(50),Upassword char(20),Upeas char(20),Udiamond char(20),Uhead char(20),primary key(Uaccount))'''
+# cursor.execute(CreateTable)
 redis_data.redis_db.flushdb()
 redis_data.redis_db.set("room_id",1)
 
