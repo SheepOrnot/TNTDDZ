@@ -9,6 +9,7 @@
 #include"gamewidget.h"
 #include"personalinfowidget.h"
 #include "supermarketwidget.h"
+#include "rulewidget.h"
 namespace Ui {
 class LobbyWidget;
 }
@@ -49,6 +50,7 @@ private:
     QThread *BGMThread;
     PersonalInfoWidget *personalInfoWidget;
     SuperMarketWidget *SuperMarket;
+    RuleWidget *ruleWidget;
 private:
     void ImportConfig();
 public Q_SLOTS:
@@ -63,6 +65,7 @@ private Q_SLOTS:
     void onSingleModeBtnClicked();
     void onDiamondShopClicked();
     void onBeanShopClicked();
+    void onRuleBtnClicked();
 signals:
 
 

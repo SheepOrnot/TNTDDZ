@@ -121,6 +121,7 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     connect(ui->SingleModeBtn,&QPushButton::clicked,this,&LobbyWidget::onSingleModeBtnClicked);
     connect(ui->AddDiamondBtn,&QPushButton::clicked,this,&LobbyWidget::onDiamondShopClicked);
     connect(ui->AddBeanBtn,&QPushButton::clicked,this,&LobbyWidget::onBeanShopClicked);
+    connect(ui->RuleBtn,&QPushButton::clicked,this,&LobbyWidget::onRuleBtnClicked);
 
 }
 
@@ -264,4 +265,9 @@ void LobbyWidget::onBeanShopClicked()
 {
     SuperMarket = new SuperMarketWidget(Width,Height,1);
     SuperMarket->show();
+}
+void LobbyWidget::onRuleBtnClicked()
+{
+    ruleWidget = new RuleWidget;
+    ruleWidget->show();
 }

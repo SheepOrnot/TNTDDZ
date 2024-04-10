@@ -5,6 +5,7 @@
 #include "widgetcard.h"
 #include "settingwidget.h"
 #include "gameoverwidget.h"
+#include "rulewidget.h"
 #include <QFile>
 #include <QJsonDocument>
 #include <QPropertyAnimation>
@@ -18,6 +19,7 @@
 #include <QRandomGenerator>
 #include <QStandardItemModel>
 #include <QThread>
+#include <QPainter>
 #include <iostream>
 #include <QAudioOutput>
 #include <bitset>
@@ -75,6 +77,11 @@ public:
     void StartGame(std::string identity1,std::string identity2,std::string identity3,std::bitset<54> handcards,std::bitset<54> finalcards);
     void AddTimes(int newTimes);
     void GameOver(bool Result,int times,int Score1,int Score2,int Score3);
+    void paintEvent(QPaintEvent * ev)
+    {
+        QPainter painter(this);
+        painter.drawPixmap(rect(),QPixmap(":/image/image/Other/background1.jpg"),QRect());
+    }
 private:
     Ui::GameWidget *ui;
     int CardStyle;
@@ -96,6 +103,7 @@ private:
     QString RoomId;
     QStandardItemModel *model;
     QShortcut *ShowRecorderShortcut;
+    RuleWidget *ruleWidget;
     bool BGMState,EffectState;
     bool RecordOpen = false;
     int radius,RoomIdFontSize;
@@ -185,6 +193,7 @@ private Q_SLOTS:
     // void onSkipLandlordBidBtnClicked();  //点击不抢按钮
     // void onDoubleBtnClicked();          //点击加倍按钮
     // void onUnDoubleBtnClicked();        //点击不加倍按钮
+    void onRuleBtnClicked();
 signals:
     void HaveNoHandCard();
 };

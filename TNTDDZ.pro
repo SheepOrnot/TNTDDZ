@@ -19,6 +19,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     personalinfowidget.cpp \
+    rulewidget.cpp \
     settingwidget.cpp \
     supermarketwidget.cpp \
     widgetcard.cpp
@@ -32,6 +33,7 @@ HEADERS += \
     lobbywidget.h \
     mainwindow.h \
     personalinfowidget.h \
+    rulewidget.h \
     settingwidget.h \
     supermarketwidget.h \
     widgetcard.h
@@ -43,6 +45,7 @@ FORMS += \
     lobbywidget.ui \
     mainwindow.ui \
     personalinfowidget.ui \
+    rulewidget.ui \
     settingwidget.ui \
     supermarketwidget.ui
 

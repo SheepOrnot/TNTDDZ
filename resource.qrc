@@ -77,7 +77,6 @@
         <file>image/Icon/farmer.png</file>
         <file>image/Icon/landlord.png</file>
         <file>image/Icon/quitgame.png</file>
-        <file>image/Icon/clock.png</file>
         <file>image/Cards_0/back.png</file>
         <file>image/Cards_1/2_of_clubs.png</file>
         <file>image/Cards_1/2_of_diamonds.png</file>
@@ -136,6 +135,12 @@
         <file>image/Cards_1/10_of_diamonds.png</file>
         <file>image/Icon/ready.png</file>
         <file>image/Profile/default.jpg</file>
+        <file>image/Other/background1.jpg</file>
+        <file>image/Other/background2.png</file>
+        <file>image/Other/background3.jpg</file>
+        <file>image/Other/background4.jpg</file>
+        <file>image/Other/backrround5.jpg</file>
+        <file>image/Icon/clock.png</file>
     </qresource>
     <qresource prefix="/sound">
         <file>sound/BGM/lobbybgm.mp3</file>
