@@ -837,12 +837,12 @@ QString GameWidget::Transform_To_String(int Num)
     double head;
     if(Num>100000000)
     {
-        head = Num/100000000;
+        head = Num/100000000.0;
         Str = QString::number(head,'f', 2)+"亿";
     }
     else if(Num>10000)
     {
-        head = Num/10000;
+        head = Num/10000.0;
         Str = QString::number(head,'f', 2)+"万";
     }
     else Str = QString::number(Num);
