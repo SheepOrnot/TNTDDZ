@@ -25,6 +25,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     personalinfowidget.cpp \
+    rulewidget.cpp \
     robot.cpp \
     settingwidget.cpp \
     supermarketwidget.cpp \
@@ -43,6 +44,7 @@ HEADERS += \
     lobbywidget.h \
     mainwindow.h \
     personalinfowidget.h \
+    rulewidget.h \
     messagecenter.h \
     messagepackage.h \
     networkrevpacker.h \
@@ -63,6 +65,7 @@ FORMS += \
     lobbywidget.ui \
     mainwindow.ui \
     personalinfowidget.ui \
+    rulewidget.ui \
     settingwidget.ui \
     supermarketwidget.ui
 

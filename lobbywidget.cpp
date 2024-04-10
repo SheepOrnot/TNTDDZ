@@ -8,18 +8,12 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     ImportConfig();
+    radius = Height*0.047*0.5;
+    InitInfo(5,6666666666,454645,"冷锋冷锋冷锋冷锋冷锋","00000001");
     this->setWindowTitle("TNT斗地主");
 //*****************本地获取的配置数据***************
-    radius = Height*0.047*0.5;
-//********************end*************************
 
-//*******从服务器获取的配置数据（测试用）**************
-    ProfileImagePath = ":/image/image/Profile/mjq.jpg";
-    BeanNum = "12345";
-    DiamondNum = "1234567";
-    Username = "冷锋";
-    UID = "00000000000";
-//*******************end**************************
+//********************end*************************
 
     BGMPlayer = new QMediaPlayer();
     BGMPlayer->setSource(QUrl("qrc:/sound/sound/BGM/lobbybgm.mp3"));
@@ -89,28 +83,10 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui->RollLabel->setPixmap(RollPixmap0);
     ui->RollLabel->setScaledContents(true);
 
-    ui->ProfileLabel->setIcon(QIcon(":/image/image/Profile/0.jpg"));
-    ui->ProfileLabel->setStyleSheet("QPushButton { background-color: transparent; }");
-    ui->ProfileLabel->setIconSize(ui->ProfileLabel->size());
     connect(ui->ProfileLabel,&QPushButton::clicked,this,&LobbyWidget::onPersonalInfoBtnClicked);
 
 
-    ui->BeanEdit->setText(BeanNum);
-    ui->BeanEdit->setReadOnly(true);
-    ui->BeanEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
-    ui->BeanEdit->setAlignment(Qt::AlignHCenter);
 
-    ui->DiamondEdit->setText(DiamondNum);
-    ui->DiamondEdit->setReadOnly(true);
-    ui->DiamondEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; bac "
-                                                                                                                        "kground-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
-    ui->DiamondEdit->setAlignment(Qt::AlignHCenter);
-
-    ui->UsernameLabel->setStyleSheet("QLabel {font: 12pt 华文新魏; background-color: yellow}");
-    ui->UsernameLabel->setText(Username);
-
-    ui->UidLabel->setStyleSheet("QLabel {font: 12pt Segoe Script; background-color: yellow}");
-    ui->UidLabel->setText(UID);
 
     QString roomidstyle = QString("font: %1pt Microsoft YaHei UI").arg(Width*0.02);
     ui->RoomId->setStyleSheet(roomidstyle);
@@ -121,6 +97,7 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     connect(ui->SingleModeBtn,&QPushButton::clicked,this,&LobbyWidget::onSingleModeBtnClicked);
     connect(ui->AddDiamondBtn,&QPushButton::clicked,this,&LobbyWidget::onDiamondShopClicked);
     connect(ui->AddBeanBtn,&QPushButton::clicked,this,&LobbyWidget::onBeanShopClicked);
+    connect(ui->RuleBtn,&QPushButton::clicked,this,&LobbyWidget::onRuleBtnClicked);
     connect(ui->JoinRoomBtn,&QPushButton::clicked,this,&LobbyWidget::onJoinRoomBtnClicked);
 
     message_center = MessageCenter::getInstance();
@@ -276,6 +253,52 @@ void LobbyWidget::onBeanShopClicked()
 {
     SuperMarket = new SuperMarketWidget(Width,Height,1);
     SuperMarket->show();
+}
+void LobbyWidget::onRuleBtnClicked()
+{
+    ruleWidget = new RuleWidget;
+    ruleWidget->show();
+}
+void  LobbyWidget::InitInfo(int _ProfileImageIndex,long long _BeanNum,long long _DiamondNum, std::string _Username, std::string _UID)
+{
+    ProfileImageIndex= _ProfileImageIndex;
+    ProfileImagePath =QString(":/image/image/Profile/%1.jpg").arg(ProfileImageIndex);
+    BeanNum = Transform_To_String(_BeanNum);
+    DiamondNum = Transform_To_String(_DiamondNum);
+    Username = QString::fromStdString(_Username);
+    UID = QString::fromStdString(_UID);
+
+    ui->ProfileLabel->setIcon(QIcon(ProfileImagePath));
+    ui->ProfileLabel->setStyleSheet("QPushButton { background-color: transparent; }");
+    ui->ProfileLabel->setIconSize(ui->ProfileLabel->size());
+
+    ui->BeanEdit->setText(BeanNum);
+    ui->BeanEdit->setReadOnly(true);
+    ui->BeanEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
+    ui->BeanEdit->setAlignment(Qt::AlignHCenter);
+
+    ui->DiamondEdit->setText(DiamondNum);
+    ui->DiamondEdit->setReadOnly(true);
+    ui->DiamondEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
+    ui->DiamondEdit->setAlignment(Qt::AlignHCenter);
+
+    ui->UsernameLabel->setStyleSheet("QLabel {font: 12pt 华文新魏; background-color: yellow}");
+    ui->UsernameLabel->setText(Username);
+
+    ui->UidLabel->setStyleSheet("QLabel {font: 12pt Segoe Script; background-color: yellow}");
+    ui->UidLabel->setText(UID);
+}
+QString LobbyWidget::Transform_To_String(long long Num)
+{
+    QString Str;
+    double head;
+    if(Num>100000000)
+    {
+        head = Num/100000000.0;
+        Str = QString::number(head,'f', 2)+"亿";
+    }
+    else Str = QString::number(Num);
+    return Str;
 }
 void LobbyWidget::interfaceEnterRoomSuccess(WidgetArgPackage* arg)
 {

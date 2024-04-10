@@ -7,6 +7,7 @@ debug/lobbywidget.o
 debug/main.o
 debug/mainwindow.o
 debug/personalinfowidget.o
+debug/rulewidget.o
 debug/robot.o
 debug/settingwidget.o
 debug/supermarketwidget.o
@@ -25,6 +26,7 @@ debug/moc_gamewidget.o
 debug/moc_lobbywidget.o
 debug/moc_mainwindow.o
 debug/moc_personalinfowidget.o
+debug/moc_rulewidget.o
 debug/moc_messagecenter.o
 debug/moc_settingwidget.o
 debug/moc_supermarketwidget.o

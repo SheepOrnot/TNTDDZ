@@ -69,6 +69,7 @@ public:
         if (GameWidget->objectName().isEmpty())
             GameWidget->setObjectName("GameWidget");
         GameWidget->resize(1920, 1080);
+        GameWidget->setStyleSheet(QString::fromUtf8(""));
         FinalCard1 = new QLabel(GameWidget);
         FinalCard1->setObjectName("FinalCard1");
         FinalCard1->setGeometry(QRect(740, 20, 81, 111));

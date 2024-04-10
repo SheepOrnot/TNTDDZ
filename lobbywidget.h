@@ -10,6 +10,7 @@
 #include"gamewidget.h"
 #include"personalinfowidget.h"
 #include "supermarketwidget.h"
+#include "rulewidget.h"
 #include "messagecenter.h"
 #include "widgetrevpacker.h"
 
@@ -24,6 +25,8 @@ class LobbyWidget : public QWidget
 public:
     explicit LobbyWidget(QWidget *parent = nullptr);
     ~LobbyWidget();
+
+    void InitInfo(int _ProfileImageIndex,long long _BeanNum,long long _DiamondNum, std::string _Username, std::string _UID);
     void interfaceEnterRoomSuccess(WidgetArgPackage* arg);
     void interfaceEnterRoomFail(WidgetArgPackage* arg);
     void interfaceExitRoom(WidgetArgPackage* arg);
@@ -33,6 +36,7 @@ private:
     int Width,Height;     //用于修改分辨率&实例化新的窗口时的参数。
     int radius;
     bool BGMState;
+    int ProfileImageIndex;
     QString ProfileImagePath;        //头像图片(服务器获取)
     QString BeanNum,DiamondNum;      //豆和钻石数量(服务器获取)
     QString Username,UID;            //username和uid(服务器获取)
@@ -57,6 +61,7 @@ private:
     QThread *BGMThread;
     PersonalInfoWidget *personalInfoWidget;
     SuperMarketWidget *SuperMarket;
+    RuleWidget *ruleWidget;
 
     std::shared_ptr<MessageCenter> message_center;
     std::shared_ptr<WidgetRevPacker> widget_rev_packer;
@@ -68,6 +73,7 @@ private:
 public Q_SLOTS:
     void ResolutionChanged(int _Width,int _Height);
     //void ProfileChanged(int _Width,int _Height);
+    QString Transform_To_String(long long Num);
 private Q_SLOTS:
     void onSettingBtnClicked();
     void onClassicModeBtnClicked();
@@ -78,6 +84,7 @@ private Q_SLOTS:
     void onSingleModeBtnClicked();
     void onDiamondShopClicked();
     void onBeanShopClicked();
+    void onRuleBtnClicked();
     void EnterGame();
     void doExitRoom();
 Q_SIGNALS:

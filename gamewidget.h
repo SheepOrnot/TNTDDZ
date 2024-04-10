@@ -5,6 +5,7 @@
 #include "widgetcard.h"
 #include "settingwidget.h"
 #include "gameoverwidget.h"
+#include "rulewidget.h"
 #include <QFile>
 #include <QJsonDocument>
 #include <QPropertyAnimation>
@@ -18,6 +19,7 @@
 #include <QRandomGenerator>
 #include <QStandardItemModel>
 #include <QThread>
+#include <QPainter>
 #include <iostream>
 #include <QAudioOutput>
 #include <bitset>
@@ -79,6 +81,11 @@ public:
     void StartGame(std::string identity1,std::string identity2,std::string identity3,std::bitset<54> handcards,std::bitset<54> finalcards);
     void AddTimes(int newTimes);
     void GameOver(bool Result,int times,int Score1,int Score2,int Score3);
+    void paintEvent(QPaintEvent * ev)
+    {
+        QPainter painter(this);
+        painter.drawPixmap(rect(),QPixmap(":/image/image/Other/background1.jpg"),QRect());
+    }
 
     void interfaceSomebodyEnterRoom(WidgetArgPackage* arg);
     void interfaceSomebodyReady(WidgetArgPackage* arg);
@@ -113,6 +120,7 @@ private:
     QString RoomId;
     QStandardItemModel *model;
     QShortcut *ShowRecorderShortcut;
+    RuleWidget *ruleWidget;
     bool BGMState,EffectState;
     bool RecordOpen = false;
     int radius,RoomIdFontSize;
@@ -201,6 +209,7 @@ private:
 private Q_SLOTS:
     void onSettingBtnClicked();
     void onPlayCardsClicked();    //点击出牌按钮，判断牌型和管牌逻辑；
+    void onRuleBtnClicked();
     void onSkipTurnBtnClicked();    //点击不出按钮；
     void onCallLandlordBtnClicked();    //点击叫地主按钮
     void onSkipCallLandlordBtnClicked();//点击不叫按钮

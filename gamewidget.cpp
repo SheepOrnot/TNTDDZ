@@ -12,6 +12,7 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
     this->setFixedSize(Width,Height);
     InitAllCards();
 
+
     BGMPlayer = new QMediaPlayer();
     BGMPlayer->setSource(QUrl("qrc:/sound/sound/BGM/gamebgm.mp3"));
     BGMPlayer->setLoops(-1);
@@ -112,29 +113,6 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
         qDebug()<<TestStage;
         TestStage++;
     });
-
-
-    // PreviousCardsNumber = 15; NextCardsNumber = 5;
-    // PlayerProfileIndex = 0; PreviousProfileIndex = 3; NextProfileIndex = 4;
-
-
-    // PlayerHandCards = Transform_To_Vector(BitsetCards);
-    // PreviousPlayerOutCards  = Transform_To_Vector(previousBitset);
-    // NextPlayerOutCards = Transform_To_Vector(nextBitset);
-    // PlayerOutCards = Transform_To_Vector(playerBitset);
-    // FinalCards = Transform_To_Vector(finalBitset);
-
-    //ShowIdentityIcon("landlord","farmer","farmer");                                 //调用展示身份图标函数
-
-    //placeHandCards();
-    // placeOutCards(1);
-    // placeOutCards(2);
-    //PlacePreviousHandCards();
-    //PlaceNextHandCards();
-    //placeOutCards(3);
-    //ShowProfiles(1);
-    //ShowProfiles(2);
-    //somebodyEnterRoom(3,0,66666);
 //******end******
 
     //上家(previous)->1     下家(next)->2      自己->3
@@ -279,6 +257,9 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
             ui->Recorder->hide();
         RecordOpen = !RecordOpen;
     });
+
+
+    connect(ui->RuleBtn,&QPushButton::clicked,this,&GameWidget::onRuleBtnClicked);
     connect(ui->PlayCardBtn,&QPushButton::clicked,this,&GameWidget::onPlayCardsClicked);
     connect(ui->SkipTurnBtn,&QPushButton::clicked,this,&GameWidget::onSkipTurnBtnClicked);
     connect(ui->CallLandlordBtn,&QPushButton::clicked,this,&GameWidget::onCallLandlordBtnClicked);
@@ -1716,3 +1697,8 @@ void GameWidget::interfaceGameEnd(WidgetArgPackage* arg)
     qThread->start();
 }
 //******************************************************************************
+void GameWidget::onRuleBtnClicked()
+{
+    ruleWidget = new RuleWidget;
+    ruleWidget->show();
+}
