@@ -50,11 +50,11 @@ def find_seat_fit_account(data_seat,data_room_id):
     battle_data.player_2.account = battle_status.get("player_2_account")
     battle_data.player_3.account = battle_status.get("player_3_account")
 
-    if data_seat == 1:
+    if int(data_seat) == 1:
         return battle_data.player_1.account
-    elif data_seat == 2:
+    elif int(data_seat) == 2:
         return battle_data.player_2.account
-    elif data_seat == 3:
+    elif int(data_seat) == 3:
         return battle_data.player_3.account
     
 def broadcast_information(data_account,data_room_id,data_seat,data_lord_cards):

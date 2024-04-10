@@ -70,7 +70,12 @@ def inform_room_status(relink_account,seat,room_id):
 def index():
      return render_template('test.html')
 
-
+def FindUsername(account):
+    selectusernameLanguage = '''select Uusername from UserTable where Uaccount like ?'''
+    global cursor
+    cursor.execute(selectusernameLanguage,[str(account)])
+    data_username = cursor.fetchall()
+    return str(data_username[0][0])
 
 @socketio.on('create_room')
 def Create_room(data):
@@ -209,7 +214,7 @@ def Join_room(data):
         for key in keys:
             value = redis_data.redis_db.get(key)
             print(key.decode(), "->", value.decode())
-#################################################################
+#################################################################username = FindUsername(data_account)
         emit('server_response',jsonify(type = 5,status = 1,account = data_account,seat = joiner.seat).data.decode(),room = data_room_id)
         print("--------------------",redis_data.redis_db.get(data_account))
         return True
@@ -356,6 +361,8 @@ def ready(data):
         redis_data.redis_db.set(str(battle_data.room_id)+'_lord_cards',package_cards(cards.lord_cards))
         list_key = str(battle_data.room_id)+'_lord_list'
         redis_data.redis_db.lpush(list_key,"__placeholder__")
+
+        redis_data.redis_db.set(str(battle_data.room_id)+'_ask_rob',"000")
         redis_data.redis_db.set(str(battle_data.room_id)+'_lord_rob_times',0)
         # ######################################
         # # 获取所有键
@@ -538,26 +545,19 @@ def ask_for_lord(data):
 
     return 0
 import withroblord
-@socketio.on('ask_for_lord_with_rob')
-def ask_for_lord_with_lord(data):
+
+@socketio.on('ask_or_rob')
+def ask_or_rob(data):
     data = json.loads(data)
     data_account = data.get("account")
     data_room_id = data.get("roomid")
     data_lord = data.get("lord")
     data_seat = data.get("seat")
-    
-    withroblord.decide_lord(data_account,data_room_id,data_lord,data_seat)
-
-@socketio.on('rob_lord')
-def rob_lord(data):
-    data = json.loads(data)
-    data_account = data.get("account")
-    data_room_id = data.get("roomid")
     data_rob = data.get("rob")
-    data_seat = data.get("seat")
 
-    withroblord.decide_rob(data_account,data_room_id,data_rob,data_seat)
-    
+    withroblord.rob_and_ask(data_account,data_room_id,data_lord,data_rob,data_seat)
+
+
 @app.route('/battle',methods = ["POST"])#存储对战数据
 def BattlePost():
     BattleData = request.get_json()
