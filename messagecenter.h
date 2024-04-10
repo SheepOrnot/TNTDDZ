@@ -241,6 +241,9 @@ public:
                             Robot1Arg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER, 1, 0, 999, "机器人1", "111", package->roomid, 0, 1);
                             WidgetArgPackage *Robot2Arg = new WidgetArgPackage();
                             Robot2Arg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER, 2, 0, 999, "机器人2", "222", package->roomid, 0, 1);
+                            WidgetArgPackage *PlayerArg = new WidgetArgPackage();
+                            PlayerArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER, 3, package->profileindex, package->beannum, package->username, package->account, package->roomid, 0, 1);
+
 
                             WidgetArgPackage *CreateRoomArg = new WidgetArgPackage();
                             CreateRoomArg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ROOM, -1);
@@ -249,6 +252,7 @@ public:
 
                             current_center->WidgetInterface["interfaceSomebodyEnterRoom"](Robot1Arg);
                             current_center->WidgetInterface["interfaceSomebodyEnterRoom"](Robot2Arg);
+                            current_center->WidgetInterface["interfaceSomebodyEnterRoom"](PlayerArg);
                             WidgetArgPackage *Robot1Ready= new WidgetArgPackage();
                             Robot1Ready->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 1, 0, 999, "机器人1", "111", package->roomid, 0, 1);
                             WidgetArgPackage *Robot2Ready = new WidgetArgPackage();
@@ -317,6 +321,18 @@ public:
                             sleepcp(1000);
                             MessagePackage* newmsg = current_center->singleCtrl->getnext(current_message);
                             current_center->MessageSubmit(newmsg);
+                            break;
+                        }
+                        case PLAYER_OPCODE::LEAVE_ROOM:
+                        {
+                            //current_center->singleCtrl->exitTag = 1;
+                            std::cout << "leave room single mode" << std::endl;
+                            std::flush(std::cout);
+
+                            WidgetArgPackage *arg = new WidgetArgPackage();
+                            arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ROOM, 1);
+                            current_center->WidgetInterface["interfaceExitRoom"](arg);
+
                             break;
                         }
                         break;
@@ -427,6 +443,7 @@ public:
             case MESSAGE_TYPE::GAME_END:
             {
                 WidgetArgPackage *GameEndArg = new WidgetArgPackage();
+                GameEndArg->packMessage<WidgetArgGameOver>(current_center->singleCtrl->PlayerisWin(), 1, 0, 0, 0);
                 current_center->WidgetInterface["interfaceGameEnd"](GameEndArg);
                 break;
             }

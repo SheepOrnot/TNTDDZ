@@ -29,6 +29,11 @@ public:
         someonecall = 0;
         callCount = 0;
         preout_cards = 0;
+        exitTag = 0;
+        startTag = 0;
+        bot1_leftcards = 17;
+        bot2_leftcards = 17;
+        player_leftcards = 17;
     }
     void SendCard()
     {
@@ -118,6 +123,14 @@ public:
     {
         //1(叫地主) -> 2(抢地主1) -> 3(抢地主2) -> 4(抢地主3) -> 5(出牌)
         MessagePackage *msg = new MessagePackage();
+        if(isGameEnd())
+        {
+            std::cout << "对局结束" << std::endl;
+            std::flush(std::cout);
+            startTag = 0;
+            msg->packMessage<MessageGameEnd>();
+            return msg;
+        }
         switch(current_message->message_type)
         {
             case MESSAGE_TYPE::PLAYER:
@@ -127,6 +140,8 @@ public:
                 {
                     case PLAYER_OPCODE::READY:
                     {
+                        startTag = 1;
+
                         int iscall = 0;
                         //预备叫地主
                         if(thefirst == 1)
@@ -287,13 +302,6 @@ public:
                 {
                     case CARD_OPCODE::OUTCARD:
                     {
-                        if(isGameEnd())
-                        {
-                            std::cout << "对局结束" << std::endl;
-                            std::flush(std::cout);
-                            msg->packMessage<MessageGameEnd>();
-                            break;
-                        }
                         if(package->pos == 1)
                         {
                             if(preout == 3 && !package->OutCard.count()) {preout_cards = cardtype = point = 0; succ = 1; std::cout << "player set2: " << cardtype << " " << point << " " << succ << " " << preout << std::endl; std::flush(std::cout);}
@@ -352,7 +360,15 @@ public:
     }
     int isGameEnd()
     {
-        return bot1_leftcards == 0 || bot2_leftcards == 0 || player_leftcards == 0;
+        return bot1_leftcards == 0 || bot2_leftcards == 0 || player_leftcards == 0 || exitTag;
+    }
+    int isGameStart()
+    {
+        return startTag;
+    }
+    int PlayerisWin()
+    {
+        return exitTag ? 2 : player_leftcards == 0;
     }
     int isTheLandlordFirst(int pos)
     {
@@ -418,6 +434,9 @@ public:
     std::bitset<54> preout_cards;
 
     int someonecall;
+
+    int exitTag;
+    int startTag;
 
     std::bitset<54> robot1_handcard;
     std::bitset<54> robot2_handcard;

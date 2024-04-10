@@ -2,6 +2,7 @@
 #define GAMEOVERWIDGET_H
 
 #include <QWidget>
+#include "messagecenter.h"
 
 namespace Ui {
 class GameOverWidget;
@@ -19,6 +20,7 @@ public:
                             int _Score1,int _Score2,int _Score3,
                             QWidget *parent = nullptr);
     ~GameOverWidget();
+    WidgetInterfacePtr exitFunc = nullptr;
 
 
 private:
@@ -36,6 +38,9 @@ private:
             PreviousScore,NextScore,PlayerScore,
             PreviousIdentity,NextIdentity,PlayerIdentity,
             PreviousResult,NextResult,PlayerResult;
+private Q_SLOTS:
+    void onReturnToLobbyBtnClicked();
+
 };
 
 #endif // GAMEOVERWIDGET_H

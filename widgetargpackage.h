@@ -119,6 +119,25 @@ public:
     std::bitset<54> finalcards;
 };
 
+class WidgetArgGameOver : public WidgetArg
+{
+public:
+    WidgetArgGameOver(int _result, int _times, int _Score1, int _Score2, int _Score3) :
+        WidgetArg(WIDGET_ARG_TYPE::GAME_OVER),
+        result(_result),
+        times(_times),
+        Score1(_Score1),
+        Score2(_Score2),
+        Score3(_Score3)
+    {}
+
+    int result;
+    int times;
+    int Score1;
+    int Score2;
+    int Score3;
+};
+
 class WidgetArgPackage
 {
 public:

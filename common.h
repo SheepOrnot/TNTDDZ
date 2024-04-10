@@ -45,7 +45,8 @@ enum class WIDGET_ARG_TYPE {
     ROOM = 4,
     STATUS = 5, //server -> widget
     VERIFY = 6, //widget -> server
-    GAME_START
+    GAME_START,
+    GAME_OVER
 };
 enum class ACCOUNT_OPCODE {
     LOGIN = 1,

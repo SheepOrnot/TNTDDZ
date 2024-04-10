@@ -313,6 +313,8 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
 
 GameWidget::~GameWidget()
 {
+    timer->stop();
+    delete timer;
     qDebug()<<"Destroy GameWidget";
     delete ui;
 }
@@ -894,12 +896,12 @@ QString GameWidget::Transform_To_String(int Num)
     double head;
     if(Num>100000000)
     {
-        head = Num/100000000;
+        head = Num/100000000.0;
         Str = QString::number(head,'f', 2)+"亿";
     }
     else if(Num>10000)
     {
-        head = Num/10000;
+        head = Num/10000.0;
         Str = QString::number(head,'f', 2)+"万";
     }
     else Str = QString::number(Num);
@@ -1484,6 +1486,7 @@ void GameWidget::GameOver(bool Result,int times,int Score1,int Score2,int Score3
 {
     gameoverWidget = new GameOverWidget(Width,Height,Result,times,PreviousIdentity,NextIdentity,PlayerIdentity,PreviousName,NextName,PlayerName,PreviousDouble
                                         ,NextDouble,PlayerDouble,Score1,Score2,Score3);
+    gameoverWidget->exitFunc = exitFunc;
     gameoverWidget->show();
 }
 
@@ -1694,9 +1697,22 @@ void GameWidget::interfaceStartGame(WidgetArgPackage* arg)
     connect(qThread, SIGNAL(started()), this, SLOT(doStartGame()));
     qThread->start();
 }
+void GameWidget::doGameOver()
+{
+    WidgetArgGameOver *gameend = static_cast<WidgetArgGameOver*>(InterfaceArg[7]->package);
+    //if(gameend->result == 2)
+        //TODO 直接退出
+    //else
+        GameOver(gameend->result == 1, gameend->times, gameend->Score1, gameend->Score2, gameend->Score3);
+    delete InterfaceArg[7];
+}
 void GameWidget::interfaceGameEnd(WidgetArgPackage* arg)
 {
     qDebug() << "对局结束";
-    delete arg;
+    InterfaceArg[7] = arg;
+
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doGameOver()));
+    qThread->start();
 }
 //******************************************************************************

@@ -129,7 +129,6 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     message_center->loadInterface("interfaceEnterRoomSuccess", std::bind(&LobbyWidget::interfaceEnterRoomSuccess, this, std::placeholders::_1));
     message_center->loadInterface("interfaceEnterRoomFail",    std::bind(&LobbyWidget::interfaceEnterRoomFail,    this, std::placeholders::_1));
     message_center->loadInterface("interfaceExitRoom",         std::bind(&LobbyWidget::interfaceExitRoom,         this, std::placeholders::_1));
-
 }
 
 LobbyWidget::~LobbyWidget()
@@ -241,14 +240,14 @@ void LobbyWidget::onJoinRoomBtnClicked()
 void LobbyWidget::onExitGameBtnClicked()
 {
     WidgetArgPackage* exit_room_submit = new WidgetArgPackage();
-    exit_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LEAVE_ROOM, 0, 0, 0, Username.toStdString(), UID.toStdString(), ui->RoomId->text().toStdString(), 0);
+    exit_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LEAVE_ROOM, 0, 3, 88888888, Username.toStdString(), UID.toStdString(), ui->RoomId->text().toStdString(), 0, 1);
     widget_rev_packer->WidgetsendMessage(exit_room_submit);
 }
 void LobbyWidget::onSingleModeBtnClicked()
 {
     qDebug() << "Play Single";
     WidgetArgPackage* create_room_submit = new WidgetArgPackage();
-    create_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::CREATE_ROOM, 0, 0, 0, Username.toStdString(), UID.toStdString(), "", 0, 1);
+    create_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::CREATE_ROOM, 0, 3, 88888888, Username.toStdString(), UID.toStdString(), ui->RoomId->text().toStdString(), 0, 1);
     widget_rev_packer->WidgetsendMessage(create_room_submit);
 }
 //********************INTERFACE****************************
@@ -258,6 +257,7 @@ void LobbyWidget::EnterGame()
     gameWidget = new GameWidget(Width,Height,signlemode);
     this->hide();
     gameWidget->show();
+    gameWidget->exitFunc = std::bind(&LobbyWidget::interfaceExitRoom,this,std::placeholders::_1);
     GameExitBtn = new QPushButton(gameWidget);
     GameExitBtn->setGeometry(0.010*Width,  0.018*Height,  0.042*Width,   0.075*Height);
     GameExitBtn->setIcon(QIcon(":/image/image/Icon/quitgame.png"));
@@ -295,7 +295,7 @@ void LobbyWidget::interfaceEnterRoomFail(WidgetArgPackage* arg)
 
     delete arg;
 }
-void LobbyWidget::interfaceExitRoom(WidgetArgPackage* arg)
+void LobbyWidget::doExitRoom()
 {
     this->show();
     disconnect(GameExitBtn,&QPushButton::clicked,this,&LobbyWidget::onExitGameBtnClicked);
@@ -303,6 +303,12 @@ void LobbyWidget::interfaceExitRoom(WidgetArgPackage* arg)
     delete gameWidget;
     gameWidget->BGMPlayer->stop();
     if(BGMState) BGMPlayer->play();
+}
+void LobbyWidget::interfaceExitRoom(WidgetArgPackage* arg)
+{
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doExitRoom()));
+    qThread->start();
 
     delete arg;
 }

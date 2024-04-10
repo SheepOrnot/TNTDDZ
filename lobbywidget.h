@@ -79,6 +79,7 @@ private Q_SLOTS:
     void onDiamondShopClicked();
     void onBeanShopClicked();
     void EnterGame();
+    void doExitRoom();
 Q_SIGNALS:
     void ChangeResolutions(int _Width,int _Height);            //********测试用 ;
 

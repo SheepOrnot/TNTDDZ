@@ -54,6 +54,7 @@ public:
     QMediaPlayer *BGMPlayer,*EffectPlayer;
     int Times = 1;
     int mode;
+    WidgetInterfacePtr exitFunc = nullptr;
     void ShowIdentityIcon(std::string identity1,std::string identity2,std::string identity3);
     void placeHandCards();
     void replaceHandCards(std::bitset<54> handcrads);
@@ -218,6 +219,7 @@ private Q_SLOTS:
     void doPlayCardRound();
     void doOutCard();
     void doStartGame();
+    void doGameOver();
 Q_SIGNALS:
     void HaveNoHandCard();
 };

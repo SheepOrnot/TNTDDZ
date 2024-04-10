@@ -74,9 +74,13 @@ GameOverWidget::GameOverWidget(int _Width,int _Height,bool _Result,int _times,
     ui->Username1->setText(Name1);
     ui->Username2->setText(Name2);
     ui->Username3->setText(Name3);
-
+    connect(ui->ReturnToLobby,&QPushButton::clicked,this,&GameOverWidget::onReturnToLobbyBtnClicked);
 }
-
+void GameOverWidget::onReturnToLobbyBtnClicked()
+{
+    exitFunc(nullptr);
+    this->close();
+}
 GameOverWidget::~GameOverWidget()
 {
     delete ui;
