@@ -7,6 +7,8 @@ PersonalInfoWidget::PersonalInfoWidget(int _Width,int _Height,QWidget *parent) :
 {
     ui->setupUi(this);
     this->setFixedSize(888,735);
+    this->setWindowFlags(Qt::WindowStaysOnTopHint);
+    this->setWindowModality(Qt::ApplicationModal);
 //********测试*********
     ProfileIndex = 0;
 //********end*********

@@ -6,10 +6,13 @@ RuleWidget::RuleWidget(QWidget *parent)
     , ui(new Ui::RuleWidget)
 {
     ui->setupUi(this);
+    this->setFixedSize(450,540);
+    this->setWindowFlags(Qt::WindowStaysOnTopHint);
+    this->setWindowModality(Qt::ApplicationModal);
     ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setWindowTitle("游戏规则");
     ContentWidget = new QWidget;
-    ContentWidget->setFixedSize(this->width(),3000);
+    ContentWidget->setFixedSize(this->width(),1500);
     ui->scrollArea->setWidget(ContentWidget);
     RuleLabel = new QLabel(ContentWidget);
     RuleLabel->setGeometry(20,20,410,3000);

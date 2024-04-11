@@ -7,6 +7,8 @@ SettingWidget::SettingWidget(int _Width,int _Height,QWidget *parent) :
 {
     ui->setupUi(this);
     this->setFixedSize(0.618*Width,0.618*Height);
+    this->setWindowFlags(Qt::WindowStaysOnTopHint);
+    this->setWindowModality(Qt::ApplicationModal);
     ImportConfig();
     ui->BasicBtn          ->setGeometry(0.020*Width,  0.055*Height,  0.104*Width,  0.084*Height);
     ui->FrameBtn          ->setGeometry(0.020*Width,  0.203*Height,  0.104*Width,  0.084*Height);

@@ -8,6 +8,8 @@ SuperMarketWidget::SuperMarketWidget(int _Width,int _Height,int _option,QWidget 
     ui->setupUi(this);
     this->setFixedSize(0.5*Width,0.5*Height);
     this->setWindowTitle("游戏商城");
+    this->setWindowFlags(Qt::WindowStaysOnTopHint);
+    this->setWindowModality(Qt::ApplicationModal);
     ui->DiamondMarketBtn  ->setGeometry(0.010*Width, 0.000*Height, 0.239*Width, 0.028*Height);
     ui->BeanMarketBtn     ->setGeometry(0.250*Width, 0.000*Height, 0.239*Width, 0.028*Height);
     ui->label1            ->setGeometry(0.119*Width, 0.101*Height, 0.057*Width, 0.093*Height); ui->label1            ->hide();
