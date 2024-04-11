@@ -71,15 +71,21 @@ def index():
      return render_template('test.html')
 
 def FindUsername(account):
-    selectusernameLanguage = '''select Uusername from UserTable where Uaccount like ?'''
+    SelectusernameLanguage = '''select Uusername from UserTable where Uaccount like ?'''
     global cursor
-    cursor.execute(selectusernameLanguage,[str(account)])
+    cursor.execute(SelectusernameLanguage,[str(account)])
     data_username = cursor.fetchall()
     return str(data_username[0][0])
+def FindPeas(account):
+    SelectPeasLanguage = '''select Upeas from UserTable where Uaccount like ?'''
+    global cursor
+    cursor.execute(SelectPeasLanguage,[str(account)])
+    data_peas = cursor.fetchall()
+    return str(data_peas[0][0])
 
 @socketio.on('create_room')
 def Create_room(data):
-    # global battle_data
+
     print(f"接收到创建房间请求: {data}")
     battle_data = battlestatus.BattleStatus()
     battle_data.someone_join_room()
@@ -87,15 +93,20 @@ def Create_room(data):
     print("Battle_data:",battle_data.room_id)
     data = json.loads(data)
     data_account = data.get('account')
+
     roomhost = battlestatus.Player()
     roomhost.account = data_account
     roomhost.seat = 1
+    roomhost.username = 'cty'#FindUsername(data_account)
+    roomhost.peas = 10000#FindPeas(data_account)
     battle_data.player_1 = roomhost
 
     redis_data.redis_db.set(str(data_room_id)+"_ask_lord_times",0)
     battle_data.set_account_list(data_account,roomhost.seat)
     redis_data.redis_db.set(str(data_room_id)+"_ready_count",0)
     redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+
+    redis_data.redis_db.set(str(data_room_id)+'_player_in_room',json.dumps(battle_data.player_in_room()))
     redis_data.redis_db.set(data_account,data_room_id)
 #########################################################
     print("data_room_id",data_room_id,"\n","battle_data.player_1.account",battle_data.player_1.account)    
@@ -141,6 +152,12 @@ def Join_room(data):
     battle_data.room_id = data_room_id
     battle_data.get_battle_status(battle_status)
 
+    player_in_room = battlestatus.BattleStatus()
+    player_status = redis_data.redis_db.get(str(data_room_id)+"_player_in_room")
+    player_status = json.loads(player_status)
+    player_in_room.room_id = data_room_id
+    player_in_room.get_player_in_room(player_status)
+
     check_room = str(battle_data.room_id)+"_count_room"
 
     
@@ -167,6 +184,8 @@ def Join_room(data):
         joiner = battlestatus.Player()
         joiner.account = data_account
         print("joiner_account:",joiner.account)
+        joiner.username = 'xiongda'#FindUsername(data_account)
+        joiner.peas = 100000#FindPeas(data_account)
 
         if str(joiner.account) == str(battle_data.player_1.account):
             joiner.seat = 1
@@ -185,14 +204,26 @@ def Join_room(data):
             else:
                 joiner.seat = 1
         if joiner.seat == 1:
+            player_in_room.player_1.account = joiner.account
+            player_in_room.player_1.peas = joiner.peas
+            player_in_room.player_1.username = joiner.username
+
             battle_data.player_1.account = joiner.account
             battle_data.player_1.seat = joiner.seat
             joiner.leaveroomtimes = battle_data.player_1.leaveroomtimes
         elif joiner.seat ==2:
+            player_in_room.player_2.account = joiner.account
+            player_in_room.player_2.peas = joiner.peas
+            player_in_room.player_2.username = joiner.username
+
             battle_data.player_2.account = joiner.account
             battle_data.player_2.seat = joiner.seat
             joiner.leaveroomtimes = battle_data.player_2.leaveroomtimes
         elif joiner.seat ==3:
+            player_in_room.player_3.account = joiner.account
+            player_in_room.player_3.peas = joiner.peas
+            player_in_room.player_3.username = joiner.username
+
             battle_data.player_3.account = joiner.account   
             battle_data.player_3.seat = joiner.seat
             joiner.leaveroomtimes = battle_data.player_3.leaveroomtimes
@@ -201,6 +232,8 @@ def Join_room(data):
         battle_data.someone_join_room()
         
         print("json.dumps(battle_data.to_dict()",joiner.account)
+        redis_data.redis_db.set(str(battle_data.room_id)+'_player_in_room',json.dumps(player_in_room.player_in_room()))
+    
         redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
         inform_room_status(data_account,joiner.seat,data_room_id)
         
@@ -216,6 +249,9 @@ def Join_room(data):
             print(key.decode(), "->", value.decode())
 #################################################################username = FindUsername(data_account)
         emit('server_response',jsonify(type = 5,status = 1,account = data_account,seat = joiner.seat).data.decode(),room = data_room_id)
+        print("-=-=-=-=-=-=-==0=-=-",redis_data.redis_db.get(str(battle_data.room_id)+'_player_in_room').decode())
+        roomstatus=redis_data.redis_db.get(str(battle_data.room_id)+'_player_in_room').decode()
+        emit('server_response',jsonify(type = 33,player_status = roomstatus).data.decode(),room = data_room_id)#广播房间当前人的状态
         print("--------------------",redis_data.redis_db.get(data_account))
         return True
 
@@ -269,7 +305,7 @@ def Leave_room(data):
     battle_data.someone_leave_room()
     redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
 
-    emit('server_response',jsonify( type = 28,status = 1,account = data_account).data.decode(),room = data_room_id)
+    emit('server_response',jsonify( type = 28,status = 1,account = data_account,seat = battle_data.find_seat(data_account)).data.decode(),room = data_room_id)
    
     leave_room(data_room_id)
    
@@ -418,11 +454,81 @@ def double(data):
     print("========================",redis_data.redis_db.get(str(data_room_id)+"_double_num").decode())
     if int(redis_data.redis_db.get(str(data_room_id)+"_double_num").decode()) == 3:
         emit('server_response',jsonify(type = 17).data.decode(),room = battle_data.find_lord_account())
+        time.sleep(0.5)
+        emit('server_response',jsonify(type = 34,now_output_player = battle_data.find_seat(battle_data.find_lord_account())).data.decode(),room = data_room_id)
         print("叫地主的账户是：",battle_data.find_lord_account())
 
+def losepeas(seat,data_room_id):
+    key = data_room_id+"_battle_data"
+    battle_data = battlestatus.BattleStatus()
+    battle_data.room_id = data_room_id
+    battle_status = redis_data.redis_db.get(key).decode()
+    battle_status = json.loads(battle_status)
+    battle_data.get_battle_status(battle_status)
+
+    global cursor
+    FindPeasLanguage = '''select Upeas from UserTable where Uaccount like ?'''
+    UpdataPeasLanguage = '''update USertable set Upeas = ? where Uaccount like ?'''
+    cursor.execute(FindPeasLanguage,[str(lordevent.find_seat_fit_account(seat,data_room_id))])
+    result = cursor.fetchall
+    losepeas = peas_caculate(seat,data_room_id)
+    if int(result[0])<int(losepeas):
+        losepeas = result[0]
+        cursor.execute(UpdataPeasLanguage,['0',str(lordevent.find_seat_fit_account(seat,data_room_id))])
+        return int(losepeas)
+    else:
+        new_peas = int(result[0]) - int(losepeas)
+        cursor.execute(UpdataPeasLanguage,[str(new_peas),str(lordevent.find_seat_fit_account(seat,data_room_id))])
+        return int(losepeas)
 
 
+def peas_caculate(seat,data_room_id):
+    key = data_room_id+"_battle_data"
+    battle_data = battlestatus.BattleStatus()
+    battle_data.room_id = data_room_id
+    battle_status = redis_data.redis_db.get(key).decode()
+    battle_status = json.loads(battle_status)
+    battle_data.get_battle_status(battle_status)
+    if int(seat) == 1:
+        return (int(battle_data.player_1.double)+int(redis_data.redis_db.get(str(data_room_id)+"_double").decode()))*100
+    elif int(seat) == 2:
+        return (int(battle_data.player_2.double)+int(redis_data.redis_db.get(str(data_room_id)+"_double").decode()))*100
+    elif int(seat) == 3:
+        return (int(battle_data.player_2.double)+int(redis_data.redis_db.get(str(data_room_id)+"_double").decode()))*100
 
+def winpeas(seat,data_room_id):
+    key = data_room_id+"_battle_data"
+    battle_data = battlestatus.BattleStatus()
+    battle_data.room_id = data_room_id
+    battle_status = redis_data.redis_db.get(key).decode()
+    battle_status = json.loads(battle_status)
+    battle_data.get_battle_status(battle_status)
+
+    global cursor
+    FindPeasLanguage = '''select Upeas from UserTable where Uaccount like ?'''
+    UpdataPeasLanguage = '''update USertable set Upeas = ? where Uaccount like ?'''
+    cursor.execute(FindPeasLanguage,[str(lordevent.find_seat_fit_account(seat,data_room_id))])
+    result = cursor.fetchall
+    winpeas = peas_caculate(seat,data_room_id)
+
+    new_peas = int(result[0][0]) + int(losepeas)
+    cursor.execute(UpdataPeasLanguage,[str(new_peas),str(lordevent.find_seat_fit_account(seat,data_room_id))])
+    return int(winpeas)
+
+def updata_peas(seat,data_room_id,new_peas,win_result):
+    global cursor
+    FindPeasLanguage = '''select Upeas from UserTable where Uaccount like ?'''
+    cursor.execute(FindPeasLanguage,[str(lordevent.find_seat_fit_account(seat,data_room_id))])
+    result = cursor.fetchall
+    if win_result == 1:
+        new_peas = new_peas + int(result[0][0])
+    elif win_result == 0:
+        if int(result[0][0]) < new_peas:
+            new_peas = 0
+        else:
+            new_peas = int(result[0][0]) - new_peas
+    UpdataPeasLanguage = '''update USertable set Upeas = ? where Uaccount like ?'''
+    cursor.execute(UpdataPeasLanguage,[str(new_peas),str(lordevent.find_seat_fit_account(int(seat),data_room_id))])
 
 
 @socketio.on('bigger_cards')
@@ -462,16 +568,24 @@ def 管牌(data):
                 now_double = int(redis_data.redis_db.get(str(data_room_id)+"_double").decode())
                 new_double = 2*now_double
                 redis_data.redis_db.set(str(data_room_id)+"_double",new_double)
-
+            
             if int_updated_handcards == 0:
                 if battle_data.find_lord_num(data_seat) == 1:
-                    emit('server_response',jsonify(type = 18,win_result = 0).data.decode(),room = battle_data.find_farmer_account()[0])
-                    emit('server_response',jsonify(type = 18,win_result = 0).data.decode(),room = battle_data.find_farmer_account()[1])
-                    emit('server_response',jsonify(type = 18,win_result = 1).data.decode(),room = battle_data.find_lord_account())
+                    farmer0_peas = losepeas(int(battle_data.find_seat(battle_data.find_farmer_account[0])),data_room_id)
+                    farmer1_peas = losepeas(int(battle_data.find_seat(battle_data.find_farmer_account[1])),data_room_id)
+                    updata_peas(battle_data.find_seat(battle_data.find_lord_account()),data_room_id,farmer0_peas+farmer1_peas,1)
+
+                    emit('server_response',jsonify(type = 18,win_result = 0,peas = farmer0_peas).data.decode(),room = battle_data.find_farmer_account()[0])
+                    emit('server_response',jsonify(type = 18,win_result = 0,peas = farmer1_peas).data.decode(),room = battle_data.find_farmer_account()[1])
+                    emit('server_response',jsonify(type = 18,win_result = 1,peas = farmer1_peas+farmer0_peas).data.decode(),room = battle_data.find_lord_account())
                 elif battle_data.find_lord_num(data_seat) == 0:
-                    emit('server_response',jsonify(type = 18,win_result = 1).data.decode(),room = battle_data.find_farmer_account()[0])
-                    emit('server_response',jsonify(type = 18,win_result = 1).data.decode(),room = battle_data.find_farmer_account()[1])
-                    emit('server_response',jsonify(type = 18,win_result = 0).data.decode(),room = battle_data.find_lord_account())
+                    farmer0_peas = winpeas(int(battle_data.find_seat(battle_data.find_farmer_account[0])),data_room_id)
+                    farmer1_peas = winpeas(int(battle_data.find_seat(battle_data.find_farmer_account[1])),data_room_id)
+                    updata_peas(battle_data.find_seat(battle_data.find_lord_account()),data_room_id,farmer0_peas+farmer1_peas,1)
+
+                    emit('server_response',jsonify(type = 18,win_result = 1,peas = farmer0_peas).data.decode(),room = battle_data.find_farmer_account()[0])
+                    emit('server_response',jsonify(type = 18,win_result = 1,peas = farmer1_peas).data.decode(),room = battle_data.find_farmer_account()[1])
+                    emit('server_response',jsonify(type = 18,win_result = 0,peas = farmer1_peas+farmer0_peas).data.decode(),room = battle_data.find_lord_account())
                 return 0 
             
             
@@ -484,8 +598,12 @@ def 管牌(data):
             emit('server_response',jsonify(type = 22,tablecards = data_outputcards,seat = data_seat,now_double = new_double,hide = must).data.decode(),room = data_room_id)
             time.sleep(1)
             emit('server_response',jsonify(type = 20).data.decode(),room = lordevent.find_seat_fit_account(lordevent.find_next_seat(data_seat),data_room_id))
+            time.sleep(0.5)
+            emit('server_response',jsonify(type = 34,now_output_player = lordevent.find_next_seat(data_seat)).data.decode(),room = data_room_id)#通知全体玩家，下一个出牌的人是谁
     elif int(data_can_cannot) == 0:
         emit('server_response',jsonify(type = 20).data.decode(),room = lordevent.find_seat_fit_account(lordevent.find_next_seat(data_seat),data_room_id))
+        time.sleep(0.5)
+        emit('server_response',jsonify(type = 34,now_output_player = lordevent.find_next_seat(data_seat)).data.decode(),room = data_room_id)#通知全体玩家，下一个出牌的人是谁
 
 
 @socketio.on('timeout')
@@ -559,6 +677,8 @@ def output_handcards(data):
     emit('server_response',jsonify(type = 19,tablecards = data_output_cards,now_double = new_double,hide = must).data.decode(),room = data_room_id)
     time.sleep(0.5)
     emit('server_response',jsonify(type = 20).data.decode(),room = battle_data.find_account(lordevent.find_next_seat(data_seat)))#通知下家进行管牌操作
+    time.sleep(0.5)
+    emit('server_response',jsonify(type = 34,now_output_player = lordevent.find_next_seat(data_seat)).data.decode(),room = data_room_id)#通知全体玩家，下一个出牌的人是谁
 
 
 @socketio.on('ask_for_lord')
@@ -659,6 +779,12 @@ def SignupPost():
     else :
         return jsonify(type = 2, signupresult = 0)
 
+def Findaccount(mail):
+    SelectAccountLanguage = '''select Uaccount from UserTable where Umail like ?'''
+    global cursor
+    cursor.execute(SelectAccountLanguage,[mail])
+    account = cursor.fetchall()
+    return str(account[0][0])
 
 @app.route('/login',methods = ["POST"])#存储登录信息
 def LoginPost():
@@ -696,7 +822,7 @@ def LoginPost():
         data_diamond = cursor.fetchall()
         cursor.execute(SelectPeasLanguage,[accountData])
         data_peas = cursor.fetchall()
-        return jsonify(type = 1,loginStatus = 1,username = data_username[0][0],diamond = data_diamond[0][0],peas = data_peas[0][0])
+        return jsonify(type = 1,loginStatus = 1,username = data_username[0][0],account = Findaccount(mailData),diamond = data_diamond[0][0],peas = data_peas[0][0])
 
 @app.route('/passwordforget_code_verify',methods = ["POST"])
 def PasswordForget_Code_Verify():

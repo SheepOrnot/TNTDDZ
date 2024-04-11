@@ -13,6 +13,8 @@ class Player(threading.local):
         self.handcards_num = 0
         self.seat = 0
         self.leaveroomtimes = 0
+        self.username = ""
+        self.peas = 0
     def setlord(self,becomelord):
         self.lord = becomelord
     def sethandcards(self,cards):
@@ -89,6 +91,25 @@ class BattleStatus(threading.local):
                 'player_1_seat':self.player_1.seat,                 'player_2_seat':self.player_2.seat,
                 'player_3_seat':self.player_3.seat
                 }
+    def player_in_room(self):
+        return  {
+                    'roomid':self.room_id,                              'player_1_account':self.player_1.account,
+                    'player_2_account':self.player_2.account,           'player_3_account':self.player_3.account,
+                    'player_1_username':self.player_1.username,         'player_2_username':self.player_2.username,
+                    'player_3_username':self.player_3.username,         'player_1_peas':self.player_1.peas,
+                    'player_2_peas':self.player_2.peas,                 'player_3_peas':self.player_3.peas
+                }
+    def get_player_in_room(self,player_in_room):
+        self.player_1.account = player_in_room.get("player_1_account")
+        self.player_2.account = player_in_room.get("player_2_account")
+        self.player_3.account = player_in_room.get("player_3_account")
+        self.player_1.username = player_in_room.get("player_1_username")
+        self.player_2.username = player_in_room.get("player_2_username")
+        self.player_3.username = player_in_room.get("player_3_username")
+        self.player_1.peas = player_in_room.get("player_1_peas")
+        self.player_2.peas = player_in_room.get("player_2_peas")
+        self.player_3.peas = player_in_room.get("player_3_peas")
+
     def get_battle_status(self,battle_status):
 
         self.player_1.account = battle_status.get("player_1_account")
@@ -154,6 +175,9 @@ class BattleStatus(threading.local):
             return self.player_2.account
         elif int(seat) == 3:
             return self.player_3.account
+
+
+
 
 class ReadyPlayer(threading.local):
     def __init__(self):

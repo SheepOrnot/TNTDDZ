@@ -24,5 +24,7 @@ def interrupt_sleep(i):
         timer.cancel()
 
 # 调用中断 sleep 的函数
-i = input()
-interrupt_sleep(i)
+mail = input()
+print(server.Findaccount(str(mail)))
+print(server.FindPeas('00000000000'))
+print(server.FindUsername('00000000000'))

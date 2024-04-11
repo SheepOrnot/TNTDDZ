@@ -102,6 +102,7 @@ def change_lord_data(data_account,data_room_id,lord_handcards):
     print("lord_----------------",battle_data.player_2.lord)
     print("lord_----------------",battle_data.player_3.lord)
     redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+    emit('server_response',jsonify(type = 35,handcards = lord_handcards).data.decode(),room = battle_data.find_lord_account())
 
 
 
