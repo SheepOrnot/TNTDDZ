@@ -20,6 +20,7 @@
 #include <QStandardItemModel>
 #include <QThread>
 #include <QPainter>
+#include <QMessageBox>
 #include <iostream>
 #include <QAudioOutput>
 #include <bitset>
@@ -60,7 +61,7 @@ public:
     void somebodyCallLandlordRound(int Pos);
     void somebodyBidForLandlordRound(int Pos);
     void somebodyDoubleRound();
-    void somebodyPlayCardRound(int Pos);
+    void somebodyPlayCardRound(int Pos,bool MustOut = 0);
     void somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,int Cardtype,std::bitset<54> handcards = 0);
     void somebodyNotOutCard(int Pos,int Leftcards,std::bitset<54> handcards = 0);
     void somebodyReady(int Pos);
@@ -77,6 +78,7 @@ public:
     void StartGame(std::string identity1,std::string identity2,std::string identity3,std::bitset<54> handcards,std::bitset<54> finalcards);
     void AddTimes(int newTimes);
     void GameOver(bool Result,int times,int Score1,int Score2,int Score3);
+    void MessageSender(std::string Title, std::string Info, QMessageBox::Icon Type);
     void paintEvent(QPaintEvent * ev)
     {
         QPainter painter(this);

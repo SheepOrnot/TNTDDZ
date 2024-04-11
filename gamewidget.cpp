@@ -70,7 +70,7 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
             case 15:{somebodyBidForLandlordRound(3);break;}
             case 16:{somebodyBidForLandlord(3);break;}
             case 17:{StartGame("farmer","farmer","landlord",finalBitset|playerBitset,finalBitset);break;}  //111110000000011111111100000000000001001100000000110001
-            case 18:{somebodyPlayCardRound(3);break;};
+            case 18:{somebodyPlayCardRound(3,1);break;};
             case 19:{
                     playeroutBitset = std::bitset<54>(std::string("000000000000000000000000000000000000000000000000110000"));
                     playerBitset    = std::bitset<54>(std::string("111110000000011111111100000000000001001100000000000001"));
@@ -98,7 +98,7 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
             case 27:{somebodyNotOutCard(2,15);break;}
             case 28:{somebodyPlayCardRound(1);break;}
             case 29:{somebodyNotOutCard(1,17);break;}
-            case 30:{somebodyPlayCardRound(3);break;}
+            case 30:{somebodyPlayCardRound(3,1);break;}
             case 31:
             {
                 playeroutBitset = std::bitset<54>(std::string("110000000000000000000000000000000000000000000000000000"));
@@ -600,6 +600,14 @@ void GameWidget::AnimateMoveLeft(QPushButton* btn, int distance)
                 btn->setEnabled(true);
             });
 }
+void GameWidget::MessageSender(std::string Title, std::string Info, QMessageBox::Icon Type)
+{
+    QMessageBox msgBox;
+    msgBox.setIcon(Type);
+    msgBox.setWindowTitle(QString::fromStdString(Title));
+    msgBox.setText(QString::fromStdString(Info));
+    msgBox.exec();
+}
 void GameWidget::PlacePreviousHandCards()
 {
     for(int i = 0;i<backlabel1.size();i++)
@@ -930,7 +938,7 @@ void GameWidget::somebodyDoubleRound()       //加倍回合
         ui->UnDoubleBtn->show();
         StartCountDown(10,3);
 }
-void GameWidget::somebodyPlayCardRound(int Pos)    //出牌回合
+void GameWidget::somebodyPlayCardRound(int Pos,bool MustOut)    //出牌回合
 {
     switch(Pos)
     {
@@ -950,6 +958,10 @@ void GameWidget::somebodyPlayCardRound(int Pos)    //出牌回合
         {
             ui->PlayCardBtn->show();
             ui->SkipTurnBtn->show();
+            if(!MustOut)
+            ui->SkipTurnBtn->setEnabled(true);
+            else
+            ui->SkipTurnBtn->setEnabled(false);
             ui->MSGLabel3->clear();
             StartCountDown(30,3);
             break;

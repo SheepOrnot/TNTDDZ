@@ -29,10 +29,10 @@ PersonalInfoWidget::PersonalInfoWidget(int _Width,int _Height,QWidget *parent) :
     ui->ExitBtn      ->setGeometry(0.642*Width, 0.010*Height, 0.036*Width, 0.064*Height);
     ui->scrollArea   ->setGeometry(0.029*Width, 0.300*Height, 0.300*Width, 0.300*Height);
 
-    ProfilePixmap = QPixmap(":image/image/Profile/"+QString::number(ProfileIndex)+".jpg");
-    ProfilePixmap = ProfilePixmap.scaled(ui->ProfileLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation); // 将图片缩放到QLabel的尺寸
-    ui->ProfileLabel->setPixmap(ProfilePixmap);
+
     ui->ProfileLabel->setScaledContents(true);
+    ProfilePixmap = ProfilePixmap.scaled(ui->ProfileLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
     connect(ui->ChooseProfile,&QComboBox::currentIndexChanged,this,&PersonalInfoWidget::onProfileChanged);
 
     ui->EmailLabel->setMinimumWidth(200);
@@ -42,9 +42,10 @@ PersonalInfoWidget::PersonalInfoWidget(int _Width,int _Height,QWidget *parent) :
     ContentWidget->setObjectName("ContentWidget");
     ContentWidget->setStyleSheet("QWidget#ContentWidget{border:1px solid black; border-radius:10px;}");
     ui->scrollArea->setWidget(ContentWidget);
-
+    ApplyChange = new QPushButton(this); ApplyChange->hide();
     connect(ui->scrollArea->verticalScrollBar(), &QScrollBar::valueChanged,this,&PersonalInfoWidget::onScrollBarValueChanged);
     connect(this,&PersonalInfoWidget::scrollBarAtBotton,this,&PersonalInfoWidget::onRecordToBottom);
+    connect(ApplyChange,&QPushButton::clicked,this,&PersonalInfoWidget::onApplyChangeClicked);
     std::vector<Record> tenrcords;
     for(int i = 0;i<10;i++)
     {
@@ -65,9 +66,13 @@ PersonalInfoWidget::~PersonalInfoWidget()
 }
 void PersonalInfoWidget::onProfileChanged(int index)
 {
-    ProfileIndex = index;
-    ProfilePixmap = QPixmap(":image/image/Profile/"+QString::number(ProfileIndex)+".jpg");
+    ChangingProfileIndex = index;
+    ProfilePixmap = QPixmap(":image/image/Profile/"+QString::number(ChangingProfileIndex)+".jpg");
     ui->ProfileLabel->setPixmap(ProfilePixmap);
+    if(ChangingProfileIndex==ProfileIndex){ ApplyChange->hide(); return;}
+    ApplyChange->setText("应用修改");
+    ApplyChange->setGeometry(0.420*Width,0.330*Height,0.080*Width,0.030*Height);
+    ApplyChange->show();
 }
 void PersonalInfoWidget::onScrollBarValueChanged()
 {
@@ -159,3 +164,28 @@ void PersonalInfoWidget::onRecordToBottom()
     }
     CanGetRecord = 0;
 }
+
+void PersonalInfoWidget::GetInfo(int _Rate,int _Matches,int _WinMatches,int _LoseMatches,int _ProfileIndex,std::string _Name,std::string _UID,std::string _Email)
+{
+    Rate = QString::number(_Rate);
+    Matches = QString::number(_Matches);
+    WinMatches = QString::number(_WinMatches);
+    LoseMatches = QString::number(_LoseMatches);
+    Name = QString::fromStdString(_Name);
+    UID = QString::fromStdString(_UID);
+    Email = QString::fromStdString(_Email);
+    ProfileIndex = _ProfileIndex;
+    ProfilePixmap = QPixmap();
+    ui->EmailLabel->setText(Email);     ui->EmailLabel->show();
+    ui->NameLabel->setText(Name);       ui->NameLabel->show();
+    ui->UIDLabel->setText(UID);         ui->UIDLabel->show();
+    ui->Rate->setText(Rate);            ui->Rate->show();
+    ui->Matches->setText(Matches);      ui->Matches->show();
+    ui->KD->setText(WinMatches+"/"+LoseMatches);ui->KD->show();
+    ProfilePixmap = QPixmap(":image/image/Profile/"+QString::number(ProfileIndex)+".jpg");
+    ui->ProfileLabel->setPixmap(ProfilePixmap);
+}
+void PersonalInfoWidget::onApplyChangeClicked()
+{
+     QMessageBox::information(this, "提示", "重启应用后生效！");
+ }
