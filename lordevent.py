@@ -102,14 +102,7 @@ def change_lord_data(data_account,data_room_id,lord_handcards):
     print("lord_----------------",battle_data.player_2.lord)
     print("lord_----------------",battle_data.player_3.lord)
     redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
-            #################################################################
-    keys = redis_data.redis_db.keys()
 
-    # 遍历每个键，并输出键和对应的值
-    for key in keys:
-        value = redis_data.redis_db.get(key)
-        print(key.decode(), "->", value.decode())
-#################################################################
 
 
 

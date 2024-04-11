@@ -59,7 +59,10 @@ def rob_and_ask(account,roomid,ask,rob,seat):
             elif int(seat) == 3: redis_data.redis_db.set(str(roomid)+'_ask_rob','001')
         if redis_data.redis_db.get(str(roomid)+'_ask_rob').decode() == '100':
             emit('server_response',jsonify(type = 'you are lord',lordseat = 1).data.decode(),room = roomid)
+            return 1
         elif redis_data.redis_db.get(str(roomid)+'_ask_rob').decode() == '010':
             emit('server_response',jsonify(type = 'you are lord',lordseat = 2).data.decode(),room = roomid)
+            return 2
         elif redis_data.redis_db.get(str(roomid)+'_ask_rob').decode() == '001':
             emit('server_response',jsonify(type = 'you are lord',lordseat = 3).data.decode(),room = roomid)
+            return 3

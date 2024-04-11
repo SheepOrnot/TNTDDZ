@@ -555,7 +555,14 @@ def ask_or_rob(data):
     data_seat = data.get("seat")
     data_rob = data.get("rob")
 
-    withroblord.rob_and_ask(data_account,data_room_id,data_lord,data_rob,data_seat)
+    lordseat = withroblord.rob_and_ask(data_account,data_room_id,data_lord,data_rob,data_seat)
+    if lordseat == 1 or lordseat == 2 or lordseat == 3:
+        lord_cards = redis_data.redis_db.get(str(data_room_id)+"_lord_cards").decode()
+        lord_handcards =  lordevent.change_handcards_data(lordevent.find_seat_fit_account(lordseat,data_room_id),data_room_id,lordseat)
+        lordevent.change_lord_data(lordevent.find_seat_fit_account(lordseat,data_room_id),data_room_id,lord_handcards)
+        lordevent.broadcast_information(lordevent.find_seat_fit_account(lordseat,data_room_id),data_room_id,lordseat,int(lord_cards))
+        time.sleep(0.5)
+        emit('server_response',jsonify(type = 14).data.decode(),room = data_room_id)
 
 
 @app.route('/battle',methods = ["POST"])#存储对战数据
