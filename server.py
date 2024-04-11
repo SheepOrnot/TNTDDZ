@@ -575,17 +575,17 @@ def 管牌(data):
                     farmer1_peas = losepeas(int(battle_data.find_seat(battle_data.find_farmer_account[1])),data_room_id)
                     updata_peas(battle_data.find_seat(battle_data.find_lord_account()),data_room_id,farmer0_peas+farmer1_peas,1)
 
-                    emit('server_response',jsonify(type = 18,win_result = 0,peas = farmer0_peas).data.decode(),room = battle_data.find_farmer_account()[0])
-                    emit('server_response',jsonify(type = 18,win_result = 0,peas = farmer1_peas).data.decode(),room = battle_data.find_farmer_account()[1])
-                    emit('server_response',jsonify(type = 18,win_result = 1,peas = farmer1_peas+farmer0_peas).data.decode(),room = battle_data.find_lord_account())
+                    emit('server_response',jsonify(type = 18,win_result = 0,change_peas = farmer0_peas,new_peas = FindPeas(battle_data.find_farmer_account()[0])).data.decode(),room = battle_data.find_farmer_account()[0])
+                    emit('server_response',jsonify(type = 18,win_result = 0,change_peas = farmer1_peas,new_peas = FindPeas(battle_data.find_farmer_account()[1])).data.decode(),room = battle_data.find_farmer_account()[1])
+                    emit('server_response',jsonify(type = 18,win_result = 1,change_peas = farmer1_peas+farmer0_peas,new_peas = FindPeas(battle_data.find_lord_account())).data.decode(),room = battle_data.find_lord_account())
                 elif battle_data.find_lord_num(data_seat) == 0:
                     farmer0_peas = winpeas(int(battle_data.find_seat(battle_data.find_farmer_account[0])),data_room_id)
                     farmer1_peas = winpeas(int(battle_data.find_seat(battle_data.find_farmer_account[1])),data_room_id)
                     updata_peas(battle_data.find_seat(battle_data.find_lord_account()),data_room_id,farmer0_peas+farmer1_peas,1)
 
-                    emit('server_response',jsonify(type = 18,win_result = 1,peas = farmer0_peas).data.decode(),room = battle_data.find_farmer_account()[0])
-                    emit('server_response',jsonify(type = 18,win_result = 1,peas = farmer1_peas).data.decode(),room = battle_data.find_farmer_account()[1])
-                    emit('server_response',jsonify(type = 18,win_result = 0,peas = farmer1_peas+farmer0_peas).data.decode(),room = battle_data.find_lord_account())
+                    emit('server_response',jsonify(type = 18,win_result = 1,change_peas = farmer0_peas,new_peas = FindPeas(battle_data.find_farmer_account()[0])).data.decode(),room = battle_data.find_farmer_account()[0])
+                    emit('server_response',jsonify(type = 18,win_result = 1,change_peas = farmer1_peas,new_peas = FindPeas(battle_data.find_farmer_account()[1])).data.decode(),room = battle_data.find_farmer_account()[1])
+                    emit('server_response',jsonify(type = 18,win_result = 0,change_peas = farmer1_peas+farmer0_peas,new_peas = FindPeas(battle_data.find_lord_account())).data.decode(),room = battle_data.find_lord_account())
                 return 0 
             
             
