@@ -29,13 +29,12 @@ public:
 private:
     std::string name;
     std::bitset<54> handcard;
-    /*
+
     std::string ANTI_index = "3456789TJQKA2BR";
     int index(char c);
     void pick_chain(std::vector<std::string> *v,std::string &hand,int count,int lim);
     std::string COMBINE_CARD(std::string hand);
     std::string BitsetTOString(std::bitset<54> _card);
-*/
 };
 
 #endif // ROBOT_H

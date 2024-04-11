@@ -30,7 +30,7 @@ std::pair<std::bitset<54>, CardTypeStruct> robot::OutCardAction(CardTypeStruct P
         return std::make_pair(0, CardTypeStruct(CardType::None, 0, 1));
 
     if(PreOutCardType.cardtype == 0 || mustOut)
-    {/*
+    {
         std::string tmp = robot::COMBINE_CARD(robot::BitsetTOString(robot::handcard));
         for(ActionVector::iterator it = legalAction.begin(); it != legalAction.end(); it++)
         if(robot::BitsetTOString(it->action)==tmp)
@@ -39,7 +39,7 @@ std::pair<std::bitset<54>, CardTypeStruct> robot::OutCardAction(CardTypeStruct P
             CardTypeStruct curCardType(action.cardtype, action.point, action.succ);
             std::cout << name << ":  PreOutCardType.cardtype: " << PreOutCardType.cardtype << "  mustOut:" << mustOut << "  " << action.action.to_string() << std::endl;
             return std::make_pair(action.action, curCardType);
-        }*/
+        }
         std::uniform_int_distribution<int> distribution(0, legalAction.size()-2);
         auto& action = legalAction[distribution(gen)];
         CardTypeStruct curCardType(action.cardtype, action.point, action.succ);
@@ -48,12 +48,13 @@ std::pair<std::bitset<54>, CardTypeStruct> robot::OutCardAction(CardTypeStruct P
     }
     else
     {
+        /*
         std::uniform_int_distribution<int> distribution(0, legalAction.size()-1);
         auto& action = legalAction[distribution(gen)];
         CardTypeStruct curCardType(action.cardtype, action.point, action.succ);
         std::cout << name << ":  PreOutCardType.cardtype: " << PreOutCardType.cardtype << "  mustOut:" << mustOut << "  " << action.action.to_string() << std::endl;
         return std::make_pair(action.action, curCardType);
-        /*
+        */
         legalAction.pop_back();
         ActionVector::iterator it1,it2;
         it1 = it2 = legalAction.begin(); ++it1;
@@ -64,7 +65,6 @@ std::pair<std::bitset<54>, CardTypeStruct> robot::OutCardAction(CardTypeStruct P
         CardTypeStruct curCardType(action.cardtype, action.point, action.succ);
         std::cout << name << ":  PreOutCardType.cardtype: " << PreOutCardType.cardtype << "  mustOut:" << mustOut << "  " << action.action.to_string() << std::endl;
         return std::make_pair(action.action, curCardType);
-        */
     }
     
     return std::make_pair(0, CardTypeStruct(CardType::None, 0, 1));
@@ -77,7 +77,7 @@ int robot::GetlandlordAction()
     std::uniform_int_distribution<int> distribution(0, 1);
     return distribution(gen);
 }
-/*
+
 std::string robot::COMBINE_CARD(std::string hand)
 {
     enum HANDCARDTYPE{TRIO,TRIO_CHAIN,PAIR_CHAIN,SOLO_CHAIN,PAIR,SOLO,BOMB,ROCKET};
@@ -91,7 +91,7 @@ std::string robot::COMBINE_CARD(std::string hand)
         hand.replace(hand.find("BR"),2,"");
     }
     //2.pick bomb
-    for(int i = 0; i < hand.length()-3; ++i)
+    for(int i = 0; i+3 < hand.length(); ++i)
     if(hand[i]==hand[i+3])
     {
         std::string tmp(4,hand[i]);
@@ -101,7 +101,7 @@ std::string robot::COMBINE_CARD(std::string hand)
     //3.pick trio and rio_chain
     std::string hand_tmp = hand;
     std::vector<std::string> trio_tmp;
-    for(int i = 0; i < hand_tmp.length()-2; ++i)
+    for(int i = 0; i+2 < hand_tmp.length(); ++i)
     if(hand_tmp[i]==hand_tmp[i+2])
     {
             std::string tmp(3,hand_tmp[i]);
@@ -127,9 +127,9 @@ std::string robot::COMBINE_CARD(std::string hand)
     } hand = "";
     for(int i = 0; i < 8; ++i)
     {
-        printf("TYPE:%d\n",i);
+        std::cout<<"TYPE: "<<std::endl;std::flush(std::cout);
         for(std::vector<std::string>::iterator it = combine_card[i].begin(); it != combine_card[i].end(); ++it)
-            std::cout<<*it<<" ";
+        {std::cout<<*it<<" ";std::flush(std::cout);}
         puts("");
     }
     for(int i = 0; i < 8; ++i)
@@ -241,4 +241,3 @@ int robot::index(char c)
     }
     return -1;
 }
-*/
