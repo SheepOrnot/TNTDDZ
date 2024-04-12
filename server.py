@@ -786,6 +786,19 @@ def Findaccount(mail):
     account = cursor.fetchall()
     return str(account[0][0])
 
+def Findprofilepicture_account(account):
+    SelectProfilePictureLanguage = '''select Uprofilepicture from UserTable where Uaccount like ?'''
+    global cursor
+    cursor.execute(SelectProfilePictureLanguage,[account])
+    profilepicture = cursor.fetchall()
+    return str(profilepicture[0][0])
+def Findprofilepicture_mail(mail):
+    SelectProfilePictureLanguage = '''select Uprofilepicture from UserTable where Umail like ?'''
+    global cursor
+    cursor.execute(SelectProfilePictureLanguage,[mail])
+    profilepicture = cursor.fetchall()
+    return str(profilepicture[0][0])
+
 @app.route('/login',methods = ["POST"])#存储登录信息
 def LoginPost():
     LoginData = request.get_json()
@@ -794,6 +807,13 @@ def LoginPost():
     print(accountData)
     mailData = LoginData.get("mail")
     passwordData = LoginData.get("password")
+    if  '@' in accountData:
+        account = Findaccount(mailData)
+        profilepicture = Findprofilepicture_mail(mailData)
+    else:
+        account = accountData
+        profilepicture = Findprofilepicture_account(accountData)
+
     encryptPassword = hashlib.md5(passwordData.encode()).digest().hex()
     AccountPassword = [accountData,encryptPassword]
     MailPassword = [mailData,encryptPassword]
@@ -815,14 +835,15 @@ def LoginPost():
         SelectUsernameLanguage = '''SELECT Uusername FROM UserTable WHERE Uaccount like ?'''
         SelectDiamondLanguage  = '''SELECT Udiamond FROM UserTable WHERE Uaccount like ?'''
         SelectPeasLanguage     = '''SELECT Upeas FROM UserTable WHERE Uaccount like ?'''
-        cursor.execute(SelectUsernameLanguage,[accountData])
+        cursor.execute(SelectUsernameLanguage,[account])
         data_username = cursor.fetchall()
         print("========",data_username)
-        cursor.execute(SelectDiamondLanguage,[accountData])
+        cursor.execute(SelectDiamondLanguage,[account])
         data_diamond = cursor.fetchall()
-        cursor.execute(SelectPeasLanguage,[accountData])
+        cursor.execute(SelectPeasLanguage,[account])
         data_peas = cursor.fetchall()
-        return jsonify(type = 1,loginStatus = 1,username = data_username[0][0],account = Findaccount(mailData),diamond = data_diamond[0][0],peas = data_peas[0][0])
+
+        return jsonify(type = 1,loginStatus = 1,username = data_username[0][0],account = account,diamond = data_diamond[0][0],peas = data_peas[0][0],profilepicture = profilepicture)
 
 @app.route('/passwordforget_code_verify',methods = ["POST"])
 def PasswordForget_Code_Verify():
@@ -919,8 +940,8 @@ def SupermarketPost():
 
 cursor = UserData.cursor()
 print("userdata")
-CreateTable = '''CREATE TABLE UserTable (Uusername char(20),Uaccount char(20),Umail char(50),Upassword char(20),Upeas char(20),Udiamond char(20),Uhead char(20),primary key(Uaccount))'''
-# cursor.execute(CreateTable)
+CreateTable = '''CREATE TABLE UserTable (Uusername char(20),Uaccount char(20),Umail char(50),Upassword char(20),Upeas char(20),Udiamond char(20),Uprofilepicture char(20),primary key(Uaccount))'''
+#cursor.execute(CreateTable)
 redis_data.redis_db.flushdb()
 redis_data.redis_db.set("room_id",1)
 
