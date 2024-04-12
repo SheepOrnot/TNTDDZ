@@ -8,6 +8,17 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     ImportConfig();
+    //this->setFixedSize(Width,Height);
+
+    if(isFullScreen)
+    {
+        this->setWindowFlags(Qt::FramelessWindowHint);  // 设置无边框
+        this->showFullScreen();  // 全屏显示
+        Width = this->width();
+        Height = this->height();
+        qDebug()<<Width<<" "<<Height;
+    }
+
     radius = Height*0.047*0.5;
     InitInfo(5,6666666666,454645,"冷锋冷锋冷锋冷锋冷锋","00000001");
     this->setWindowTitle("TNT斗地主");
@@ -29,7 +40,7 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     connect(qApp, &QCoreApplication::aboutToQuit,BGMThread, &QThread::quit);
     RollImageIndex = 0;
 
-    this->setFixedSize(Width,Height);
+
     ui->ProfileLabel  ->setGeometry(0.020*Width,0.018*Height,0.067*Width,0.120*Height);
     ui->UsernameLabel ->setGeometry(0.109*Width,0.027*Height,0.094*Width,0.028*Height);
     ui->UidLabel      ->setGeometry(0.109*Width,0.083*Height,0.094*Width,0.028*Height);
@@ -199,6 +210,7 @@ void LobbyWidget::ImportConfig()
                 Width = UniversalObj.value("Width").toVariant().toInt();
                 Height = UniversalObj.value("Height").toVariant().toInt();
                 BGMState = bool(LobbyObj.value("LobbyBGM").toVariant().toInt());
+                isFullScreen = bool(UniversalObj.value("FullScreen").toVariant().toInt());
             }
             else
             {
@@ -287,4 +299,9 @@ QString LobbyWidget::Transform_To_String(long long Num)
     }
     else Str = QString::number(Num);
     return Str;
+}
+
+void LobbyWidget::onExitBtnClicked()
+{
+    this->close();
 }
