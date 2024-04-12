@@ -248,7 +248,7 @@ font: 9pt &quot;华文新魏&quot;;</string>
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="ExitBtn">
    <property name="geometry">
     <rect>
      <x>1590</x>
@@ -258,7 +258,7 @@ font: 9pt &quot;华文新魏&quot;;</string>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>退出游戏</string>
    </property>
   </widget>
  </widget>

@@ -26,6 +26,7 @@ public:
 private:
     Ui::LobbyWidget *ui;
     int Width,Height;     //用于修改分辨率&实例化新的窗口时的参数。
+    int SettingWidth,SettingHeight;
     int radius;
     bool BGMState;
     bool isFullScreen;

@@ -10,7 +10,14 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
     ImportConfig();
     this->setFixedSize(Width,Height);
     InitAllCards();
-
+    if(FullScreenState)
+    {
+        this->setWindowFlags(Qt::FramelessWindowHint);  // 设置无边框
+        this->showFullScreen();  // 全屏显示
+        SettingWidth = Width; SettingHeight = Height;
+        Width = this->width();
+        Height = this->height();
+    }
 
     BGMPlayer = new QMediaPlayer();
     BGMPlayer->setSource(QUrl("qrc:/sound/sound/BGM/gamebgm.mp3"));
@@ -483,12 +490,13 @@ void GameWidget::ImportConfig()
             {
                 QJsonObject jsonObj = jsonDoc.object();
                 QJsonObject GameObj = jsonObj["Game"].toObject();
+                QJsonObject UniversalObj = jsonObj["Universal"].toObject();
                 BGMState = bool(GameObj.value("GameBGM").toVariant().toInt());
                 EffectState = bool(GameObj.value("Effect").toVariant().toInt());
-                CardStyle = GameObj.value("Card").toVariant().toInt();     qDebug()<<CardStyle;
+                CardStyle = GameObj.value("Card").toVariant().toInt();
                 BGMVolume = GameObj.value("BGMVolume").toVariant().toDouble();
                 EffectVolume = GameObj.value("EffectVolume").toVariant().toDouble();
-
+                FullScreenState = bool(UniversalObj.value("FullScreen").toVariant().toInt());
             }
             else
             {
@@ -1352,6 +1360,7 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int
             PreviousBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit1->setText(PreviousBeanNum);
             PreviousName = QString::fromStdString(Name);
+            ui->Name1->setText(PreviousName);
             break;
         }
         case 2:
@@ -1360,6 +1369,7 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int
             NextBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit2->setText(NextBeanNum);
             NextName = QString::fromStdString(Name);
+            ui->Name2->setText(NextName);
             break;
         }
         case 3:
@@ -1368,6 +1378,7 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int
             PlayerBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit3->setText(PlayerBeanNum);
             PlayerName = QString::fromStdString(Name);
+            ui->Name3->setText(PlayerName);
             RoomId = QString::fromStdString(_RoomId);
             ui->RoomId->setText(RoomId);
             ui->RoomId->show();
@@ -1377,16 +1388,32 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int
     qDebug()<<"Pos "<<Pos;
     ShowProfiles(Pos);
 }
-void GameWidget::somebodyLeaveRoom(int Pos)
+void GameWidget::somebodyLeaveRoom(int Pos)   //游戏未开始时（三家没有全部准备时）
 {
     switch(Pos)
     {
         case 1:
         {
+            PreviousBeanNum = "";
+            PreviousCardsNumber = 0;
+            ProfilePixmap1 = QPixmap(":/image/image/Profile/default.jpg");
+            ui->ProfileLabel1->setPixmap(ProfilePixmap1); ui->ProfileLabel1->show();
+            PreviousName = "";
+            ui->BeansLineEdit1->clear();
+            ui->Name1->clear();
+            somebodyUnReady(1);
             break;
         }
         case 2:
         {
+            NextBeanNum = "";
+            NextCardsNumber = 0;
+            ProfilePixmap2 = QPixmap(":/image/image/Profile/default.jpg");
+            ui->ProfileLabel2->setPixmap(ProfilePixmap2); ui->ProfileLabel2->show();
+            NextName = "";
+            ui->BeansLineEdit2->clear();
+            ui->Name2->clear();
+            somebodyUnReady(2);
             break;
         }
     }

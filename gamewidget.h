@@ -73,7 +73,7 @@ public:
     void somebodyDouble(int Pos);
     void somebodyNotDouble(int Pos);
     void somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int Beans,std::string _RoomId = "000000");
-    void somebodyLeaveRoom(int Pos);
+    void somebodyLeaveRoom(int Pos);  //游戏未开始时（三家没有全部准备时）
     void Dealingcards(std::bitset<54> handcards,int cardnum1 = 17,int cardnum2 = 17);
     void StartGame(std::string identity1,std::string identity2,std::string identity3,std::bitset<54> handcards,std::bitset<54> finalcards);
     void AddTimes(int newTimes);
@@ -106,7 +106,7 @@ private:
     QStandardItemModel *model;
     QShortcut *ShowRecorderShortcut;
     RuleWidget *ruleWidget;
-    bool BGMState,EffectState;
+    bool BGMState,EffectState,FullScreenState;
     bool RecordOpen = false;
     int radius,RoomIdFontSize;
     double BGMVolume,EffectVolume;
@@ -115,6 +115,7 @@ private:
     int PreviousOutCradsType,NextOutCradsType,PlayerOutCradsType;
     bool PreviousDouble,NextDouble,PlayerDouble;
     bool PreviousIdentity,NextIdentity,PlayerIdentity;
+    int SettingWidth,SettingHeight;
     QTimer *timer;
     int remainingTime;
     int Card_Recorder[15] = {4,4,4,4,4,4,4,4,4,4,4,4,4,1,1};
