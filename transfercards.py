@@ -32,3 +32,11 @@ def xor_cards(s1, s2):
         raise ValueError('Strings must have equal length.')
     result = ''.join([str(int(char1) ^ int(char2)) for char1, char2 in zip(s1, s2)])
     return result
+
+def count_cards(int_cards):
+    binary_str = transfer_int_to_str(int_cards)
+    count = 0
+    for char in binary_str:
+        if char == '1':
+            count += 1
+    return count

@@ -560,20 +560,29 @@ def 管牌(data):
                     emit('server_response',jsonify(type = 18,win_result = 0,change_peas = farmer1_peas+farmer0_peas,new_peas = FindPeas(battle_data.find_lord_account())).data.decode(),room = battle_data.find_lord_account())
                 return 0 
             
-            
+            cards_num = transfercards.count_cards(int_updated_handcards)
+
             battle_data.renew_handcards(data_seat,int_updated_handcards)
             redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict(),ensure_ascii=False))
             tablecards_belong = int(redis_data.redis_db.get(str(data_room_id)+"_tablecards_belong").decode())
             must = 0
             if int(lordevent.find_next_seat(data_seat)) == tablecards_belong:
                 must = 1 
-            emit('server_response',jsonify(type = 22,tablecards = data_outputcards,seat = data_seat,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
+            emit('server_response',jsonify(type = 22,tablecards = data_outputcards,seat = data_seat,handcards_num = cards_num,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
             
     elif int(data_can_cannot) == 0:
         must = 0
         if int(lordevent.find_next_seat(data_seat)) == tablecards_belong:
             must = 1 
-        emit('server_response',jsonify(type = 22,tablecards = data_tablecards,seat = data_seat,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
+        key = data_room_id+"_battle_data"
+        battle_data = battlestatus.BattleStatus()
+        battle_data.room_id = data_room_id
+        battle_status = redis_data.redis_db.get(key).decode()
+        battle_status = json.loads(battle_status)
+        battle_data.get_battle_status(battle_status)
+        handcards = battle_data.find_handcards(data_seat)
+        cards_num = transfercards.count_cards(handcards)
+        emit('server_response',jsonify(type = 22,tablecards = data_tablecards,seat = data_seat,handcards_num = cards_num,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
         
 
 
@@ -640,12 +649,12 @@ def output_handcards(data):
         return 0 
     battle_data.renew_handcards(data_seat,int_updated_handcards)
     redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict(),ensure_ascii=False))
-
+    cards_num = transfercards.count_cards(int_updated_handcards)
     tablecards_belong = int(redis_data.redis_db.get(str(data_room_id)+"_tablecards_belong").decode())
     must = 0
     if int(lordevent.find_next_seat(data_seat)) == tablecards_belong:
         must = 1 
-    emit('server_response',jsonify(type = 22,tablecards = data_output_cards,seat = data_seat,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
+    emit('server_response',jsonify(type = 22,tablecards = data_output_cards,seat = data_seat,handcards_num = cards_num,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
    
 
 
