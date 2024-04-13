@@ -58,7 +58,7 @@ def inform_room_status(relink_account,seat,room_id):
     print("relink_player.handcards",relink_player.handcards)
     emit('server_response',jsonify(type = 8,roomid = battle_data.room_id,seat = seat_new,
                                    handcards = int(relink_player.handcards),
-                                   lord = relink_player.lord,double = relink_player.double).data.decode(),room = relink_account)
+                                   lord = relink_player.lord,double = relink_player.double,lordcards = battle_data.lordcards).data.decode(),room = relink_account)
     time.sleep(0.5)
     emit('server_response',jsonify(type = 27,account = relink_player.account,roomid = battle_data.room_id,seat = seat_new,
                                    lord = relink_player.lord,double = relink_player.double).data.decode(),room = room_id)
@@ -104,9 +104,9 @@ def Create_room(data):
     redis_data.redis_db.set(str(data_room_id)+"_ask_lord_times",0)
     battle_data.set_account_list(data_account,roomhost.seat)
     redis_data.redis_db.set(str(data_room_id)+"_ready_count",0)
-    redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+    redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict(),ensure_ascii=False))
 
-    redis_data.redis_db.set(str(data_room_id)+'_player_in_room',json.dumps(battle_data.player_in_room()))
+    redis_data.redis_db.set(str(data_room_id)+'_player_in_room',json.dumps(battle_data.player_in_room(),ensure_ascii=False))
     redis_data.redis_db.set(data_account,data_room_id)
 #########################################################
     print("data_room_id",data_room_id,"\n","battle_data.player_1.account",battle_data.player_1.account)    
@@ -184,7 +184,7 @@ def Join_room(data):
         joiner = battlestatus.Player()
         joiner.account = data_account
         print("joiner_account:",joiner.account)
-        joiner.username = 'xiongda'#FindUsername(data_account)
+        joiner.username = '熊大'#FindUsername(data_account)
         joiner.peas = 100000#FindPeas(data_account)
 
         if str(joiner.account) == str(battle_data.player_1.account):
@@ -232,22 +232,15 @@ def Join_room(data):
         battle_data.someone_join_room()
         
         print("json.dumps(battle_data.to_dict()",joiner.account)
-        redis_data.redis_db.set(str(battle_data.room_id)+'_player_in_room',json.dumps(player_in_room.player_in_room()))
+        redis_data.redis_db.set(str(battle_data.room_id)+'_player_in_room',json.dumps(player_in_room.player_in_room(),ensure_ascii=False))
     
-        redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+        redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict(),ensure_ascii=False))
         inform_room_status(data_account,joiner.seat,data_room_id)
         
         redis_data.count_value(check_room)
         join_room(data_room_id)
         redis_data.redis_db.set(data_account,data_room_id)
-#################################################################
-        keys = redis_data.redis_db.keys()
-
-        # 遍历每个键，并输出键和对应的值
-        for key in keys:
-            value = redis_data.redis_db.get(key)
-            print(key.decode(), "->", value.decode())
-#################################################################username = FindUsername(data_account)
+#
         emit('server_response',jsonify(type = 5,status = 1,account = data_account,seat = joiner.seat).data.decode(),room = data_room_id)
         print("-=-=-=-=-=-=-==0=-=-",redis_data.redis_db.get(str(battle_data.room_id)+'_player_in_room').decode())
         roomstatus=redis_data.redis_db.get(str(battle_data.room_id)+'_player_in_room').decode()
@@ -303,22 +296,12 @@ def Leave_room(data):
         battle_data.player_3.leaveroomtimes = quiter.leaveroomtimes
 
     battle_data.someone_leave_room()
-    redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+    redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict(),ensure_ascii=False))
 
     emit('server_response',jsonify( type = 28,status = 1,account = data_account,seat = battle_data.find_seat(data_account)).data.decode(),room = data_room_id)
    
     leave_room(data_room_id)
    
-    ######################################
-    # 获取所有键
-    keys = redis_data.redis_db.keys()
-    print("-----------------------删除后数据库内容")
-    # 遍历每个键，并输出键和对应的值
-    for key in keys:
-        value = redis_data.redis_db.get(key)
-        print(key.decode(), "->", value.decode())
-    print("------------------------删除后数据库内容")
-    ######################################
     return True
 
 
@@ -371,7 +354,7 @@ def ready(data):
         redis_data.redis_db.set(str(data_room_id)+"_"+str(battle_data.player_2.account)+"_player_2_handcards",battle_data.player_2.handcards)
         battle_data.player_3.handcards = package_cards(cards.player_3_cards)
         redis_data.redis_db.set(str(data_room_id)+"_"+str(battle_data.player_3.account)+"_player_3_handcards",battle_data.player_3.handcards)
-        
+        battle_data.lordcards = package_cards(cards.lord_cards)
         first_lord_seat = who_start_first_lord()#选择谁第一个叫地主
         if first_lord_seat == 1:
             player_1_first_lord = 1
@@ -393,7 +376,7 @@ def ready(data):
         emit('server_response',jsonify(type = 12,first_lord = player_1_first_lord,handcards = battle_data.player_1.handcards,account = redis_data.redis_db.get(str(data_room_id)+"_1_ready_account").decode()).data.decode(),room = redis_data.redis_db.get(str(data_room_id)+"_1_ready_account").decode())
         emit('server_response',jsonify(type = 12,first_lord = player_2_first_lord,handcards = battle_data.player_2.handcards,account = redis_data.redis_db.get(str(data_room_id)+"_2_ready_account").decode()).data.decode(),room = redis_data.redis_db.get(str(data_room_id)+"_2_ready_account").decode())
         emit('server_response',jsonify(type = 12,first_lord = player_3_first_lord,handcards = battle_data.player_3.handcards,account = redis_data.redis_db.get(str(data_room_id)+"_3_ready_account").decode()).data.decode(),room = redis_data.redis_db.get(str(data_room_id)+"_3_ready_account").decode())
-        redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+        redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict(),ensure_ascii=False))
         redis_data.redis_db.set(str(battle_data.room_id)+'_lord_cards',package_cards(cards.lord_cards))
         list_key = str(battle_data.room_id)+'_lord_list'
         redis_data.redis_db.lpush(list_key,"__placeholder__")
@@ -402,16 +385,7 @@ def ready(data):
         redis_data.redis_db.set(str(battle_data.room_id)+'_double',1)
         redis_data.redis_db.set(str(battle_data.room_id)+'_ask_rob',"000")
         redis_data.redis_db.set(str(battle_data.room_id)+'_lord_rob_times',0)
-        # ######################################
-        # # 获取所有键
-        # keys = redis_data.redis_db.keys()
-        # print("-----------------------")
-        # # 遍历每个键，并输出键和对应的值
-        # for key in keys:
-        #     value = redis_data.redis_db.get(key)
-        #     print(key.decode(), "->", value.decode())
-        # print("------------------------")
-        # ######################################
+
 
     return data_account + "已经准备" 
 
@@ -431,7 +405,7 @@ def double(data):
     battle_data = battlestatus.BattleStatus()
     battle_data.room_id = data_room_id
     battle_status = redis_data.redis_db.get(key).decode()
-    battle_status = json.loads(battle_status)
+    battle_status = json.loads(battle_status.decode('utf-8'))
     battle_data.get_battle_status(battle_status)
 
     redis_data.redis_db.set(str(data_room_id)+'_'+str(data_seat)+"_output_handcards_signal",0)
@@ -448,13 +422,11 @@ def double(data):
         battle_data.player_3.double = int(data_double)
 
         emit('server_response',jsonify(type = 16,seat = data_seat,double = int(data_double),account = battle_data.player_3.account).data.decode(),room = data_room_id)
-    redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+    redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict(),ensure_ascii=False))
     #当服务器收到了三条加倍后通知地主进行出牌
 
     print("========================",redis_data.redis_db.get(str(data_room_id)+"_double_num").decode())
     if int(redis_data.redis_db.get(str(data_room_id)+"_double_num").decode()) == 3:
-        emit('server_response',jsonify(type = 17).data.decode(),room = battle_data.find_lord_account())
-        time.sleep(0.5)
         emit('server_response',jsonify(type = 34,now_output_player = battle_data.find_seat(battle_data.find_lord_account())).data.decode(),room = data_room_id)
         print("叫地主的账户是：",battle_data.find_lord_account())
 
@@ -590,20 +562,19 @@ def 管牌(data):
             
             
             battle_data.renew_handcards(data_seat,int_updated_handcards)
-            redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+            redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict(),ensure_ascii=False))
             tablecards_belong = int(redis_data.redis_db.get(str(data_room_id)+"_tablecards_belong").decode())
             must = 0
-            if tablecards_belong == int(data_seat):
-                must = 1
-            emit('server_response',jsonify(type = 22,tablecards = data_outputcards,seat = data_seat,now_double = new_double,hide = must).data.decode(),room = data_room_id)
-            time.sleep(1)
-            emit('server_response',jsonify(type = 20).data.decode(),room = lordevent.find_seat_fit_account(lordevent.find_next_seat(data_seat),data_room_id))
-            time.sleep(0.5)
-            emit('server_response',jsonify(type = 34,now_output_player = lordevent.find_next_seat(data_seat)).data.decode(),room = data_room_id)#通知全体玩家，下一个出牌的人是谁
+            if int(lordevent.find_next_seat(data_seat)) == tablecards_belong:
+                must = 1 
+            emit('server_response',jsonify(type = 22,tablecards = data_outputcards,seat = data_seat,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
+            
     elif int(data_can_cannot) == 0:
-        emit('server_response',jsonify(type = 20).data.decode(),room = lordevent.find_seat_fit_account(lordevent.find_next_seat(data_seat),data_room_id))
-        time.sleep(0.5)
-        emit('server_response',jsonify(type = 34,now_output_player = lordevent.find_next_seat(data_seat)).data.decode(),room = data_room_id)#通知全体玩家，下一个出牌的人是谁
+        must = 0
+        if int(lordevent.find_next_seat(data_seat)) == tablecards_belong:
+            must = 1 
+        emit('server_response',jsonify(type = 22,tablecards = data_tablecards,seat = data_seat,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
+        
 
 
 @socketio.on('timeout')
@@ -668,17 +639,14 @@ def output_handcards(data):
             emit('server_response',jsonify(type = 18,win_result = 0).data.decode(),room = battle_data.find_lord_account())
         return 0 
     battle_data.renew_handcards(data_seat,int_updated_handcards)
-    redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict()))
+    redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict(),ensure_ascii=False))
 
     tablecards_belong = int(redis_data.redis_db.get(str(data_room_id)+"_tablecards_belong").decode())
     must = 0
-    if int(data_seat) == tablecards_belong:
+    if int(lordevent.find_next_seat(data_seat)) == tablecards_belong:
         must = 1 
-    emit('server_response',jsonify(type = 19,tablecards = data_output_cards,now_double = new_double,hide = must).data.decode(),room = data_room_id)
-    time.sleep(0.5)
-    emit('server_response',jsonify(type = 20).data.decode(),room = battle_data.find_account(lordevent.find_next_seat(data_seat)))#通知下家进行管牌操作
-    time.sleep(0.5)
-    emit('server_response',jsonify(type = 34,now_output_player = lordevent.find_next_seat(data_seat)).data.decode(),room = data_room_id)#通知全体玩家，下一个出牌的人是谁
+    emit('server_response',jsonify(type = 22,tablecards = data_output_cards,seat = data_seat,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
+   
 
 
 @socketio.on('ask_for_lord')
@@ -701,7 +669,7 @@ import withroblord
 
 @socketio.on('ask_or_rob')
 def ask_or_rob(data):
-    data = json.loads(data)
+    data =json.loads(data)
     data_account = data.get("account")
     data_room_id = data.get("roomid")
     data_lord = data.get("lord")

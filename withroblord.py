@@ -13,13 +13,20 @@ def rob_and_ask(account,roomid,ask,rob,seat):
     battle_data.get_battle_status(battle_status)
 
     redis_data.redis_db.get(str(roomid)+'_ask_rob').decode()
-
+    now_double = redis_data.redis_db.get(str(roomid)+"_double").decode()
+    
+    status = 0
     print("int(redis_data.redis_db.get(str(roomid)+'_lord_rob_times').decode())",int(redis_data.redis_db.get(str(roomid)+'_lord_rob_times').decode()))
     if int(redis_data.redis_db.get(str(roomid)+'_lord_rob_times').decode()) < 2:
         redis_data.count_value(str(roomid)+'_lord_rob_times')
         if int(rob) == 1 or int(ask) == 1:
+            
             rob_lord_double(rob,roomid)
-
+            now_double = redis_data.redis_db.get(str(roomid)+"_double").decode()
+            if int(now_double) == 1:
+                status = 0
+            else:
+                status = 1
             redis_data.redis_db.rpush(str(roomid)+'_lord_list',str(seat))
             list_length = redis_data.redis_db.llen(str(roomid)+'_lord_list')
             
@@ -27,13 +34,18 @@ def rob_and_ask(account,roomid,ask,rob,seat):
             if int(seat) == 1:   redis_data.redis_db.set(str(roomid)+'_ask_rob','100')
             elif int(seat) == 2: redis_data.redis_db.set(str(roomid)+'_ask_rob','010')
             elif int(seat) == 3: redis_data.redis_db.set(str(roomid)+'_ask_rob','001')
-            emit('server_response',jsonify(type = 29).data.decode(),room = lordevent.find_seat_fit_account(lordevent.find_next_seat(int(seat)),roomid))
+            emit('server_response',jsonify(type = 29,status = status,seat = lordevent.find_next_seat(int(seat))).data.decode(),room =roomid)
         if int(rob) == 0 and int(ask) == 0:
-            emit('server_response',jsonify(type = 29).data.decode(),room = lordevent.find_seat_fit_account(lordevent.find_next_seat(int(seat)),roomid))
+            emit('server_response',jsonify(type = 29,status = status,seat = lordevent.find_next_seat(int(seat))).data.decode(),room = roomid)
     elif int(redis_data.redis_db.get(str(roomid)+'_lord_rob_times').decode()) == 2:
         redis_data.count_value(str(roomid)+'_lord_rob_times')
         if int(rob) == 1 or int(ask) == 1:
             rob_lord_double(rob,roomid)
+            now_double = redis_data.redis_db.get(str(roomid)+"_double").decode()
+            if int(now_double) == 1:
+                status = 0
+            else:
+                status = 1
 
             redis_data.redis_db.rpush(str(roomid)+'_lord_list',str(seat))
             list_length = redis_data.redis_db.llen(str(roomid)+'_lord_list')
@@ -54,7 +66,7 @@ def rob_and_ask(account,roomid,ask,rob,seat):
             print("--------------------",lordevent.find_seat_fit_account(redis_data.redis_db.lrange(str(roomid)+'_lord_list',0,-1)[1].decode(),roomid))
             print("--------------------",lordevent.find_seat_fit_account(redis_data.redis_db.lrange(str(roomid)+'_lord_list',0,-1)[1],roomid))
 
-            emit('server_response',jsonify(type = 29).data.decode(),room = lordevent.find_seat_fit_account(redis_data.redis_db.lrange(str(roomid)+'_lord_list',0,-1)[1].decode(),roomid))
+            emit('server_response',jsonify(type = 29,status = status,seat = redis_data.redis_db.lrange(str(roomid)+'_lord_list',0,-1)[1].decode()).data.decode(),room = roomid)
     elif int(redis_data.redis_db.get(str(roomid)+'_lord_rob_times').decode()) == 3:
         if int(rob) == 1 or int(ask) == 1:
             rob_lord_double(rob,roomid)

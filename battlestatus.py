@@ -50,6 +50,7 @@ class BattleStatus(threading.local):
 
         self.player_3 = Player()
 
+        self.lordcards = 0
         self.account_list = [Accountseat("",0),Accountseat("",0),Accountseat("",0)]
         self.room_status = 0 #房间当前状态号码，暂且定义1为游戏已经开始，0为游戏没有开始
 
@@ -89,7 +90,7 @@ class BattleStatus(threading.local):
                 'player_1_leavetimes':self.player_1.leaveroomtimes, 'player_2_leavetimes':self.player_2.leaveroomtimes,
                 'player_3_leavetimes':self.player_3.leaveroomtimes, 'room_count':self.room_count,
                 'player_1_seat':self.player_1.seat,                 'player_2_seat':self.player_2.seat,
-                'player_3_seat':self.player_3.seat
+                'player_3_seat':self.player_3.seat,                 'lordcards':self.lordcards
                 }
     def player_in_room(self):
         return  {
@@ -129,6 +130,7 @@ class BattleStatus(threading.local):
         self.player_1.seat = battle_status.get("player_1_seat")
         self.player_2.seat = battle_status.get("player_2_seat")
         self.player_3.seat = battle_status.get("player_3_seat")
+        self.lordcards = battle_status.get("lordcards")
     def find_lord_account(self):
         if self.player_1.lord == 1:
             return self.player_1.account
