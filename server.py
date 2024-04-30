@@ -244,7 +244,7 @@ def Join_room(data):
         emit('server_response',jsonify(type = 5,status = 1,account = data_account,seat = joiner.seat).data.decode(),room = data_room_id)
         print("-=-=-=-=-=-=-==0=-=-",redis_data.redis_db.get(str(battle_data.room_id)+'_player_in_room').decode())
         roomstatus=redis_data.redis_db.get(str(battle_data.room_id)+'_player_in_room').decode()
-        emit('server_response',jsonify(type = 33,player_status = roomstatus).data.decode(),room = data_room_id)#广播房间当前人的状态
+        emit('server_response',jsonify(type = 33,player_status = roomstatus,player1_profilepicture = 1,player2_profilepicture =2,player3_profilepicture = 3).data.decode(),room = data_room_id)#广播房间当前人的状态
         print("--------------------",redis_data.redis_db.get(data_account))
         return True
 
