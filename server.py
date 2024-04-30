@@ -536,7 +536,7 @@ def 管牌(data):
             updated_handcards = transfercards.xor_cards(bitsite_handcards,bitsite_output_cards)
             int_updated_handcards = int(updated_handcards,2)
 
-            if check_result[0][0] == 9 or check_result[0][0] == 14:#如果是王炸和炸弹的话
+            if int(check_result[0][0]) == 9 or int(check_result[0][0]) == 14:#如果是王炸和炸弹的话
                 now_double = int(redis_data.redis_db.get(str(data_room_id)+"_double").decode())
                 new_double = 2*now_double
                 redis_data.redis_db.set(str(data_room_id)+"_double",new_double)
@@ -568,7 +568,7 @@ def 管牌(data):
             must = 0
             if int(lordevent.find_next_seat(data_seat)) == tablecards_belong:
                 must = 1 
-            emit('server_response',jsonify(type = 22,tablecards = data_outputcards,seat = data_seat,handcards_num = cards_num,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
+            emit('server_response',jsonify(type = 22,cards_type = int(check_result[0][0]),tablecards = data_outputcards,seat = data_seat,handcards_num = cards_num,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
             
     elif int(data_can_cannot) == 0:
         must = 0
@@ -582,16 +582,16 @@ def 管牌(data):
         battle_data.get_battle_status(battle_status)
         handcards = battle_data.find_handcards(data_seat)
         cards_num = transfercards.count_cards(handcards)
-        emit('server_response',jsonify(type = 22,tablecards = data_tablecards,seat = data_seat,handcards_num = cards_num,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
+        emit('server_response',jsonify(type = 22,cards_type = int(check_result[0][0]),tablecards = data_tablecards,seat = data_seat,handcards_num = cards_num,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
         
 
 
 @socketio.on('timeout')
 def timeout(data):
     data = json.loads(data)
-    data_room_id = data.get("roomid")
+    data_room_id = data.get("roomid")  
     data_seat = data.get("seat")
-    data_timeout_type = data.get("timeout")
+    data_timeout_type = data.get("timeout_type")
     data_account = data.get("account")
     if int(data_timeout_type) == 1: #叫地主超时
         emit('server_response',jsonify(type = 23,lord = 0).data.decode(),room = data_account)
