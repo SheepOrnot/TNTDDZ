@@ -356,26 +356,26 @@ def ready(data):
         redis_data.redis_db.set(str(data_room_id)+"_"+str(battle_data.player_3.account)+"_player_3_handcards",battle_data.player_3.handcards)
         battle_data.lordcards = package_cards(cards.lord_cards)
         first_lord_seat = who_start_first_lord()#选择谁第一个叫地主
-        if first_lord_seat == 1:
-            player_1_first_lord = 1
-            player_2_first_lord = 0
-            player_3_first_lord = 0
-        elif first_lord_seat == 2:
-            player_1_first_lord = 0
-            player_2_first_lord = 1
-            player_3_first_lord = 0
-        elif first_lord_seat == 3:
-            player_1_first_lord = 0
-            player_2_first_lord = 0
-            player_3_first_lord = 1
+        # if first_lord_seat == 1:
+        #     player_1_first_lord = 1
+        #     player_2_first_lord = 0
+        #     player_3_first_lord = 0
+        # elif first_lord_seat == 2:
+        #     player_1_first_lord = 0
+        #     player_2_first_lord = 1
+        #     player_3_first_lord = 0
+        # elif first_lord_seat == 3:
+        #     player_1_first_lord = 0
+        #     player_2_first_lord = 0
+        #     player_3_first_lord = 1
       
         print("一号玩家的手牌是",battle_data.player_1.handcards,"一号玩家的account:",cards.player_1_cards)
         print("二号玩家的手牌是",battle_data.player_2.handcards,"二号玩家的account:",sendcard.transfercard(cards.player_2_cards))
         print("三号玩家的手牌是",battle_data.player_3.handcards,"三号玩家的account:",sendcard.transfercard(cards.player_3_cards))
 
-        emit('server_response',jsonify(type = 12,first_lord = player_1_first_lord,handcards = battle_data.player_1.handcards,account = redis_data.redis_db.get(str(data_room_id)+"_1_ready_account").decode()).data.decode(),room = redis_data.redis_db.get(str(data_room_id)+"_1_ready_account").decode())
-        emit('server_response',jsonify(type = 12,first_lord = player_2_first_lord,handcards = battle_data.player_2.handcards,account = redis_data.redis_db.get(str(data_room_id)+"_2_ready_account").decode()).data.decode(),room = redis_data.redis_db.get(str(data_room_id)+"_2_ready_account").decode())
-        emit('server_response',jsonify(type = 12,first_lord = player_3_first_lord,handcards = battle_data.player_3.handcards,account = redis_data.redis_db.get(str(data_room_id)+"_3_ready_account").decode()).data.decode(),room = redis_data.redis_db.get(str(data_room_id)+"_3_ready_account").decode())
+        emit('server_response',jsonify(type = 12,first_lord_seat = first_lord_seat,handcards = battle_data.player_1.handcards,account = redis_data.redis_db.get(str(data_room_id)+"_1_ready_account").decode()).data.decode(),room = redis_data.redis_db.get(str(data_room_id)+"_1_ready_account").decode())
+        emit('server_response',jsonify(type = 12,first_lord_seat = first_lord_seat,handcards = battle_data.player_2.handcards,account = redis_data.redis_db.get(str(data_room_id)+"_2_ready_account").decode()).data.decode(),room = redis_data.redis_db.get(str(data_room_id)+"_2_ready_account").decode())
+        emit('server_response',jsonify(type = 12,first_lord_seat = first_lord_seat,handcards = battle_data.player_3.handcards,account = redis_data.redis_db.get(str(data_room_id)+"_3_ready_account").decode()).data.decode(),room = redis_data.redis_db.get(str(data_room_id)+"_3_ready_account").decode())
         redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict(),ensure_ascii=False))
         redis_data.redis_db.set(str(battle_data.room_id)+'_lord_cards',package_cards(cards.lord_cards))
         list_key = str(battle_data.room_id)+'_lord_list'
