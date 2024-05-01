@@ -44,7 +44,7 @@ def find_seat_fit_account(data_seat,data_room_id):
     print("key",key)
     battle_data = battlestatus.BattleStatus()
     battle_status = redis_data.redis_db.get(key).decode()
-    battle_status = json.loads(battle_status.decode('utf-8'))
+    battle_status = json.loads(battle_status)
 
     battle_data.player_1.account = battle_status.get("player_1_account")
     battle_data.player_2.account = battle_status.get("player_2_account")
@@ -81,7 +81,7 @@ def change_lord_data(data_account,data_room_id,lord_handcards):
 
     battle_data = battlestatus.BattleStatus()
     battle_status = redis_data.redis_db.get(key).decode()
-    battle_status = json.loads(battle_status.decode('utf-8'))
+    battle_status = json.loads(battle_status)
 
     battle_data.room_id = data_room_id
     battle_data.get_battle_status(battle_status)
@@ -122,7 +122,7 @@ def random_lord(data_room_id):
 
     battle_data = battlestatus.BattleStatus()
     battle_status = redis_data.redis_db.get(key).decode()
-    battle_status = json.loads(battle_status.decode('utf-8'))
+    battle_status = json.loads(battle_status)
 
     battle_data.room_id = data_room_id
     battle_data.get_battle_status(battle_status)

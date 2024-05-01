@@ -177,6 +177,13 @@ class BattleStatus(threading.local):
             return self.player_2.account
         elif int(seat) == 3:
             return self.player_3.account
+    def find_account_fit_seat(self,account):
+        if self.player_1.account == account:
+            return 1
+        elif self.player_2.account == account:
+            return 2
+        elif self.player_3.account == account:
+            return 3
 
 
 

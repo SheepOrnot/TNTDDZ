@@ -385,6 +385,7 @@ def ready(data):
         redis_data.redis_db.set(str(battle_data.room_id)+'_double',1)
         redis_data.redis_db.set(str(battle_data.room_id)+'_ask_rob',"000")
         redis_data.redis_db.set(str(battle_data.room_id)+'_lord_rob_times',0)
+        redis_data.redis_db.set(str(data_room_id)+"_ask_or_rob_times",0)
 
 
     return data_account + "已经准备" 
@@ -405,7 +406,7 @@ def double(data):
     battle_data = battlestatus.BattleStatus()
     battle_data.room_id = data_room_id
     battle_status = redis_data.redis_db.get(key).decode()
-    battle_status = json.loads(battle_status.decode('utf-8'))
+    battle_status = json.loads(battle_status)
     battle_data.get_battle_status(battle_status)
 
     redis_data.redis_db.set(str(data_room_id)+'_'+str(data_seat)+"_output_handcards_signal",0)
@@ -427,7 +428,7 @@ def double(data):
 
     print("========================",redis_data.redis_db.get(str(data_room_id)+"_double_num").decode())
     if int(redis_data.redis_db.get(str(data_room_id)+"_double_num").decode()) == 3:
-        emit('server_response',jsonify(type = 34,now_output_player = battle_data.find_seat(battle_data.find_lord_account())).data.decode(),room = data_room_id)
+        emit('server_response',jsonify(type = 34,now_output_player = battle_data.find_account_fit_seat(battle_data.find_lord_account())).data.decode(),room = data_room_id)
         print("叫地主的账户是：",battle_data.find_lord_account())
 
 def losepeas(seat,data_room_id):
@@ -684,7 +685,7 @@ def ask_or_rob(data):
     data_lord = data.get("lord")
     data_seat = data.get("seat")
     data_rob = data.get("rob")
-
+    
     lordseat = withroblord.rob_and_ask(data_account,data_room_id,data_lord,data_rob,data_seat)
     if lordseat == 1 or lordseat == 2 or lordseat == 3:
         lord_cards = redis_data.redis_db.get(str(data_room_id)+"_lord_cards").decode()
