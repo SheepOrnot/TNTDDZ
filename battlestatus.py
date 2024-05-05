@@ -60,9 +60,15 @@ class BattleStatus(threading.local):
             
             self.account_list[int(seat)-1] = accountseat
     def find_seat(self,account):
-        for i in range(0,3):
-            if self.account_list[i].account == account:
-                return self.account_list[i].seat
+        # for i in range(0,3):
+        #     if self.account_list[i].account == account:
+        #         return self.account_list[i].seat
+        if self.player_1.account == account:
+            return 1
+        elif self.player_2.account == account:
+            return 2
+        elif self.player_3.account == account:
+            return 3
         
     def del_account_list(self,account,seat):
         accountseat = Accountseat(account,seat)

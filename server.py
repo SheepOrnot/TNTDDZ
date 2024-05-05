@@ -97,8 +97,8 @@ def Create_room(data):
     roomhost = battlestatus.Player()
     roomhost.account = data_account
     roomhost.seat = 1
-    roomhost.username = 'cty'#FindUsername(data_account)
-    roomhost.peas = 10000#FindPeas(data_account)
+    roomhost.username = FindUsername(data_account)
+    roomhost.peas = FindPeas(data_account)
     battle_data.player_1 = roomhost
 
     redis_data.redis_db.set(str(data_room_id)+"_ask_lord_times",0)
@@ -184,8 +184,8 @@ def Join_room(data):
         joiner = battlestatus.Player()
         joiner.account = data_account
         print("joiner_account:",joiner.account)
-        joiner.username = '熊大'#FindUsername(data_account)
-        joiner.peas = 100000#FindPeas(data_account)
+        joiner.username = FindUsername(data_account)
+        joiner.peas = FindPeas(data_account)
 
         if str(joiner.account) == str(battle_data.player_1.account):
             joiner.seat = 1
@@ -356,18 +356,7 @@ def ready(data):
         redis_data.redis_db.set(str(data_room_id)+"_"+str(battle_data.player_3.account)+"_player_3_handcards",battle_data.player_3.handcards)
         battle_data.lordcards = package_cards(cards.lord_cards)
         first_lord_seat = who_start_first_lord()#选择谁第一个叫地主
-        # if first_lord_seat == 1:
-        #     player_1_first_lord = 1
-        #     player_2_first_lord = 0
-        #     player_3_first_lord = 0
-        # elif first_lord_seat == 2:
-        #     player_1_first_lord = 0
-        #     player_2_first_lord = 1
-        #     player_3_first_lord = 0
-        # elif first_lord_seat == 3:
-        #     player_1_first_lord = 0
-        #     player_2_first_lord = 0
-        #     player_3_first_lord = 1
+
       
         print("一号玩家的手牌是",battle_data.player_1.handcards,"一号玩家的account:",cards.player_1_cards)
         print("二号玩家的手牌是",battle_data.player_2.handcards,"二号玩家的account:",sendcard.transfercard(cards.player_2_cards))
@@ -443,16 +432,19 @@ def losepeas(seat,data_room_id):
     FindPeasLanguage = '''select Upeas from UserTable where Uaccount like ?'''
     UpdataPeasLanguage = '''update USertable set Upeas = ? where Uaccount like ?'''
     cursor.execute(FindPeasLanguage,[str(lordevent.find_seat_fit_account(seat,data_room_id))])
-    result = cursor.fetchall
-    losepeas = peas_caculate(seat,data_room_id)
-    if int(result[0])<int(losepeas):
-        losepeas = result[0]
+    result = cursor.fetchall()
+    peas = peas_caculate(seat,data_room_id)
+    print("peas",peas)
+    print("result",result)
+    print("result[0][0]",result[0][0])
+    if int(result[0][0])<int(peas):
+        peas = result[0][0]
         cursor.execute(UpdataPeasLanguage,['0',str(lordevent.find_seat_fit_account(seat,data_room_id))])
-        return int(losepeas)
+        return int(peas)
     else:
-        new_peas = int(result[0]) - int(losepeas)
+        new_peas = int(result[0][0]) - int(peas)
         cursor.execute(UpdataPeasLanguage,[str(new_peas),str(lordevent.find_seat_fit_account(seat,data_room_id))])
-        return int(losepeas)
+        return int(peas)
 
 
 def peas_caculate(seat,data_room_id):
@@ -481,10 +473,10 @@ def winpeas(seat,data_room_id):
     FindPeasLanguage = '''select Upeas from UserTable where Uaccount like ?'''
     UpdataPeasLanguage = '''update USertable set Upeas = ? where Uaccount like ?'''
     cursor.execute(FindPeasLanguage,[str(lordevent.find_seat_fit_account(seat,data_room_id))])
-    result = cursor.fetchall
+    result = cursor.fetchall()
     winpeas = peas_caculate(seat,data_room_id)
 
-    new_peas = int(result[0][0]) + int(losepeas)
+    new_peas = int(result[0][0]) + int(losepeas(seat,data_room_id))
     cursor.execute(UpdataPeasLanguage,[str(new_peas),str(lordevent.find_seat_fit_account(seat,data_room_id))])
     return int(winpeas)
 
@@ -492,7 +484,7 @@ def updata_peas(seat,data_room_id,new_peas,win_result):
     global cursor
     FindPeasLanguage = '''select Upeas from UserTable where Uaccount like ?'''
     cursor.execute(FindPeasLanguage,[str(lordevent.find_seat_fit_account(seat,data_room_id))])
-    result = cursor.fetchall
+    result = cursor.fetchall()
     if win_result == 1:
         new_peas = new_peas + int(result[0][0])
     elif win_result == 0:
@@ -513,6 +505,8 @@ def 管牌(data):
     data_seat = data.get("seat")
     data_account = data.get("account")
     table_cards_belong = int(redis_data.redis_db.get(str(data_room_id)+"_tablecards_belong").decode())
+    now_double = int(redis_data.redis_db.get(str(data_room_id)+"_double").decode())
+    new_double = now_double
     if table_cards_belong == int(data_seat):
         data_tablecards = 0
     if int(data_can_cannot) == 1:
@@ -537,43 +531,47 @@ def 管牌(data):
             updated_handcards = transfercards.xor_cards(bitsite_handcards,bitsite_output_cards)
             int_updated_handcards = int(updated_handcards,2)
 
-            if int(check_result[0][0]) == 9 or int(check_result[0][0]) == 14:#如果是王炸和炸弹的话
-                now_double = int(redis_data.redis_db.get(str(data_room_id)+"_double").decode())
+            if int(check_result[0][0][0]) == 9 or int(check_result[0][0][0]) == 14:#如果是王炸和炸弹的话
                 new_double = 2*now_double
                 redis_data.redis_db.set(str(data_room_id)+"_double",new_double)
             
             if int_updated_handcards == 0:
+                times = redis_data.redis_db.get(str(data_room_id)+"_double").decode()
                 if battle_data.find_lord_num(data_seat) == 1:
-                    farmer0_peas = losepeas(int(battle_data.find_seat(battle_data.find_farmer_account[0])),data_room_id)
-                    farmer1_peas = losepeas(int(battle_data.find_seat(battle_data.find_farmer_account[1])),data_room_id)
+                    farmer0_peas = losepeas(int(battle_data.find_seat(battle_data.find_farmer_account()[0])),data_room_id)
+                    farmer1_peas = losepeas(int(battle_data.find_seat(battle_data.find_farmer_account()[1])),data_room_id)
                     updata_peas(battle_data.find_seat(battle_data.find_lord_account()),data_room_id,farmer0_peas+farmer1_peas,1)
 
-                    emit('server_response',jsonify(type = 18,win_result = 0,change_peas = farmer0_peas,new_peas = FindPeas(battle_data.find_farmer_account()[0])).data.decode(),room = battle_data.find_farmer_account()[0])
-                    emit('server_response',jsonify(type = 18,win_result = 0,change_peas = farmer1_peas,new_peas = FindPeas(battle_data.find_farmer_account()[1])).data.decode(),room = battle_data.find_farmer_account()[1])
-                    emit('server_response',jsonify(type = 18,win_result = 1,change_peas = farmer1_peas+farmer0_peas,new_peas = FindPeas(battle_data.find_lord_account())).data.decode(),room = battle_data.find_lord_account())
+                    emit('server_response',jsonify(type = 18,times = times,win_result = 0,change_peas = farmer0_peas,new_peas = FindPeas(battle_data.find_farmer_account()[0])).data.decode(),room = battle_data.find_farmer_account()[0])
+                    emit('server_response',jsonify(type = 18,times = times,win_result = 0,change_peas = farmer1_peas,new_peas = FindPeas(battle_data.find_farmer_account()[1])).data.decode(),room = battle_data.find_farmer_account()[1])
+                    emit('server_response',jsonify(type = 18,times = times,win_result = 1,change_peas = farmer1_peas+farmer0_peas,new_peas = FindPeas(battle_data.find_lord_account())).data.decode(),room = battle_data.find_lord_account())
                 elif battle_data.find_lord_num(data_seat) == 0:
-                    farmer0_peas = winpeas(int(battle_data.find_seat(battle_data.find_farmer_account[0])),data_room_id)
-                    farmer1_peas = winpeas(int(battle_data.find_seat(battle_data.find_farmer_account[1])),data_room_id)
+                    farmer0_peas = winpeas(int(battle_data.find_seat(battle_data.find_farmer_account()[0])),data_room_id)
+                    farmer1_peas = winpeas(int(battle_data.find_seat(battle_data.find_farmer_account()[1])),data_room_id)
                     updata_peas(battle_data.find_seat(battle_data.find_lord_account()),data_room_id,farmer0_peas+farmer1_peas,1)
 
-                    emit('server_response',jsonify(type = 18,win_result = 1,change_peas = farmer0_peas,new_peas = FindPeas(battle_data.find_farmer_account()[0])).data.decode(),room = battle_data.find_farmer_account()[0])
-                    emit('server_response',jsonify(type = 18,win_result = 1,change_peas = farmer1_peas,new_peas = FindPeas(battle_data.find_farmer_account()[1])).data.decode(),room = battle_data.find_farmer_account()[1])
-                    emit('server_response',jsonify(type = 18,win_result = 0,change_peas = farmer1_peas+farmer0_peas,new_peas = FindPeas(battle_data.find_lord_account())).data.decode(),room = battle_data.find_lord_account())
-                return 0 
+                    emit('server_response',jsonify(type = 18,times = times,win_result = 1,change_peas = farmer0_peas,new_peas = FindPeas(battle_data.find_farmer_account()[0])).data.decode(),room = battle_data.find_farmer_account()[0])
+                    emit('server_response',jsonify(type = 18,times = times,win_result = 1,change_peas = farmer1_peas,new_peas = FindPeas(battle_data.find_farmer_account()[1])).data.decode(),room = battle_data.find_farmer_account()[1])
+                    emit('server_response',jsonify(type = 18,times = times,win_result = 0,change_peas = farmer1_peas+farmer0_peas,new_peas = FindPeas(battle_data.find_lord_account())).data.decode(),room = battle_data.find_lord_account())
+ 
             
             cards_num = transfercards.count_cards(int_updated_handcards)
 
             battle_data.renew_handcards(data_seat,int_updated_handcards)
             redis_data.redis_db.set(str(battle_data.room_id)+'_battle_data',json.dumps(battle_data.to_dict(),ensure_ascii=False))
-            tablecards_belong = int(redis_data.redis_db.get(str(data_room_id)+"_tablecards_belong").decode())
+
             must = 0
-            if int(lordevent.find_next_seat(data_seat)) == tablecards_belong:
+            if int(lordevent.find_next_seat(data_seat)) == table_cards_belong:
                 must = 1 
-            emit('server_response',jsonify(type = 22,cards_type = int(check_result[0][0]),tablecards = data_outputcards,seat = data_seat,handcards_num = cards_num,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
+
+            next_player = lordevent.find_next_seat(data_seat)
+            if int_updated_handcards == 0:
+                next_player =0
+            emit('server_response',jsonify(type = 22,cards_type = int(check_result[0][0][0]),tablecards = data_outputcards,seat = data_seat,handcards_num = cards_num,now_double = new_double,now_output_player=next_player,hide = must).data.decode(),room = data_room_id)
             
     elif int(data_can_cannot) == 0:
         must = 0
-        if int(lordevent.find_next_seat(data_seat)) == tablecards_belong:
+        if int(lordevent.find_next_seat(data_seat)) == table_cards_belong:
             must = 1 
         key = data_room_id+"_battle_data"
         battle_data = battlestatus.BattleStatus()
@@ -583,7 +581,7 @@ def 管牌(data):
         battle_data.get_battle_status(battle_status)
         handcards = battle_data.find_handcards(data_seat)
         cards_num = transfercards.count_cards(handcards)
-        emit('server_response',jsonify(type = 22,cards_type = int(check_result[0][0]),tablecards = data_tablecards,seat = data_seat,handcards_num = cards_num,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
+        emit('server_response',jsonify(type = 22,cards_type = 0,tablecards = data_tablecards,seat = data_seat,handcards_num = cards_num,now_double = new_double,now_output_player=lordevent.find_next_seat(data_seat),hide = must).data.decode(),room = data_room_id)
         
 
 
@@ -619,7 +617,7 @@ def output_handcards(data):
         emit('server_response',jsonify(type = 21,checkresult = 0).data.decode(),room = data_account)
         return 0 
     redis_data.redis_db.set(str(data_room_id)+"_tablecards_belong",int(data_seat))
-    if check_result[0][0] == 9 or check_result[0][0] == 14:#如果是王炸和炸弹的话
+    if check_result[0][0][0] == 9 or check_result[0][0][0] == 14:#如果是王炸和炸弹的话
         now_double = int(redis_data.redis_db.get(str(data_room_id)+"_double").decode())
         new_double = 2*now_double
         redis_data.redis_db.set(str(data_room_id)+"_double",new_double)
