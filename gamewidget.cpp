@@ -61,9 +61,9 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
         switch(TestStage)
         {
             case 0:{somebodyEnterRoom(3,0,"冷锋",66999,"995664"); break;}
-            case 1:{somebodyEnterRoom(1,1,"玩家1",652);  break;}
+            case 1:{somebodyEnterRoom(1,1,"陈韬羽",652);  break;}
             case 2:{somebodyReady(3);break;}
-            case 3:{somebodyEnterRoom(2,3,"玩家2",777777777);break;}
+            case 3:{somebodyEnterRoom(2,3,"司令",777777777);break;}
             case 4:{somebodyReady(2);break;}
             case 5:{somebodyUnReady(3);break;}
             case 6:{somebodyReady(3);break;}
@@ -164,6 +164,9 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
     ui->ReadyLabel2        ->setGeometry( 0.918*Width,  0.240*Height,  0.025*Width,   0.035*Height);    ui->ReadyLabel2->hide();
     ui->ReadyLabel3        ->setGeometry( 0.078*Width,  0.814*Height,  0.025*Width,   0.035*Height);    ui->ReadyLabel3->hide();
     ui->Recorder           ->setGeometry( 0.070*Width,  0.018*Height,  0.290*Width,   0.057*Height);    ui->Recorder->hide();
+    ui->Name1              ->setGeometry( 0.062*Width,  0.420*Height,  0.050*Width,   0.035*Height);
+    ui->Name2              ->setGeometry( 0.906*Width,  0.420*Height,  0.050*Width,   0.035*Height);
+    ui->Name3              ->setGeometry( 0.140*Width,  0.953*Height,  0.050*Width,   0.035*Height);
 
     ui->SettingBtn->setIcon(QIcon(":/image/image/Icon/setting.png"));
     ui->SettingBtn->setStyleSheet("QPushButton { background-color: transparent; }");
@@ -1179,7 +1182,7 @@ void GameWidget::somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,in
             {
                 if(Bitset[PlayerHandCards[i].Index]==1)
                 {
-                    PlayerHandCards[i].isUp = true;     qDebug()<<"set Card"<<PlayerHandCards[i].Type<<" "<<PlayerHandCards[i].Point<<"isUp -> true";
+                    PlayerHandCards[i].isUp = true;
                 }
                 else if(PlayerHandCards[i].isUp==true)
                 {
@@ -1427,7 +1430,7 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int
             PreviousBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit1->setText(PreviousBeanNum);
             PreviousName = QString::fromStdString(Name);
-            ui->Name1->setText(PreviousName);
+            ui->Name1->setText(PreviousName);ui->Name1->show();
             break;
         }
         case 2:
@@ -1436,7 +1439,7 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int
             NextBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit2->setText(NextBeanNum);
             NextName = QString::fromStdString(Name);
-            ui->Name2->setText(NextName);
+            ui->Name2->setText(NextName); ui->Name2->show();
             break;
         }
         case 3:
@@ -1445,7 +1448,7 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int
             PlayerBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit3->setText(PlayerBeanNum);
             PlayerName = QString::fromStdString(Name);
-            ui->Name3->setText(PlayerName);
+            ui->Name3->setText(PlayerName); ui->Name3->show();
             RoomId = QString::fromStdString(_RoomId);
             ui->RoomId->setText(RoomId);
             ui->RoomId->show();
@@ -1536,11 +1539,54 @@ void GameWidget::GameOver(bool Result,int times,int Score1,int Score2,int Score3
     ContinueGame->show();
     connect(ContinueGame,&QPushButton::clicked,this,&GameWidget::StartNewGame);
     gameoverWidget->show();
+    timer->stop();  qDebug()<<"stop Timer";
+    disconnect(timer, nullptr, this, nullptr);
+    ui->ClockImageLabel->hide();
+    ui->ClockNum->hide();
 }
 
 void GameWidget::StartNewGame()
 {
+    qDebug()<<"start new game";
     gameoverWidget->close();
+    for(unsigned i = 0;i<backlabel1.size();i++){
+        qDebug()<<"delete backlabel1"<<i;
+        delete backlabel1[i];
+        }
+    for(unsigned i = 0;i<backlabel2.size();i++){
+            qDebug()<<"delete backlabel2"<<i;
+        delete backlabel2[i];
+    }
+    backlabel1.clear();
+    backlabel2.clear();
+
+    backlabel1.shrink_to_fit();
+    backlabel2.shrink_to_fit();
+    DestroyOutCards(1);
+    DestroyOutCards(2);
+    DestroyOutCards(3);
+    PreviousPlayerOutCards.clear();
+    NextPlayerOutCards.clear();
+    PlayerOutCards.clear();
+    PlayerHandCards.clear();
+    FinalCards.clear();
+    ui->FinalCard1->setPixmap(CardBackPixmap);
+    ui->FinalCard2->setPixmap(CardBackPixmap);
+    ui->FinalCard3->setPixmap(CardBackPixmap);
+    PreviousCardsNumLabel->hide();
+    PreviousCardsNumber = 0;
+    NextCardsNumLabel->hide();
+    NextCardsNumber = 0;
+    ui->MSGLabel1->clear();
+    ui->MSGLabel2->clear();
+    ui->MSGLabel3->clear();
+    ui->IdentityLabel1->hide();
+    ui->IdentityLabel2->hide();
+    ui->IdentityLabel3->hide();
+    int temp[15] = {4,4,4,4,4,4,4,4,4,4,4,4,4,1,1};
+    for(int i = 0;i<15;i++) Card_Recorder[i] = temp[i];
+    //placeHandCards();
+
     if(!mode)
     {
         WidgetArgPackage* package = new WidgetArgPackage();
