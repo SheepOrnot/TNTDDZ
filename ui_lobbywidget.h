@@ -38,6 +38,7 @@ public:
     QPushButton *JoinRoomBtn;
     QLineEdit *RoomId;
     QPushButton *ProfileLabel;
+    QPushButton *ExitBtn;
 
     void setupUi(QWidget *LobbyWidget)
     {
@@ -101,6 +102,9 @@ public:
         ProfileLabel = new QPushButton(LobbyWidget);
         ProfileLabel->setObjectName("ProfileLabel");
         ProfileLabel->setGeometry(QRect(40, 20, 130, 130));
+        ExitBtn = new QPushButton(LobbyWidget);
+        ExitBtn->setObjectName("ExitBtn");
+        ExitBtn->setGeometry(QRect(1590, 990, 131, 71));
 
         retranslateUi(LobbyWidget);
 
@@ -127,6 +131,7 @@ public:
         JoinRoomBtn->setText(QCoreApplication::translate("LobbyWidget", "\345\212\240\345\205\245\346\210\277\351\227\264", nullptr));
         RoomId->setText(QCoreApplication::translate("LobbyWidget", "000000", nullptr));
         ProfileLabel->setText(QString());
+        ExitBtn->setText(QCoreApplication::translate("LobbyWidget", "\351\200\200\345\207\272\346\270\270\346\210\217", nullptr));
     } // retranslateUi
 
 };

@@ -31,10 +31,11 @@ GameOverWidget::GameOverWidget(int _Width,int _Height,bool _Result,int _times,
     ui->Username3    ->setGeometry(0.160*Width,  0.25 *Height,  0.104*Width,   0.047*Height);
     ui->Title        ->setGeometry(0.197*Width,  0.055*Height,  0.208*Width,   0.148*Height);
     ui->ReturnToLobby->setGeometry(0.098*Width,  0.481*Height,  0.099*Width,   0.065*Height);
-    ui->ContinueGame ->setGeometry(0.401*Width,  0.481*Height,  0.099*Width,   0.065*Height);
+    ui->ContinueGame ->setGeometry(0.401*Width,  0.481*Height,  0.099*Width,   0.065*Height);    ui->ContinueGame->hide();
     ui->Double1      ->setGeometry(0.300*Width,  0.379*Height,  0.050*Width,   0.047*Height);
     ui->Double2      ->setGeometry(0.300*Width,  0.314*Height,  0.050*Width,   0.047*Height);
     ui->Double3      ->setGeometry(0.300*Width,  0.25 *Height,  0.050*Width,   0.047*Height);
+
     if(identity3 == 1)
     {
         Result1 = !Result; Result2 = !Result; Result3 = Result;

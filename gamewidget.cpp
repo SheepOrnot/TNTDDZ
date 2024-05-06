@@ -11,7 +11,14 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
     ImportConfig();
     this->setFixedSize(Width,Height);
     InitAllCards();
-
+    if(FullScreenState)
+    {
+        this->setWindowFlags(Qt::FramelessWindowHint);  // 设置无边框
+        this->showFullScreen();  // 全屏显示
+        SettingWidth = Width; SettingHeight = Height;
+        Width = this->width();
+        Height = this->height();
+    }
 
     BGMPlayer = new QMediaPlayer();
     BGMPlayer->setSource(QUrl("qrc:/sound/sound/BGM/gamebgm.mp3"));
@@ -71,7 +78,7 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
             case 15:{somebodyBidForLandlordRound(3);break;}
             case 16:{somebodyBidForLandlord(3);break;}
             case 17:{StartGame("farmer","farmer","landlord",finalBitset|playerBitset,finalBitset);break;}  //111110000000011111111100000000000001001100000000110001
-            case 18:{somebodyPlayCardRound(3);break;};
+            case 18:{somebodyPlayCardRound(3,1);break;};
             case 19:{
                     playeroutBitset = std::bitset<54>(std::string("000000000000000000000000000000000000000000000000110000"));
                     playerBitset    = std::bitset<54>(std::string("111110000000011111111100000000000001001100000000000001"));
@@ -99,11 +106,13 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
             case 27:{somebodyNotOutCard(2,15);break;}
             case 28:{somebodyPlayCardRound(1);break;}
             case 29:{somebodyNotOutCard(1,17);break;}
-            case 30:{somebodyPlayCardRound(3);break;}
+            case 30:{somebodyPlayCardRound(3,1);break;}
             case 31:
             {
-                playeroutBitset = std::bitset<54>(std::string("110000000000000000000000000000000000000000000000000000"));
-                playerBitset= std::bitset<54>    (std::string("000010000000011111111100000000000001001100000000000001"));
+                //playeroutBitset = std::bitset<54>(std::string("110000000000000000000000000000000000000000000000000000"));
+                playeroutBitset = std::bitset<54>(std::string("110010000000011111111100000000000001001100000000000001"));
+                //playerBitset= std::bitset<54>    (std::string("000010000000011111111100000000000001001100000000000001"));
+                playerBitset= std::bitset<54>    (std::string("000000000000000000000000000000000000000000000000000000"));
                 somebodyOutCard(3,playeroutBitset,14,14,playerBitset);
                 break;
             }
@@ -514,12 +523,13 @@ void GameWidget::ImportConfig()
             {
                 QJsonObject jsonObj = jsonDoc.object();
                 QJsonObject GameObj = jsonObj["Game"].toObject();
+                QJsonObject UniversalObj = jsonObj["Universal"].toObject();
                 BGMState = bool(GameObj.value("GameBGM").toVariant().toInt());
                 EffectState = bool(GameObj.value("Effect").toVariant().toInt());
-                CardStyle = GameObj.value("Card").toVariant().toInt();     qDebug()<<CardStyle;
+                CardStyle = GameObj.value("Card").toVariant().toInt();
                 BGMVolume = GameObj.value("BGMVolume").toVariant().toDouble();
                 EffectVolume = GameObj.value("EffectVolume").toVariant().toDouble();
-
+                FullScreenState = bool(UniversalObj.value("FullScreen").toVariant().toInt());
             }
             else
             {
@@ -649,6 +659,14 @@ void GameWidget::AnimateMoveLeft(QPushButton* btn, int distance)
             {
                 btn->setEnabled(true);
             });
+}
+void GameWidget::MessageSender(std::string Title, std::string Info, QMessageBox::Icon Type)
+{
+    QMessageBox msgBox;
+    msgBox.setIcon(Type);
+    msgBox.setWindowTitle(QString::fromStdString(Title));
+    msgBox.setText(QString::fromStdString(Info));
+    msgBox.exec();
 }
 void GameWidget::PlacePreviousHandCards()
 {
@@ -980,7 +998,7 @@ void GameWidget::somebodyDoubleRound()       //加倍回合
         ui->UnDoubleBtn->show();
         StartCountDown(10,3);
 }
-void GameWidget::somebodyPlayCardRound(int Pos)    //出牌回合
+void GameWidget::somebodyPlayCardRound(int Pos,bool MustOut)    //出牌回合
 {
     switch(Pos)
     {
@@ -1000,6 +1018,10 @@ void GameWidget::somebodyPlayCardRound(int Pos)    //出牌回合
         {
             ui->PlayCardBtn->show();
             ui->SkipTurnBtn->show();
+            if(!MustOut)
+            ui->SkipTurnBtn->setEnabled(true);
+            else
+            ui->SkipTurnBtn->setEnabled(false);
             ui->MSGLabel3->clear();
             StartCountDown(30,3);
             break;
@@ -1157,11 +1179,11 @@ void GameWidget::somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,in
             {
                 if(Bitset[PlayerHandCards[i].Index]==1)
                 {
-                    PlayerHandCards[i].isUp = true;
+                    PlayerHandCards[i].isUp = true;     qDebug()<<"set Card"<<PlayerHandCards[i].Type<<" "<<PlayerHandCards[i].Point<<"isUp -> true";
                 }
                 else if(PlayerHandCards[i].isUp==true)
                 {
-                    PlayerHandCards[i].isUp = false;
+                    PlayerHandCards[i].isUp = false;    qDebug()<<"set Card"<<PlayerHandCards[i].Type<<" "<<PlayerHandCards[i].Point<<"isUp -> false";
                     // recovercards.push_back(i);
                 }
             }
@@ -1174,17 +1196,29 @@ void GameWidget::somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,in
                 }
                 SelectedCards[PlayerHandCards[i].Index] = 1;
                 PlayerHandCards[i].btn->hide();
+                qDebug()<<"delete HandCards"<<PlayerHandCards[i].Type<<" "<<PlayerHandCards[i].Point;
                 delete PlayerHandCards[i].btn;
             }
+            std::vector<WidgetCard> temp;
             for(unsigned i = 0; i<PlayerHandCards.size();i++)
             {
                 if(PlayerHandCards[i].isUp==false)
-                {
-                    PlayerHandCards.erase(std::remove_if(PlayerHandCards.begin(), PlayerHandCards.end(), [](const WidgetCard& card) {
-                                              return card.isUp;
-                                          }), PlayerHandCards.end());
-                }
+                    temp.push_back(PlayerHandCards[i]);
             }
+            PlayerHandCards.clear();
+            for(unsigned i = 0; i<temp.size();i++)
+            {
+                 PlayerHandCards.push_back(temp[i]);
+            }
+            // for(unsigned i = 0; i<PlayerHandCards.size();i++)
+            // {
+            //     if(PlayerHandCards[i].isUp==false)
+            //     {
+            //         PlayerHandCards.erase(std::remove_if(PlayerHandCards.begin(), PlayerHandCards.end(), [](const WidgetCard& card) {
+            //                                   return card.isUp;
+            //                               }), PlayerHandCards.end());
+            //     }
+            // }
             // for(int i = 0; i< PlayerHandCards.size();i++)
             // {
             //     for(int j = 0;j<recovercards.size();j++)
@@ -1393,6 +1427,7 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int
             PreviousBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit1->setText(PreviousBeanNum);
             PreviousName = QString::fromStdString(Name);
+            ui->Name1->setText(PreviousName);
             break;
         }
         case 2:
@@ -1401,6 +1436,7 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int
             NextBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit2->setText(NextBeanNum);
             NextName = QString::fromStdString(Name);
+            ui->Name2->setText(NextName);
             break;
         }
         case 3:
@@ -1409,6 +1445,7 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int
             PlayerBeanNum = Transform_To_String(Beans);
             ui->BeansLineEdit3->setText(PlayerBeanNum);
             PlayerName = QString::fromStdString(Name);
+            ui->Name3->setText(PlayerName);
             RoomId = QString::fromStdString(_RoomId);
             ui->RoomId->setText(RoomId);
             ui->RoomId->show();
@@ -1418,16 +1455,32 @@ void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int
     qDebug()<<"Pos "<<Pos;
     ShowProfiles(Pos);
 }
-void GameWidget::somebodyLeaveRoom(int Pos)
+void GameWidget::somebodyLeaveRoom(int Pos)   //游戏未开始时（三家没有全部准备时）
 {
     switch(Pos)
     {
         case 1:
         {
+            PreviousBeanNum = "";
+            PreviousCardsNumber = 0;
+            ProfilePixmap1 = QPixmap(":/image/image/Profile/default.jpg");
+            ui->ProfileLabel1->setPixmap(ProfilePixmap1); ui->ProfileLabel1->show();
+            PreviousName = "";
+            ui->BeansLineEdit1->clear();
+            ui->Name1->clear();
+            somebodyUnReady(1);
             break;
         }
         case 2:
         {
+            NextBeanNum = "";
+            NextCardsNumber = 0;
+            ProfilePixmap2 = QPixmap(":/image/image/Profile/default.jpg");
+            ui->ProfileLabel2->setPixmap(ProfilePixmap2); ui->ProfileLabel2->show();
+            NextName = "";
+            ui->BeansLineEdit2->clear();
+            ui->Name2->clear();
+            somebodyUnReady(2);
             break;
         }
     }
@@ -1478,12 +1531,17 @@ void GameWidget::GameOver(bool Result,int times,int Score1,int Score2,int Score3
 {
     gameoverWidget = new GameOverWidget(Width,Height,Result,times,PreviousIdentity,NextIdentity,PlayerIdentity,PreviousName,NextName,PlayerName,PreviousDouble
                                         ,NextDouble,PlayerDouble,Score1,Score2,Score3);
-    qDebug()<<"new gameoverWidget Successfully";
-    gameoverWidget->exitFunc = exitFunc;
+    ContinueGame = new QPushButton(gameoverWidget);
+    ContinueGame->setGeometry(0.401*Width,  0.481*Height,  0.099*Width,   0.065*Height);
+    ContinueGame->show();
+    connect(ContinueGame,&QPushButton::clicked,this,&GameWidget::StartNewGame);
     gameoverWidget->show();
 }
 
-
+void GameWidget::StartNewGame()
+{
+    gameoverWidget->close();
+}
 
 void GameWidget::onSkipTurnBtnClicked()   //点击不出按钮；
 {

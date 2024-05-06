@@ -16,8 +16,9 @@
         "Username": "00000000003"
     },
     "Universal": {
-        "Height": "600",
-        "Index": "9",
-        "Width": "800"
+        "FullScreen": "0",
+        "Height": "900",
+        "Index": "7",
+        "Width": "1440"
     }
 }

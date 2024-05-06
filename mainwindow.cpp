@@ -351,6 +351,7 @@ void MainWindow::fillDefaultValues(QJsonObject& jsonObj) {
     universalObj["Height"] = "1080";
     universalObj["Index"] = "4";
     universalObj["Width"] = "1920";
+    universalObj["FullScreen"] = "0";
     defaultValues["Universal"] = universalObj;
 
     jsonObj = fillDefaultValuesRecursive(defaultValues, jsonObj);
@@ -376,6 +377,7 @@ void MainWindow::fillDefaultValues(QJsonObject& jsonObj) {
         universsal["Index"] = "4";
         universsal["Width"] = "1920";
         universsal["Height"] = "1080";
+        universsal["FullScreen"] = "0";
     }
     jsonObj["Universal"] = universsal;
 }

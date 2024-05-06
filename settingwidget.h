@@ -24,7 +24,7 @@ public:
     int Height;
 private:
     Ui::SettingWidget *ui;
-    bool GameBGMState,LobbyBGMState,GameEffectState;
+    bool GameBGMState,LobbyBGMState,GameEffectState,FullScreenState;
     double GameBGMVolume,GameEffectVolume;
     int ResolutionIndex,CardStyleIndex;
     QString NewGameBGMVolume,NewGameEffectVolume;
@@ -33,13 +33,13 @@ private:
     QString NewWidth,NewHeight;
     QString NewCardStyleIndex;
     QString NewResolutionIndex;
-
+    QString NewFullScreen;
     QPixmap CardFrontPixmap,CardBackPixmap;
     QString optipnStyleSheet;
 private:
     void WriteBackConfig();
     void ImportConfig();
-
+    void RestoreConfig();
 private Q_SLOTS:
     void onBasicBtnClicked();
     void onFrameBtnClicked();

@@ -139,8 +139,8 @@ X6</string>
   <widget class="QLineEdit" name="BeansLineEdit1">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>420</y>
+     <x>40</x>
+     <y>440</y>
      <width>121</width>
      <height>31</height>
     </rect>
@@ -153,7 +153,7 @@ X6</string>
    <property name="geometry">
     <rect>
      <x>1740</x>
-     <y>430</y>
+     <y>460</y>
      <width>121</width>
      <height>31</height>
     </rect>
@@ -188,7 +188,7 @@ X6</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>clock</string>
@@ -285,7 +285,7 @@ X6</string>
    <property name="geometry">
     <rect>
      <x>120</x>
-     <y>1030</y>
+     <y>1050</y>
      <width>121</width>
      <height>31</height>
     </rect>
@@ -556,6 +556,45 @@ border:1px solid;</string>
     </rect>
    </property>
   </widget>
+  <widget class="QLabel" name="Name1">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>410</y>
+     <width>121</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Name1</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Name2">
+   <property name="geometry">
+    <rect>
+     <x>1740</x>
+     <y>430</y>
+     <width>121</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Name2</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Name3">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>1020</y>
+     <width>121</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Name3</string>
+   </property>
+  </widget>
   <zorder>ClockImageLabel</zorder>
   <zorder>FinalCard1</zorder>
   <zorder>FinalCard2</zorder>
@@ -595,6 +634,9 @@ border:1px solid;</string>
   <zorder>ReadyLabel2</zorder>
   <zorder>UnReadyBtn</zorder>
   <zorder>Recorder</zorder>
+  <zorder>Name1</zorder>
+  <zorder>Name2</zorder>
+  <zorder>Name3</zorder>
  </widget>
  <resources/>
  <connections/>

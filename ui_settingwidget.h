@@ -43,6 +43,8 @@ public:
     QPushButton *CancelBtn;
     QCheckBox *GameBGMCheck;
     QCheckBox *GameEffectCheck;
+    QCheckBox *FullScreenCheck;
+    QLabel *FullScreenWord;
 
     void setupUi(QWidget *SettingWidget)
     {
@@ -141,6 +143,12 @@ public:
         GameEffectCheck = new QCheckBox(SettingWidget);
         GameEffectCheck->setObjectName("GameEffectCheck");
         GameEffectCheck->setGeometry(QRect(530, 460, 16, 23));
+        FullScreenCheck = new QCheckBox(SettingWidget);
+        FullScreenCheck->setObjectName("FullScreenCheck");
+        FullScreenCheck->setGeometry(QRect(630, 230, 16, 18));
+        FullScreenWord = new QLabel(SettingWidget);
+        FullScreenWord->setObjectName("FullScreenWord");
+        FullScreenWord->setGeometry(QRect(530, 230, 61, 21));
 
         retranslateUi(SettingWidget);
 
@@ -169,6 +177,8 @@ public:
         CancelBtn->setText(QCoreApplication::translate("SettingWidget", "\345\217\226\346\266\210", nullptr));
         GameBGMCheck->setText(QString());
         GameEffectCheck->setText(QString());
+        FullScreenCheck->setText(QString());
+        FullScreenWord->setText(QCoreApplication::translate("SettingWidget", "\345\205\250\345\261\217\346\250\241\345\274\217", nullptr));
     } // retranslateUi
 
 };

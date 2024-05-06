@@ -63,6 +63,9 @@ public:
     QLabel *ReadyLabel2;
     QPushButton *UnReadyBtn;
     QTableView *Recorder;
+    QLabel *Name1;
+    QLabel *Name2;
+    QLabel *Name3;
 
     void setupUi(QWidget *GameWidget)
     {
@@ -101,10 +104,10 @@ public:
         ProfileLabel2->setStyleSheet(QString::fromUtf8(""));
         BeansLineEdit1 = new QLineEdit(GameWidget);
         BeansLineEdit1->setObjectName("BeansLineEdit1");
-        BeansLineEdit1->setGeometry(QRect(50, 420, 121, 31));
+        BeansLineEdit1->setGeometry(QRect(40, 440, 121, 31));
         BeansLineEdit2 = new QLineEdit(GameWidget);
         BeansLineEdit2->setObjectName("BeansLineEdit2");
-        BeansLineEdit2->setGeometry(QRect(1740, 430, 121, 31));
+        BeansLineEdit2->setGeometry(QRect(1740, 460, 121, 31));
         ClockNum = new QLabel(GameWidget);
         ClockNum->setObjectName("ClockNum");
         ClockNum->setGeometry(QRect(1550, 250, 20, 21));
@@ -112,7 +115,7 @@ public:
         ClockImageLabel = new QLabel(GameWidget);
         ClockImageLabel->setObjectName("ClockImageLabel");
         ClockImageLabel->setGeometry(QRect(1540, 240, 41, 41));
-        ClockImageLabel->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+        ClockImageLabel->setStyleSheet(QString::fromUtf8(""));
         DoubleLabel1 = new QLabel(GameWidget);
         DoubleLabel1->setObjectName("DoubleLabel1");
         DoubleLabel1->setGeometry(QRect(120, 460, 51, 19));
@@ -136,7 +139,7 @@ public:
         ProfileLabel3->setStyleSheet(QString::fromUtf8(""));
         BeansLineEdit3 = new QLineEdit(GameWidget);
         BeansLineEdit3->setObjectName("BeansLineEdit3");
-        BeansLineEdit3->setGeometry(QRect(120, 1030, 121, 31));
+        BeansLineEdit3->setGeometry(QRect(120, 1050, 121, 31));
         DoubleLabel3 = new QLabel(GameWidget);
         DoubleLabel3->setObjectName("DoubleLabel3");
         DoubleLabel3->setGeometry(QRect(260, 1040, 51, 19));
@@ -201,6 +204,15 @@ public:
         Recorder = new QTableView(GameWidget);
         Recorder->setObjectName("Recorder");
         Recorder->setGeometry(QRect(310, 20, 401, 71));
+        Name1 = new QLabel(GameWidget);
+        Name1->setObjectName("Name1");
+        Name1->setGeometry(QRect(40, 410, 121, 21));
+        Name2 = new QLabel(GameWidget);
+        Name2->setObjectName("Name2");
+        Name2->setGeometry(QRect(1740, 430, 121, 21));
+        Name3 = new QLabel(GameWidget);
+        Name3->setObjectName("Name3");
+        Name3->setGeometry(QRect(120, 1020, 121, 21));
         ClockImageLabel->raise();
         FinalCard1->raise();
         FinalCard2->raise();
@@ -240,6 +252,9 @@ public:
         ReadyLabel2->raise();
         UnReadyBtn->raise();
         Recorder->raise();
+        Name1->raise();
+        Name2->raise();
+        Name3->raise();
 
         retranslateUi(GameWidget);
 
@@ -287,6 +302,9 @@ public:
         ReadyLabel1->setText(QCoreApplication::translate("GameWidget", "TextLabel", nullptr));
         ReadyLabel2->setText(QCoreApplication::translate("GameWidget", "TextLabel", nullptr));
         UnReadyBtn->setText(QCoreApplication::translate("GameWidget", "\345\217\226\346\266\210\345\207\206\345\244\207", nullptr));
+        Name1->setText(QCoreApplication::translate("GameWidget", "Name1", nullptr));
+        Name2->setText(QCoreApplication::translate("GameWidget", "Name2", nullptr));
+        Name3->setText(QCoreApplication::translate("GameWidget", "Name3", nullptr));
     } // retranslateUi
 
 };

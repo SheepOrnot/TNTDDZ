@@ -20,6 +20,7 @@
 #include <QStandardItemModel>
 #include <QThread>
 #include <QPainter>
+#include <QMessageBox>
 #include <iostream>
 #include <QAudioOutput>
 #include <bitset>
@@ -65,7 +66,7 @@ public:
     void somebodyCallLandlordRound(int Pos);
     void somebodyBidForLandlordRound(int Pos);
     void somebodyDoubleRound();
-    void somebodyPlayCardRound(int Pos);
+    void somebodyPlayCardRound(int Pos,bool MustOut = 0);
     void somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,int Cardtype,std::bitset<54> handcards = 0);
     void somebodyNotOutCard(int Pos,int Leftcards,std::bitset<54> handcards = 0);
     void somebodyReady(int Pos);
@@ -77,11 +78,12 @@ public:
     void somebodyDouble(int Pos);
     void somebodyNotDouble(int Pos);
     void somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int Beans,std::string _RoomId = "000000");
-    void somebodyLeaveRoom(int Pos);
+    void somebodyLeaveRoom(int Pos);  //游戏未开始时（三家没有全部准备时）
     void Dealingcards(std::bitset<54> handcards,int cardnum1 = 17,int cardnum2 = 17);
     void StartGame(std::string identity1,std::string identity2,std::string identity3,std::bitset<54> handcards,std::bitset<54> finalcards);
     void AddTimes(int newTimes);
     void GameOver(bool Result,int times,int Score1,int Score2,int Score3);
+    void MessageSender(std::string Title, std::string Info, QMessageBox::Icon Type);
     void paintEvent(QPaintEvent * ev)
     {
         QPainter painter(this);
@@ -125,7 +127,8 @@ private:
     QStandardItemModel *model;
     QShortcut *ShowRecorderShortcut;
     RuleWidget *ruleWidget;
-    bool BGMState,EffectState;
+    QPushButton *ContinueGame;
+    bool BGMState,EffectState,FullScreenState;
     bool RecordOpen = false;
     int radius,RoomIdFontSize;
     double BGMVolume,EffectVolume;
@@ -134,6 +137,7 @@ private:
     int PreviousOutCradsType,NextOutCradsType,PlayerOutCradsType;
     bool PreviousDouble,NextDouble,PlayerDouble;
     bool PreviousIdentity,NextIdentity,PlayerIdentity;
+    int SettingWidth,SettingHeight;
     QTimer *timer;
     int remainingTime;
     int Card_Recorder[15] = {4,4,4,4,4,4,4,4,4,4,4,4,4,1,1};
@@ -214,6 +218,7 @@ private Q_SLOTS:
     void onSettingBtnClicked();
     void onPlayCardsClicked();    //点击出牌按钮，判断牌型和管牌逻辑；
     void onRuleBtnClicked();
+    void StartNewGame();
     void onSkipTurnBtnClicked();    //点击不出按钮；
     void onCallLandlordBtnClicked();    //点击叫地主按钮
     void onSkipCallLandlordBtnClicked();//点击不叫按钮

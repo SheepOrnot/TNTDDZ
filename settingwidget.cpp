@@ -7,6 +7,8 @@ SettingWidget::SettingWidget(int _Width,int _Height,QWidget *parent) :
 {
     ui->setupUi(this);
     this->setFixedSize(0.618*Width,0.618*Height);
+    this->setWindowFlags(Qt::WindowStaysOnTopHint);
+    this->setWindowModality(Qt::ApplicationModal);
     ImportConfig();
     ui->BasicBtn          ->setGeometry(0.020*Width,  0.055*Height,  0.104*Width,  0.084*Height);
     ui->FrameBtn          ->setGeometry(0.020*Width,  0.203*Height,  0.104*Width,  0.084*Height);
@@ -28,6 +30,8 @@ SettingWidget::SettingWidget(int _Width,int _Height,QWidget *parent) :
     ui->GameEffectWord    ->setGeometry(0.220*Width,  0.242*Height,  0.100*Width,  0.030*Height);
     ui->ApplyBtn          ->setGeometry(0.490*Width,  0.520*Height,  0.080*Width,  0.070*Height);
     ui->CancelBtn         ->setGeometry(0.390*Width,  0.520*Height,  0.080*Width,  0.070*Height);
+    ui->FullScreenCheck   ->setGeometry(0.330*Width,  0.238*Height,  0.015*Width,  0.030*Height);
+    ui->FullScreenWord    ->setGeometry(0.266*Width,  0.242*Height,  0.052*Width,  0.028*Height);
 
     ui->BGMVolume->setRange(0,100);
     ui->EffectVolume->setRange(0,100);
@@ -35,6 +39,8 @@ SettingWidget::SettingWidget(int _Width,int _Height,QWidget *parent) :
     ui->EffectVolume->hide();
     ui->ResolutionComboBox->hide();
     ui->ResolutionWord->hide();
+    ui->FullScreenCheck->hide();
+    ui->FullScreenWord->hide();
     ui->LobbyBGMCheck->hide();
     ui->LobbyBGMWord->hide();
     ui->GameBGMWord->hide();
@@ -81,12 +87,15 @@ SettingWidget::SettingWidget(int _Width,int _Height,QWidget *parent) :
     ui->GameBGMCheck->setMinimumSize(17,17);
     ui->GameEffectCheck->setMinimumSize(17,17);
     ui->LobbyBGMCheck->setMinimumSize(17,17);
-
+    ui->FullScreenCheck->setMinimumSize(17,17);
     ui->CardStyleWord->setMinimumWidth(40);
     ui->CardStyleWord->setAlignment(Qt::AlignRight);
 
     ui->ResolutionWord->setMinimumWidth(40);
     ui->ResolutionWord->setAlignment(Qt::AlignRight);
+
+    ui->FullScreenWord->setMinimumWidth(50);
+    ui->FullScreenWord->setAlignment(Qt::AlignRight);
 
     ui->CardStyleComboBox->setMinimumSize(150,27);
     connect(ui->BasicBtn,&QPushButton::clicked,this,&SettingWidget::onBasicBtnClicked);
@@ -115,6 +124,8 @@ void SettingWidget::onBasicBtnClicked()
     ui->EffectVolume->hide();
     ui->ResolutionComboBox->hide();
     ui->ResolutionWord->hide();
+    ui->FullScreenCheck->hide();
+    ui->FullScreenWord->hide();
     ui->LobbyBGMCheck->hide();
     ui->LobbyBGMWord->hide();
     ui->GameBGMWord->hide();
@@ -133,6 +144,8 @@ void SettingWidget::onFrameBtnClicked()
     ui->EffectVolume->hide();
     ui->ResolutionComboBox->show();
     ui->ResolutionWord->show();
+    ui->FullScreenCheck->show();
+    ui->FullScreenWord->show();
     ui->LobbyBGMCheck->hide();
     ui->LobbyBGMWord->hide();
     ui->GameBGMWord->hide();
@@ -155,6 +168,8 @@ void SettingWidget::onSoundEffectBtnClicked()
     ui->GameEffectWord->show();
     ui->ResolutionComboBox->hide();
     ui->ResolutionWord->hide();
+    ui->FullScreenCheck->hide();
+    ui->FullScreenWord->hide();
     ui->CardBack->hide();
     ui->CardFront->hide();
     ui->CardStyleComboBox->hide();
@@ -184,9 +199,77 @@ void SettingWidget::onApplyBtnClicked()
     NewLobbyBGM  = (ui->LobbyBGMCheck  ->checkState()==Qt::Checked) ? "1" : "0";
     NewGameBGM   = (ui->GameBGMCheck   ->checkState()==Qt::Checked) ? "1" : "0";
     NewGameEffect= (ui->GameEffectCheck->checkState()==Qt::Checked) ? "1" : "0";
-
+    NewFullScreen = (ui->FullScreenCheck->checkState()==Qt::Checked) ? "1" : "0";
     NewCardStyleIndex = QString::number(ui->CardStyleComboBox->currentIndex());
     NewResolutionIndex = QString::number(ui->ResolutionComboBox->currentIndex());
+    RestoreConfig();
+}
+void SettingWidget::ImportConfig()
+{
+    QFile ConfigFile("./config/config.json");
+    if (ConfigFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QByteArray jsonData = ConfigFile.readAll();
+        ConfigFile.close();
+        // 解析JSON数据
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+        if (!jsonDoc.isNull())
+        {
+            if (jsonDoc.isObject())
+            {
+                QJsonObject jsonObj = jsonDoc.object();
+                QJsonObject GameObj = jsonObj["Game"].toObject();
+                QJsonObject LobbyObj = jsonObj["Lobby"].toObject();
+                QJsonObject UniversalObj = jsonObj["Universal"].toObject();
+
+                // 获取JSON中的键值对
+                LobbyBGMState = bool(LobbyObj.value("LobbyBGM").toVariant().toInt());
+                GameBGMState =  bool(GameObj.value("GameBGM").toVariant().toInt());
+                GameEffectState = bool(GameObj.value("Effect").toVariant().toInt());
+                FullScreenState = bool(UniversalObj.value("FullScreen").toVariant().toInt());
+                GameBGMVolume = GameObj.value("BGMVolume").toVariant().toInt();
+                GameEffectVolume = GameObj.value("EffectVolume").toVariant().toInt();
+                ResolutionIndex =  UniversalObj.value("Index").toVariant().toInt();
+                CardStyleIndex =  GameObj.value("Card").toVariant().toInt();
+            }
+            else
+            {
+                qDebug() << "JSON document is not an object.";
+            }
+        }
+        else
+        {
+            qDebug() << "Failed to load JSON document.";
+        }
+    }
+    if(LobbyBGMState==true)ui->LobbyBGMCheck->setCheckState(Qt::Checked);
+    if(GameBGMState==true)
+    {
+        ui->GameBGMCheck->setCheckState(Qt::Checked);
+        ui->BGMVolume->setValue(GameBGMVolume);
+    }
+    else
+    {
+        ui->BGMVolume->setValue(0);
+
+    }
+    if(GameEffectState==true)
+    {
+        ui->GameEffectCheck->setCheckState(Qt::Checked);
+        ui->EffectVolume->setValue(GameEffectVolume);
+    }
+    else
+    {
+        ui->EffectVolume->setValue(0);
+    }
+    if(FullScreenState==true)
+    {
+        ui->FullScreenCheck->setCheckState(Qt::Checked);
+    }
+}
+
+void SettingWidget::RestoreConfig()
+{
     QFile file("./config/config.json");
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << "Failed to open JSON file";
@@ -222,6 +305,7 @@ void SettingWidget::onApplyBtnClicked()
     universalSection["Width"] = NewWidth;
     universalSection["Height"] = NewHeight;
     universalSection["Index"] = NewResolutionIndex;
+    universalSection["FullScreen"] = NewFullScreen;
     json["Universal"] = universalSection;
 
     QByteArray updatedJsonData = QJsonDocument(json).toJson();
@@ -233,9 +317,9 @@ void SettingWidget::onApplyBtnClicked()
 
     qDebug() << "JSON file updated successfully";
     QDialog dialog;
-    dialog.setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+    dialog.setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowStaysOnTopHint);
     dialog.setWindowTitle("");
-    dialog.resize(0.25*Width, 0.25*Height); // 设置对话框的尺寸
+    dialog.resize(0.25*Width, 0.1*Height); // 设置对话框的尺寸
 
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
     QLabel *label = new QLabel("重启后生效设置！");
@@ -243,74 +327,10 @@ void SettingWidget::onApplyBtnClicked()
     QPushButton *button = new QPushButton("确定");
     layout->addWidget(button);
     QObject::connect(button, &QPushButton::clicked, &dialog, &QDialog::accept);
-
     dialog.exec();
-
-
     this->close();
     this->deleteLater();
 }
-void SettingWidget::ImportConfig()
-{
-    QFile ConfigFile("./config/config.json");
-    if (ConfigFile.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        QByteArray jsonData = ConfigFile.readAll();
-        ConfigFile.close();
-        // 解析JSON数据
-        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
-        if (!jsonDoc.isNull())
-        {
-            if (jsonDoc.isObject())
-            {
-                QJsonObject jsonObj = jsonDoc.object();
-                QJsonObject GameObj = jsonObj["Game"].toObject();
-                QJsonObject LobbyObj = jsonObj["Lobby"].toObject();
-                QJsonObject UniversalObj = jsonObj["Universal"].toObject();
-
-                // 获取JSON中的键值对
-                LobbyBGMState = bool(LobbyObj.value("LobbyBGM").toVariant().toInt());
-                GameBGMState =  bool(GameObj.value("GameBGM").toVariant().toInt());
-                GameEffectState = bool(GameObj.value("Effect").toVariant().toInt());
-                GameBGMVolume = GameObj.value("BGMVolume").toVariant().toInt();
-                GameEffectVolume = GameObj.value("EffectVolume").toVariant().toInt();
-                ResolutionIndex =  UniversalObj.value("Index").toVariant().toInt();
-                CardStyleIndex =  GameObj.value("Card").toVariant().toInt();
-            }
-            else
-            {
-                qDebug() << "JSON document is not an object.";
-            }
-        }
-        else
-        {
-            qDebug() << "Failed to load JSON document.";
-        }
-    }
-    if(LobbyBGMState==true)ui->LobbyBGMCheck->setCheckState(Qt::Checked);
-    if(GameBGMState==true)
-    {
-        ui->GameBGMCheck->setCheckState(Qt::Checked);
-        ui->BGMVolume->setValue(GameBGMVolume);
-    }
-    else
-    {
-        ui->BGMVolume->setValue(0);
-
-    }
-    if(GameEffectState==true)
-    {
-        ui->GameEffectCheck->setCheckState(Qt::Checked);
-        ui->EffectVolume->setValue(GameEffectVolume);
-    }
-    else
-    {
-        ui->EffectVolume->setValue(0);
-
-    }
-
-}
-
 void SettingWidget::onBGMVolumeChanged()
 {
     if(ui->BGMVolume->value()==0)

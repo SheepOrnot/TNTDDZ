@@ -8,6 +8,17 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     ImportConfig();
+    this->setFixedSize(Width,Height);
+
+    if(isFullScreen)
+    {
+        this->setWindowFlags(Qt::FramelessWindowHint);  // 设置无边框
+        this->showFullScreen();  // 全屏显示
+        SettingWidth = Width; SettingHeight = Height;
+        Width = this->width();
+        Height = this->height();
+    }
+
     radius = Height*0.047*0.5;
     InitInfo(5,6666666666,454645,"冷锋冷锋冷锋冷锋冷锋","00000001");
     this->setWindowTitle("TNT斗地主");
@@ -31,7 +42,6 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     RollImageIndex = 0;
 
 
-    this->setFixedSize(Width,Height);
     ui->ProfileLabel  ->setGeometry(0.020*Width,0.018*Height,0.067*Width,0.120*Height);
     ui->UsernameLabel ->setGeometry(0.109*Width,0.027*Height,0.094*Width,0.028*Height);
     ui->UidLabel      ->setGeometry(0.109*Width,0.083*Height,0.094*Width,0.028*Height);
@@ -49,6 +59,9 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     ui->SingleModeBtn ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
     ui->JoinRoomBtn   ->setGeometry(0.682*Width,0.874*Height,0.161*Width,0.084*Height);
     ui->RoomId        ->setGeometry(0.560*Width,0.876*Height,0.120*Width,0.080*Height);
+    ui->ExitBtn       ->setGeometry(0.860*Width,0.874*Height,0.080*Width,0.084*Height);
+
+
     ui->SettingBtn->setIcon(QIcon(":/image/image/Icon/setting.png"));
     ui->SettingBtn->setStyleSheet("QPushButton { background-color: transparent; }");
     connect(ui->SettingBtn,&QPushButton::clicked,this,&LobbyWidget::onSettingBtnClicked);
@@ -98,6 +111,10 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     connect(ui->AddDiamondBtn,&QPushButton::clicked,this,&LobbyWidget::onDiamondShopClicked);
     connect(ui->AddBeanBtn,&QPushButton::clicked,this,&LobbyWidget::onBeanShopClicked);
     connect(ui->RuleBtn,&QPushButton::clicked,this,&LobbyWidget::onRuleBtnClicked);
+    connect(ui->ExitBtn,&QPushButton::clicked,[&]()
+            {
+        this->close();
+    });
     connect(ui->JoinRoomBtn,&QPushButton::clicked,this,&LobbyWidget::onJoinRoomBtnClicked);
 
     message_center = MessageCenter::getInstance();
@@ -132,9 +149,10 @@ void LobbyWidget::ResolutionChanged(int _Width,int _Height)
     ui->SettingBtn    ->setGeometry(0.963*Width,0.018*Height,0.026*Width,0.047*Height);
     ui->RollLabel     ->setGeometry(0.604*Width,0.166*Height,0.328*Width,0.463*Height);
     ui->ClassicModeBtn->setGeometry(0.682*Width,0.652*Height,0.161*Width,0.084*Height);
-    ui->SingleModeBtn   ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
+    ui->SingleModeBtn ->setGeometry(0.682*Width,0.763*Height,0.161*Width,0.084*Height);
     ui->JoinRoomBtn   ->setGeometry(0.682*Width,0.874*Height,0.161*Width,0.084*Height);
     ui->RoomId        ->setGeometry(0.600*Width,0.876*Height,0.080*Width,0.080*Height);
+    ui->ExitBtn       ->setGeometry(0.800*Width,0.900*Height,0.080*Width,0.080*Height);
 
     ui->BeanEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
     ui->DiamondEdit->setStyleSheet("QLineEdit { border: 1px solid #555555; border-radius: "+QString::number(radius)+"px; background-color: transparent;font: "+QString::number(0.5*radius)+"pt Segoe Script; }");
@@ -184,6 +202,7 @@ void LobbyWidget::ImportConfig()
                 Width = UniversalObj.value("Width").toVariant().toInt();
                 Height = UniversalObj.value("Height").toVariant().toInt();
                 BGMState = bool(LobbyObj.value("LobbyBGM").toVariant().toInt());
+                isFullScreen = bool(UniversalObj.value("FullScreen").toVariant().toInt());
             }
             else
             {
@@ -300,6 +319,11 @@ QString LobbyWidget::Transform_To_String(long long Num)
     }
     else Str = QString::number(Num);
     return Str;
+}
+
+void LobbyWidget::onExitBtnClicked()
+{
+    this->close();
 }
 void LobbyWidget::doInfoInit()
 {
