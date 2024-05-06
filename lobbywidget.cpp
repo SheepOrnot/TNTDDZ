@@ -235,10 +235,19 @@ void LobbyWidget::onJoinRoomBtnClicked()
     widget_rev_packer->WidgetsendMessage(join_room_submit);
 }
 void LobbyWidget::onExitGameBtnClicked()
-{
-    WidgetArgPackage* exit_room_submit = new WidgetArgPackage();
-    exit_room_submit->packMessage<WidgetArgNetWork>(NETWORK::LEAVE_ROOM, UID.toStdString(), ui->RoomId->text().toStdString(), 0, 0, 0, 0, 0);
-    widget_rev_packer->WidgetsendMessage(exit_room_submit);
+{   
+    if(signlemode == 1)
+    {
+        WidgetArgPackage* exit_room_submit = new WidgetArgPackage();
+        exit_room_submit->packMessage<WidgetArgNetWork>(NETWORK::LEAVE_ROOM, UID.toStdString(), ui->RoomId->text().toStdString(), 0, 0, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(exit_room_submit);
+    }
+    else
+    {
+        WidgetArgPackage* exit_room_submit = new WidgetArgPackage();
+        exit_room_submit->packMessage<WidgetArgNetWork>(NETWORK::LEAVE_ROOM, UID.toStdString(), RoomId->text(), 0, 0, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(exit_room_submit);
+    }
 }
 void LobbyWidget::onSingleModeBtnClicked()
 {
@@ -250,8 +259,8 @@ void LobbyWidget::onSingleModeBtnClicked()
 //********************INTERFACE****************************
 void LobbyWidget::EnterGame()
 {
-    qDebug() << "Classic Mode" << signlemode;
-    gameWidget = new GameWidget(Width,Height,signlemode);
+    qDebug() << "Classic Mode" << singlemode;
+    gameWidget = new GameWidget(Width,Height,singlemode);
     this->hide();
     gameWidget->show();
     gameWidget->exitFunc = std::bind(&LobbyWidget::interfaceExitRoom,this,std::placeholders::_1);
@@ -341,7 +350,7 @@ void LobbyWidget::interfaceInfoInit(WidgetArgPackage* arg)
 void LobbyWidget::interfaceEnterRoomSuccess(WidgetArgPackage* arg)
 {
     WidgetArgStatus *status = static_cast<WidgetArgStatus*>(arg->package);
-    signlemode = status->status == -1;
+    singlemode = status->status == -1;
 
     QThread *gameThread = new QThread();
     connect(gameThread, SIGNAL(started()), this, SLOT(EnterGame()));

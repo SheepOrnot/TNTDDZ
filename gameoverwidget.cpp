@@ -45,6 +45,9 @@ GameOverWidget::GameOverWidget(int _Width,int _Height,bool _Result,int _times,
         Result1 = identity1 ? !Result : Result;
         Result2 = identity2 ? !Result : Result;
     }
+    QString res = Result ? "胜利" : "失败";
+    ui->Title->clear();
+    ui->Title->setText(res);
 
     PreviousTimes = double1 ? "加倍" : "不加倍";
     NextTimes = double2 ? "加倍" : "不加倍";
@@ -62,7 +65,6 @@ GameOverWidget::GameOverWidget(int _Width,int _Height,bool _Result,int _times,
     NextIdentity = identity2 ? "地主" : "农民";
     PlayerIdentity = identity3 ? "地主" : "农民";
 
-    ui->Title->setText(PlayerResult);
     ui->Times1->setText("✕"+QString::number(times));
     ui->Times2->setText("✕"+QString::number(times));
     ui->Times3->setText("✕"+QString::number(times));

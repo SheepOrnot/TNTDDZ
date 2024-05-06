@@ -1541,6 +1541,18 @@ void GameWidget::GameOver(bool Result,int times,int Score1,int Score2,int Score3
 void GameWidget::StartNewGame()
 {
     gameoverWidget->close();
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::READY, "", "", seat, 1, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, seat, 0, 0, "", "", "", 0, mode);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
 }
 
 void GameWidget::onSkipTurnBtnClicked()   //点击不出按钮；

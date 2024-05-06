@@ -3730,8 +3730,8 @@ moc_findandsignupwidget.cpp: findandsignupwidget.h \
 	/media/fish/Data2/QT67/6.7.0/gcc_64/libexec/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/media/fish/Data2/QT67/6.7.0/gcc_64/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/media/fish/Data2/QT67/6.7.0/gcc_64/include -I/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtMultimedia -I/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets -I/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui -I/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtNetwork -I/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore5Compat -I/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' findandsignupwidget.h -o moc_findandsignupwidget.cpp
 
 moc_gameoverwidget.cpp: gameoverwidget.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QWidget \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qwidget.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QPushButton \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtguiglobal.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qglobal.h \
@@ -3782,13 +3782,12 @@ moc_gameoverwidget.cpp: gameoverwidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtguiexports.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qtwidgets-config.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qtwidgetsexports.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qwindowdefs.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobjectdefs.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qicon.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qsize.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qnamespace.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qtmetamacros.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qfunctionaltools_impl.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobject.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qhashfunctions.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qstring.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qchar.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qstringview.h \
@@ -3815,37 +3814,20 @@ moc_gameoverwidget.cpp: gameoverwidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qstringbuilder.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qstringconverter.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qstringconverter_base.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmargins.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/q23utility.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qlist.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qhashfunctions.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qiterator.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qbytearraylist.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qstringlist.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qalgorithms.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qstringmatcher.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcoreevent.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qscopedpointer.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmetatype.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcompare.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcomparehelpers.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qdatastream.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qiodevicebase.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qfloat16.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmath.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qiterable.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmetacontainer.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcontainerinfo.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qtaggedpointer.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qscopeguard.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobject_impl.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qbindingstorage.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmargins.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/q23utility.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qaction.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qkeysequence.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qicon.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qsize.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpixmap.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpaintdevice.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qwindowdefs.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobjectdefs.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qfunctionaltools_impl.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qrect.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qpoint.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qcolor.h \
@@ -3857,7 +3839,27 @@ moc_gameoverwidget.cpp: gameoverwidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtransform.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpolygon.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qregion.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qdatastream.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qscopedpointer.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qiodevicebase.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qline.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qkeysequence.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qwidget.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobject.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcoreevent.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmetatype.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcompare.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcomparehelpers.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qfloat16.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmath.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qiterable.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmetacontainer.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcontainerinfo.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qtaggedpointer.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qscopeguard.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobject_impl.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qbindingstorage.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qaction.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qvariant.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qdebug.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qtextstream.h \
@@ -3915,6 +3917,7 @@ moc_gameoverwidget.cpp: gameoverwidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qinputmethod.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qlocale.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qguiapplication_platform.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QWidget \
 		messagecenter.h \
 		HTTPJSONSender.h \
 		common.h \
@@ -8428,6 +8431,9 @@ moc_gamewidget.cpp: gamewidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpainter.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextoption.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpen.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QMessageBox \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qmessagebox.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtMultimedia/QAudioOutput \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
 		widgetrevpacker.h \
@@ -10827,6 +10833,9 @@ moc_lobbywidget.cpp: lobbywidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpainter.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextoption.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpen.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QMessageBox \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qmessagebox.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtMultimedia/QAudioOutput \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
 		widgetrevpacker.h \
@@ -13471,6 +13480,13 @@ moc_personalinfowidget.cpp: personalinfowidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QScrollBar \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qscrollbar.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractslider.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QPushButton \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QMessageBox \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qmessagebox.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qdialog.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
 		moc_predefs.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/libexec/moc
 	/media/fish/Data2/QT67/6.7.0/gcc_64/libexec/moc $(DEFINES) --include /home/fish/Desktop/Software_project/qt_project/TNTDDZ/moc_predefs.h -I/media/fish/Data2/QT67/6.7.0/gcc_64/mkspecs/linux-g++ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/TNTDDZ -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/program/boost_1_84_0 -I/home/fish/Desktop/Software_project/qt_project/LIB -I/home/fish/gitpack/socket.io-client-cpp/lib/asio/asio/include -I/home/fish/gitpack/socket.io-client-cpp/lib/websocketpp -I/home/fish/gitpack/socket.io-client-cpp/lib/rapidjson/include -I/home/fish/gitpack/socket.io-client-cpp/src -I/home/fish/gitpack/socket.io-client-cpp/src/internal -I/home/fish/Desktop/Software_project/qt_project/LIB -I/media/fish/Data2/QT67/6.7.0/gcc_64/include -I/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtMultimedia -I/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets -I/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui -I/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtNetwork -I/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore5Compat -I/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE' -I'D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE' -I'D:\Windows Kits\10\include\10.0.22000.0\ucrt' -I'D:\Windows Kits\10\include\10.0.22000.0\shared' -I'D:\Windows Kits\10\include\10.0.22000.0\um' -I'D:\Windows Kits\10\include\10.0.22000.0\winrt' personalinfowidget.h -o moc_personalinfowidget.cpp
@@ -18893,12 +18909,23 @@ findandsignupwidget.o: findandsignupwidget.cpp findandsignupwidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qdialog.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
 		ui_findandsignupwidget.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QLineEdit \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qlineedit.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qframe.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextcursor.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextformat.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpen.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextoption.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o findandsignupwidget.o findandsignupwidget.cpp
 
 gameoverwidget.o: gameoverwidget.cpp gameoverwidget.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QWidget \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qwidget.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QPushButton \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtguiglobal.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qglobal.h \
@@ -18949,13 +18976,12 @@ gameoverwidget.o: gameoverwidget.cpp gameoverwidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtguiexports.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qtwidgets-config.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qtwidgetsexports.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qwindowdefs.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobjectdefs.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qicon.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qsize.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qnamespace.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qtmetamacros.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qfunctionaltools_impl.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobject.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qhashfunctions.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qstring.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qchar.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qstringview.h \
@@ -18982,37 +19008,20 @@ gameoverwidget.o: gameoverwidget.cpp gameoverwidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qstringbuilder.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qstringconverter.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qstringconverter_base.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmargins.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/q23utility.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qlist.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qhashfunctions.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qiterator.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qbytearraylist.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qstringlist.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qalgorithms.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qstringmatcher.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcoreevent.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qscopedpointer.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmetatype.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcompare.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcomparehelpers.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qdatastream.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qiodevicebase.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qfloat16.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmath.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qiterable.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmetacontainer.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcontainerinfo.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qtaggedpointer.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qscopeguard.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobject_impl.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qbindingstorage.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmargins.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/q23utility.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qaction.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qkeysequence.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qicon.h \
-		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qsize.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpixmap.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpaintdevice.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qwindowdefs.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobjectdefs.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qfunctionaltools_impl.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qrect.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qpoint.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qcolor.h \
@@ -19024,7 +19033,27 @@ gameoverwidget.o: gameoverwidget.cpp gameoverwidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtransform.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpolygon.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qregion.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qdatastream.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qscopedpointer.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qiodevicebase.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qline.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qkeysequence.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qwidget.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobject.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcoreevent.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmetatype.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcompare.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcomparehelpers.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qfloat16.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmath.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qiterable.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qmetacontainer.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qcontainerinfo.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qtaggedpointer.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qscopeguard.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qobject_impl.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qbindingstorage.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qaction.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qvariant.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qdebug.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qtextstream.h \
@@ -19082,6 +19111,7 @@ gameoverwidget.o: gameoverwidget.cpp gameoverwidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qinputmethod.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qlocale.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qguiapplication_platform.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QWidget \
 		messagecenter.h \
 		HTTPJSONSender.h \
 		common.h \
@@ -21203,6 +21233,14 @@ gameoverwidget.o: gameoverwidget.cpp gameoverwidget.h \
 		cardprocess.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/QThread \
 		ui_gameoverwidget.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QLabel \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qframe.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpicture.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gameoverwidget.o gameoverwidget.cpp
 
@@ -23595,10 +23633,26 @@ gamewidget.o: gamewidget.cpp gamewidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpainter.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextoption.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpen.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QMessageBox \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qmessagebox.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtMultimedia/QAudioOutput \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
 		widgetrevpacker.h \
-		ui_gamewidget.h
+		ui_gamewidget.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QComboBox \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qcombobox.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QHeaderView \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qheaderview.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QLineEdit \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qlineedit.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextcursor.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextformat.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QTableView \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qtableview.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gamewidget.o gamewidget.cpp
 
 lobbywidget.o: lobbywidget.cpp lobbywidget.h \
@@ -25993,6 +26047,9 @@ lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpainter.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextoption.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpen.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QMessageBox \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qmessagebox.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtMultimedia/QAudioOutput \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtMultimedia/qaudiooutput.h \
 		widgetrevpacker.h \
@@ -26001,7 +26058,14 @@ lobbywidget.o: lobbywidget.cpp lobbywidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QScrollBar \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qscrollbar.h \
 		supermarketwidget.h \
-		ui_lobbywidget.h
+		ui_lobbywidget.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QLineEdit \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qlineedit.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextcursor.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextformat.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lobbywidget.o lobbywidget.cpp
 
 main.o: main.cpp mainwindow.h \
@@ -30862,7 +30926,16 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QStackedWidget \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qstackedwidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QSpacerItem \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QGridLayout \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QMenuBar \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qmenubar.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qmenu.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QStatusBar \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qstatusbar.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
 personalinfowidget.o: personalinfowidget.cpp personalinfowidget.h \
@@ -31066,7 +31139,33 @@ personalinfowidget.o: personalinfowidget.cpp personalinfowidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QScrollBar \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qscrollbar.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractslider.h \
-		ui_personalinfowidget.h
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QPushButton \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QMessageBox \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qmessagebox.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qdialog.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
+		ui_personalinfowidget.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QComboBox \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qcombobox.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qstyleoption.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qvalidator.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qregularexpression.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qslider.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qstyle.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qtabbar.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qtabwidget.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qrubberband.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QScrollArea \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qscrollarea.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractscrollarea.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o personalinfowidget.o personalinfowidget.cpp
 
 rulewidget.o: rulewidget.cpp rulewidget.h \
@@ -31263,7 +31362,13 @@ rulewidget.o: rulewidget.cpp rulewidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qframe.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpicture.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
-		ui_rulewidget.h
+		ui_rulewidget.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QScrollArea \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qscrollarea.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractscrollarea.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o rulewidget.o rulewidget.cpp
 
 robot.o: robot.cpp robot.h \
@@ -33407,7 +33512,34 @@ settingwidget.o: settingwidget.cpp settingwidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
-		ui_settingwidget.h
+		ui_settingwidget.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QCheckBox \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qcheckbox.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QComboBox \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qcombobox.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qstyleoption.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qvalidator.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qslider.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractslider.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qstyle.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qtabbar.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qtabwidget.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qrubberband.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qframe.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QLabel \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpicture.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QPushButton \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QSlider
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settingwidget.o settingwidget.cpp
 
 supermarketwidget.o: supermarketwidget.cpp supermarketwidget.h \
@@ -33596,7 +33728,18 @@ supermarketwidget.o: supermarketwidget.cpp supermarketwidget.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qinputmethod.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/qlocale.h \
 		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qguiapplication_platform.h \
-		ui_supermarketwidget.h
+		ui_supermarketwidget.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtCore/QVariant \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QApplication \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QLabel \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qframe.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qpicture.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtGui/qtextdocument.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/QPushButton \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		/media/fish/Data2/QT67/6.7.0/gcc_64/include/QtWidgets/qabstractbutton.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o supermarketwidget.o supermarketwidget.cpp
 
 singlegame.o: singlegame.cpp singlegame.h \
