@@ -541,7 +541,8 @@ def 管牌(data):
                     farmer0_peas = losepeas(int(battle_data.find_seat(battle_data.find_farmer_account()[0])),data_room_id)
                     farmer1_peas = losepeas(int(battle_data.find_seat(battle_data.find_farmer_account()[1])),data_room_id)
                     updata_peas(battle_data.find_seat(battle_data.find_lord_account()),data_room_id,farmer0_peas+farmer1_peas,1)
-
+                    redis_data.redis_db.set(str(data_room_id)+"_ready_count",0)
+                    
                     emit('server_response',jsonify(type = 18,times = times,win_result = 0,change_peas = farmer0_peas,new_peas = FindPeas(battle_data.find_farmer_account()[0])).data.decode(),room = battle_data.find_farmer_account()[0])
                     emit('server_response',jsonify(type = 18,times = times,win_result = 0,change_peas = farmer1_peas,new_peas = FindPeas(battle_data.find_farmer_account()[1])).data.decode(),room = battle_data.find_farmer_account()[1])
                     emit('server_response',jsonify(type = 18,times = times,win_result = 1,change_peas = farmer1_peas+farmer0_peas,new_peas = FindPeas(battle_data.find_lord_account())).data.decode(),room = battle_data.find_lord_account())
@@ -549,6 +550,7 @@ def 管牌(data):
                     farmer0_peas = winpeas(int(battle_data.find_seat(battle_data.find_farmer_account()[0])),data_room_id)
                     farmer1_peas = winpeas(int(battle_data.find_seat(battle_data.find_farmer_account()[1])),data_room_id)
                     updata_peas(battle_data.find_seat(battle_data.find_lord_account()),data_room_id,farmer0_peas+farmer1_peas,1)
+                    redis_data.redis_db.set(str(data_room_id)+"_ready_count",0)
 
                     emit('server_response',jsonify(type = 18,times = times,win_result = 1,change_peas = farmer0_peas,new_peas = FindPeas(battle_data.find_farmer_account()[0])).data.decode(),room = battle_data.find_farmer_account()[0])
                     emit('server_response',jsonify(type = 18,times = times,win_result = 1,change_peas = farmer1_peas,new_peas = FindPeas(battle_data.find_farmer_account()[1])).data.decode(),room = battle_data.find_farmer_account()[1])
