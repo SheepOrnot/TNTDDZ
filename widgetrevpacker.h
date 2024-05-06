@@ -52,6 +52,16 @@ public:
                                                 player_package->HandCard, player_package->singlemode);
             break;
         }
+        case WIDGET_ARG_TYPE::NETWORK:
+        {
+            WidgetArgNetWork *network_package = static_cast<WidgetArgNetWork*>(current_widget_arg->package);
+            msg_ptr->packMessage<MessageNetWork>(network_package->type, network_package->account,
+                                                 network_package->roomid, network_package->seat,
+                                                 network_package->decision, network_package->outputcards,
+                                                 network_package->tablecards,
+                                                 network_package->canorcannot);
+            break;
+        }
         }
 
         message_center->MessageSubmit(msg_ptr);

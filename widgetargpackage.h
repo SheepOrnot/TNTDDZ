@@ -138,6 +138,51 @@ public:
     int Score3;
 };
 
+class WidgetArgNetWork : public WidgetArg
+{
+public:
+    WidgetArgNetWork(NETWORK _type,std::string _account,std::string _roomid,int _seat,int _decision,long long _outputcards,long long _tablecards,int _canorcannot)
+        : WidgetArg(WIDGET_ARG_TYPE::NETWORK),
+        type(_type),
+        account(_account),
+        roomid(_roomid),
+        seat(_seat),
+        decision(_decision),
+        outputcards(_outputcards),
+        tablecards(_tablecards),
+        canorcannot(_canorcannot)
+    {};
+
+    NETWORK type;
+    std::string account;
+    std::string roomid;
+    int seat;
+    int decision;
+    long long outputcards;
+    long long tablecards;
+    int canorcannot;
+};
+
+class WidgetArgPlayerInfo : public WidgetArg
+{
+public:
+    WidgetArgPlayerInfo(std::string _account,std::string _username,int _peas,int _diamond, int _profile)
+        : WidgetArg(WIDGET_ARG_TYPE::PLAYER),
+        account(_account),
+        username(_username),
+        peas(_peas),
+        diamond(_diamond),
+        profile(_profile)
+        {};
+
+    std::string account;
+    std::string username;
+    int peas;
+    int diamond;
+    int profile;
+};
+
+
 class WidgetArgPackage
 {
 public:

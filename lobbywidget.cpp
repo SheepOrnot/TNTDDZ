@@ -106,6 +106,7 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
     message_center->loadInterface("interfaceEnterRoomSuccess", std::bind(&LobbyWidget::interfaceEnterRoomSuccess, this, std::placeholders::_1));
     message_center->loadInterface("interfaceEnterRoomFail",    std::bind(&LobbyWidget::interfaceEnterRoomFail,    this, std::placeholders::_1));
     message_center->loadInterface("interfaceExitRoom",         std::bind(&LobbyWidget::interfaceExitRoom,         this, std::placeholders::_1));
+    message_center->loadInterface("interfaceInfoInit",         std::bind(&LobbyWidget::interfaceInfoInit,         this, std::placeholders::_1));
 }
 
 LobbyWidget::~LobbyWidget()
@@ -205,19 +206,19 @@ void LobbyWidget::onPersonalInfoBtnClicked()
 void LobbyWidget::onClassicModeBtnClicked()            //创建房间按钮
 {
     WidgetArgPackage* create_room_submit = new WidgetArgPackage();
-    create_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::CREATE_ROOM, 0, 0, 0, Username.toStdString(), UID.toStdString(), "", 0);
+    create_room_submit->packMessage<WidgetArgNetWork>(NETWORK::CREATE_ROOM, UID.toStdString(), "", 0, 0, 0, 0, 0);
     widget_rev_packer->WidgetsendMessage(create_room_submit);
 }
 void LobbyWidget::onJoinRoomBtnClicked()
 {
     WidgetArgPackage* join_room_submit = new WidgetArgPackage();
-    join_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::JOIN_ROOM, 0, 0, 0, Username.toStdString(), UID.toStdString(), ui->RoomId->text().toStdString(), 0);
+    join_room_submit->packMessage<WidgetArgNetWork>(NETWORK::JOIN_ROOM, UID.toStdString(), ui->RoomId->text().toStdString(), 0, 0, 0, 0, 0);
     widget_rev_packer->WidgetsendMessage(join_room_submit);
 }
 void LobbyWidget::onExitGameBtnClicked()
 {
     WidgetArgPackage* exit_room_submit = new WidgetArgPackage();
-    exit_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LEAVE_ROOM, 0, 3, 88888888, Username.toStdString(), UID.toStdString(), ui->RoomId->text().toStdString(), 0, 1);
+    exit_room_submit->packMessage<WidgetArgNetWork>(NETWORK::LEAVE_ROOM, UID.toStdString(), ui->RoomId->text().toStdString(), 0, 0, 0, 0, 0);
     widget_rev_packer->WidgetsendMessage(exit_room_submit);
 }
 void LobbyWidget::onSingleModeBtnClicked()
@@ -299,6 +300,19 @@ QString LobbyWidget::Transform_To_String(long long Num)
     }
     else Str = QString::number(Num);
     return Str;
+}
+void LobbyWidget::doInfoInit()
+{
+    WidgetArgPlayerInfo *player = static_cast<WidgetArgPlayerInfo*>(Arg->package);
+    InitInfo(player->profile,player->peas,player->diamond,player->username,player->account);
+    delete Arg;
+}
+void LobbyWidget::interfaceInfoInit(WidgetArgPackage* arg)
+{
+    Arg = arg;
+    QThread *gameThread = new QThread();
+    connect(gameThread, SIGNAL(started()), this, SLOT(doInfoInit()));
+    gameThread->start();
 }
 void LobbyWidget::interfaceEnterRoomSuccess(WidgetArgPackage* arg)
 {

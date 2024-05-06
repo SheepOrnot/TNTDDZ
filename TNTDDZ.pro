@@ -43,6 +43,7 @@ HEADERS += \
     gamewidget.h \
     lobbywidget.h \
     mainwindow.h \
+    networkState.h \
     personalinfowidget.h \
     rulewidget.h \
     messagecenter.h \

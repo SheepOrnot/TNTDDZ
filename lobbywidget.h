@@ -30,6 +30,9 @@ public:
     void interfaceEnterRoomSuccess(WidgetArgPackage* arg);
     void interfaceEnterRoomFail(WidgetArgPackage* arg);
     void interfaceExitRoom(WidgetArgPackage* arg);
+    void interfaceInfoInit(WidgetArgPackage* arg);
+
+    WidgetArgPackage* Arg;
 
 private:
     Ui::LobbyWidget *ui;
@@ -86,6 +89,7 @@ private Q_SLOTS:
     void onBeanShopClicked();
     void onRuleBtnClicked();
     void EnterGame();
+    void doInfoInit();
     void doExitRoom();
 Q_SIGNALS:
     void ChangeResolutions(int _Width,int _Height);            //********测试用 ;

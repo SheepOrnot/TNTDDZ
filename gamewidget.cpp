@@ -288,7 +288,9 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
     message_center->loadInterface("interfacePlayCardRound",      std::bind(&GameWidget::interfacePlayCardRound, this, std::placeholders::_1));
     message_center->loadInterface("interfaceOutCard",            std::bind(&GameWidget::interfaceOutCard, this, std::placeholders::_1));
     message_center->loadInterface("interfaceGameEnd",            std::bind(&GameWidget::interfaceGameEnd, this, std::placeholders::_1));
-
+    message_center->loadInterface("interfaceDoubleRound",        std::bind(&GameWidget::interfaceDoubleRound, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceDouble",             std::bind(&GameWidget::interfaceDouble, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceNotDouble",          std::bind(&GameWidget::interfaceNotDouble, this, std::placeholders::_1));
 
 }
 
@@ -542,15 +544,23 @@ void GameWidget::onPlayCardsClicked()
         }
     }
 
-    CardTypeVector result = CardProcess::CardTypeCheck(SelectedCards);
-    if(result[0].cardtype != CardType::None)
+    if(mode)
     {
-        qDebug() << "Selected: " << SelectedCards.to_string();
+        CardTypeVector result = CardProcess::CardTypeCheck(SelectedCards);
+        if(result[0].cardtype != CardType::None)
+        {
+            qDebug() << "Selected: " << SelectedCards.to_string();
+            WidgetArgPackage* package = new WidgetArgPackage();
+            package->packMessage<WidgetArgCard>(CARD_OPCODE::OUTCARD, seat, (int)PlayerHandCards.size(), (int)result[0].cardtype, result[0].point, result[0].succ, SelectedCards,Transform_To_Bitset(PlayerHandCards), mode);
+            widget_rev_packer->WidgetsendMessage(package);
+        }
+    }
+    else
+    {
         WidgetArgPackage* package = new WidgetArgPackage();
-        package->packMessage<WidgetArgCard>(CARD_OPCODE::OUTCARD, 3, (int)PlayerHandCards.size(), (int)result[0].cardtype, result[0].point, result[0].succ, SelectedCards,Transform_To_Bitset(PlayerHandCards), 1);
+        package->packMessage<WidgetArgNetWork>(NETWORK::BIGGER_CARDS, "", "", seat, 1, SelectedCards.to_ullong(), 0, 1);
         widget_rev_packer->WidgetsendMessage(package);
     }
-
 }
 
 void GameWidget::ConnectHandCards()
@@ -1183,6 +1193,7 @@ void GameWidget::somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,in
             //             PlayerHandCards[i].isUp = true;
             //     }
             // }
+            qDebug()<<"PlayerHandCrad->Number"<<PlayerHandCards.size();
             ConnectHandCards();
             ui->PlayCardBtn->hide();
             ui->SkipTurnBtn->hide();
@@ -1467,6 +1478,7 @@ void GameWidget::GameOver(bool Result,int times,int Score1,int Score2,int Score3
 {
     gameoverWidget = new GameOverWidget(Width,Height,Result,times,PreviousIdentity,NextIdentity,PlayerIdentity,PreviousName,NextName,PlayerName,PreviousDouble
                                         ,NextDouble,PlayerDouble,Score1,Score2,Score3);
+    qDebug()<<"new gameoverWidget Successfully";
     gameoverWidget->exitFunc = exitFunc;
     gameoverWidget->show();
 }
@@ -1475,51 +1487,116 @@ void GameWidget::GameOver(bool Result,int times,int Score1,int Score2,int Score3
 
 void GameWidget::onSkipTurnBtnClicked()   //点击不出按钮；
 {
-    WidgetArgPackage* package = new WidgetArgPackage();
-    package->packMessage<WidgetArgCard>(CARD_OPCODE::OUTCARD, 3, PlayerHandCards.size(), 0, 0, 0, 0, Transform_To_Bitset(PlayerHandCards), 1);
-    widget_rev_packer->WidgetsendMessage(package);
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::BIGGER_CARDS, "", "", seat, 0, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgCard>(CARD_OPCODE::OUTCARD, seat, PlayerHandCards.size(), 0, 0, 0, 0, Transform_To_Bitset(PlayerHandCards), mode);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
 }
 void GameWidget::onCallLandlordBtnClicked()    //点击叫地主按钮
 {
-    WidgetArgPackage* package = new WidgetArgPackage();
-    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", "", 1, 1);
-    widget_rev_packer->WidgetsendMessage(package);
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::ASK_OR_ROB, "", "", seat, 1, 0, 0, 1);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, seat, 0, 0, "", "", "", 1, mode);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
 }
 void GameWidget::onSkipCallLandlordBtnClicked()//点击不叫按钮
 {
-    WidgetArgPackage* package = new WidgetArgPackage();
-    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", "", 0, 1);
-    widget_rev_packer->WidgetsendMessage(package);
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::ASK_OR_ROB, "", "", seat, 0, 0, 0, 1);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, seat, 0, 0, "", "", "", 0, mode);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
 }
 void GameWidget::onBidForLandlordBtnClicked()   //点击抢地主按钮
 {
-    WidgetArgPackage* package = new WidgetArgPackage();
-    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", "", 1, 1);
-    widget_rev_packer->WidgetsendMessage(package);
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::ASK_OR_ROB, "", "", seat, 1, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, seat, 0, 0, "", "", "", 1, mode);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
 }
 void GameWidget::onSkipLandlordBidBtnClicked()  //点击不抢按钮
 {
     qDebug() << "UI Btn: no bid";
-    WidgetArgPackage* package = new WidgetArgPackage();
-    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, 3, 0, 0, "", "", "", 0, 1);
-    widget_rev_packer->WidgetsendMessage(package);
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::ASK_OR_ROB, "", "", seat, 0, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, seat, 0, 0, "", "", "", 0, mode);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
 }
 void GameWidget::onDoubleBtnClicked()          //点击加倍按钮
 {
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::DOUBLE, "", "", seat, 1, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
 
 }
 void GameWidget::onUnDoubleBtnClicked()        //点击不加倍按钮
 {
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::DOUBLE, "", "", seat, 0, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
 
 }
 void GameWidget::onReadyBtnClicked()
 {
-    WidgetArgPackage* package = new WidgetArgPackage();
-    package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 3, 0, 0, "", "", "", 0, 1);
-    widget_rev_packer->WidgetsendMessage(package);
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::READY, "", "", seat, 1, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, seat, 0, 0, "", "", "", 0, mode);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
 }
 void GameWidget::onUnreadyBtnClicked()
-
 {
 
 }
@@ -1681,10 +1758,12 @@ void GameWidget::interfaceStartGame(WidgetArgPackage* arg)
 void GameWidget::doGameOver()
 {
     WidgetArgGameOver *gameend = static_cast<WidgetArgGameOver*>(InterfaceArg[7]->package);
+    std::cout << "Game End: gameend->result: " << gameend->result << std::endl; std::flush(std::cout);
     //if(gameend->result == 2)
         //TODO 直接退出
     //else
         GameOver(gameend->result == 1, gameend->times, gameend->Score1, gameend->Score2, gameend->Score3);
+    qDebug()<<"do GameOver successfully";
     delete InterfaceArg[7];
 }
 void GameWidget::interfaceGameEnd(WidgetArgPackage* arg)
@@ -1694,6 +1773,44 @@ void GameWidget::interfaceGameEnd(WidgetArgPackage* arg)
 
     QThread *qThread = new QThread();
     connect(qThread, SIGNAL(started()), this, SLOT(doGameOver()));
+    qThread->start();
+}
+void GameWidget::doDoubleRound()
+{
+    somebodyDoubleRound();
+}
+void GameWidget::interfaceDoubleRound(WidgetArgPackage* arg)
+{
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doDoubleRound()));
+    qThread->start();
+
+    delete arg;
+}
+void GameWidget::doDouble()
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(InterfaceArg[8]->package);
+    somebodyDouble(player->pos);
+    delete InterfaceArg[8];
+}
+void GameWidget::interfaceDouble(WidgetArgPackage* arg)
+{
+    InterfaceArg[8] = arg;
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doDouble()));
+    qThread->start();
+}
+void GameWidget::doNotDouble()
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(InterfaceArg[9]->package);
+    somebodyNotDouble(player->pos);
+    delete InterfaceArg[9];
+}
+void GameWidget::interfaceNotDouble(WidgetArgPackage* arg)
+{
+    InterfaceArg[9] = arg;
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doNotDouble()));
     qThread->start();
 }
 //******************************************************************************

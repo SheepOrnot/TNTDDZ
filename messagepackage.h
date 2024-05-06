@@ -103,6 +103,31 @@ public:
     MessageGameEnd() : Message(MESSAGE_TYPE::GAME_END) {};
 };
 
+class MessageNetWork : public Message
+{
+public:
+    MessageNetWork(NETWORK _type,std::string _account,std::string _roomid,int _seat,int _decision,long long _outputcards,long long _tablecards,int _canorcannot) 
+        : Message(MESSAGE_TYPE::NETWORK),
+        type(_type),
+        account(_account),
+        roomid(_roomid),
+        seat(_seat),
+        decision(_decision),
+        outputcards(_outputcards),
+        tablecards(_tablecards),
+        canorcannot(_canorcannot)
+    {};
+
+    NETWORK type;
+    std::string account;
+    std::string roomid;
+    int seat;
+    int decision;
+    long long outputcards;
+    long long tablecards;
+    int canorcannot;
+};
+
 class MessagePackage
 {
 public:

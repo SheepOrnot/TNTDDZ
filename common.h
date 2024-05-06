@@ -46,7 +46,8 @@ enum class WIDGET_ARG_TYPE {
     STATUS = 5, //server -> widget
     VERIFY = 6, //widget -> server
     GAME_START,
-    GAME_OVER
+    GAME_OVER,
+    NETWORK
 };
 enum class ACCOUNT_OPCODE {
     LOGIN = 1,
@@ -66,7 +67,8 @@ enum class MESSAGE_TYPE {
     VERIFY = 6,
     MessageRoomVerifyStatus = 7,
     GAME_START = 8,
-    GAME_END = 9
+    GAME_END = 9,
+    NETWORK
 };
 enum class VERIFY_TYPE {
     LOGIN,
@@ -77,7 +79,20 @@ enum class VERIFY_TYPE {
     CREATE_ROOM,
     JOIN_ROOM,
     LEAVE_ROOM,
-    READY
+    READY,
+    ASK_OR_ROB,
+    LORD_DOUBLE,
+    MUST_ROB,
+    LORD_CARD_BROADCAST,
+    LORD_CARD_UPDATE,
+    CALL_DOUBLE,
+    PLAYER_IS_DOUBLE,
+    PLAYER_NOT_DOUBLE,
+    CALL_OUTCARD,
+    OUTCARD_UPDATE,
+    GAMEEND,
+    SENDCARD,
+    PLAYER_INFO
 };
 enum class NETWORK
 {
@@ -86,11 +101,27 @@ enum class NETWORK
     FORGET_PASSWORD = 3,
     CREATE_ROOM = 4,
     JOIN_ROOM = 5,
-    LEAVE_ROOM = 6,
-    READY = 7,
-    SEND_CARD = 8,
+    REJOIN = 8,
     REGISTER_MAIL_CODE_VERIFY = 9,
-    FORGET_PASSWORD_MAIL_CODE_VERIFY = 10
+    FORGET_PASSWORD_MAIL_CODE_VERIFY = 10,
+    READY = 11,
+    SENDCARD = 12,
+    LORD_CARD_BROADCAST = 13,
+    CALL_DOUBLE = 14,
+    PLAYER_DOUBLE = 16,
+    GAMEEND = 18,
+    OUTCARD_UPDATE = 22,
+    LEAVE_ROOM = 28,
+    ASK_OR_ROB = 29,
+    MUST_ROB = 30,
+    LORD_DOUBLE = 31,
+    PLAYER_INFO = 33,
+    CALL_OUTCARD = 34,
+    LORD_CARD_UPDATE = 35,
+    DOUBLE,
+    OUTPUT_HANDCARDS,
+    BIGGER_CARDS,
+    TIMEOUT
 };
 enum class CARD_OPCODE
 {
@@ -104,6 +135,8 @@ enum class PLAYER_OPCODE
     LEAVE_ROOM,
     READY,
     LANDLORD,
-    PLAY
+    PLAY,
+    DOUBLE,
+
 };
 #endif // COMMON_H
