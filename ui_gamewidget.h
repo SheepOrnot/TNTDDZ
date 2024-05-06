@@ -115,7 +115,7 @@ public:
         ClockImageLabel = new QLabel(GameWidget);
         ClockImageLabel->setObjectName("ClockImageLabel");
         ClockImageLabel->setGeometry(QRect(1540, 240, 41, 41));
-        ClockImageLabel->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+        ClockImageLabel->setStyleSheet(QString::fromUtf8(""));
         DoubleLabel1 = new QLabel(GameWidget);
         DoubleLabel1->setObjectName("DoubleLabel1");
         DoubleLabel1->setGeometry(QRect(120, 460, 51, 19));

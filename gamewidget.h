@@ -106,6 +106,7 @@ private:
     QStandardItemModel *model;
     QShortcut *ShowRecorderShortcut;
     RuleWidget *ruleWidget;
+    QPushButton *ContinueGame;
     bool BGMState,EffectState,FullScreenState;
     bool RecordOpen = false;
     int radius,RoomIdFontSize;
@@ -197,6 +198,7 @@ private Q_SLOTS:
     // void onDoubleBtnClicked();          //点击加倍按钮
     // void onUnDoubleBtnClicked();        //点击不加倍按钮
     void onRuleBtnClicked();
+    void StartNewGame();
 signals:
     void HaveNoHandCard();
 };

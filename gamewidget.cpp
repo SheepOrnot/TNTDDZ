@@ -108,8 +108,10 @@ GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
             case 30:{somebodyPlayCardRound(3,1);break;}
             case 31:
             {
-                playeroutBitset = std::bitset<54>(std::string("110000000000000000000000000000000000000000000000000000"));
-                playerBitset= std::bitset<54>    (std::string("000010000000011111111100000000000001001100000000000001"));
+                //playeroutBitset = std::bitset<54>(std::string("110000000000000000000000000000000000000000000000000000"));
+                playeroutBitset = std::bitset<54>(std::string("110010000000011111111100000000000001001100000000000001"));
+                //playerBitset= std::bitset<54>    (std::string("000010000000011111111100000000000001001100000000000001"));
+                playerBitset= std::bitset<54>    (std::string("000000000000000000000000000000000000000000000000000000"));
                 somebodyOutCard(3,playeroutBitset,14,14,playerBitset);
                 break;
             }
@@ -1127,11 +1129,11 @@ void GameWidget::somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,in
             {
                 if(Bitset[PlayerHandCards[i].Index]==1)
                 {
-                    PlayerHandCards[i].isUp = true;
+                    PlayerHandCards[i].isUp = true;     qDebug()<<"set Card"<<PlayerHandCards[i].Type<<" "<<PlayerHandCards[i].Point<<"isUp -> true";
                 }
                 else if(PlayerHandCards[i].isUp==true)
                 {
-                    PlayerHandCards[i].isUp = false;
+                    PlayerHandCards[i].isUp = false;    qDebug()<<"set Card"<<PlayerHandCards[i].Type<<" "<<PlayerHandCards[i].Point<<"isUp -> false";
                     // recovercards.push_back(i);
                 }
             }
@@ -1144,17 +1146,29 @@ void GameWidget::somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,in
                 }
                 SelectedCards[PlayerHandCards[i].Index] = 1;
                 PlayerHandCards[i].btn->hide();
+                qDebug()<<"delete HandCards"<<PlayerHandCards[i].Type<<" "<<PlayerHandCards[i].Point;
                 delete PlayerHandCards[i].btn;
             }
+            std::vector<WidgetCard> temp;
             for(unsigned i = 0; i<PlayerHandCards.size();i++)
             {
                 if(PlayerHandCards[i].isUp==false)
-                {
-                    PlayerHandCards.erase(std::remove_if(PlayerHandCards.begin(), PlayerHandCards.end(), [](const WidgetCard& card) {
-                                              return card.isUp;
-                                          }), PlayerHandCards.end());
-                }
+                    temp.push_back(PlayerHandCards[i]);
             }
+            PlayerHandCards.clear();
+            for(unsigned i = 0; i<temp.size();i++)
+            {
+                 PlayerHandCards.push_back(temp[i]);
+            }
+            // for(unsigned i = 0; i<PlayerHandCards.size();i++)
+            // {
+            //     if(PlayerHandCards[i].isUp==false)
+            //     {
+            //         PlayerHandCards.erase(std::remove_if(PlayerHandCards.begin(), PlayerHandCards.end(), [](const WidgetCard& card) {
+            //                                   return card.isUp;
+            //                               }), PlayerHandCards.end());
+            //     }
+            // }
             // for(int i = 0; i< PlayerHandCards.size();i++)
             // {
             //     for(int j = 0;j<recovercards.size();j++)
@@ -1464,10 +1478,17 @@ void GameWidget::GameOver(bool Result,int times,int Score1,int Score2,int Score3
 {
     gameoverWidget = new GameOverWidget(Width,Height,Result,times,PreviousIdentity,NextIdentity,PlayerIdentity,PreviousName,NextName,PlayerName,PreviousDouble
                                         ,NextDouble,PlayerDouble,Score1,Score2,Score3);
+    ContinueGame = new QPushButton(gameoverWidget);
+    ContinueGame->setGeometry(0.401*Width,  0.481*Height,  0.099*Width,   0.065*Height);
+    ContinueGame->show();
+    connect(ContinueGame,&QPushButton::clicked,this,&GameWidget::StartNewGame);
     gameoverWidget->show();
 }
 
-
+void GameWidget::StartNewGame()
+{
+    gameoverWidget->close();
+}
 // void onSkipTurnBtnClicked()   //点击不出按钮；
 // {
 

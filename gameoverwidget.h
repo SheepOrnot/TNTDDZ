@@ -1,6 +1,6 @@
 #ifndef GAMEOVERWIDGET_H
 #define GAMEOVERWIDGET_H
-
+#include <QPushButton>
 #include <QWidget>
 
 namespace Ui {
