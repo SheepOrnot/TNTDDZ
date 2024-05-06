@@ -97,7 +97,7 @@ def CardTypeCheck(Card):
                 if(succThreeCount == ThreePairCount):
                     if(ThreePairCount == PairCount and SingleCount == 0):
                         CardTypeResult.append([CardType['ThreePair_Straight_with_Pair'],bukket[0][1]])
-                    elif(ThreePairCount == SingleCount or ThreePairCount == PairCount*2 + SingleCount):
+                    elif(ThreePairCount == PairCount*2 + SingleCount):
                         CardTypeResult.append([CardType['ThreePair_Straight_with_Single'],bukket[0][1]])
                     elif(PairCount == 0 and SingleCount == 0):
                         CardTypeResult.append([CardType['ThreePair_Straight'],bukket[0][1]])
@@ -184,6 +184,9 @@ def CardCheck(OutCard, PreOutCard):
         return (OutCardType, True)
     
     if(OutCardType[0][0] == CardType['KingBomb']):
+        return (OutCardType, True)
+    
+    if(OutCardType[0][0] == CardType['Bomb'] and (PreOutCardType[0][0] != CardType['Bomb'] or PreOutCardType[0][1] < OutCardType[0][1])):
         return (OutCardType, True)
     
     if(OutCardType[0][0] == PreOutCardType[0][0] and OutCardType[0][1] > PreOutCardType[0][1]):
