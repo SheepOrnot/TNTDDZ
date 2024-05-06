@@ -234,20 +234,24 @@ void LobbyWidget::onJoinRoomBtnClicked()
     join_room_submit->packMessage<WidgetArgNetWork>(NETWORK::JOIN_ROOM, UID.toStdString(), ui->RoomId->text().toStdString(), 0, 0, 0, 0, 0);
     widget_rev_packer->WidgetsendMessage(join_room_submit);
 }
-void LobbyWidget::onExitGameBtnClicked()
-{   
-    if(signlemode == 1)
+void LobbyWidget::sendExit(WidgetArgPackage* arg)
+{
+    if(singlemode == 1)
     {
         WidgetArgPackage* exit_room_submit = new WidgetArgPackage();
-        exit_room_submit->packMessage<WidgetArgNetWork>(NETWORK::LEAVE_ROOM, UID.toStdString(), ui->RoomId->text().toStdString(), 0, 0, 0, 0, 0);
+        exit_room_submit->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LEAVE_ROOM, 0, 3, 88888888, Username.toStdString(), UID.toStdString(), ui->RoomId->text().toStdString(), 0, 1);
         widget_rev_packer->WidgetsendMessage(exit_room_submit);
     }
     else
     {
         WidgetArgPackage* exit_room_submit = new WidgetArgPackage();
-        exit_room_submit->packMessage<WidgetArgNetWork>(NETWORK::LEAVE_ROOM, UID.toStdString(), RoomId->text(), 0, 0, 0, 0, 0);
+        exit_room_submit->packMessage<WidgetArgNetWork>(NETWORK::LEAVE_ROOM, UID.toStdString(), ui->RoomId->text().toStdString(), 0, 0, 0, 0, 0);
         widget_rev_packer->WidgetsendMessage(exit_room_submit);
     }
+}
+void LobbyWidget::onExitGameBtnClicked()
+{
+    sendExit(nullptr);
 }
 void LobbyWidget::onSingleModeBtnClicked()
 {
@@ -263,7 +267,7 @@ void LobbyWidget::EnterGame()
     gameWidget = new GameWidget(Width,Height,singlemode);
     this->hide();
     gameWidget->show();
-    gameWidget->exitFunc = std::bind(&LobbyWidget::interfaceExitRoom,this,std::placeholders::_1);
+    gameWidget->exitFunc = std::bind(&LobbyWidget::sendExit, this, std::placeholders::_1);
     GameExitBtn = new QPushButton(gameWidget);
     GameExitBtn->setGeometry(0.010*Width,  0.018*Height,  0.042*Width,   0.075*Height);
     GameExitBtn->setIcon(QIcon(":/image/image/Icon/quitgame.png"));

@@ -31,6 +31,7 @@ public:
     void interfaceEnterRoomFail(WidgetArgPackage* arg);
     void interfaceExitRoom(WidgetArgPackage* arg);
     void interfaceInfoInit(WidgetArgPackage* arg);
+    void sendExit(WidgetArgPackage* arg);
 
     WidgetArgPackage* Arg;
 

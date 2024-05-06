@@ -35,7 +35,7 @@
 // 定义函数指针类型
 typedef void (*PluginFuncPtr)();
 
-const std::string SERVER_IP = "127.0.0.1";
+const std::string SERVER_IP = "66.42.41.208";
 const std::string SERVER_PORT = "22222";
 
 enum class WIDGET_ARG_TYPE {

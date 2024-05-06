@@ -1538,6 +1538,7 @@ void GameWidget::GameOver(bool Result,int times,int Score1,int Score2,int Score3
     ContinueGame->setGeometry(0.401*Width,  0.481*Height,  0.099*Width,   0.065*Height);
     ContinueGame->show();
     connect(ContinueGame,&QPushButton::clicked,this,&GameWidget::StartNewGame);
+    gameoverWidget->exitFunc = exitFunc;
     gameoverWidget->show();
     timer->stop();  qDebug()<<"stop Timer";
     disconnect(timer, nullptr, this, nullptr);
