@@ -10,14 +10,11 @@
 class WidgetRevPacker
 {
 public:
-    WidgetRevPacker(MessageCenter* _message_center)
-    {
-        message_center = _message_center;
-    };
-    ~WidgetRevPacker();
+    static std::shared_ptr<WidgetRevPacker> getInstance() {return instance;}
+    static void destoryInstance(WidgetRevPacker* x) {delete x;}
 
     /*消息中心指针*//*message_center->submit(MessagePackage)*/
-    MessageCenter *message_center;
+    std::shared_ptr<MessageCenter> message_center;
 
     /*消息打包，压入消息中心*/
     void WidgetsendMessage(WidgetArgPackage* current_widget_arg)
@@ -36,23 +33,53 @@ public:
             msg_ptr->packMessage<MessageAccount>(account_package->opcode, account_package->mail, account_package->accout, account_package->password, account_package->username, account_package->code);
             break;
         }
-        case WIDGET_ARG_TYPE::ROOM:
+        case WIDGET_ARG_TYPE::PLAYER:
         {
-            WidgetArgRoom *room_package = static_cast<WidgetArgRoom*>(current_widget_arg->package);
-            msg_ptr->packMessage<MessageRoom>(room_package->opcode, room_package->account, room_package->roomid);
+            WidgetArgPlayer *player_package = static_cast<WidgetArgPlayer*>(current_widget_arg->package);
+            msg_ptr->packMessage<MessagePlayer>(player_package->opcode, player_package->pos,
+                                                player_package->profileindex, player_package->beannum, player_package->username,
+                                                player_package->account, player_package->roomid,
+                                                player_package->iscall, player_package->singlemode);
+            break;
+        }
+        case WIDGET_ARG_TYPE::CARD:
+        {
+            WidgetArgCard *player_package = static_cast<WidgetArgCard*>(current_widget_arg->package);
+            msg_ptr->packMessage<MessageCard>(player_package->opcode, player_package->pos,
+                                                player_package->leftcards, player_package->cardtype,
+                                                player_package->point, player_package->succ,
+                                                player_package->OutCard,
+                                                player_package->HandCard, player_package->singlemode);
+            break;
+        }
+        case WIDGET_ARG_TYPE::NETWORK:
+        {
+            WidgetArgNetWork *network_package = static_cast<WidgetArgNetWork*>(current_widget_arg->package);
+            msg_ptr->packMessage<MessageNetWork>(network_package->type, network_package->account,
+                                                 network_package->roomid, network_package->seat,
+                                                 network_package->decision, network_package->outputcards,
+                                                 network_package->tablecards,
+                                                 network_package->canorcannot);
             break;
         }
         }
-
 
         message_center->MessageSubmit(msg_ptr);
         delete current_widget_arg;
     }
 
-    void test()
+private:
+    WidgetRevPacker()
     {
-        std::cout << "界面消息发送 测试完毕" << std::endl;
-    }
+        message_center = MessageCenter::getInstance();
+    };
+    ~WidgetRevPacker()
+    {
+
+    };
+
+    static std::shared_ptr<WidgetRevPacker> instance;
+    std::mutex _mutex;
 };
 
 

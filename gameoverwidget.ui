@@ -23,11 +23,11 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);
+    <string notr="true">
 font: 72pt &quot;ZXF Small Pudding Trial&quot;;</string>
    </property>
    <property name="text">
-    <string>   胜利</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="Username3">
@@ -35,7 +35,7 @@ font: 72pt &quot;ZXF Small Pudding Trial&quot;;</string>
     <rect>
      <x>330</x>
      <y>270</y>
-     <width>201</width>
+     <width>171</width>
      <height>51</height>
     </rect>
    </property>
@@ -43,12 +43,12 @@ font: 72pt &quot;ZXF Small Pudding Trial&quot;;</string>
     <string>Uname1（Identity）</string>
    </property>
   </widget>
-  <widget class="QLabel" name="Username1">
+  <widget class="QLabel" name="Username2">
    <property name="geometry">
     <rect>
      <x>330</x>
      <y>340</y>
-     <width>201</width>
+     <width>171</width>
      <height>51</height>
     </rect>
    </property>
@@ -56,12 +56,12 @@ font: 72pt &quot;ZXF Small Pudding Trial&quot;;</string>
     <string>Uname2</string>
    </property>
   </widget>
-  <widget class="QLabel" name="Username2">
+  <widget class="QLabel" name="Username1">
    <property name="geometry">
     <rect>
      <x>330</x>
      <y>410</y>
-     <width>201</width>
+     <width>171</width>
      <height>51</height>
     </rect>
    </property>
@@ -72,21 +72,8 @@ font: 72pt &quot;ZXF Small Pudding Trial&quot;;</string>
   <widget class="QLabel" name="Times3">
    <property name="geometry">
     <rect>
-     <x>570</x>
+     <x>600</x>
      <y>270</y>
-     <width>81</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>      ⨉N</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="Times1">
-   <property name="geometry">
-    <rect>
-     <x>570</x>
-     <y>340</y>
      <width>81</width>
      <height>51</height>
     </rect>
@@ -98,7 +85,20 @@ font: 72pt &quot;ZXF Small Pudding Trial&quot;;</string>
   <widget class="QLabel" name="Times2">
    <property name="geometry">
     <rect>
-     <x>570</x>
+     <x>600</x>
+     <y>340</y>
+     <width>81</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>      ⨉N</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Times1">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
      <y>410</y>
      <width>81</width>
      <height>51</height>
@@ -121,7 +121,7 @@ font: 72pt &quot;ZXF Small Pudding Trial&quot;;</string>
     <string>-aaaa</string>
    </property>
   </widget>
-  <widget class="QLabel" name="Score1">
+  <widget class="QLabel" name="Score2">
    <property name="geometry">
     <rect>
      <x>760</x>
@@ -134,7 +134,7 @@ font: 72pt &quot;ZXF Small Pudding Trial&quot;;</string>
     <string>+bbbb</string>
    </property>
   </widget>
-  <widget class="QLabel" name="Score2">
+  <widget class="QLabel" name="Score1">
    <property name="geometry">
     <rect>
      <x>760</x>
@@ -171,6 +171,45 @@ font: 72pt &quot;ZXF Small Pudding Trial&quot;;</string>
    </property>
    <property name="text">
     <string>继续游戏</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Double3">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>270</y>
+     <width>61</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Double1">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>410</y>
+     <width>61</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Double2">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>340</y>
+     <width>61</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
    </property>
   </widget>
  </widget>

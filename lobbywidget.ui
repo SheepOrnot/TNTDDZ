@@ -13,22 +13,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="ProfileLabel">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>20</y>
-     <width>130</width>
-     <height>130</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 170, 0);</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QLabel" name="UsernameLabel">
    <property name="geometry">
     <rect>
@@ -195,7 +179,7 @@ font: 9pt &quot;华文新魏&quot;;</string>
     <string>经典模式</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="ExitGameBtn">
+  <widget class="QPushButton" name="SingleModeBtn">
    <property name="geometry">
     <rect>
      <x>1310</x>
@@ -237,10 +221,10 @@ font: 9pt &quot;华文新魏&quot;;</string>
   <widget class="QLineEdit" name="RoomId">
    <property name="geometry">
     <rect>
-     <x>1140</x>
-     <y>910</y>
-     <width>141</width>
-     <height>41</height>
+     <x>1070</x>
+     <y>890</y>
+     <width>211</width>
+     <height>61</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -249,6 +233,32 @@ font: 9pt &quot;华文新魏&quot;;</string>
    </property>
    <property name="text">
     <string>000000</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ProfileLabel">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>20</y>
+     <width>130</width>
+     <height>130</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ExitBtn">
+   <property name="geometry">
+    <rect>
+     <x>1590</x>
+     <y>990</y>
+     <width>131</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>退出游戏</string>
    </property>
   </widget>
  </widget>

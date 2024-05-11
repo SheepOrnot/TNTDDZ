@@ -34,6 +34,7 @@ public:
     void create_room(std::string account)
     {
         std::string data_json = "{\"account\":\"" + account + "\"}";
+        std::cout << "Sending: " << data_json << std::endl;
         message::list data(data_json);
         current_socket->emit("create_room", data);
     }
@@ -42,6 +43,7 @@ public:
     {
         std::string data_json = "{\"account\":\"" + account + "\","
                                 + "\"roomid\":\""  + roomid  + "\"}";
+        std::cout << "Sending: " << data_json << std::endl;
         message::list data(data_json);
         current_socket->emit("join_room", data);
     }
@@ -50,8 +52,74 @@ public:
     {
         std::string data_json = "{\"account\":\"" + account + "\","
                                 + "\"roomid\":\""  + roomid  + "\"}";
+        std::cout << "Sending: " << data_json << std::endl;
         message::list data(data_json);
         current_socket->emit("leave_room", data);
+    }
+
+    void ready(std::string account, std::string roomid, int seat)
+    {
+        std::string data_json = "{\"account\":\"" + account + "\","
+                                + "\"seat\":"     + std::to_string(seat) + ","
+                                + "\"roomid\":\"" + roomid  + "\"}";
+        std::cout << "Sending: " << data_json << std::endl;
+        message::list data(data_json);
+        current_socket->emit("ready", data);
+    }
+
+    void ask_or_rob(std::string account, std::string roomid, int seat, int lord, int rob)
+    {
+        std::string data_json = "{\"account\":\"" + account + "\","
+                                + "\"roomid\":\"" + roomid  + "\","
+                                + "\"seat\":"     + std::to_string(seat) + ","
+                                + "\"lord\":"     + std::to_string(lord) + ","
+                                + "\"rob\":"      + std::to_string(rob)  + "}";
+        std::cout << "Sending: " << data_json << std::endl;
+        message::list data(data_json);
+        current_socket->emit("ask_or_rob", data);
+    }
+
+    void Double(std::string roomid, int seat, int Double)
+    {
+        std::string data_json = "{\"roomid\":\"" + roomid  + "\","
+                                + "\"seat\":"    + std::to_string(seat) + ","
+                                + "\"double\":"  + std::to_string(Double)  + "}";
+        std::cout << "Sending: " << data_json << std::endl;
+        message::list data(data_json);
+        current_socket->emit("double", data);
+    }
+
+    void output_handcards(std::string roomid, int seat, long long outputcards)
+    {
+        std::string data_json = "{\"roomid\":\"" + roomid  + "\","
+                                + "\"seat\":"    + std::to_string(seat) + ","
+                                + "\"outputcards\":"  + std::to_string(outputcards)  + "}";
+        std::cout << "Sending: " << data_json << std::endl;
+        message::list data(data_json);
+        current_socket->emit("output_handcards", data);
+    }
+
+    void bigger_cards(std::string account, std::string roomid, int seat, long long outcards, long long tablecards, int canorcannot)
+    {
+        std::string data_json = "{\"account\":\"" + account + "\","
+                                + "\"roomid\":\"" + roomid  + "\","
+                                + "\"seat\":"     + std::to_string(seat) + ","
+                                + "\"outputcards\":" + std::to_string(outcards) + ","
+                                + "\"tablecards\":"  + std::to_string(tablecards) + ","
+                                + "\"canorcannot\":" + std::to_string(canorcannot)  + "}";
+        std::cout << "Sending: " << data_json << std::endl;
+        message::list data(data_json);
+        current_socket->emit("bigger_cards", data);
+    }
+
+    void timeout(std::string account, std::string roomid, int seat)
+    {
+        std::string data_json = "{\"account\":\"" + account + "\","
+                                + "\"roomid\":\"" + roomid  + "\","
+                                + "\"seat\":"     + std::to_string(seat)  + "}";
+        std::cout << "Sending: " << data_json << std::endl;
+        message::list data(data_json);
+        current_socket->emit("timeout", data);
     }
 
     void connect()

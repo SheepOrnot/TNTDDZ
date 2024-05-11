@@ -17,6 +17,7 @@ QMAKE_CXXFLAGS += -lboost_date_time
 
 SOURCES += \
     backgroundwidget.cpp \
+    cardprocess.cpp \
     findandsignupwidget.cpp \
     gameoverwidget.cpp \
     gamewidget.cpp \
@@ -24,24 +25,34 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     personalinfowidget.cpp \
+    rulewidget.cpp \
+    robot.cpp \
     settingwidget.cpp \
+    supermarketwidget.cpp \
+    singlegame.cpp \
     socketioclient.cpp \
     widgetcard.cpp
 
 HEADERS += \
     HTTPJSONSender.h \
     backgroundwidget.h \
+    cardprocess.h \
     common.h \
     findandsignupwidget.h \
     gameoverwidget.h \
     gamewidget.h \
     lobbywidget.h \
     mainwindow.h \
+    networkState.h \
     personalinfowidget.h \
+    rulewidget.h \
     messagecenter.h \
     messagepackage.h \
     networkrevpacker.h \
+    robot.h \
     settingwidget.h \
+    supermarketwidget.h \
+    singlegame.h \
     socketioclient.h \
     threadpool.h \
     widgetargpackage.h \
@@ -55,7 +66,9 @@ FORMS += \
     lobbywidget.ui \
     mainwindow.ui \
     personalinfowidget.ui \
-    settingwidget.ui
+    rulewidget.ui \
+    settingwidget.ui \
+    supermarketwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -83,11 +96,11 @@ unix:!macx:DEPENDPATH += $$PWD/../LIB
 
 unix:!macx: PRE_TARGETDEPS += $$PWD/../LIB/libsioclient.a
 
-BOOST = D:\\Program\\library\\boost_1_84_0
+BOOST = E:\\tools\\boost_1_84_0
 win32: INCLUDEPATH += $$BOOST
 win32: LIBS += -L$$BOOST\\stage\\lib
 win32: LIBS += -lws2_32
-SOCKETIO = D:\\Program\\library\\socket.io-client-cpp
+SOCKETIO = E:\\tools\\socket.io-client-cpp
 win32: INCLUDEPATH += $$SOCKETIO\\lib\\asio\\asio\\include
 win32: INCLUDEPATH += $$SOCKETIO\\lib\\websocketpp
 win32: INCLUDEPATH += $$SOCKETIO\\lib\\rapidjson\\include

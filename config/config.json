@@ -1,22 +1,24 @@
 {
     "Game": {
-        "BGMVolume": "20",
+        "BGMVolume": "0",
+        "Background": "1",
         "Card": "1",
-        "Effect": "1",
-        "EffectVolume": "44",
-        "GameBGM": "1"
+        "Effect": "0",
+        "EffectVolume": "0",
+        "GameBGM": "0"
     },
     "Lobby": {
         "LobbyBGM": "0"
     },
     "Login": {
-        "Password": "456789:;<",
+        "Password": "456789",
         "Rem": "1",
-        "Username": "846446214@qq.com"
+        "Username": "00000000001"
     },
     "Universal": {
-        "Height": "945",
-        "Index": "6",
-        "Width": "1680"
+        "FullScreen": "0",
+        "Height": "600",
+        "Index": "9",
+        "Width": "800"
     }
 }

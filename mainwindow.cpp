@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->statusBar()->hide();
     this->setFixedSize(1400,900);
-
+    CheckConfigFile();
     ImportConfig();
 
     backgroundWidget = new BackgroundWidget(this);
@@ -115,20 +115,16 @@ MainWindow::MainWindow(QWidget *parent)
     GridLayout->setRowStretch(3,1);
     GridLayout->setRowStretch(4,0);
 
-    //***********************need global********************************
-    message_center = new MessageCenter();
-    widget_rev_packer = new WidgetRevPacker(message_center);
+    message_center = MessageCenter::getInstance();
+    widget_rev_packer = WidgetRevPacker::getInstance();
+    
     message_center->loadInterface("interfaceLoginSuccess", std::bind(&MainWindow::interfaceLoginSuccess, this, std::placeholders::_1));
     message_center->loadInterface("interfaceLoginFail",    std::bind(&MainWindow::interfaceLoginFail, this, std::placeholders::_1));
 
-    //****************test socketIO client******************************
-    WidgetArgPackage* create_room_submit = new WidgetArgPackage();
-    create_room_submit->packMessage<WidgetArgRoom>(ROOM_OPCODE::CREATE_ROOM, "00000000001", "");
-    widget_rev_packer->WidgetsendMessage(create_room_submit);
 }
 void MainWindow::onForgetPasswordButtonClicked()
 {
-    FindAndSignUpWidget *FindWidget = new FindAndSignUpWidget(1,message_center,widget_rev_packer);        //mode1 -> 忘记密码
+    FindAndSignUpWidget *FindWidget = new FindAndSignUpWidget(1);        //mode1 -> 忘记密码
     FindWidget->show();
 
     WidgetArgPackage* forgetPassword_submit = new WidgetArgPackage();
@@ -137,7 +133,7 @@ void MainWindow::onForgetPasswordButtonClicked()
 }
 void MainWindow::onRegisterButtonClicked()
 {
-    FindAndSignUpWidget *SignUPWidget = new FindAndSignUpWidget(0,message_center,widget_rev_packer);         //mode0 -> 注册
+    FindAndSignUpWidget *SignUPWidget = new FindAndSignUpWidget(0);         //mode0 -> 注册
     SignUPWidget->show();
 
     WidgetArgPackage* register_submit = new WidgetArgPackage();
@@ -170,7 +166,7 @@ void MainWindow::EnterLobby()
 {
     EmailOrUid = usernameLineEdit->text();
     Password = passwordLineEdit->text();
-    lobbyWidget = new LobbyWidget();
+    LobbyWidget *lobbyWidget = new LobbyWidget();
     lobbyWidget->show();
         //改为delete，先delete所有成员指针
     CiphertextPwd = Encryption();
@@ -192,7 +188,7 @@ void MainWindow::interfaceLoginFail(WidgetArgPackage* arg)
 
     delete arg;
 }
-//********************************************************
+//*********************************************************
 
 void MainWindow::ImportConfig()
 {
@@ -290,6 +286,116 @@ void MainWindow::RestoreConfig()
     file.close();
 }
 
+void MainWindow::CheckConfigFile()
+{
+    QString filePath = "./config/config.json";
+    // 检查文件是否存在
+    QFile file(filePath);
+    bool fileExists = file.exists();
+    QJsonObject jsonObj;
+
+    if (fileExists) {
+        // 存在文件，读取并解析JSON数据
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QString jsonString = file.readAll();
+            file.close();
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonString.toUtf8());
+            if (!jsonDoc.isNull() && jsonDoc.isObject()) {
+                jsonObj = jsonDoc.object();
+
+                // 填补缺失的键值对
+                fillDefaultValues(jsonObj);
+
+                qDebug() << "File exists and JSON data loaded with missing key(s) filled.";
+            }
+        }
+    } else {
+        // 文件不存在，创建并写入默认的JSON数据
+        fillDefaultValues(jsonObj);
+        qDebug() << "File created with default JSON data.";
+    }
+    // 序列化JSON数据为字符串
+    QJsonDocument jsonDoc(jsonObj);
+    QString jsonString = jsonDoc.toJson();
+    // 写入JSON数据到文件
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream stream(&file);
+        stream << jsonString;
+        file.close();
+    }
+
+}
+
+void MainWindow::fillDefaultValues(QJsonObject& jsonObj) {
+    QJsonObject defaultValues;
+    QJsonObject gameObj;
+    gameObj["BGMVolume"] = "30";
+    gameObj["Card"] = "1";
+    gameObj["Effect"] = "1";
+    gameObj["EffectVolume"] = "50";
+    gameObj["GameBGM"] = "1";
+    gameObj["Background"] = "1";
+    defaultValues["Game"] = gameObj;
+
+    QJsonObject lobbyObj;
+    lobbyObj["LobbyBGM"] = "1";
+    defaultValues["Lobby"] = lobbyObj;
+
+    QJsonObject loginObj;
+    loginObj["Password"] = "";
+    loginObj["Rem"] = "0";
+    loginObj["Username"] = "";
+    defaultValues["Login"] = loginObj;
+
+    QJsonObject universalObj;
+    universalObj["Height"] = "1080";
+    universalObj["Index"] = "4";
+    universalObj["Width"] = "1920";
+    universalObj["FullScreen"] = "0";
+    defaultValues["Universal"] = universalObj;
+
+    jsonObj = fillDefaultValuesRecursive(defaultValues, jsonObj);
+
+    QJsonObject login = jsonObj["Login"].toObject();
+    QString password = login["Password"].toString();
+    QString username = login["Username"].toString();
+    QString rem = login["Rem"].toString();
+
+    if (password.isEmpty() || username.isEmpty()) {
+        login["Rem"] = "0";
+        login["Username"] = "";
+        login["Password"] = "";
+    }
+    jsonObj["Login"] = login;
+
+    QJsonObject universsal = jsonObj["Universal"].toObject();
+    QString _Width = login["Width"].toString();
+    QString _Height = login["Height"].toString();
+    QString _Index = login["Index"].toString();
+
+    if (_Width=="1920" || _Height=="1080") {
+        universsal["Index"] = "4";
+        universsal["Width"] = "1920";
+        universsal["Height"] = "1080";
+        universsal["FullScreen"] = "0";
+    }
+    jsonObj["Universal"] = universsal;
+}
+
+
+QJsonObject MainWindow::fillDefaultValuesRecursive(const QJsonObject& defaultValues, const QJsonObject& jsonObj) {
+    QJsonObject result = jsonObj;
+
+    for (const QString& key : defaultValues.keys()) {
+        if (!result.contains(key)) {
+            result[key] = defaultValues[key];
+        } else if (result[key].isObject() && defaultValues[key].isObject()) {
+            result[key] = fillDefaultValuesRecursive(defaultValues[key].toObject(), result[key].toObject());
+        }
+    }
+
+    return result;
+}
 MainWindow::~MainWindow()
 {
     delete ui;

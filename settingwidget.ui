@@ -157,7 +157,7 @@ text-decoration: underline;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(93, 255, 131);</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>牌组</string>
@@ -183,7 +183,7 @@ text-decoration: underline;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(93, 255, 131);</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>分辨率</string>
@@ -323,6 +323,32 @@ text-decoration: underline;</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="FullScreenCheck">
+   <property name="geometry">
+    <rect>
+     <x>630</x>
+     <y>230</y>
+     <width>16</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="FullScreenWord">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>230</y>
+     <width>61</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>全屏模式</string>
    </property>
   </widget>
  </widget>

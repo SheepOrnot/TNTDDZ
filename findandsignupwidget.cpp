@@ -1,11 +1,9 @@
 #include "findandsignupwidget.h"
 #include "ui_findandsignupwidget.h"
 #include <QDebug>
-FindAndSignUpWidget::FindAndSignUpWidget(int _mode,MessageCenter *_message_center,WidgetRevPacker *_widget_rev_packer,QWidget *parent):
+FindAndSignUpWidget::FindAndSignUpWidget(int _mode, QWidget *parent):
     QWidget(parent),
     mode(_mode),
-    message_center(_message_center),
-    widget_rev_packer(_widget_rev_packer),
     ui(new Ui::FindAndSignUpWidget)
 {
     ui->setupUi(this);
@@ -88,6 +86,9 @@ FindAndSignUpWidget::FindAndSignUpWidget(int _mode,MessageCenter *_message_cente
     connect(ui->EnterKeyPushButton,&QPushButton::clicked,this,&FindAndSignUpWidget::onEnterKeyPushButtonclicked);
     connect(ui->EnterPushButton,&QPushButton::clicked,this,&FindAndSignUpWidget::onEnterPushButtonclicked);
 
+    message_center = MessageCenter::getInstance();
+    widget_rev_packer = WidgetRevPacker::getInstance();
+
     message_center->loadInterface("interfaceForgetPasswordSuccess", std::bind(&FindAndSignUpWidget::interfaceForgetPasswordSuccess, this, std::placeholders::_1));
     message_center->loadInterface("interfaceForgetPasswordFail",    std::bind(&FindAndSignUpWidget::interfaceForgetPasswordFail, this, std::placeholders::_1));
     message_center->loadInterface("interfaceRegisterSuccess", std::bind(&FindAndSignUpWidget::interfaceRegisterSuccess, this, std::placeholders::_1));
@@ -133,6 +134,7 @@ void FindAndSignUpWidget::onHidePassword2clicked()
 void FindAndSignUpWidget::onSendKeyPushButtonclicked()
 {
     qDebug()<<"Send Verify Code";
+    StartCountDown();
     Email = ui->MailLineEdit->text();
     VerificationCode = ui->KeyLineEdit->text();
     Username = ui->UsernameLineEdit->text();
@@ -149,6 +151,28 @@ void FindAndSignUpWidget::onSendKeyPushButtonclicked()
         WidgetArgPackage* package = new WidgetArgPackage();
         package->packMessage<WidgetArgAccount>(ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL, Email.toStdString(), "", "", "", VerificationCode.toStdString());
         widget_rev_packer->WidgetsendMessage(package);
+    }
+}
+
+void FindAndSignUpWidget::StartCountDown()
+{
+    ui->SendKeyPushButton->setEnabled(false); // 禁用按钮
+    remainingTime = 60;
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &FindAndSignUpWidget::updateCountDown);
+    timer->start(1000); // 每秒触发一次timeout()信号
+    updateCountDown(); // 更新显示剩余秒数
+}
+
+void FindAndSignUpWidget::updateCountDown()
+{
+    if (remainingTime > 0) {
+        ui->SendKeyPushButton->setText(QString("%1秒可后重发").arg(remainingTime));
+        remainingTime--;
+    } else {
+        ui->SendKeyPushButton->setEnabled(true); // 倒计时结束后，启用按钮
+        ui->SendKeyPushButton->setText("发送验证码");
+        timer->stop(); // 停止计时器
     }
 }
 

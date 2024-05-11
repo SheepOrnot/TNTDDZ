@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'lobbywidget.ui'
 **
-** Created by: Qt User Interface Compiler version 6.5.3
+** Created by: Qt User Interface Compiler version 6.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -21,7 +21,6 @@ QT_BEGIN_NAMESPACE
 class Ui_LobbyWidget
 {
 public:
-    QLabel *ProfileLabel;
     QLabel *UsernameLabel;
     QLabel *UidLabel;
     QPushButton *SettingBtn;
@@ -34,20 +33,18 @@ public:
     QLabel *DiamondLabel;
     QLabel *RollLabel;
     QPushButton *ClassicModeBtn;
-    QPushButton *ExitGameBtn;
+    QPushButton *SingleModeBtn;
     QLabel *GifLabel;
     QPushButton *JoinRoomBtn;
     QLineEdit *RoomId;
+    QPushButton *ProfileLabel;
+    QPushButton *ExitBtn;
 
     void setupUi(QWidget *LobbyWidget)
     {
         if (LobbyWidget->objectName().isEmpty())
             LobbyWidget->setObjectName("LobbyWidget");
         LobbyWidget->resize(1920, 1080);
-        ProfileLabel = new QLabel(LobbyWidget);
-        ProfileLabel->setObjectName("ProfileLabel");
-        ProfileLabel->setGeometry(QRect(40, 20, 130, 130));
-        ProfileLabel->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 170, 0);"));
         UsernameLabel = new QLabel(LobbyWidget);
         UsernameLabel->setObjectName("UsernameLabel");
         UsernameLabel->setGeometry(QRect(210, 30, 181, 31));
@@ -88,9 +85,9 @@ public:
         ClassicModeBtn = new QPushButton(LobbyWidget);
         ClassicModeBtn->setObjectName("ClassicModeBtn");
         ClassicModeBtn->setGeometry(QRect(1310, 640, 311, 91));
-        ExitGameBtn = new QPushButton(LobbyWidget);
-        ExitGameBtn->setObjectName("ExitGameBtn");
-        ExitGameBtn->setGeometry(QRect(1310, 760, 311, 91));
+        SingleModeBtn = new QPushButton(LobbyWidget);
+        SingleModeBtn->setObjectName("SingleModeBtn");
+        SingleModeBtn->setGeometry(QRect(1310, 760, 311, 91));
         GifLabel = new QLabel(LobbyWidget);
         GifLabel->setObjectName("GifLabel");
         GifLabel->setGeometry(QRect(110, 210, 461, 761));
@@ -99,9 +96,15 @@ public:
         JoinRoomBtn->setGeometry(QRect(1310, 880, 311, 91));
         RoomId = new QLineEdit(LobbyWidget);
         RoomId->setObjectName("RoomId");
-        RoomId->setGeometry(QRect(1140, 910, 141, 41));
+        RoomId->setGeometry(QRect(1070, 890, 211, 61));
         RoomId->setStyleSheet(QString::fromUtf8("font: 36pt \"Microsoft YaHei UI\";\n"
 ""));
+        ProfileLabel = new QPushButton(LobbyWidget);
+        ProfileLabel->setObjectName("ProfileLabel");
+        ProfileLabel->setGeometry(QRect(40, 20, 130, 130));
+        ExitBtn = new QPushButton(LobbyWidget);
+        ExitBtn->setObjectName("ExitBtn");
+        ExitBtn->setGeometry(QRect(1590, 990, 131, 71));
 
         retranslateUi(LobbyWidget);
 
@@ -111,7 +114,6 @@ public:
     void retranslateUi(QWidget *LobbyWidget)
     {
         LobbyWidget->setWindowTitle(QCoreApplication::translate("LobbyWidget", "Form", nullptr));
-        ProfileLabel->setText(QString());
         UsernameLabel->setText(QCoreApplication::translate("LobbyWidget", "Username", nullptr));
         UidLabel->setText(QCoreApplication::translate("LobbyWidget", "Uid", nullptr));
         SettingBtn->setText(QString());
@@ -124,10 +126,12 @@ public:
         DiamondLabel->setText(QCoreApplication::translate("LobbyWidget", "diamondimage", nullptr));
         RollLabel->setText(QString());
         ClassicModeBtn->setText(QCoreApplication::translate("LobbyWidget", "\347\273\217\345\205\270\346\250\241\345\274\217", nullptr));
-        ExitGameBtn->setText(QCoreApplication::translate("LobbyWidget", "\351\200\200\345\207\272\346\270\270\346\210\217", nullptr));
+        SingleModeBtn->setText(QCoreApplication::translate("LobbyWidget", "\351\200\200\345\207\272\346\270\270\346\210\217", nullptr));
         GifLabel->setText(QCoreApplication::translate("LobbyWidget", "giflabel", nullptr));
         JoinRoomBtn->setText(QCoreApplication::translate("LobbyWidget", "\345\212\240\345\205\245\346\210\277\351\227\264", nullptr));
         RoomId->setText(QCoreApplication::translate("LobbyWidget", "000000", nullptr));
+        ProfileLabel->setText(QString());
+        ExitBtn->setText(QCoreApplication::translate("LobbyWidget", "\351\200\200\345\207\272\346\270\270\346\210\217", nullptr));
     } // retranslateUi
 
 };

@@ -1,25 +1,40 @@
 #ifndef MESSAGECENTER_H
 #define MESSAGECENTER_H
 
+#include "HTTPJSONSender.h"
 #include "common.h"
 #include "threadpool.h"
 #include "messagepackage.h"
-#include "HTTPJSONSender.h"
 #include "networkrevpacker.h"
 #include "widgetargpackage.h"
 #include "socketioclient.h"
+#include "singlegame.h"
+#include "networkState.h"
+#include <QThread>
 
 typedef std::function<void(WidgetArgPackage*)> WidgetInterfacePtr;
+
+class Runner : public QThread
+{
+    Q_OBJECT
+public:
+    Runner(WidgetInterfacePtr _func, WidgetArgPackage* _package, QObject *parent = nullptr) :
+        QThread(parent),
+        func(_func),
+        package(_package){};
+    WidgetArgPackage* package;
+    WidgetInterfacePtr func;
+
+    void run() override {
+        func(package);
+    }
+};
 
 class MessageCenter
 {
 public:
-    MessageCenter()
-    {
-        PluginFuncVector = nullptr;
-        socketio_client = new socketIOClient();
-        threadpool_ptr = new ThreadPool(10);
-    }
+    static std::shared_ptr<MessageCenter> getInstance() {return instance;}
+    static void destoryInstance(MessageCenter* x) {delete x;}
     void loadLib();
     void static MessageProcessing(MessagePackage* current_message, MessageCenter* current_center)
     {
@@ -37,7 +52,7 @@ public:
                                                 + " \"account\":\""  + package->accout + "\","
                                                 + " \"password\":\"" + package->password + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/login", login_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        current_center->MessageSubmit(rev_from_svr);
                         break;
                     }
                     case ACCOUNT_OPCODE::REGISTER_MAIL:
@@ -45,7 +60,7 @@ public:
                         //register_mail
                         std::string register_mail_json = "{\"mail\":\""     + package->mail + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/signupmail", register_mail_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        current_center->MessageSubmit(rev_from_svr);
                         break;
                     }
                     case ACCOUNT_OPCODE::REGISTER:
@@ -57,7 +72,7 @@ public:
                                                 + " \"username\":\"" + package->username + "\","
                                                 + " \"code\":\""     + package->code     + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/signup", register_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        current_center->MessageSubmit(rev_from_svr);
                         break;
                     }
                     case ACCOUNT_OPCODE::REGISTER_MAIL_CODE_VERIFY:
@@ -66,7 +81,7 @@ public:
                         std::string register_mail_verify_json = "{\"mail\":\""   + package->mail     + "\","
                                                                 + " \"code\":\""     + package->code     + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/signup_code_verify", register_mail_verify_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        current_center->MessageSubmit(rev_from_svr);
                         break;
                     }
                     case ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL:
@@ -74,7 +89,7 @@ public:
                         //forget_mail
                         std::string forget_password_mail_json = "{\"mail\":\""     + package->mail + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforgetmail", forget_password_mail_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        current_center->MessageSubmit(rev_from_svr);
                         break;
                     }
                     case ACCOUNT_OPCODE::FORGET_PASSWORD:
@@ -84,7 +99,7 @@ public:
                                                 + " \"password\":\"" + package->password + "\","
                                                 + " \"code\":\""     + package->code     + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforget", forget_password_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        current_center->MessageSubmit(rev_from_svr);
                         break;
                     }
                     case ACCOUNT_OPCODE::FORGET_PASSWORD_MAIL_CODE_VERIFY:
@@ -93,7 +108,7 @@ public:
                         std::string forget_mail_verify_json = "{\"mail\":\""   + package->mail     + "\","
                                                           + " \"code\":\""     + package->code     + "\"}";
                         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(HTTPJSONSender::HTTPJSONSend("/passwordforget_code_verify", forget_mail_verify_json));
-                        current_center->threadpool_ptr->submit(MessageProcessing, rev_from_svr, current_center);
+                        current_center->MessageSubmit(rev_from_svr);
                         break;
                     }
                 }
@@ -112,7 +127,19 @@ public:
                         
                         std::cout << "loginStatus: " << status->code << std::endl;
                         if(status->code == 1)
-                            current_center->WidgetInterface["interfaceLoginSuccess"](arg);
+                        {
+                            current_center->doInterfaceWidget("interfaceLoginSuccess", arg);
+                            sleepcp(1000);
+                            WidgetArgPackage *player = new WidgetArgPackage();
+                            player->packMessage<WidgetArgPlayerInfo>(
+                                current_center->networkState->account,
+                                current_center->networkState->username,
+                                current_center->networkState->peas,
+                                current_center->networkState->diamond,
+                                current_center->networkState->profile
+                                );
+                            current_center->WidgetInterface["interfaceInfoInit"](player);
+                        }
                         else
                             current_center->WidgetInterface["interfaceLoginFail"](arg);
                         break;
@@ -165,40 +192,595 @@ public:
                             current_center->WidgetInterface["interfaceForgetPasswordMailFail"](arg);
                         break;
                     }
+                    case VERIFY_TYPE::CREATE_ROOM:
+                    {
+                        std::cout << "create room" << std::endl;
+                        std::flush(std::cout);
+                        WidgetArgPackage *arg = new WidgetArgPackage();
+                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ROOM, status->code);
+                        
+                        std::cout << "createRoomStatus: " << status->code << std::endl;
+                        if(status->code == 1)
+                        {
+                            current_center->WidgetInterface["interfaceEnterRoomSuccess"](arg);
+                            sleepcp(1000);
+                            WidgetArgPackage *PlayerArg = new WidgetArgPackage();
+                            PlayerArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER,
+                                    current_center->networkState->net2wid[current_center->networkState->seat],
+                                    current_center->networkState->profile,
+                                    current_center->networkState->peas,
+                                    current_center->networkState->username, 
+                                    current_center->networkState->account, 
+                                    current_center->networkState->roomid, 
+                                    0, 0);
+                            current_center->WidgetInterface["interfaceSomebodyEnterRoom"](PlayerArg);
+                            current_center->networkState->inroom = 1;
+                        }
+                        else
+                            current_center->WidgetInterface["interfaceEnterRoomFail"](arg);
+                        break;
+                    }
+                    case VERIFY_TYPE::JOIN_ROOM:
+                    {
+                        std::cout << "join room" << std::endl;
+                        std::flush(std::cout);
+                        if(status->code != -1)
+                        {
+                            if(current_center->networkState->inroom == 0)
+                            {
+                                WidgetArgPackage *arg = new WidgetArgPackage();
+                                arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ROOM, current_center->networkState->net2wid[status->code]);
+                                current_center->WidgetInterface["interfaceEnterRoomSuccess"](arg);
+                                current_center->networkState->inroom = 1;
+                            }
+                            sleepcp(1000);
+                            WidgetArgPackage *PlayerArg = new WidgetArgPackage();
+                            PlayerArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER,
+                                                                    3,
+                                                                    current_center->networkState->profile,
+                                                                    current_center->networkState->peas,
+                                                                    current_center->networkState->username,
+                                                                    current_center->networkState->account,
+                                                                    current_center->networkState->roomid,
+                                                                    0, 0);
+                            current_center->WidgetInterface["interfaceSomebodyEnterRoom"](PlayerArg);
+                        }
+                        else
+                        {
+                            WidgetArgPackage *arg = new WidgetArgPackage();
+                            arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ROOM, current_center->networkState->net2wid[status->code]);
+                            current_center->WidgetInterface["interfaceEnterRoomFail"](arg);
+                        }
+                        break;
+                    }
+                    case VERIFY_TYPE::LEAVE_ROOM:
+                    {
+                        std::cout << "leave room" << std::endl;
+                        std::flush(std::cout);
+                        WidgetArgPackage *arg = new WidgetArgPackage();
+                        arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ROOM, status->code);
+                        
+                        std::cout << "leaveRoomStatus: " << status->code << std::endl;
+                        if(status->code == current_center->networkState->seat)
+                        {
+                            current_center->WidgetInterface["interfaceExitRoom"](arg);
+                        }
+                        else
+                        {
+                            current_center->WidgetInterface["interfaceSomebodyLeaveRoom"](arg);
+                        }
+                        break;
+                    }
+                    case VERIFY_TYPE::READY:
+                    {
+                        std::cout << "ready" << std::endl;
+                        std::flush(std::cout);
+                        
+                        WidgetArgPackage *PlayerArg = new WidgetArgPackage();
+                        PlayerArg->packMessage<WidgetArgPlayer>(
+                            PLAYER_OPCODE::READY, 
+                            current_center->networkState->net2wid[status->code], 
+                            0,
+                            0,
+                            "",
+                            "",
+                            "");
+                        current_center->WidgetInterface["interfaceSomebodyReady"](PlayerArg);
+                        break;
+                    }
+                    case VERIFY_TYPE::ASK_OR_ROB:
+                    {
+                        std::cout << "ask" << std::endl;
+                        std::flush(std::cout);
+
+                        WidgetArgPackage *PlayerArg = new WidgetArgPackage();
+                        PlayerArg->packMessage<WidgetArgPlayer>(
+                            PLAYER_OPCODE::LANDLORD,
+                            current_center->networkState->net2wid[current_center->networkState->curr_seat],
+                            0,
+                            0,
+                            "",
+                            "",
+                            "",
+                            current_center->networkState->curr_decision);
+                        if(current_center->networkState->curr_is_rob_stage)
+                            current_center->WidgetInterface["interfaceBidForLandlord"](PlayerArg);
+                        else
+                            current_center->WidgetInterface["interfaceCallLandlord"](PlayerArg);
+                        
+                        WidgetArgPackage *nextPlayerArg = new WidgetArgPackage();
+                        nextPlayerArg->packMessage<WidgetArgPlayer>(
+                            PLAYER_OPCODE::LANDLORD, 
+                            current_center->networkState->net2wid[current_center->networkState->next_seat],
+                            0,
+                            0,
+                            "",
+                            "",
+                            "");
+                        if(current_center->networkState->next_is_rob_stage)
+                            current_center->WidgetInterface["interfaceBidForLandlordRound"](nextPlayerArg);
+                        else
+                            current_center->WidgetInterface["interfaceCallLandlordRound"](nextPlayerArg);
+                        break;
+                    }
+                    case VERIFY_TYPE::LORD_DOUBLE:
+                    {
+                        //?
+                        break;
+                    }
+                    case VERIFY_TYPE::MUST_ROB:
+                    {
+                        current_center->socketio_client->ask_or_rob(current_center->networkState->account, current_center->networkState->roomid, current_center->networkState->seat, 0, 1);
+                        /*
+                        WidgetArgPackage *BidLandlordArg = new WidgetArgPackage();
+                        BidLandlordArg->packMessage<WidgetArgPlayer>(
+                            PLAYER_OPCODE::LANDLORD, 
+                            current_center->networkState->net2wid[current_center->networkState->seat], 
+                            0,
+                            0,
+                            "",
+                            "",
+                            "",
+                            1);
+                        current_center->WidgetInterface["interfaceBidForLandlord"](BidLandlordArg);
+                        */
+                        break;
+                    }
+                    case VERIFY_TYPE::LORD_CARD_BROADCAST:
+                    {
+                        std::cout << "Game Start" << std::endl; std::flush(std::cout);
+                        WidgetArgPackage *GameArg = new WidgetArgPackage();
+                        GameArg->packMessage<WidgetArgStartGame>(
+                            current_center->networkState->identity1,
+                            current_center->networkState->identity2,
+                            current_center->networkState->identity3,
+                            current_center->networkState->handcards,
+                            current_center->networkState->lordcards
+                            );
+                        current_center->WidgetInterface["interfaceStartGame"](GameArg);
+                        break;
+                    }
+                    case VERIFY_TYPE::LORD_CARD_UPDATE:
+                    {
+                        break;
+                    }
+                    case VERIFY_TYPE::CALL_DOUBLE:
+                    {
+                        WidgetArgPackage *DoubleRoundArg = new WidgetArgPackage();
+                        DoubleRoundArg->packMessage<WidgetArgPlayer>(
+                            PLAYER_OPCODE::DOUBLE,
+                            current_center->networkState->net2wid[current_center->networkState->seat],
+                            0,
+                            0,
+                            "",
+                            "",
+                            "");
+                        current_center->WidgetInterface["interfaceDoubleRound"](DoubleRoundArg);
+                        break;
+                    }
+                    case VERIFY_TYPE::PLAYER_IS_DOUBLE:
+                    {
+                        WidgetArgPackage *DoubleRoundArg = new WidgetArgPackage();
+                        DoubleRoundArg->packMessage<WidgetArgPlayer>(
+                            PLAYER_OPCODE::DOUBLE,
+                            current_center->networkState->net2wid[status->code],
+                            0,
+                            0,
+                            "",
+                            "",
+                            "",
+                            1);
+                        current_center->WidgetInterface["interfaceDouble"](DoubleRoundArg);
+                        break;
+                    }
+                    case VERIFY_TYPE::PLAYER_NOT_DOUBLE:
+                    {
+                        WidgetArgPackage *DoubleRoundArg = new WidgetArgPackage();
+                        DoubleRoundArg->packMessage<WidgetArgPlayer>(
+                            PLAYER_OPCODE::DOUBLE,
+                            current_center->networkState->net2wid[status->code],
+                            0,
+                            0,
+                            "",
+                            "",
+                            "",
+                            0);
+                        current_center->WidgetInterface["interfaceNotDouble"](DoubleRoundArg);
+                        break;
+                    }
+                    case VERIFY_TYPE::CALL_OUTCARD:
+                    {
+                        WidgetArgPackage *nextRound = new WidgetArgPackage();
+                        nextRound->packMessage<WidgetArgPlayer>(
+                            PLAYER_OPCODE::PLAY,
+                            current_center->networkState->net2wid[status->code],
+                            0,
+                            0,
+                            "",
+                            "",
+                            "",
+                            1);
+                        current_center->WidgetInterface["interfacePlayCardRound"](nextRound);
+                        break;
+                    }
+                    case VERIFY_TYPE::OUTCARD_UPDATE:
+                    {
+                        if(current_center->networkState->curr_decision == 1)
+                        {
+                            WidgetArgPackage *OutCardArg = new WidgetArgPackage();
+                            OutCardArg->packMessage<WidgetArgCard>(
+                                CARD_OPCODE::OUTCARD,
+                                current_center->networkState->net2wid[current_center->networkState->curr_seat],
+                                current_center->networkState->leftcard,
+                                current_center->networkState->cards_type,
+                                0, //current_center->networkState->point,
+                                0, //current_center->networkState->succ,
+                                current_center->networkState->outcards,
+                                current_center->networkState->handcards,
+                                0);
+                            current_center->WidgetInterface["interfaceOutCard"](OutCardArg);
+                        }
+                        else
+                        {
+                            WidgetArgPackage *OutCardArg = new WidgetArgPackage();
+                            OutCardArg->packMessage<WidgetArgCard>(
+                                CARD_OPCODE::OUTCARD,
+                                current_center->networkState->net2wid[current_center->networkState->curr_seat],
+                                current_center->networkState->leftcard,
+                                current_center->networkState->cards_type,
+                                0, //current_center->networkState->point,
+                                0, //current_center->networkState->succ,
+                                0,
+                                current_center->networkState->handcards,
+                                0);
+                            current_center->WidgetInterface["interfaceOutCard"](OutCardArg);
+                        }
+
+
+
+                        WidgetArgPackage *nextRound = new WidgetArgPackage();
+                        nextRound->packMessage<WidgetArgPlayer>(
+                            PLAYER_OPCODE::PLAY,
+                            current_center->networkState->net2wid[current_center->networkState->next_seat],
+                            0,
+                            0,
+                            "",
+                            "",
+                            "",
+                            1);
+                        current_center->WidgetInterface["interfacePlayCardRound"](nextRound);
+                        break;
+                    }
+                    case VERIFY_TYPE::PLAYER_INFO:
+                    {
+                        if(!current_center->networkState->inroom_up && current_center->networkState->account_up != "")
+                        {
+                            WidgetArgPackage *PlayerArg = new WidgetArgPackage();
+                            PlayerArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER,
+                                                                    1,
+                                                                    current_center->networkState->profile_up,
+                                                                    current_center->networkState->peas_up,
+                                                                    current_center->networkState->username_up,
+                                                                    current_center->networkState->account_up,
+                                                                    current_center->networkState->roomid,
+                                                                    0, 0);
+                            current_center->WidgetInterface["interfaceSomebodyEnterRoom"](PlayerArg);
+                            current_center->networkState->inroom_up = 1;
+                        }
+                        if(!current_center->networkState->inroom_down && current_center->networkState->account_down != "")
+                        {
+                            WidgetArgPackage *PlayerArg = new WidgetArgPackage();
+                            PlayerArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER,
+                                                                    2,
+                                                                    current_center->networkState->profile_down,
+                                                                    current_center->networkState->peas_down,
+                                                                    current_center->networkState->username_down,
+                                                                    current_center->networkState->account_down,
+                                                                    current_center->networkState->roomid,
+                                                                    0, 0);
+                            current_center->WidgetInterface["interfaceSomebodyEnterRoom"](PlayerArg);
+                            current_center->networkState->inroom_down = 1;
+                        }
+                        break;
+                    }
+                    case VERIFY_TYPE::SENDCARD:
+                    {
+                        WidgetArgPackage *PlayerCardArg = new WidgetArgPackage();
+                        PlayerCardArg->packMessage<WidgetArgCard>(CARD_OPCODE::OUTCARD, 3, 0, 0, 0, 0, 0, current_center->networkState->handcards, 0);
+                        current_center->WidgetInterface["interfaceDealingCards"](PlayerCardArg);
+
+                        WidgetArgPackage *CallLandlordArg = new WidgetArgPackage();
+                        CallLandlordArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, current_center->networkState->net2wid[current_center->networkState->thefirst], 0, 0, "", "", "");
+                        current_center->WidgetInterface["interfaceCallLandlordRound"](CallLandlordArg);
+                        break;
+                    }
+                    case VERIFY_TYPE::GAMEEND:
+                    {
+                        WidgetArgPackage *GameEndArg = new WidgetArgPackage();
+                        GameEndArg->packMessage<WidgetArgGameOver>(
+                            current_center->networkState->win_result,
+                            current_center->networkState->times,
+                            current_center->networkState->Score1,
+                            current_center->networkState->Score2,
+                            current_center->networkState->Score3);
+                        current_center->WidgetInterface["interfaceGameEnd"](GameEndArg);
+                        break;
+                    }
                 }
                 break;
             }
-            case MESSAGE_TYPE::ROOM:
+            case MESSAGE_TYPE::PLAYER:
             {
-                MessageRoom *package = static_cast<MessageRoom*>(current_message->package);
+                MessagePlayer *package = static_cast<MessagePlayer*>(current_message->package);
+                std::cout << "singlemode:" << package->singlemode << std::endl;
+                std::flush(std::cout);
+                if(package->singlemode)
+                {
+                    switch(package->opcode)
+                    {
+                        case PLAYER_OPCODE::CREATE_ROOM:
+                        {
+                            std::cout << "single Mode Create Room" << std::endl;
+                            std::flush(std::cout);
+                            WidgetArgPackage *Robot1Arg = new WidgetArgPackage();
+                            Robot1Arg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER, 1, 0, 999, "机器人1", "111", package->roomid, 0, 1);
+                            WidgetArgPackage *Robot2Arg = new WidgetArgPackage();
+                            Robot2Arg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER, 2, 0, 999, "机器人2", "222", package->roomid, 0, 1);
+                            WidgetArgPackage *PlayerArg = new WidgetArgPackage();
+                            PlayerArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::ENTER, 3, package->profileindex, package->beannum, package->username, package->account, package->roomid, 0, 1);
+
+
+                            WidgetArgPackage *CreateRoomArg = new WidgetArgPackage();
+                            CreateRoomArg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ROOM, -1);
+                            current_center->WidgetInterface["interfaceEnterRoomSuccess"](CreateRoomArg);
+                            sleepcp(1000);
+
+                            current_center->WidgetInterface["interfaceSomebodyEnterRoom"](Robot1Arg);
+                            current_center->WidgetInterface["interfaceSomebodyEnterRoom"](Robot2Arg);
+                            current_center->WidgetInterface["interfaceSomebodyEnterRoom"](PlayerArg);
+                            WidgetArgPackage *Robot1Ready= new WidgetArgPackage();
+                            Robot1Ready->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 1, 0, 999, "机器人1", "111", package->roomid, 0, 1);
+                            WidgetArgPackage *Robot2Ready = new WidgetArgPackage();
+                            Robot2Ready->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 2, 0, 999, "机器人2", "222", package->roomid, 0, 1);
+                            current_center->WidgetInterface["interfaceSomebodyReady"](Robot1Ready);
+                            current_center->WidgetInterface["interfaceSomebodyReady"](Robot2Ready);
+
+                            //singleCtrl -> newgame
+                            current_center->singleCtrl = new SingleGame();
+                            break;
+                        }
+                        case PLAYER_OPCODE::READY:
+                        {
+                            std::cout << "玩家准备" << std::endl;
+                            std::flush(std::cout);
+                            WidgetArgPackage *PlayerArg = new WidgetArgPackage();
+                            PlayerArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, 3, package->profileindex, package->beannum, package->username, package->account, package->roomid);
+                            current_center->WidgetInterface["interfaceSomebodyReady"](PlayerArg);
+                            
+                            std::cout << "Ready" << std::endl;
+                            std::flush(std::cout);
+                            //singleCtrl -> SendCard
+                            current_center->singleCtrl->SendCard();
+                            WidgetArgPackage *PlayerCardArg = new WidgetArgPackage();
+                            PlayerCardArg->packMessage<WidgetArgCard>(CARD_OPCODE::OUTCARD, 3, 0, 0, 0, 0, 0, current_center->singleCtrl->player_handcard, 1);
+                            current_center->WidgetInterface["interfaceDealingCards"](PlayerCardArg);
+
+                            //singleCtrl -> Ramdom start
+                            int thefirst = current_center->singleCtrl->SelectStart();
+                            WidgetArgPackage *CallLandlordArg = new WidgetArgPackage();
+                            CallLandlordArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, thefirst, package->profileindex, package->beannum, package->username, package->account, package->roomid);
+                            current_center->WidgetInterface["interfaceCallLandlordRound"](CallLandlordArg);
+
+                            current_center->MessageSubmit(current_center->singleCtrl->getnext(current_message));
+                            break;
+                        }
+                        case PLAYER_OPCODE::LANDLORD:
+                        {
+                            if(current_center->singleCtrl->isCallLandlordRound())
+                            {
+                                WidgetArgPackage *CallLandlordArg = new WidgetArgPackage();
+                                CallLandlordArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, package->pos, package->profileindex, package->beannum, package->username, package->account, package->roomid, package->iscall);
+                                current_center->WidgetInterface["interfaceCallLandlord"](CallLandlordArg);
+                            }
+                            else
+                            {
+                                WidgetArgPackage *BidLandlordArg = new WidgetArgPackage();
+                                BidLandlordArg->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, package->pos, package->profileindex, package->beannum, package->username, package->account, package->roomid, package->iscall);
+                                current_center->WidgetInterface["interfaceBidForLandlord"](BidLandlordArg);
+                            }
+
+                            current_center->singleCtrl->getnext_prepare(current_message);
+                            //next one
+                            std::cout << "state: " << current_center->singleCtrl->state << std::endl; std::flush(std::cout);
+                            if(current_center->singleCtrl->isBidLandlordRound())
+                            {
+                                WidgetArgPackage *nextRound = new WidgetArgPackage();
+                                //int nextone = package->pos == 1 ? 3 : (package->pos == 2 ? 1 : 2);
+                                int nextone = current_center->singleCtrl->nextone();
+                                nextRound->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, nextone, 0, 0, "", "", "", 0);
+                                if(current_center->singleCtrl->isCallLandlordRound())
+                                    current_center->WidgetInterface["interfaceCallLandlordRound"](nextRound);
+                                else
+                                    current_center->WidgetInterface["interfaceBidForLandlordRound"](nextRound);
+                            }
+                            sleepcp(1000);
+                            MessagePackage* newmsg = current_center->singleCtrl->getnext(current_message);
+                            current_center->MessageSubmit(newmsg);
+                            break;
+                        }
+                        case PLAYER_OPCODE::LEAVE_ROOM:
+                        {
+                            //current_center->singleCtrl->exitTag = 1;
+                            std::cout << "leave room single mode" << std::endl;
+                            std::flush(std::cout);
+
+                            WidgetArgPackage *arg = new WidgetArgPackage();
+                            arg->packMessage<WidgetArgStatus>(WIDGET_ARG_TYPE::ROOM, 1);
+                            current_center->WidgetInterface["interfaceExitRoom"](arg);
+
+                            break;
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+            case MESSAGE_TYPE::CARD:
+            {
+                MessageCard *package = static_cast<MessageCard*>(current_message->package);
+                if(package->singlemode)
+                {
+                    switch(package->opcode)
+                    {
+                        case CARD_OPCODE::OUTCARD:
+                        {
+                            std::cout << "***********************CARD CHECK**********************************" << std::endl;
+                            std::cout << "bot1:   " << current_center->singleCtrl->bot1.showhandcard().to_string() << "  left:" << current_center->singleCtrl->bot1_leftcards << std::endl;
+                            std::cout << "bot2:   " << current_center->singleCtrl->bot2.showhandcard().to_string() << "  left:" << current_center->singleCtrl->bot2_leftcards << std::endl;
+                            std::cout << "player: " << current_center->singleCtrl->player_handcard.to_string() << "  left:" << current_center->singleCtrl->player_leftcards <<  std::endl;
+                            std::cout << "*******************************************************************" << std::endl;
+                            if(package->pos == 3 && !current_center->singleCtrl->PlayerCardOutCheck(package->OutCard))
+                            {
+                                if(package->OutCard.count())
+                                    std::cout << "你出的牌管不上" << std::endl;
+                                else
+                                    std::cout << "此轮不能不出" << std::endl;
+                                std::flush(std::cout);
+                                break;
+                            }
+                            current_center->singleCtrl->getnext_prepare(current_message);
+                            WidgetArgPackage *OutCardArg = new WidgetArgPackage();
+                            OutCardArg->packMessage<WidgetArgCard>(package->opcode, package->pos, package->leftcards, package->cardtype, package->point, package->succ, package->OutCard, package->HandCard, 1);
+                            current_center->WidgetInterface["interfaceOutCard"](OutCardArg);
+
+                            //next one
+                            std::cout << "isGameEnd: " << current_center->singleCtrl->isGameEnd() << std::endl;
+                            std::flush(std::cout);
+                            if(!current_center->singleCtrl->isGameEnd())
+                            {
+                                WidgetArgPackage *nextRound = new WidgetArgPackage();
+                                int nextone = package->pos == 1 ? 3 : (package->pos == 2 ? 1 : 2);
+                                nextRound->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::PLAY, nextone, 0, 0, "", "", "", 0);
+                                current_center->WidgetInterface["interfacePlayCardRound"](nextRound);
+                            }
+                            sleepcp(1000);
+                            MessagePackage* newmsg = current_center->singleCtrl->getnext(current_message);
+                            current_center->MessageSubmit(newmsg);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            case MESSAGE_TYPE::GAME_START:
+            {
+                std::cout << "Game Start" << std::endl; std::flush(std::cout);
+                WidgetArgPackage *GameArg = new WidgetArgPackage();
+                GameArg->packMessage<WidgetArgStartGame>(
+                    current_center->singleCtrl->identity1,
+                    current_center->singleCtrl->identity2,
+                    current_center->singleCtrl->identity3,
+                    current_center->singleCtrl->player_handcard,
+                    current_center->singleCtrl->final_card
+                );
+                current_center->WidgetInterface["interfaceStartGame"](GameArg);
+                sleepcp(500);
+
+                WidgetArgPackage *PlayCardRound = new WidgetArgPackage();
+                PlayCardRound->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::PLAY, current_center->singleCtrl->landlord, 0, 0, "", "", "", 0);
+                current_center->WidgetInterface["interfacePlayCardRound"](PlayCardRound);
+                
+                current_center->MessageSubmit(current_center->singleCtrl->getnext(current_message));
+                break;
+            }
+            case MESSAGE_TYPE::GAME_END:
+            {
+                WidgetArgPackage *GameEndArg = new WidgetArgPackage();
+                GameEndArg->packMessage<WidgetArgGameOver>(current_center->singleCtrl->PlayerisWin(), 1, 0, 0, 0);
+                current_center->WidgetInterface["interfaceGameEnd"](GameEndArg);
+                break;
+            }
+            case MESSAGE_TYPE::NETWORK:
+            {
                 if(!current_center->socketio_client->checkConnection())
                 {
                     current_center->socketio_client->connect();
                     current_center->socketio_client->bindAction("server_response", std::bind(&MessageCenter::OnServerResponse,current_center,std::placeholders::_1));
                 }
 
-                switch(package->opcode)
+                MessageNetWork *package = static_cast<MessageNetWork*>(current_message->package);
+                switch(package->type)
                 {
-                case ROOM_OPCODE::CREATE_ROOM:
-                {
-                    current_center->socketio_client->create_room(package->account);
-                    break;
+                    case NETWORK::CREATE_ROOM:
+                    {
+                        current_center->socketio_client->create_room(current_center->networkState->account);
+                        break;
+                    }
+                    case NETWORK::JOIN_ROOM:
+                    {
+                        current_center->networkState->roomid = package->roomid;
+                        current_center->socketio_client->join_room(current_center->networkState->account, package->roomid);
+                        break;
+                    }
+                    case NETWORK::LEAVE_ROOM:
+                    {
+                        current_center->socketio_client->leave_room(current_center->networkState->account, current_center->networkState->roomid);
+                        break;
+                    }
+                    case NETWORK::READY:
+                    {
+                        current_center->socketio_client->ready(current_center->networkState->account, current_center->networkState->roomid, current_center->networkState->seat);
+                        break;
+                    }
+                    case NETWORK::ASK_OR_ROB:
+                    {
+                        int lord = package->canorcannot ? package->decision : 0;
+                        int rob  = !package->canorcannot ? package->decision : 0;
+                        current_center->socketio_client->ask_or_rob(current_center->networkState->account, current_center->networkState->roomid, current_center->networkState->seat, lord, rob);
+                        break;
+                    }
+                    case NETWORK::DOUBLE:
+                    {
+                        current_center->socketio_client->Double(current_center->networkState->roomid, current_center->networkState->seat, package->decision);
+                        break;
+                    }
+                    case NETWORK::BIGGER_CARDS:
+                    {
+                        current_center->socketio_client->bigger_cards(current_center->networkState->account, current_center->networkState->roomid, current_center->networkState->seat, package->outputcards, current_center->networkState->outcards.to_ullong(), package->canorcannot);
+                        break;
+                    }
+                    case NETWORK::TIMEOUT:
+                    {
+                        current_center->socketio_client->timeout(current_center->networkState->account, current_center->networkState->roomid, current_center->networkState->seat);
+                        break;
+                    }
                 }
-                case ROOM_OPCODE::JOIN_ROOM:
-                {
-                    current_center->socketio_client->join_room(package->account, package->roomid);
-                    break;
-                }
-                case ROOM_OPCODE::LEAVE_ROOM:
-                {
-                    current_center->socketio_client->leave_room(package->account, package->roomid);
-                    break;
-                }
-                case ROOM_OPCODE::READY:
-                {
-                    break;
-                }
-                }
+                break;
+            }
+            default:
+            {
+                std::cout << "unknown message package" << std::endl;
+                std::flush(std::cout);
                 break;
             }
         }
@@ -208,7 +790,13 @@ public:
 
     void MessageSubmit(MessagePackage* current_message)
     {
-        threadpool_ptr->submit(MessageProcessing, current_message, this);
+        if(current_message)
+            threadpool_ptr->submit(MessageProcessing, current_message, this);
+        else
+        {
+            std::cout << "ERROR: try to submit null message" << std::endl;
+            std::flush(std::cout);
+        }
     }
 
     void loadInterface(std::string key, WidgetInterfacePtr func_ptr)
@@ -227,8 +815,33 @@ public:
         std::cout << message_received[0]->get_string() << std::endl;
 
         MessagePackage* rev_from_svr = NetworkRevPacker::NetworksendMessage(message_received[0]->get_string());
-        threadpool_ptr->submit(MessageProcessing, rev_from_svr, this);
+        MessageSubmit(rev_from_svr);
     }
+
+    static void sleepcp(int milliseconds) // 跨平台 sleep 函数
+    {
+#ifdef _WIN32
+        Sleep(milliseconds);
+#else
+        usleep(milliseconds * 1000);
+#endif // _WIN32
+    }
+
+    void doInterfaceWidget(std::string func, WidgetArgPackage* package)
+    {
+        Runner *runner = new Runner(WidgetInterface[func], package);
+        runner->start();
+    }
+
+private:
+    MessageCenter()
+    {
+        PluginFuncVector = nullptr;
+        socketio_client = new socketIOClient();
+        threadpool_ptr = new ThreadPool(1);
+        networkState = NetworkState::getInstance();
+    }
+    ~MessageCenter() {};
 
 private:
     /*插件函数注册表*/
@@ -241,6 +854,15 @@ private:
     std::map<std::string, WidgetInterfacePtr> WidgetInterface;
     /*SocketIO客户端指针*/
     socketIOClient* socketio_client;
+
+    static std::shared_ptr<MessageCenter> instance;
+    //std::mutex _mutex;
+
+    /*单机模式*/
+    SingleGame* singleCtrl;
+
+    /*联机模式*/
+    std::shared_ptr<NetworkState> networkState;
 };
 
 #endif // MESSAGECENTER_H

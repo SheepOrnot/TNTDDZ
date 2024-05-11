@@ -1,67 +1,147 @@
 #include "gamewidget.h"
 #include "ui_gamewidget.h"
 #include<QDebug>
-#include<iostream>
-GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
-    QWidget(parent),Width(_Width),Height(_Height),
+
+GameWidget::GameWidget(int _Width,int _Height,int _mode,QWidget *parent) :
+    QWidget(parent),Width(_Width),Height(_Height),mode(_mode),
     ui(new Ui::GameWidget)
 {
     qDebug()<<"Ready to Build GameWidget";
     ui->setupUi(this);
-    this->setFixedSize(Width,Height);
     ImportConfig();
-    InitAllCards();   
+    this->setFixedSize(Width,Height);
+    InitAllCards();
+    if(FullScreenState)
+    {
+        this->setWindowFlags(Qt::FramelessWindowHint);  // 设置无边框
+        this->showFullScreen();  // 全屏显示
+        SettingWidth = Width; SettingHeight = Height;
+        Width = this->width();
+        Height = this->height();
+    }
+
+    BGMPlayer = new QMediaPlayer();
+    BGMPlayer->setSource(QUrl("qrc:/sound/sound/BGM/gamebgm.mp3"));
+    BGMPlayer->setLoops(-1);
+    BGMaudioOutput = new QAudioOutput();
+    BGMaudioOutput->setVolume(BGMVolume/100);
+    BGMPlayer->setAudioOutput(BGMaudioOutput);
+    if(BGMState) BGMPlayer->play();
+    BGMThread = new QThread;
+    BGMPlayer->moveToThread(BGMThread);
+    BGMThread->start();
+    connect(qApp, &QCoreApplication::aboutToQuit,BGMThread, &QThread::quit);
+
+    timer = new QTimer(this);
+
+    EffectPlayer = new QMediaPlayer();
+    EffectaudioOutput = new QAudioOutput();
+    EffectaudioOutput->setVolume(1);
+    EffectPlayer->setAudioOutput(EffectaudioOutput);
+    EffectPlayer->moveToThread(BGMThread);
+
+    CardBackPixmap = QPixmap(":/image/image/Cards_"+QString::number(CardStyle)+"/back.png");
+    CardBackPixmap = CardBackPixmap.scaled(0.040*Width,0.070*Height, Qt::KeepAspectRatio, Qt::SmoothTransformation); // 将图片缩放到QLabel的尺寸
+
+    PreviousCardsNumLabel = new QLabel(this);
+    NextCardsNumLabel = new QLabel(this);
+    RoomIdFontSize = 0.02*Height;
+
 //****** 测试******
-    //std::bitset<54> BitsetCards(std::string("111000111000000000110011001100110011101000000010001110"));
-    QPushButton *GameOverbtn = new QPushButton(this);
-    GameOverbtn->setGeometry(0.624*Width,  0.018*Height,  0.025*Width,   0.04*Height);
-    GameOverbtn->show();
-    connect(GameOverbtn,&QPushButton::clicked,[&](){
-        gameoverWidget = new GameOverWidget(Width,Height);
-        gameoverWidget->show();
+    std::bitset<54> BitsetCards(std::string("111000111000000000110011001100110011101000000010001110"));
+    previousBitset= std::bitset<54>(std::string("000001111111100000000011111111000100000000000000000000"));
+    nextBitset= std::bitset<54>    (std::string("000000000000000000000000000000111010110011111111001110"));
+    playerBitset= std::bitset<54>  (std::string("111110000000011111111100000000000001001100000000000000"));
+    finalBitset= std::bitset<54>   (std::string("000000000000000000000000000000000000000000000000110001"));
+
+    QPushButton *Testbtn = new QPushButton(this);            //测试按钮
+    Testbtn->setGeometry(0.624*Width,  0.018*Height,  0.025*Width,   0.04*Height);
+    Testbtn->show();
+    connect(Testbtn,&QPushButton::clicked,[&](){
+        switch(TestStage)
+        {
+            case 0:{somebodyEnterRoom(3,0,"冷锋",66999,"995664"); break;}
+            case 1:{somebodyEnterRoom(1,1,"陈韬羽",652);  break;}
+            case 2:{somebodyReady(3);break;}
+            case 3:{somebodyEnterRoom(2,3,"司令",777777777);break;}
+            case 4:{somebodyReady(2);break;}
+            case 5:{somebodyUnReady(3);break;}
+            case 6:{somebodyReady(3);break;}
+            case 7:{somebodyReady(1);break;}
+            case 8:{Dealingcards(playerBitset);break;}
+            case 9:{somebodyCallLandlordRound(1);break;}
+            case 10:{somebodyNotCallLandlord(1);break;}
+            case 11:{somebodyCallLandlordRound(3);break;}
+            case 12:{somebodyCallLandlord(3);break;}
+            case 13:{somebodyBidForLandlordRound(2);break;}
+            case 14:{somebodyBidForLandlord(2);break;}
+            case 15:{somebodyBidForLandlordRound(3);break;}
+            case 16:{somebodyBidForLandlord(3);break;}
+            case 17:{StartGame("farmer","farmer","landlord",finalBitset|playerBitset,finalBitset);break;}  //111110000000011111111100000000000001001100000000110001
+            case 18:{somebodyPlayCardRound(3,1);break;};
+            case 19:{
+                    playeroutBitset = std::bitset<54>(std::string("000000000000000000000000000000000000000000000000110000"));
+                    playerBitset    = std::bitset<54>(std::string("111110000000011111111100000000000001001100000000000001"));
+                    somebodyOutCard(3,playeroutBitset,18,2,playerBitset);
+                    break;
+                    }
+            case 20:{somebodyPlayCardRound(2);break;};
+            case 21:{
+                    nextoutBitset =  std::bitset<54>  (std::string("000000000000000000000000000000110000000000000000000000"));
+                    //nextBitset    = std::bitset<54> (std::string("000000000000000000000000000000001010110011111111001110"));
+                    somebodyOutCard(2,nextoutBitset,15,2);
+                    break;
+                    }
+            case 22:{somebodyPlayCardRound(1);break;};
+            case 23:{somebodyNotOutCard(1,17);break;}
+            case 24:{somebodyPlayCardRound(3); break;}
+            case 25:
+            {
+                playeroutBitset = std::bitset<54>(std::string("001100000000000000000000000000000000000000000000000000"));
+                playerBitset= std::bitset<54>    (std::string("110010000000011111111100000000000001001100000000000001"));
+                somebodyOutCard(3,playeroutBitset,16,2,playerBitset);
+                break;
+            }
+            case 26:{somebodyPlayCardRound(2);break;}
+            case 27:{somebodyNotOutCard(2,15);break;}
+            case 28:{somebodyPlayCardRound(1);break;}
+            case 29:{somebodyNotOutCard(1,17);break;}
+            case 30:{somebodyPlayCardRound(3,1);break;}
+            case 31:
+            {
+                //playeroutBitset = std::bitset<54>(std::string("110000000000000000000000000000000000000000000000000000"));
+                playeroutBitset = std::bitset<54>(std::string("110010000000011111111100000000000001001100000000000001"));
+                //playerBitset= std::bitset<54>    (std::string("000010000000011111111100000000000001001100000000000001"));
+                playerBitset= std::bitset<54>    (std::string("000000000000000000000000000000000000000000000000000000"));
+                somebodyOutCard(3,playeroutBitset,14,14,playerBitset);
+                break;
+            }
+            case 32:{GameOver(1,6,-4500,-4500,9000);break;}
+            default: qDebug()<<"done!";
+        }
+        qDebug()<<TestStage;
+        TestStage++;
     });
-
-    std::bitset<54> BitsetCards(std::string("111111111111111111110000000000000000000000000000000000"));
-    std::bitset<54>previousBitset(std::string("111111111111111111110000000000000000000000000000000000"));
-    std::bitset<54>nextBitset(std::string("000000000000000000001111111111111111111100000000000000"));
-    std::bitset<54>playerBitset(std::string("000000000000000000001111111110000000000000000000000000"));
-
-    PlayerProfileNum = 0; PreviousProfileNum = 3; NextProfileNum = 4;
-    PreviousIdentity = "landlord"; NextIdentity = "farmer"; PlayerIdentity = "farmer";
-    PreviousBeanNum = "5.68W ";  NextBeanNum = "3266";  PlayerBeanNum = "359.62Y ";
-    PlayerHandCards = Transform_To_Vector(BitsetCards);
-    PreviousPlayerOutCards  = Transform_To_Vector(previousBitset);
-    NextPlayerOutCards = Transform_To_Vector(nextBitset);
-    PlayerOutCards = Transform_To_Vector(playerBitset);
-
-
-    ShowIdentityIcon();                                 //调用展示身份图标函数
-    placeHandCards();
-    placeOutCards(1);
-    placeOutCards(2);
-    //placeOutCards(3);
-
-    qDebug()<<"Build GameWidget checkpount1";
 //******end******
 
     //上家(previous)->1     下家(next)->2      自己->3
-    ui->ProfileLabel1      ->setGeometry( 0.026*Width,  0.25 *Height,  0.063*Width,   0.121*Height);
-    ui->ProfileLabel2      ->setGeometry( 0.906*Width,  0.259*Height,  0.063*Width,   0.121*Height);
+    ui->ProfileLabel1      ->setGeometry( 0.026*Width,  0.250*Height,  0.063*Width,   0.121*Height);
+    ui->ProfileLabel2      ->setGeometry( 0.906*Width,  0.250*Height,  0.063*Width,   0.121*Height);
     ui->ProfileLabel3      ->setGeometry( 0.062*Width,  0.824*Height,  0.063*Width,   0.121*Height);
     ui->IdentityLabel1     ->setGeometry( 0.046*Width,  0.203*Height,  0.021*Width,   0.037*Height);
     ui->IdentityLabel2     ->setGeometry( 0.927*Width,  0.212*Height,  0.021*Width,   0.037*Height);
     ui->IdentityLabel3     ->setGeometry( 0.083*Width,  0.777*Height,  0.021*Width,   0.037*Height);
     ui->BeansLineEdit1     ->setGeometry( 0.026*Width,  0.388*Height,  0.063*Width,   0.028*Height);
     ui->BeansLineEdit2     ->setGeometry( 0.906*Width,  0.398*Height,  0.063*Width,   0.028*Height);
-    ui->BeansLineEdit3     ->setGeometry( 0.062*Width,  0.953*Height,  0.063*Width,   0.028*Height);
-    ui->DoubleLabel1       ->setGeometry( 0.062*Width,  0.425*Height,  0.026*Width,   0.017*Height);
-    ui->DoubleLabel2       ->setGeometry( 0.906*Width,  0.435*Height,  0.026*Width,   0.017*Height);
+    ui->BeansLineEdit3     ->setGeometry( 0.062*Width,  0.953*Height,  0.063*Width,   0.028*Height);    ui->DoubleLabel1->hide();
+    ui->DoubleLabel1       ->setGeometry( 0.062*Width,  0.425*Height,  0.026*Width,   0.017*Height);    ui->DoubleLabel2->hide();
+    ui->DoubleLabel2       ->setGeometry( 0.906*Width,  0.435*Height,  0.026*Width,   0.017*Height);    ui->DoubleLabel3->hide();
     ui->DoubleLabel3       ->setGeometry( 0.135*Width,  0.962*Height,  0.026*Width,   0.017*Height);
     ui->FinalCard1         ->setGeometry( 0.420*Width,  0.018*Height,  0.042*Width,   0.102*Height);
     ui->FinalCard2         ->setGeometry( 0.472*Width,  0.018*Height,  0.042*Width,   0.102*Height);
     ui->FinalCard3         ->setGeometry( 0.524*Width,  0.018*Height,  0.042*Width,   0.102*Height);
-    ui->MultiplierLabel    ->setGeometry( 0.571*Width,  0.046*Height,  0.042*Width,   0.075*Height);
-    ui->ClockImageLabel    ->setGeometry( 0.802*Width,  0.222*Height,  0.021*Width,   0.037*Height);
+    ui->MultiplierLabel    ->setGeometry( 0.571*Width,  0.046*Height,  0.042*Width,   0.075*Height);    ui->ClockImageLabel->hide();
+    ui->ClockImageLabel    ->setGeometry( 0.802*Width,  0.222*Height,  0.021*Width,   0.037*Height);    ui->ClockNum->hide();
     ui->ClockNum           ->setGeometry( 0.808*Width,  0.231*Height,  0.010*Width,   0.019*Height);
     ui->RuleBtn            ->setGeometry( 0.901*Width,  0.018*Height,  0.031*Width,   0.056*Height);
     ui->SettingBtn         ->setGeometry( 0.942*Width,  0.018*Height,  0.031*Width,   0.056*Height);
@@ -69,12 +149,24 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     ui->SkipCallLandlordBtn->setGeometry( 0.550*Width,  0.680*Height,  0.083*Width,   0.047*Height);    ui->SkipCallLandlordBtn ->hide();
     ui->BidForLandlordBtn  ->setGeometry( 0.358*Width,  0.680*Height,  0.083*Width,   0.047*Height);    ui->BidForLandlordBtn   ->hide();
     ui->SkipLandlordBidBtn ->setGeometry( 0.550*Width,  0.680*Height,  0.083*Width,   0.047*Height);    ui->SkipLandlordBidBtn  ->hide();
-    ui->PlayCardBtn        ->setGeometry( 0.358*Width,  0.680*Height,  0.083*Width,   0.047*Height);    //ui->PlayCardBtn         ->hide();
-    ui->SkipTurnBtn        ->setGeometry( 0.550*Width,  0.680*Height,  0.083*Width,   0.047*Height);    //ui->SkipTurnBtn         ->hide();
+    ui->PlayCardBtn        ->setGeometry( 0.358*Width,  0.680*Height,  0.083*Width,   0.047*Height);    ui->PlayCardBtn         ->hide();
+    ui->SkipTurnBtn        ->setGeometry( 0.550*Width,  0.680*Height,  0.083*Width,   0.047*Height);    ui->SkipTurnBtn         ->hide();
     ui->DoubleBtn          ->setGeometry( 0.358*Width,  0.680*Height,  0.083*Width,   0.047*Height);    ui->DoubleBtn           ->hide();
     ui->UnDoubleBtn        ->setGeometry( 0.520*Width,  0.680*Height,  0.083*Width,   0.047*Height);    ui->UnDoubleBtn         ->hide();
     ui->ChatComboBox       ->setGeometry( 0.885*Width,  0.785*Height,  0.104*Width,   0.028*Height);
     ui->RoomId             ->setGeometry( 0.830*Width,  0.020*Height,  0.070*Width,   0.048*Height);
+    ui->MSGLabel1          ->setGeometry( 0.198*Width,  0.287*Height,  0.090*Width,   0.048*Height);    ui->MSGLabel1->hide();
+    ui->MSGLabel2          ->setGeometry( 0.712*Width,  0.287*Height,  0.090*Width,   0.048*Height);    ui->MSGLabel2->hide();
+    ui->MSGLabel3          ->setGeometry( 0.445*Width,  0.680*Height,  0.090*Width,   0.048*Height);    ui->MSGLabel3->hide();
+    ui->ReadyBtn           ->setGeometry( 0.458*Width,  0.680*Height,  0.083*Width,   0.048*Height);
+    ui->UnReadyBtn         ->setGeometry( 0.458*Width,  0.680*Height,  0.083*Width,   0.048*Height);    ui->UnReadyBtn->hide();
+    ui->ReadyLabel1        ->setGeometry( 0.038*Width,  0.240*Height,  0.025*Width,   0.035*Height);    ui->ReadyLabel1->hide();
+    ui->ReadyLabel2        ->setGeometry( 0.918*Width,  0.240*Height,  0.025*Width,   0.035*Height);    ui->ReadyLabel2->hide();
+    ui->ReadyLabel3        ->setGeometry( 0.078*Width,  0.814*Height,  0.025*Width,   0.035*Height);    ui->ReadyLabel3->hide();
+    ui->Recorder           ->setGeometry( 0.070*Width,  0.018*Height,  0.290*Width,   0.057*Height);    ui->Recorder->hide();
+    ui->Name1              ->setGeometry( 0.062*Width,  0.420*Height,  0.050*Width,   0.035*Height);
+    ui->Name2              ->setGeometry( 0.906*Width,  0.420*Height,  0.050*Width,   0.035*Height);
+    ui->Name3              ->setGeometry( 0.140*Width,  0.953*Height,  0.050*Width,   0.035*Height);
 
     ui->SettingBtn->setIcon(QIcon(":/image/image/Icon/setting.png"));
     ui->SettingBtn->setStyleSheet("QPushButton { background-color: transparent; }");
@@ -102,21 +194,6 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     ui->BeansLineEdit3->addAction(BeanIcon, QLineEdit::LeadingPosition); // 添加图标（LeadingPosition为左侧位置）
     ui->BeansLineEdit3->setText(PlayerBeanNum);
 
-    ProfilePixmap1 = QPixmap(ProfilePathIndex[PreviousProfileNum]);
-    ProfilePixmap1 = ProfilePixmap1.scaled(ui->ProfileLabel1->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation); // 将图片缩放到QLabel的尺寸
-    ui->ProfileLabel1->setPixmap(ProfilePixmap1);
-    ui->ProfileLabel1->setScaledContents(true);
-
-    ProfilePixmap2 = QPixmap(ProfilePathIndex[NextProfileNum]);
-    ProfilePixmap2 = ProfilePixmap2.scaled(ui->ProfileLabel2->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    ui->ProfileLabel2->setPixmap(ProfilePixmap2);
-    ui->ProfileLabel2->setScaledContents(true);
-
-    ProfilePixmap3 = QPixmap(ProfilePathIndex[PlayerProfileNum]);
-    ProfilePixmap3 = ProfilePixmap3.scaled(ui->ProfileLabel3->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    ui->ProfileLabel3->setPixmap(ProfilePixmap3);
-    ui->ProfileLabel3->setScaledContents(true);
-
     ClockPixmap = QPixmap(":/image/image/Icon/clock.png");
     ClockPixmap = ClockPixmap.scaled(ui->ClockImageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->ClockImageLabel->setPixmap(ClockPixmap);
@@ -133,14 +210,106 @@ GameWidget::GameWidget(int _Width,int _Height,QWidget *parent) :
     ui->ChatComboBox->addItem("Option 7");
     ui->ChatComboBox->setMaxVisibleItems(5);
 
+
+    ProfilePixmap1 = QPixmap(":/image/image/Profile/default.jpg");
+    ProfilePixmap1 = ProfilePixmap1.scaled(ui->ProfileLabel1->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation); // 将图片缩放到QLabel的尺寸
+    ui->ProfileLabel1->setPixmap(ProfilePixmap1);
+    ui->ProfileLabel1->setScaledContents(true);
+
+
+    ProfilePixmap2 = QPixmap(":/image/image/Profile/default.jpg");
+    ProfilePixmap2 = ProfilePixmap2.scaled(ui->ProfileLabel2->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->ProfileLabel2->setPixmap(ProfilePixmap2);
+    ui->ProfileLabel2->setScaledContents(true);
+
+    ProfilePixmap3 = QPixmap(":/image/image/Profile/default.jpg");
+    ProfilePixmap3 = ProfilePixmap3.scaled(ui->ProfileLabel3->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->ProfileLabel3->setPixmap(ProfilePixmap3);
+    ui->ProfileLabel3->setScaledContents(true);
+
+    QString roomIDstylesheet = QString("QLabel{font: 600 %1pt Sitka Subheading Semibold;border:1px solid;"
+                                       " background-color: qradialgradient(cx:0.5, cy:0.5, radius: 1.4, fx:0.5, fy:0.5, stop:0 #fafafa, stop:1 #f4f4f4); "
+                                       "box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);}").arg(RoomIdFontSize);
+    ui->RoomId->setStyleSheet(roomIDstylesheet);
+    ui->RoomId->setAlignment(Qt::AlignCenter);
+
+
+    ReadyPixmap = QPixmap(":/image/image/Icon/ready.png");
+    ui->ReadyLabel1->setPixmap(ReadyPixmap);
+    ui->ReadyLabel1->setScaledContents(true);
+    ui->ReadyLabel2->setPixmap(ReadyPixmap);
+    ui->ReadyLabel2->setScaledContents(true);
+    ui->ReadyLabel3->setPixmap(ReadyPixmap);
+    ui->ReadyLabel3->setScaledContents(true);
+
+    ui->MSGLabel1->setAlignment(Qt::AlignCenter);
+    ui->MSGLabel2->setAlignment(Qt::AlignCenter);
+    ui->MSGLabel3->setAlignment(Qt::AlignCenter);
+
+    ui->MultiplierLabel->setText("倍数\n⨉"+QString::number(Times));
+
+
+    model = new QStandardItemModel(2,15);
+    for (int column = 0; column < 15; ++column) {
+        QStandardItem *item = new QStandardItem(PointIndex[column+3]);
+        model->setItem(0, column, item);
+    }
+    ui->Recorder->setModel(model);
+    ui->Recorder->resizeRowsToContents();
+    ui->Recorder->resizeColumnsToContents();
+    ui->Recorder->verticalHeader()->setVisible(false);
+    ui->Recorder->horizontalHeader()->setVisible(false);
+
+
+    ShowRecorderShortcut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Period), this);  //CTRL + .
+    QObject::connect(ShowRecorderShortcut, &QShortcut::activated, [&]() {
+        if(RecordOpen==false)
+            ui->Recorder->show();
+        if(RecordOpen==true)
+            ui->Recorder->hide();
+        RecordOpen = !RecordOpen;
+    });
+
+
+    connect(ui->RuleBtn,&QPushButton::clicked,this,&GameWidget::onRuleBtnClicked);
     connect(ui->PlayCardBtn,&QPushButton::clicked,this,&GameWidget::onPlayCardsClicked);
+    connect(ui->SkipTurnBtn,&QPushButton::clicked,this,&GameWidget::onSkipTurnBtnClicked);
+    connect(ui->CallLandlordBtn,&QPushButton::clicked,this,&GameWidget::onCallLandlordBtnClicked);
+    connect(ui->SkipCallLandlordBtn,&QPushButton::clicked,this,&GameWidget::onSkipCallLandlordBtnClicked);
+    connect(ui->BidForLandlordBtn,&QPushButton::clicked,this,&GameWidget::onBidForLandlordBtnClicked);
+    connect(ui->SkipLandlordBidBtn,&QPushButton::clicked,this,&GameWidget::onSkipLandlordBidBtnClicked);
+    connect(ui->DoubleBtn,&QPushButton::clicked,this,&GameWidget::onDoubleBtnClicked);
+    connect(ui->UnDoubleBtn,&QPushButton::clicked,this,&GameWidget::onUnDoubleBtnClicked);
+    connect(ui->ReadyBtn,&QPushButton::clicked,this,&GameWidget::onReadyBtnClicked);
+    connect(ui->UnReadyBtn,&QPushButton::clicked,this,&GameWidget::onUnreadyBtnClicked);
+
     qDebug()<<"Build GameWidget Completely";
 
+
+    message_center = MessageCenter::getInstance();
+    widget_rev_packer = WidgetRevPacker::getInstance();
+
+    message_center->loadInterface("interfaceSomebodyEnterRoom",  std::bind(&GameWidget::interfaceSomebodyEnterRoom, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceSomebodyReady",      std::bind(&GameWidget::interfaceSomebodyReady, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceDealingCards",       std::bind(&GameWidget::interfaceDealingCards, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceCallLandlordRound",  std::bind(&GameWidget::interfaceCallLandlordRound, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceCallLandlord",       std::bind(&GameWidget::interfaceCallLandlord, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceBidForLandlordRound",std::bind(&GameWidget::interfaceBidForLandlordRound, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceBidForLandlord",     std::bind(&GameWidget::interfaceBidForLandlord, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceStartGame",          std::bind(&GameWidget::interfaceStartGame, this, std::placeholders::_1));
+    message_center->loadInterface("interfacePlayCardRound",      std::bind(&GameWidget::interfacePlayCardRound, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceOutCard",            std::bind(&GameWidget::interfaceOutCard, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceGameEnd",            std::bind(&GameWidget::interfaceGameEnd, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceDoubleRound",        std::bind(&GameWidget::interfaceDoubleRound, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceDouble",             std::bind(&GameWidget::interfaceDouble, this, std::placeholders::_1));
+    message_center->loadInterface("interfaceNotDouble",          std::bind(&GameWidget::interfaceNotDouble, this, std::placeholders::_1));
 
 }
 
 GameWidget::~GameWidget()
 {
+    timer->stop();
+    delete timer;
     qDebug()<<"Destroy GameWidget";
     delete ui;
 }
@@ -190,29 +359,9 @@ std::bitset<54> GameWidget::Transform_To_Bitset(std::vector<WidgetCard> VectorCa
     {
         if(VectorCards[i].Point==17) {TempBits[53]=1; continue;}
         if(VectorCards[i].Point==16) {TempBits[52]=1; continue;}
-        TempBits[(VectorCards[i].Point-3)*4+VectorCards[i].Type-1] = 1;
+        TempBits[(VectorCards[i].Point-3)*4+5-(VectorCards[i].Type+1)] = 1; qDebug()<< VectorCards[i].ImagePath<<"  "<<(VectorCards[i].Point-3)*4+5-(VectorCards[i].Type+1)<<" "<<VectorCards[i].Type;
     }
     return TempBits;
-}
-
-
-void GameWidget::ShowIdentityIcon()
-{
-    IdentityPixmap1 = QPixmap(":/image/image/Icon/"+PreviousIdentity+".png");
-    IdentityPixmap1 = IdentityPixmap1.scaled(ui->IdentityLabel1->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    ui->IdentityLabel1->setPixmap(IdentityPixmap1);
-    ui->IdentityLabel1->setScaledContents(true);
-
-    IdentityPixmap2 = QPixmap(":/image/image/Icon/"+NextIdentity+".png");
-    IdentityPixmap2 = IdentityPixmap2.scaled(ui->IdentityLabel1->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    ui->IdentityLabel2->setPixmap(IdentityPixmap2);
-    ui->IdentityLabel2->setScaledContents(true);
-
-    IdentityPixmap3 = QPixmap(":/image/image/Icon/"+PlayerIdentity+".png");
-    IdentityPixmap3 = IdentityPixmap3.scaled(ui->IdentityLabel3->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    ui->IdentityLabel3->setPixmap(IdentityPixmap3);
-    ui->IdentityLabel3->setScaledContents(true);
-
 }
 
 void GameWidget::onSettingBtnClicked()
@@ -223,19 +372,39 @@ void GameWidget::onSettingBtnClicked()
 
 void GameWidget::placeHandCards()
 {
-    for(int i = 0; i < PlayerHandCards.size(); i++)
+    for(unsigned i = 0; i < PlayerHandCards.size(); i++)
     {
         PlayerHandCards[i].btn = new QPushButton(this);
         PlayerHandCards[i].btn->setIcon(QIcon(PlayerHandCards[i].ImagePath));
         PlayerHandCards[i].btn->setStyleSheet("QPushButton { background-color: transparent; }");
-        PlayerHandCards[i].btn->setStyleSheet("QPushButton:disabled{color: black;}");
+        //PlayerHandCards[i].btn->setStyleSheet("QPushButton:disabled{color: black;}");
         PlayerHandCards[i].btn->setGeometry((0.198+0.03*i)*Width,0.796*Height,0.06*Width,0.148*Height);
         PlayerHandCards[i].btn->setIconSize(PlayerHandCards[i].btn->size());
         PlayerHandCards[i].btn->show();
     }
     ConnectHandCards();
 }
+void GameWidget::replaceHandCards(std::bitset<54> handcrads)
+{
 
+    DisconnectHandCards();
+    for(unsigned i = 0; i<PlayerHandCards.size(); i++)
+    {
+        delete PlayerHandCards[i].btn;
+    }
+    PlayerHandCards = Transform_To_Vector(handcrads);
+    for(unsigned i = 0; i < PlayerHandCards.size(); i++)
+    {
+        PlayerHandCards[i].btn = new QPushButton(this);
+        PlayerHandCards[i].btn->setIcon(QIcon(PlayerHandCards[i].ImagePath));
+        PlayerHandCards[i].btn->setStyleSheet("QPushButton { background-color: transparent; }");
+        //PlayerHandCards[i].btn->setStyleSheet("QPushButton:disabled{color: black;}");
+        PlayerHandCards[i].btn->setGeometry((0.198+0.03*i)*Width,0.796*Height,0.06*Width,0.148*Height);
+        PlayerHandCards[i].btn->setIconSize(PlayerHandCards[i].btn->size());
+        PlayerHandCards[i].btn->show();
+    }
+    ConnectHandCards();
+}
 void GameWidget::placeOutCards(int pos)
 {
     if(pos == 1)
@@ -324,7 +493,23 @@ void GameWidget::placeOutCards(int pos)
         }
     }
 }
+void GameWidget::ShowFinalCards()
+{
+    FinalCardPixmap1 = QPixmap(FinalCards[0].ImagePath);
+    FinalCardPixmap1 = FinalCardPixmap1.scaled(ui->FinalCard1->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->FinalCard1->setPixmap(FinalCardPixmap1);
+    ui->FinalCard1->setScaledContents(true);
 
+    FinalCardPixmap2 = QPixmap(FinalCards[1].ImagePath);
+    FinalCardPixmap2 = FinalCardPixmap2.scaled(ui->FinalCard2->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->FinalCard2->setPixmap(FinalCardPixmap2);
+    ui->FinalCard2->setScaledContents(true);
+
+    FinalCardPixmap3 = QPixmap(FinalCards[2].ImagePath);
+    FinalCardPixmap3 = FinalCardPixmap3.scaled(ui->FinalCard3->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->FinalCard3->setPixmap(FinalCardPixmap3);
+    ui->FinalCard3->setScaledContents(true);
+}
 void GameWidget::ImportConfig()
 {
     QString filePath = "./config/config.json";
@@ -341,9 +526,13 @@ void GameWidget::ImportConfig()
             {
                 QJsonObject jsonObj = jsonDoc.object();
                 QJsonObject GameObj = jsonObj["Game"].toObject();
+                QJsonObject UniversalObj = jsonObj["Universal"].toObject();
                 BGMState = bool(GameObj.value("GameBGM").toVariant().toInt());
                 EffectState = bool(GameObj.value("Effect").toVariant().toInt());
-                CardStyle = GameObj.value("Card").toVariant().toInt();     qDebug()<<CardStyle;
+                CardStyle = GameObj.value("Card").toVariant().toInt();
+                BGMVolume = GameObj.value("BGMVolume").toVariant().toDouble();
+                EffectVolume = GameObj.value("EffectVolume").toVariant().toDouble();
+                FullScreenState = bool(UniversalObj.value("FullScreen").toVariant().toInt());
             }
             else
             {
@@ -356,46 +545,35 @@ void GameWidget::ImportConfig()
         }
     }
 }
-
 void GameWidget::onPlayCardsClicked()
 {
-    SelectedCards =0;
-    int HeadUnselectedCount = 0;
-    DisconnectHandCards();
-    //*********test**********
-    PlayerOutCards.clear();
-    //*********end **********
+    SelectedCards = 0;
+
     for(unsigned i = 0;i < PlayerHandCards.size();i++)
     {
-        if(PlayerHandCards[i].isUp==false)
+        if(PlayerHandCards[i].isUp==true)
         {
-            qDebug()<<"移动前"<<PlayerHandCards[i].btn->x();
-            AnimateMoveLeft(PlayerHandCards[i].btn,0.03*Width*(i-HeadUnselectedCount++));
-            qDebug()<<"移动后"<<PlayerHandCards[i].btn->x();
-            continue;
-        }
-        SelectedCards[PlayerHandCards[i].Index] = 1;
-        //出牌后,更新playeroutcards
-        delete PlayerHandCards[i].btn;
-        PlayerOutCards.push_back(AllCards[PlayerHandCards[i].Index]);
-    }
-    for(unsigned i = 0; i<PlayerHandCards.size();i++)
-    {
-        if(PlayerHandCards[i].isUp==false)
-        {
-            PlayerHandCards.erase(std::remove_if(PlayerHandCards.begin(), PlayerHandCards.end(), [](const WidgetCard& card) {
-                            return card.isUp;
-                        }), PlayerHandCards.end());
+            SelectedCards[PlayerHandCards[i].Index] = 1;
         }
     }
-    ConnectHandCards();
-    std::bitset<54> test = 0;
-    test = Transform_To_Bitset(PlayerHandCards);
-    std::cout<<"new handcards  "<<test<<"\n";  std::flush(std::cout);
 
-    placeOutCards(3);
-    std::cout<<SelectedCards<<"\n";
-    std::flush(std::cout);
+    if(mode)
+    {
+        CardTypeVector result = CardProcess::CardTypeCheck(SelectedCards);
+        if(result[0].cardtype != CardType::None)
+        {
+            qDebug() << "Selected: " << SelectedCards.to_string();
+            WidgetArgPackage* package = new WidgetArgPackage();
+            package->packMessage<WidgetArgCard>(CARD_OPCODE::OUTCARD, seat, (int)PlayerHandCards.size(), (int)result[0].cardtype, result[0].point, result[0].succ, SelectedCards,Transform_To_Bitset(PlayerHandCards), mode);
+            widget_rev_packer->WidgetsendMessage(package);
+        }
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::BIGGER_CARDS, "", "", seat, 1, SelectedCards.to_ullong(), 0, 1);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
 }
 
 void GameWidget::ConnectHandCards()
@@ -403,24 +581,58 @@ void GameWidget::ConnectHandCards()
     for (int i = 0;i < PlayerHandCards.size();i++)
     {
         int index = i;
-        connect(PlayerHandCards[i].btn,&QPushButton::clicked,[&,index]()
+        connect(PlayerHandCards[i].btn,&QPushButton::pressed,[&,index]()
                 {
-            if (!PlayerHandCards[index].isUp) {qDebug()<<"movecard"<<PlayerHandCards[index].Index;
-                AnimateMove(PlayerHandCards[index].btn->pos(), PlayerHandCards[index].btn->pos() - QPoint(0, 50), PlayerHandCards[index].btn);
-            } else {
-                AnimateMove(PlayerHandCards[index].btn->pos(), PlayerHandCards[index].btn->pos() + QPoint(0, 50), PlayerHandCards[index].btn);
-            }
-            PlayerHandCards[index].isUp = !PlayerHandCards[index].isUp;
-        });
+                    if (!PlayerHandCards[index].isUp) {qDebug()<<"movecard"<<PlayerHandCards[index].Index;
+                        AnimateMove(PlayerHandCards[index].btn->pos(), PlayerHandCards[index].btn->pos() - QPoint(0, 0.02*Height), PlayerHandCards[index].btn);
+                    } else {
+                        AnimateMove(PlayerHandCards[index].btn->pos(), PlayerHandCards[index].btn->pos() + QPoint(0, 0.02*Height), PlayerHandCards[index].btn);
+                    }
+                    PlayerHandCards[index].isUp = !PlayerHandCards[index].isUp;
+                });
     }
 }
-
 void GameWidget::DisconnectHandCards()
 {
     for (int i = 0;i < PlayerHandCards.size();i++)
     {
         disconnect(PlayerHandCards[i].btn,0,0,0);
     }
+}
+void GameWidget::updateRecorder(int Pos)
+{
+    switch(Pos)
+    {
+        case 1:
+        {
+            for(unsigned i = 0;i<PreviousPlayerOutCards.size();i++)
+            {
+                Card_Recorder[PreviousPlayerOutCards[i].Point-3]--;
+            }
+            break;
+        }
+        case 2:
+        {
+            for(unsigned i = 0;i<NextPlayerOutCards.size();i++)
+            {
+                Card_Recorder[NextPlayerOutCards[i].Point-3]--;
+            }
+            break;
+        }
+        case 3:
+        {
+            for(unsigned i = 0;i< PlayerHandCards.size();i++)
+            {
+                Card_Recorder[PlayerHandCards[i].Point-3]--;
+            }
+            break;
+        }
+    }
+        for (int column = 0; column < 15; ++column) {
+        QStandardItem *item = new QStandardItem(QString::number(Card_Recorder[column]));
+            model->setItem(1, column, item);
+        }
+        ui->Recorder->setModel(model);
 }
 void GameWidget::AnimateMove(const QPoint& startPos, const QPoint& endPos,QPushButton *btn)
 {
@@ -436,7 +648,6 @@ void GameWidget::AnimateMove(const QPoint& startPos, const QPoint& endPos,QPushB
         btn->setEnabled(true);
     });
 }
-
 void GameWidget::AnimateMoveLeft(QPushButton* btn, int distance)
 {
     QPropertyAnimation* animation = new QPropertyAnimation(btn, "geometry");
@@ -445,50 +656,1283 @@ void GameWidget::AnimateMoveLeft(QPushButton* btn, int distance)
     animation->setEndValue(btn->geometry().translated(-distance, 0)); // 向左移动指定距离
     animation->setEasingCurve(QEasingCurve::OutCubic); // 使用缓动曲线来平滑动画
     animation->start();
+    btn->setEnabled(false);
     btn->setGeometry(btn->x()-distance,btn->y(),btn->width(),btn->height());
+    connect(animation,&QPropertyAnimation::finished,[btn]()
+            {
+                btn->setEnabled(true);
+            });
 }
-//没写呢
-void GameWidget::DestroyOutCards(int pos)
+void GameWidget::MessageSender(std::string Title, std::string Info, QMessageBox::Icon Type)
+{
+    QMessageBox msgBox;
+    msgBox.setIcon(Type);
+    msgBox.setWindowTitle(QString::fromStdString(Title));
+    msgBox.setText(QString::fromStdString(Info));
+    msgBox.exec();
+}
+void GameWidget::PlacePreviousHandCards()
+{
+    for(int i = 0;i<backlabel1.size();i++)
+    {
+        if(backlabel1[i])
+        {
+            delete backlabel1[i];
+        }
+    }
+    backlabel1.clear();
+    for(int i = 0;i<PreviousCardsNumber;i++)
+    {
+        QLabel *tmp = new QLabel(this);
+        tmp->setGeometry(0.119*Width,(0.138+(0.026*i))*Height,0.040*Width,0.070*Height);
+        tmp->setPixmap(CardBackPixmap);
+        tmp->setScaledContents(true);
+        tmp->show();
+        backlabel1.push_back(tmp);
+    }
+    PreviousCardsNumLabel->setGeometry(0.135*Width,(0.143+0.026*PreviousCardsNumber)*Height,0.010*Width,0.019*Height);
+    PreviousCardsNumLabel->setStyleSheet("background-color: gold;");
+    PreviousCardsNumLabel->setText(QString::number(PreviousCardsNumber));
+    PreviousCardsNumLabel->raise();
+    PreviousCardsNumLabel->show();
+
+}
+void GameWidget::PlaceNextHandCards()
+{
+    for(int i = 0;i<backlabel2.size();i++)
+    {
+        if(backlabel2[i])
+        {
+            delete backlabel2[i];
+        }
+    }
+    backlabel2.clear();
+    for(int i = 0;i<NextCardsNumber;i++)
+    {
+        QLabel *tmp = new QLabel(this);
+        tmp->setGeometry(0.841*Width,(0.138+(0.026*i))*Height,0.040*Width,0.070*Height);
+        tmp->setPixmap(CardBackPixmap);
+        tmp->setScaledContents(true);
+        tmp->show();
+        backlabel2.push_back(tmp);
+    }
+    NextCardsNumLabel->setGeometry(0.848*Width,(0.143+0.026*NextCardsNumber)*Height,0.010*Width,0.019*Height);
+    NextCardsNumLabel->setStyleSheet("background-color: gold;");
+    NextCardsNumLabel->setText(QString::number(NextCardsNumber));
+    NextCardsNumLabel->raise();
+    NextCardsNumLabel->show();
+}
+void GameWidget::DestroyOutCards(int pos)          //清空出牌显示区  1->上家    2->下家   3->自己
 {
     if(pos==1)
     {
-        ;
+        for(unsigned i = 0 ;i<PreviousPlayerOutCards.size();i++)
+        {
+            delete PreviousPlayerOutCards[i].btn;
+        }
+            PreviousPlayerOutCards.clear();
+
     }
     if(pos==2)
     {
-        ;
+        for(unsigned i = 0 ;i<NextPlayerOutCards.size();i++)
+        {
+            delete NextPlayerOutCards[i].btn;
+        }
+        NextPlayerOutCards.clear();
     }
     if(pos==3)
     {
-        ;
+        for(unsigned i = 0 ;i<PlayerOutCards.size();i++)
+        {
+            delete PlayerOutCards[i].btn;
+        }
+        PlayerOutCards.clear();
+    }
+}
+void GameWidget::MakeSoundEffect(int Type)  //0:叫地主  1：不叫  2：加倍  3：不加倍   4：抢地主   5：不抢    6：不出
+{                                           //7：上家出牌    8：下家出牌   9：自己出牌    10：游戏胜利    11：游戏失败  12：超时预警
+    qDebug()<<"Make Effect"<<Type;
+    switch(Type)
+    {
+        case 0:
+        {
+            EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/jiaodizhu.m4a"));
+            break;
+        }
+        case 1:
+        {
+            EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/bujiao.m4a"));
+            break;
+        }
+        case 2:
+        {
+            EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/jiabei.m4a"));
+            break;
+        }
+        case 3:
+        {
+            EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/bujiabei.m4a"));
+            break;
+        }
+        case 4:
+        {
+
+            int rand = QRandomGenerator::global()->generate()%3;
+            EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/qiangdizhu"+QString::number(rand)+".m4a"));  //***********
+            break;
+        }
+        case 5:
+        {
+            EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/buqiang.m4a"));
+            break;
+        }
+        case 6:
+        {
+            EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/buyao.m4a"));
+            break;
+        }
+        case 7:
+        {
+            if(PreviousOutCradsType > 3)
+            {
+                EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/"+CardTypeIndex[PreviousOutCradsType]+".m4a"));
+                break;
+            }
+            else if(PreviousOutCradsType>0&&PreviousOutCradsType<4)
+            {
+                EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/"+CardTypeIndex[PreviousOutCradsType]+"_"+PointIndex[PreviousPlayerOutCards[0].Point]+".m4a"));
+                break;
+            }
+        }
+        case 8:
+        {
+            if(NextOutCradsType > 3)
+            {
+                EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/"+CardTypeIndex[NextOutCradsType]+".m4a"));
+                break;
+            }
+            else if(NextOutCradsType>0&&NextOutCradsType<4)
+            {
+                EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/"+CardTypeIndex[NextOutCradsType]+"_"+PointIndex[NextPlayerOutCards[0].Point]+".m4a"));
+                break;
+            }
+        }
+        case 9:
+        {
+            if(PlayerOutCradsType > 3)
+            {
+                EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/"+CardTypeIndex[PlayerOutCradsType]+".m4a"));
+                break;
+            }
+            else if(PlayerOutCradsType>0&&PlayerOutCradsType<4)
+            {
+                EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/"+CardTypeIndex[PlayerOutCradsType]+"_"+PointIndex[PlayerOutCards[0].Point]+".m4a"));
+                break;
+            }
+        }
+        case 12:
+        {
+            EffectPlayer->setSource(QUrl("qrc:/sound/sound/Sound_effects/warning.mp3"));
+            break;
+        }
+    }
+    EffectPlayer->play();
+
+}
+void GameWidget::ShowProfiles(int Pos)
+{
+    switch(Pos)
+    {
+        case 1:
+        {
+            ProfilePixmap1 = QPixmap(":/image/image/Profile/"+QString::number(PreviousProfileIndex)+".jpg");
+            ProfilePixmap1 = ProfilePixmap1.scaled(ui->ProfileLabel1->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation); // 将图片缩放到QLabel的尺寸
+            ui->ProfileLabel1->setPixmap(ProfilePixmap1);
+            ui->ProfileLabel1->show();
+            break;
+        }
+        case 2:
+        {
+            ProfilePixmap2 = QPixmap(":/image/image/Profile/"+QString::number(NextProfileIndex)+".jpg");
+            ProfilePixmap2 = ProfilePixmap2.scaled(ui->ProfileLabel2->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            ui->ProfileLabel2->setPixmap(ProfilePixmap2);
+            ui->ProfileLabel2->show();
+            break;
+        }
+        case 3:
+        {
+            ProfilePixmap3 = QPixmap(":/image/image/Profile/"+QString::number(PlayerProfileIndex)+".jpg");
+            ProfilePixmap3 = ProfilePixmap3.scaled(ui->ProfileLabel3->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            ui->ProfileLabel3->setPixmap(ProfilePixmap3);
+            ui->ProfileLabel3->show();
+            break;
+        }
+    }
+
+}
+void GameWidget::StartCountDown(int time,int pos)
+{
+    qDebug()<<"start timer";
+    ui->ClockImageLabel->show();
+    ui->ClockNum->show();
+    if(pos==1) {ui->ClockImageLabel->setGeometry(0.177*Width,  0.222*Height,  0.021*Width,   0.037*Height);
+                ui->ClockNum       ->setGeometry(0.182*Width,  0.231*Height,  0.010*Width,   0.019*Height);
+    }
+    else if(pos==2) {ui->ClockImageLabel->setGeometry(0.802*Width,  0.222*Height,  0.021*Width,   0.037*Height);
+                     ui->ClockNum       ->setGeometry(0.808*Width,  0.231*Height,  0.010*Width,   0.019*Height);
+    }
+    else if(pos==3) {ui->ClockImageLabel->setGeometry(0.490*Width,  0.685*Height,  0.021*Width,   0.037*Height);
+                     ui->ClockNum       ->setGeometry(0.495*Width,  0.694*Height,  0.010*Width,   0.019*Height);
+    }
+    remainingTime = time;
+    connect(timer, &QTimer::timeout, this, &GameWidget::updateCountDown);
+    timer->start(1000); // 每秒触发一次timeout()信号
+    updateCountDown(); // 更新显示剩余秒数
+}
+void GameWidget::updateCountDown()
+{
+    if(remainingTime==5) MakeSoundEffect(12);
+    if (remainingTime >= 0) {
+        ui->ClockNum->setText(QString::number(remainingTime));
+        ui->ClockNum->setAlignment(Qt::AlignCenter);
+        remainingTime--;
+    } else {
+        timer->stop(); // 停止计时器
+        qDebug()<<"stop Timer";
+    }
+}
+QString GameWidget::Transform_To_String(int Num)
+{
+    QString Str;
+    double head;
+    if(Num>100000000)
+    {
+        head = Num/100000000.0;
+        Str = QString::number(head,'f', 2)+"亿";
+    }
+    else if(Num>10000)
+    {
+        head = Num/10000.0;
+        Str = QString::number(head,'f', 2)+"万";
+    }
+    else Str = QString::number(Num);
+    return Str;
+}
+void GameWidget::ShowIdentityIcon(std::string identity1,std::string identity2,std::string identity3)  //"farmer" "landlord"
+{
+    PreviousIdentityString = QString::fromStdString(identity1); NextIdentityString = QString::fromStdString(identity2); PlayerIdentityString = QString::fromStdString(identity3);
+    IdentityPixmap1 = QPixmap(":/image/image/Icon/"+PreviousIdentityString+".png");
+    IdentityPixmap1 = IdentityPixmap1.scaled(ui->IdentityLabel1->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->IdentityLabel1->setPixmap(IdentityPixmap1);
+    ui->IdentityLabel1->setScaledContents(true);
+
+    IdentityPixmap2 = QPixmap(":/image/image/Icon/"+NextIdentityString+".png");
+    IdentityPixmap2 = IdentityPixmap2.scaled(ui->IdentityLabel1->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->IdentityLabel2->setPixmap(IdentityPixmap2);
+    ui->IdentityLabel2->setScaledContents(true);
+
+    IdentityPixmap3 = QPixmap(":/image/image/Icon/"+PlayerIdentityString+".png");
+    IdentityPixmap3 = IdentityPixmap3.scaled(ui->IdentityLabel3->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->IdentityLabel3->setPixmap(IdentityPixmap3);
+    ui->IdentityLabel3->setScaledContents(true);
+
+}
+void GameWidget::somebodyCallLandlordRound(int Pos)     //叫地主回合
+{
+    switch(Pos)
+    {
+        case 1:
+        {
+            StartCountDown(10,1);
+            ui->MSGLabel1->clear();
+            break;
+        }
+        case 2:
+        {
+            StartCountDown(10,2);
+            ui->MSGLabel2->clear();
+            break;
+        }
+        case 3:
+        {
+            ui->SkipCallLandlordBtn->show();
+            ui->CallLandlordBtn->show();
+            ui->MSGLabel3->clear();
+            StartCountDown(10,3);
+            break;
+        }
+    }
+
+
+}
+void GameWidget::somebodyBidForLandlordRound(int Pos) //抢地主回合
+{
+    switch(Pos)
+    {
+        case 1:
+        {
+            StartCountDown(10,1);
+            ui->MSGLabel1->clear();
+            break;
+        }
+        case 2:
+        {
+            StartCountDown(10,2);
+            ui->MSGLabel2->clear();
+            break;
+        }
+        case 3:
+        {
+            ui->BidForLandlordBtn->show();
+            ui->SkipLandlordBidBtn->show();
+            ui->MSGLabel3->clear();
+            StartCountDown(10,3);
+        }
+    }
+
+}
+void GameWidget::somebodyDoubleRound()       //加倍回合
+{
+        ui->MSGLabel1->clear();
+        ui->MSGLabel2->clear();
+        ui->MSGLabel3->clear();
+        ui->DoubleBtn->show();
+        ui->UnDoubleBtn->show();
+        StartCountDown(10,3);
+}
+void GameWidget::somebodyPlayCardRound(int Pos,bool MustOut)    //出牌回合
+{
+    switch(Pos)
+    {
+        case 1:
+        {
+            StartCountDown(30,1);
+            ui->MSGLabel1->clear();
+            break;
+        }
+        case 2:
+        {
+            StartCountDown(30,2);
+            ui->MSGLabel2->clear();
+            break;
+        }
+        case 3:
+        {
+            ui->PlayCardBtn->show();
+            ui->SkipTurnBtn->show();
+            if(!MustOut)
+            ui->SkipTurnBtn->setEnabled(true);
+            else
+            ui->SkipTurnBtn->setEnabled(false);
+            ui->MSGLabel3->clear();
+            StartCountDown(30,3);
+            break;
+        }
+    }
+        DestroyOutCards(Pos);
+}
+void GameWidget::somebodyReady(int Pos)            //有人准备
+{
+    switch(Pos)
+    {
+        case 1:
+        {
+            ui->ReadyLabel1->show();
+            break;
+        }
+        case 2:
+        {
+            ui->ReadyLabel2->show();
+            break;
+        }
+        case 3:
+        {
+            ui->ReadyLabel3->show();
+            ui->ReadyBtn->hide();
+            ui->UnReadyBtn->show();
+            break;
+        }
+    }
+}
+void GameWidget::somebodyUnReady(int Pos)            //有人取消准备
+{
+    switch(Pos)
+    {
+        case 1:
+        {
+            ui->ReadyLabel1->hide();
+            break;
+        }
+        case 2:
+        {
+            ui->ReadyLabel2->hide();
+            break;
+        }
+        case 3:
+        {
+            ui->ReadyLabel3->hide();
+            ui->ReadyBtn->show();
+            ui->UnReadyBtn->hide();
+            break;
+        }
+    }
+}
+void GameWidget::somebodyCallLandlord(int Pos)       //有人叫地主
+{
+    switch(Pos)
+    {
+    case 1:
+        {
+            ui->MSGLabel1->setText("叫地主");
+            ui->MSGLabel1->show();
+            break;
+        }
+        case 2:
+        {
+            ui->MSGLabel2->setText("叫地主");
+            ui->MSGLabel2->show();
+            break;
+        }
+        case 3:
+        {
+            ui->MSGLabel3->setText("叫地主");
+            ui->SkipCallLandlordBtn->hide();
+            ui->CallLandlordBtn->hide();
+            ui->MSGLabel3->show();
+            break;
+        }
+    }
+    MakeSoundEffect(0);
+    timer->stop();qDebug()<<"stop Timer";
+    disconnect(timer, nullptr, this, nullptr);
+    ui->ClockImageLabel->hide();
+    ui->ClockNum->hide();
+}
+void GameWidget::somebodyNotOutCard(int Pos,int Leftcards,std::bitset<54> handcards)   //有人不出
+{
+    switch (Pos)
+    {
+        case 1:
+        {
+            PreviousPlayerOutCards.clear();
+            PreviousCardsNumber = Leftcards;
+            PreviousOutCradsType = 0;
+            ui->MSGLabel1->setText("不出");
+            ui->MSGLabel1->show();
+            break;
+        }
+        case 2:
+        {
+            NextPlayerOutCards.clear();
+            NextCardsNumber = Leftcards;
+            NextOutCradsType = 0;
+            ui->MSGLabel2->setText("不出");
+            ui->MSGLabel2->show();
+            break;
+        }
+        case 3:
+        {
+            PlayerOutCards.clear();
+           //PlayerHandCards = Transform_To_Vector(handcards);
+            PlayerOutCradsType = 0;
+            ui->MSGLabel3->setText("不出");
+            ui->MSGLabel3->show();
+            ui->PlayCardBtn->hide();
+            ui->SkipTurnBtn->hide();
+            break;
+        }
+    }
+        timer->stop();qDebug()<<"stop Timer";
+        disconnect(timer, nullptr, this, nullptr);
+        ui->ClockImageLabel->hide();
+        ui->ClockNum->hide();
+        MakeSoundEffect(6);
+}
+void GameWidget::somebodyOutCard(int Pos,std::bitset<54> Bitset,int Leftcards,int Cardtype,std::bitset<54> handcards)  //有人出牌
+{
+    switch(Pos)
+    {
+        case 1:
+        {
+            PreviousPlayerOutCards = Transform_To_Vector(Bitset);
+            updateRecorder(Pos);
+            PreviousCardsNumber = Leftcards;
+            PreviousOutCradsType = Cardtype;
+            PlacePreviousHandCards();
+            break;
+        }
+        case 2:
+        {
+            NextPlayerOutCards = Transform_To_Vector(Bitset);
+            updateRecorder(Pos);
+            NextCardsNumber = Leftcards;
+            NextOutCradsType = Cardtype;
+            PlaceNextHandCards();
+            break;
+        }
+        case 3:
+        {
+            PlayerOutCards = Transform_To_Vector(Bitset);
+            PlayerOutCradsType = Cardtype;
+            int HeadUnselectedCount = 0;
+            //std::vector<int> recovercards;
+            DisconnectHandCards();
+            for(unsigned i = 0;i < PlayerHandCards.size();i++)
+            {
+                if(Bitset[PlayerHandCards[i].Index]==1)
+                {
+                    PlayerHandCards[i].isUp = true;
+                }
+                else if(PlayerHandCards[i].isUp==true)
+                {
+                    PlayerHandCards[i].isUp = false;    qDebug()<<"set Card"<<PlayerHandCards[i].Type<<" "<<PlayerHandCards[i].Point<<"isUp -> false";
+                    // recovercards.push_back(i);
+                }
+            }
+            for(unsigned i = 0;i < PlayerHandCards.size();i++)
+            {
+                if(PlayerHandCards[i].isUp==false)
+                {
+                    AnimateMoveLeft(PlayerHandCards[i].btn,0.03*Width*(i-HeadUnselectedCount++));
+                    continue;
+                }
+                SelectedCards[PlayerHandCards[i].Index] = 1;
+                PlayerHandCards[i].btn->hide();
+                qDebug()<<"delete HandCards"<<PlayerHandCards[i].Type<<" "<<PlayerHandCards[i].Point;
+                delete PlayerHandCards[i].btn;
+            }
+            std::vector<WidgetCard> temp;
+            for(unsigned i = 0; i<PlayerHandCards.size();i++)
+            {
+                if(PlayerHandCards[i].isUp==false)
+                    temp.push_back(PlayerHandCards[i]);
+            }
+            PlayerHandCards.clear();
+            for(unsigned i = 0; i<temp.size();i++)
+            {
+                 PlayerHandCards.push_back(temp[i]);
+            }
+            // for(unsigned i = 0; i<PlayerHandCards.size();i++)
+            // {
+            //     if(PlayerHandCards[i].isUp==false)
+            //     {
+            //         PlayerHandCards.erase(std::remove_if(PlayerHandCards.begin(), PlayerHandCards.end(), [](const WidgetCard& card) {
+            //                                   return card.isUp;
+            //                               }), PlayerHandCards.end());
+            //     }
+            // }
+            // for(int i = 0; i< PlayerHandCards.size();i++)
+            // {
+            //     for(int j = 0;j<recovercards.size();j++)
+            //     {
+            //         if(PlayerHandCards[i].Index==recovercards[j])
+            //             PlayerHandCards[i].isUp = true;
+            //     }
+            // }
+            qDebug()<<"PlayerHandCrad->Number"<<PlayerHandCards.size();
+            ConnectHandCards();
+            ui->PlayCardBtn->hide();
+            ui->SkipTurnBtn->hide();
+            break;
+        }
+    }
+    placeOutCards(Pos);
+    MakeSoundEffect(Pos+6);
+    timer->stop();  qDebug()<<"stop Timer";
+    disconnect(timer, nullptr, this, nullptr);
+    ui->ClockImageLabel->hide();
+    ui->ClockNum->hide();
+
+}
+void GameWidget::somebodyNotCallLandlord(int Pos)     //有人不叫
+{
+    switch(Pos)
+    {
+        case 1:
+        {
+            ui->MSGLabel1->setText("不叫");
+            ui->MSGLabel1->show();
+            break;
+        }
+        case 2:
+        {
+            ui->MSGLabel2->setText("不叫");
+            ui->MSGLabel2->show();
+            break;
+        }
+        case 3:
+        {
+            ui->MSGLabel3->setText("不叫");
+            ui->SkipCallLandlordBtn->hide();
+            ui->CallLandlordBtn->hide();
+            ui->MSGLabel3->show();
+            break;
+        }
+    }
+        timer->stop();qDebug()<<"stop Timer";
+        disconnect(timer, nullptr, this, nullptr);
+        ui->ClockImageLabel->hide();
+        ui->ClockNum->hide();
+        MakeSoundEffect(1);
+}
+void GameWidget::somebodyBidForLandlord(int Pos)     //有人抢地主    ----》服务器端关联翻倍
+{
+    qDebug() << "抢地主 UI pos:" << Pos;
+    switch(Pos)
+    {
+        case 1:
+        {
+            ui->MSGLabel1->setText("抢地主");
+            ui->MSGLabel1->show();
+            break;
+        }
+        case 2:
+        {
+            ui->MSGLabel2->setText("抢地主");
+            ui->MSGLabel2->show();
+            break;
+        }
+        case 3:
+        {
+            ui->MSGLabel3->setText("抢地主");
+            ui->SkipLandlordBidBtn->hide();
+            ui->BidForLandlordBtn->hide();
+            ui->MSGLabel3->show();
+            break;
+        }
+    }
+        timer->stop();qDebug()<<"stop Timer";
+        disconnect(timer, nullptr, this, nullptr);
+        ui->ClockImageLabel->hide();
+        ui->ClockNum->hide();
+        MakeSoundEffect(4);
+}
+void GameWidget::somebodyNotBidForLandlord(int Pos)
+{
+    qDebug() << "不抢 UI pos:" << Pos;
+    switch(Pos)
+    {
+        case 1:
+        {
+            ui->MSGLabel1->setText("不抢");
+            ui->MSGLabel1->show();
+            break;
+        }
+        case 2:
+        {
+            ui->MSGLabel2->setText("不抢");
+            ui->MSGLabel2->show();
+            break;
+        }
+        case 3:
+        {
+            ui->MSGLabel3->setText("不抢");
+            ui->SkipLandlordBidBtn->hide();
+            ui->BidForLandlordBtn->hide();
+            ui->MSGLabel3->show();
+            break;
+        }
+    }
+        timer->stop();qDebug()<<"stop Timer";
+        disconnect(timer, nullptr, this, nullptr);
+        ui->ClockImageLabel->hide();
+        ui->ClockNum->hide();
+        MakeSoundEffect(5);
+}
+void GameWidget::somebodyDouble(int Pos)
+{
+    switch(Pos)
+    {
+        case 1:
+        {
+            ui->MSGLabel1->setText("加倍");
+            ui->MSGLabel1->show();
+            //ui->DoubleLabel1->setPixmap();
+            ui->DoubleLabel1->setText("加倍");
+            ui->DoubleLabel1->show();
+            break;
+        }
+        case 2:
+        {
+            ui->MSGLabel2->setText("加倍");
+            ui->MSGLabel2->show();
+            //ui->DoubleLabel2->setPixmap();
+            ui->DoubleLabel2->setText("加倍");
+            ui->DoubleLabel2->show();
+            break;
+        }
+        case 3:
+        {
+            ui->MSGLabel3->setText("加倍");
+            ui->DoubleBtn->hide();
+            ui->UnDoubleBtn->hide();
+            ui->MSGLabel3->show();
+            //ui->DoubleLabel3->setPixmap();
+            ui->DoubleLabel3->setText("加倍");
+            ui->DoubleLabel3->show();
+            timer->stop();qDebug()<<"stop Timer";
+            disconnect(timer, nullptr, this, nullptr);
+            ui->ClockImageLabel->hide();
+            ui->ClockNum->hide();
+            break;
+        }
+    }
+    MakeSoundEffect(2);
+}
+void GameWidget::somebodyNotDouble(int Pos)
+{
+    switch(Pos)
+    {
+        case 1:
+        {
+            ui->MSGLabel1->setText("不加倍");
+            ui->MSGLabel1->show();
+            //ui->DoubleLabel1->setPixmap();
+            ui->DoubleLabel1->setText("不加倍");
+            ui->DoubleLabel1->show();
+            break;
+        }
+        case 2:
+        {
+            ui->MSGLabel2->setText("不加倍");
+            ui->MSGLabel2->show();
+            //ui->DoubleLabel2->setPixmap();
+            ui->DoubleLabel2->setText("不加倍");
+            ui->DoubleLabel2->show();
+            break;
+        }
+        case 3:
+        {
+            ui->MSGLabel3->setText("不加倍");
+            ui->DoubleBtn->hide();
+            ui->UnDoubleBtn->hide();
+            ui->MSGLabel3->show();
+            //ui->DoubleLabel3->setPixmap();
+            ui->DoubleLabel3->setText("不加倍");
+            ui->DoubleLabel3->show();
+            timer->stop();qDebug()<<"stop Timer";
+            disconnect(timer, nullptr, this, nullptr);
+            ui->ClockImageLabel->hide();
+            ui->ClockNum->hide();
+            break;
+        }
+    }
+    MakeSoundEffect(2);
+}
+void GameWidget::somebodyEnterRoom(int Pos,int ProfileIndex,std::string Name,int Beans,std::string _RoomId)  //有人加入房间，创建房间初始调用参数3，加入房间调用1/2显示已经在房间中的人，后加入房间正常调用
+{
+    switch(Pos)
+    {
+        case 1:
+        {
+            PreviousProfileIndex = ProfileIndex;
+            PreviousBeanNum = Transform_To_String(Beans);
+            ui->BeansLineEdit1->setText(PreviousBeanNum);
+            PreviousName = QString::fromStdString(Name);
+            ui->Name1->setText(PreviousName);ui->Name1->show();
+            break;
+        }
+        case 2:
+        {
+            NextProfileIndex = ProfileIndex;
+            NextBeanNum = Transform_To_String(Beans);
+            ui->BeansLineEdit2->setText(NextBeanNum);
+            NextName = QString::fromStdString(Name);
+            ui->Name2->setText(NextName); ui->Name2->show();
+            break;
+        }
+        case 3:
+        {
+            PlayerProfileIndex = ProfileIndex;
+            PlayerBeanNum = Transform_To_String(Beans);
+            ui->BeansLineEdit3->setText(PlayerBeanNum);
+            PlayerName = QString::fromStdString(Name);
+            ui->Name3->setText(PlayerName); ui->Name3->show();
+            RoomId = QString::fromStdString(_RoomId);
+            ui->RoomId->setText(RoomId);
+            ui->RoomId->show();
+            break;
+        }
+    }
+    qDebug()<<"Pos "<<Pos;
+    ShowProfiles(Pos);
+}
+void GameWidget::somebodyLeaveRoom(int Pos)   //游戏未开始时（三家没有全部准备时）
+{
+    switch(Pos)
+    {
+        case 1:
+        {
+            PreviousBeanNum = "";
+            PreviousCardsNumber = 0;
+            ProfilePixmap1 = QPixmap(":/image/image/Profile/default.jpg");
+            ui->ProfileLabel1->setPixmap(ProfilePixmap1); ui->ProfileLabel1->show();
+            PreviousName = "";
+            ui->BeansLineEdit1->clear();
+            ui->Name1->clear();
+            somebodyUnReady(1);
+            break;
+        }
+        case 2:
+        {
+            NextBeanNum = "";
+            NextCardsNumber = 0;
+            ProfilePixmap2 = QPixmap(":/image/image/Profile/default.jpg");
+            ui->ProfileLabel2->setPixmap(ProfilePixmap2); ui->ProfileLabel2->show();
+            NextName = "";
+            ui->BeansLineEdit2->clear();
+            ui->Name2->clear();
+            somebodyUnReady(2);
+            break;
+        }
+    }
+}
+void GameWidget::Dealingcards(std::bitset<54> handcards,int cardnum1,int cardnum2)
+{
+    ui->UnReadyBtn->hide();
+    ui->ReadyLabel1->hide();
+    ui->ReadyLabel2->hide();
+    ui->ReadyLabel3->hide();
+    PlayerHandCards = Transform_To_Vector(handcards);
+    PreviousCardsNumber = cardnum1;
+    NextCardsNumber = cardnum2;
+    placeHandCards();
+    PlaceNextHandCards();
+    PlacePreviousHandCards();
+}
+void GameWidget::StartGame(std::string identity1,std::string identity2,std::string identity3,std::bitset<54> handcards,std::bitset<54> finalcards)
+{
+    ui->MSGLabel1->clear();
+    ui->MSGLabel2->clear();
+    ui->MSGLabel3->clear();
+    ShowIdentityIcon(identity1,identity2,identity3);
+    int cardnum1,cardnum2;
+    if(identity1=="farmer") { cardnum1 = 17; PreviousIdentity = 0;}
+    else { cardnum1 = 20; PreviousIdentity = 1;}
+    if(identity2=="farmer") {cardnum2 = 17; NextIdentity = 0;}
+    else { cardnum2 = 20; NextIdentity = 1;}
+    if(identity3=="farmer") {PlayerIdentity = 0;}
+    else {PlayerIdentity = 1;}
+    DisconnectHandCards();
+    for(int i = 0;i<PlayerHandCards.size();i++)
+    {
+        delete PlayerHandCards[i].btn;
+    }
+    PlayerHandCards = Transform_To_Vector(handcards);
+    updateRecorder(3);
+    Dealingcards(handcards,cardnum1,cardnum2);
+    FinalCards = Transform_To_Vector(finalcards);
+    ShowFinalCards();
+}
+void GameWidget::AddTimes(int newTimes)
+{
+    Times = newTimes;
+    ui->MultiplierLabel->setText("倍数\n⨉"+QString::number(Times));
+}
+void GameWidget::GameOver(bool Result,int times,int Score1,int Score2,int Score3)
+{
+    gameoverWidget = new GameOverWidget(Width,Height,Result,times,PreviousIdentity,NextIdentity,PlayerIdentity,PreviousName,NextName,PlayerName,PreviousDouble
+                                        ,NextDouble,PlayerDouble,Score1,Score2,Score3);
+    ContinueGame = new QPushButton(gameoverWidget);
+    ContinueGame->setGeometry(0.401*Width,  0.481*Height,  0.099*Width,   0.065*Height);
+    ContinueGame->show();
+    connect(ContinueGame,&QPushButton::clicked,this,&GameWidget::StartNewGame);
+    gameoverWidget->exitFunc = exitFunc;
+    gameoverWidget->show();
+    timer->stop();  qDebug()<<"stop Timer";
+    disconnect(timer, nullptr, this, nullptr);
+    ui->ClockImageLabel->hide();
+    ui->ClockNum->hide();
+}
+
+void GameWidget::StartNewGame()
+{
+    qDebug()<<"start new game";
+    gameoverWidget->close();
+    for(unsigned i = 0;i<backlabel1.size();i++){
+        qDebug()<<"delete backlabel1"<<i;
+        delete backlabel1[i];
+        }
+    for(unsigned i = 0;i<backlabel2.size();i++){
+            qDebug()<<"delete backlabel2"<<i;
+        delete backlabel2[i];
+    }
+    backlabel1.clear();
+    backlabel2.clear();
+
+    backlabel1.shrink_to_fit();
+    backlabel2.shrink_to_fit();
+    DestroyOutCards(1);
+    DestroyOutCards(2);
+    DestroyOutCards(3);
+    PreviousPlayerOutCards.clear();
+    NextPlayerOutCards.clear();
+    PlayerOutCards.clear();
+    PlayerHandCards.clear();
+    FinalCards.clear();
+    ui->FinalCard1->setPixmap(CardBackPixmap);
+    ui->FinalCard2->setPixmap(CardBackPixmap);
+    ui->FinalCard3->setPixmap(CardBackPixmap);
+    PreviousCardsNumLabel->hide();
+    PreviousCardsNumber = 0;
+    NextCardsNumLabel->hide();
+    NextCardsNumber = 0;
+    ui->MSGLabel1->clear();
+    ui->MSGLabel2->clear();
+    ui->MSGLabel3->clear();
+    ui->IdentityLabel1->hide();
+    ui->IdentityLabel2->hide();
+    ui->IdentityLabel3->hide();
+    int temp[15] = {4,4,4,4,4,4,4,4,4,4,4,4,4,1,1};
+    for(int i = 0;i<15;i++) Card_Recorder[i] = temp[i];
+    //placeHandCards();
+
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::READY, "", "", seat, 1, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, seat, 0, 0, "", "", "", 0, mode);
+        widget_rev_packer->WidgetsendMessage(package);
     }
 }
 
-// void onSkipTurnBtnClicked()   //点击不出按钮；
-// {
+void GameWidget::onSkipTurnBtnClicked()   //点击不出按钮；
+{
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::BIGGER_CARDS, "", "", seat, 0, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgCard>(CARD_OPCODE::OUTCARD, seat, PlayerHandCards.size(), 0, 0, 0, 0, Transform_To_Bitset(PlayerHandCards), mode);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+}
+void GameWidget::onCallLandlordBtnClicked()    //点击叫地主按钮
+{
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::ASK_OR_ROB, "", "", seat, 1, 0, 0, 1);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, seat, 0, 0, "", "", "", 1, mode);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+}
+void GameWidget::onSkipCallLandlordBtnClicked()//点击不叫按钮
+{
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::ASK_OR_ROB, "", "", seat, 0, 0, 0, 1);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, seat, 0, 0, "", "", "", 0, mode);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+}
+void GameWidget::onBidForLandlordBtnClicked()   //点击抢地主按钮
+{
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::ASK_OR_ROB, "", "", seat, 1, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, seat, 0, 0, "", "", "", 1, mode);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+}
+void GameWidget::onSkipLandlordBidBtnClicked()  //点击不抢按钮
+{
+    qDebug() << "UI Btn: no bid";
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::ASK_OR_ROB, "", "", seat, 0, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::LANDLORD, seat, 0, 0, "", "", "", 0, mode);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+}
+void GameWidget::onDoubleBtnClicked()          //点击加倍按钮
+{
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::DOUBLE, "", "", seat, 1, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
 
-// }
-// void onCallLandlordBtnClicked()    //点击叫地主按钮
-// {
+}
+void GameWidget::onUnDoubleBtnClicked()        //点击不加倍按钮
+{
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::DOUBLE, "", "", seat, 0, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
 
-// }
-// void onSkipCallLandlordBtnClicked()//点击不叫按钮
-// {
+}
+void GameWidget::onReadyBtnClicked()
+{
+    if(!mode)
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgNetWork>(NETWORK::READY, "", "", seat, 1, 0, 0, 0);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+    else
+    {
+        WidgetArgPackage* package = new WidgetArgPackage();
+        package->packMessage<WidgetArgPlayer>(PLAYER_OPCODE::READY, seat, 0, 0, "", "", "", 0, mode);
+        widget_rev_packer->WidgetsendMessage(package);
+    }
+}
+void GameWidget::onUnreadyBtnClicked()
+{
 
-// }
-// void onBidForLandlordBtnClicked()   //点击抢地主按钮
-// {
+}
 
-// }
-// void onSkipLandlordBidBtnClicked()  //点击不抢按钮
-// {
+//************************************INTERFACE*********************************
+void GameWidget::interfaceSomebodyEnterRoom(WidgetArgPackage* arg)
+{
+    qDebug() << "进入房间";
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
+    somebodyEnterRoom(player->pos, player->profileindex, player->username, player->beannum, player->roomid);
+    delete arg;
+}
+void GameWidget::interfaceSomebodyReady(WidgetArgPackage* arg)
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(arg->package);
+    qDebug() << "接口：准备" << player->pos;
+    somebodyReady(player->pos);
+    delete arg;
+}
+void GameWidget::doDealingCards()
+{
+    Dealingcards(handcards);
+}
+void GameWidget::interfaceDealingCards(WidgetArgPackage* arg)
+{
 
-// }
-// void onDoubleBtnClicked()          //点击加倍按钮
-// {
+    WidgetArgCard *card = static_cast<WidgetArgCard*>(arg->package);
+    handcards = card->HandCard;
+    qDebug() << "接口：发牌" << handcards.to_string();
 
-// }
-// void onUnDoubleBtnClicked()        //点击不加倍按钮
-// {
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doDealingCards()));
+    qThread->start();
 
-// }
+    delete arg;
+}
+void GameWidget::doCallLandlordRound()
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(InterfaceArg[0]->package);
+    qDebug() << "接口：叫地主回合" << player->pos;
+    somebodyCallLandlordRound(player->pos);
+    delete InterfaceArg[0];
+}
+void GameWidget::interfaceCallLandlordRound(WidgetArgPackage* arg)
+{
+    InterfaceArg[0] = arg;
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doCallLandlordRound()));
+    qThread->start();
+
+}
+void GameWidget::doCallLandlord()
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(InterfaceArg[1]->package);
+    qDebug() << "接口：叫地主 call:" << player->iscall << " pos: " << player->pos;
+    if(player->iscall)
+    {
+        somebodyCallLandlord(player->pos);
+    }
+    else
+    {
+        somebodyNotCallLandlord(player->pos);
+    }
+    delete InterfaceArg[1];
+}
+void GameWidget::interfaceCallLandlord(WidgetArgPackage* arg)
+{
+    InterfaceArg[1] = arg;
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doCallLandlord()));
+    qThread->start();
+}
+void GameWidget::doBidForLandlordRound()
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(InterfaceArg[2]->package);
+    qDebug() << "接口：抢地主回合" << player->pos;
+    somebodyBidForLandlordRound(player->pos);
+    delete InterfaceArg[2];
+}
+void GameWidget::interfaceBidForLandlordRound(WidgetArgPackage* arg)
+{
+    InterfaceArg[2] = arg;
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doBidForLandlordRound()));
+    qThread->start();
+}
+void GameWidget::doBidForLandlord()
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(InterfaceArg[3]->package);
+    qDebug() << "接口：抢地主" << player->pos << " call: " << player->iscall;
+    if(player->iscall)
+    {
+        somebodyBidForLandlord(player->pos);
+    }
+    else
+    {
+        somebodyNotBidForLandlord(player->pos);
+    }
+    delete InterfaceArg[3];
+}
+void GameWidget::interfaceBidForLandlord(WidgetArgPackage* arg)
+{
+    InterfaceArg[3] = arg;
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doBidForLandlord()));
+    qThread->start();
+}
+void GameWidget::doPlayCardRound()
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(InterfaceArg[4]->package);
+    qDebug() << "接口：出牌回合" << player->pos;
+    somebodyPlayCardRound(player->pos);
+    delete InterfaceArg[4];
+}
+void GameWidget::interfacePlayCardRound(WidgetArgPackage* arg)
+{
+    InterfaceArg[4] = arg;
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doPlayCardRound()));
+    qThread->start();
+}
+void GameWidget::doOutCard()
+{
+    WidgetArgCard *card = static_cast<WidgetArgCard*>(InterfaceArg[5]->package);
+    if(card->OutCard.count())
+        somebodyOutCard(card->pos, card->OutCard, card->leftcards, card->cardtype, card->HandCard);
+    else
+    {
+        qDebug() << "Not Out Card" << card->pos << " " << card->leftcards << " " << card->HandCard.to_string();
+        somebodyNotOutCard(card->pos, card->leftcards, card->HandCard);
+    }
+
+    delete InterfaceArg[5];
+}
+void GameWidget::interfaceOutCard(WidgetArgPackage* arg)
+{
+    qDebug() << "接口：出牌";
+    InterfaceArg[5] = arg;
+
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doOutCard()));
+    qThread->start();
+}
+void GameWidget::doStartGame()
+{
+    WidgetArgStartGame *game = static_cast<WidgetArgStartGame*>(InterfaceArg[6]->package);
+    StartGame(game->identity1, game->identity2, game->identity3, game->handcards, game->finalcards);
+    delete InterfaceArg[6];
+}
+void GameWidget::interfaceStartGame(WidgetArgPackage* arg)
+{
+    qDebug() << "接口：游戏开始";
+    InterfaceArg[6] = arg;
+
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doStartGame()));
+    qThread->start();
+}
+void GameWidget::doGameOver()
+{
+    WidgetArgGameOver *gameend = static_cast<WidgetArgGameOver*>(InterfaceArg[7]->package);
+    std::cout << "Game End: gameend->result: " << gameend->result << std::endl; std::flush(std::cout);
+    //if(gameend->result == 2)
+        //TODO 直接退出
+    //else
+        GameOver(gameend->result == 1, gameend->times, gameend->Score1, gameend->Score2, gameend->Score3);
+    qDebug()<<"do GameOver successfully";
+    delete InterfaceArg[7];
+}
+void GameWidget::interfaceGameEnd(WidgetArgPackage* arg)
+{
+    qDebug() << "对局结束";
+    InterfaceArg[7] = arg;
+
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doGameOver()));
+    qThread->start();
+}
+void GameWidget::doDoubleRound()
+{
+    somebodyDoubleRound();
+}
+void GameWidget::interfaceDoubleRound(WidgetArgPackage* arg)
+{
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doDoubleRound()));
+    qThread->start();
+
+    delete arg;
+}
+void GameWidget::doDouble()
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(InterfaceArg[8]->package);
+    somebodyDouble(player->pos);
+    delete InterfaceArg[8];
+}
+void GameWidget::interfaceDouble(WidgetArgPackage* arg)
+{
+    InterfaceArg[8] = arg;
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doDouble()));
+    qThread->start();
+}
+void GameWidget::doNotDouble()
+{
+    WidgetArgPlayer *player = static_cast<WidgetArgPlayer*>(InterfaceArg[9]->package);
+    somebodyNotDouble(player->pos);
+    delete InterfaceArg[9];
+}
+void GameWidget::interfaceNotDouble(WidgetArgPackage* arg)
+{
+    InterfaceArg[9] = arg;
+    QThread *qThread = new QThread();
+    connect(qThread, SIGNAL(started()), this, SLOT(doNotDouble()));
+    qThread->start();
+}
+//******************************************************************************
+void GameWidget::onRuleBtnClicked()
+{
+    ruleWidget = new RuleWidget;
+    ruleWidget->show();
+}

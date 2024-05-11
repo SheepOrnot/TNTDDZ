@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'settingwidget.ui'
 **
-** Created by: Qt User Interface Compiler version 6.5.3
+** Created by: Qt User Interface Compiler version 6.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -43,6 +43,8 @@ public:
     QPushButton *CancelBtn;
     QCheckBox *GameBGMCheck;
     QCheckBox *GameEffectCheck;
+    QCheckBox *FullScreenCheck;
+    QLabel *FullScreenWord;
 
     void setupUi(QWidget *SettingWidget)
     {
@@ -99,14 +101,14 @@ public:
         CardStyleWord = new QLabel(SettingWidget);
         CardStyleWord->setObjectName("CardStyleWord");
         CardStyleWord->setGeometry(QRect(530, 140, 81, 31));
-        CardStyleWord->setStyleSheet(QString::fromUtf8("background-color: rgb(93, 255, 131);"));
+        CardStyleWord->setStyleSheet(QString::fromUtf8(""));
         ResolutionComboBox = new QComboBox(SettingWidget);
         ResolutionComboBox->setObjectName("ResolutionComboBox");
         ResolutionComboBox->setGeometry(QRect(620, 180, 231, 31));
         ResolutionWord = new QLabel(SettingWidget);
         ResolutionWord->setObjectName("ResolutionWord");
         ResolutionWord->setGeometry(QRect(530, 180, 81, 31));
-        ResolutionWord->setStyleSheet(QString::fromUtf8("background-color: rgb(93, 255, 131);"));
+        ResolutionWord->setStyleSheet(QString::fromUtf8(""));
         BGMVolume = new QSlider(SettingWidget);
         BGMVolume->setObjectName("BGMVolume");
         BGMVolume->setGeometry(QRect(550, 420, 311, 22));
@@ -141,6 +143,12 @@ public:
         GameEffectCheck = new QCheckBox(SettingWidget);
         GameEffectCheck->setObjectName("GameEffectCheck");
         GameEffectCheck->setGeometry(QRect(530, 460, 16, 23));
+        FullScreenCheck = new QCheckBox(SettingWidget);
+        FullScreenCheck->setObjectName("FullScreenCheck");
+        FullScreenCheck->setGeometry(QRect(630, 230, 16, 18));
+        FullScreenWord = new QLabel(SettingWidget);
+        FullScreenWord->setObjectName("FullScreenWord");
+        FullScreenWord->setGeometry(QRect(530, 230, 61, 21));
 
         retranslateUi(SettingWidget);
 
@@ -169,6 +177,8 @@ public:
         CancelBtn->setText(QCoreApplication::translate("SettingWidget", "\345\217\226\346\266\210", nullptr));
         GameBGMCheck->setText(QString());
         GameEffectCheck->setText(QString());
+        FullScreenCheck->setText(QString());
+        FullScreenWord->setText(QCoreApplication::translate("SettingWidget", "\345\205\250\345\261\217\346\250\241\345\274\217", nullptr));
     } // retranslateUi
 
 };
