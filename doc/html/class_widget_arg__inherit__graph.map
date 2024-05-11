@@ -1,0 +1,11 @@
+<map id="WidgetArg" name="WidgetArg">
+<area shape="rect" id="node1" title=" " alt="" coords="5,183,88,209"/>
+<area shape="rect" id="node2" href="$class_widget_arg_account.html" title=" " alt="" coords="144,5,275,32"/>
+<area shape="rect" id="node3" href="$class_widget_arg_card.html" title=" " alt="" coords="154,56,265,83"/>
+<area shape="rect" id="node4" href="$class_widget_arg_game_over.html" title=" " alt="" coords="136,107,283,133"/>
+<area shape="rect" id="node5" href="$class_widget_arg_net_work.html" title=" " alt="" coords="142,157,277,184"/>
+<area shape="rect" id="node6" href="$class_widget_arg_player.html" title=" " alt="" coords="149,208,269,235"/>
+<area shape="rect" id="node7" href="$class_widget_arg_player_info.html" title=" " alt="" coords="138,259,281,285"/>
+<area shape="rect" id="node8" href="$class_widget_arg_start_game.html" title=" " alt="" coords="136,309,283,336"/>
+<area shape="rect" id="node9" href="$class_widget_arg_status.html" title=" " alt="" coords="149,360,270,387"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_message.html" title=" " alt="" coords="5,183,80,209"/>
+<area shape="rect" id="node2" href="$class_message_account.html" title=" " alt="" coords="140,5,263,32"/>
+<area shape="rect" id="node3" href="$class_message_card.html" title=" " alt="" coords="150,56,253,83"/>
+<area shape="rect" id="node4" href="$class_message_game_end.html" title=" " alt="" coords="135,107,268,133"/>
+<area shape="rect" id="node5" href="$class_message_game_start.html" title=" " alt="" coords="132,157,271,184"/>
+<area shape="rect" id="node6" href="$class_message_net_work.html" title=" " alt="" coords="138,208,265,235"/>
+<area shape="rect" id="node7" href="$class_message_player.html" title=" " alt="" coords="145,259,257,285"/>
+<area shape="rect" id="node8" href="$class_message_status.html" title=" " alt="" coords="145,309,258,336"/>
+<area shape="rect" id="node9" href="$class_message_verify_status.html" title=" " alt="" coords="128,360,275,387"/>
+</map>
