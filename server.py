@@ -724,7 +724,7 @@ def SignupMailPost():
         value = redis_data.redis_db.get(key)
         print(key.decode(), "->", value.decode())
 
-    mail.send_email('18607706274@163.com','JNCMBLONBOPNOFTW',mail.write_email('18607706274@163.com',mailData,code),mailData)
+    mail.send_email('*****@163.com','*****',mail.write_email('*****@163.com',mailData,code),mailData)
     return str(code)
 
 @app.route('/signup',methods = ["POST"])#存储注册信息
@@ -905,7 +905,7 @@ def PasswordForgetMailPost():
         value = redis_data.redis_db.get(key)
         print(key.decode(), "->", value.decode())
     ##################################
-    mail.send_email('18607706274@163.com','JNCMBLONBOPNOFTW',mail.write_email('18607706274@163.com',Findingmail,code),Findingmail)
+    mail.send_email('*****@163.com','*****',mail.write_email('*****@163.com',Findingmail,code),Findingmail)
     
     return code 
 
